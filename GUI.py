@@ -1,14 +1,18 @@
-import pygame, sys
+""" GUI is used for all visual opeartions for the game.
+Displays the screen, maps skins/graphics to locations on screen"""
+
+import sys
+import pygame
 
 pygame.init()
 
-windowSize =(800,600)
+WINDOWSIZE = (800, 600)
 
-screen = pygame.display.set_mode(windowSize)
+SCREEN = pygame.display.set_mode(WINDOWSIZE)
 
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-    
+
     pygame.display.update()
