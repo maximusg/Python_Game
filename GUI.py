@@ -1,4 +1,4 @@
-""" GUI is used for all visual opeartions for the game.
+""" GUI is used for all visual operations for the game.
 Displays the screen, maps skins/graphics to locations on screen"""
 
 import sys
