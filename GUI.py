@@ -2,7 +2,7 @@
 Displays the screen, maps skins/graphics to locations on screen"""
 
 import sys
-import pygame
+import pygame 
 
 pygame.init()
 pygame.mixer.init() #alllows for sounds
@@ -24,11 +24,11 @@ imageSize = image.get_size()
 sound = pygame.mixer.Sound("explosn.wav") #needs to be .wavfile I think
 pygame.mixer.music.load("roboCop3NES.mp3")
 
-x,y =0,100
+x,y =1,100
 directionX =1
 directionY =1
 clock = pygame.time.Clock()
-pygame.mouse.set_visible(0) #removes the visibility of the mouse
+#pygame.mouse.set_visible(0) #removes the visibility of the mouse
 
 pygame.mixer.music.play(1,0.0)#starts the music
 
@@ -38,24 +38,43 @@ while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+#KEYBOARD COMMANDS
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                x += 5
+            if event.key == pygame.K_LEFT:
+                x -= 5
+            if event.key == pygame.K_DOWN:
+                y += 5
+            if event.key == pygame.K_UP:
+                y -= 5
+                
+
+
+
     SCREEN.fill((0,0,0))
     #SCREEN.blit(HELLO,(x,y))
     SCREEN.blit(image,(x,y))
     
     #working with Mouse:
-    mousePosistion = pygame.mouse.get_pos()
-    x,y = mousePosistion
+    # mousePosistion = pygame.mouse.get_pos()
+    # x,y = mousePosistion
     if x +imageSize[0]>800 :
         x=800-imageSize[0]
         sound.stop()
-        pygame.mixer.Channel(0).play(sound, maxtime=600)# allows to play over top of music in background
-    if y +HELLOsize[1]>600 :
+        pygame.mixer.Channel(0).play(sound, maxtime=1000)# allows to play over top of music in background
+    if y +imageSize[1]>600 :
         y=600-imageSize[1]
         sound.stop()
-        pygame.mixer.Channel(0).play(sound, maxtime=600)
-    if x==0 or y==0:
+        pygame.mixer.Channel(0).play(sound, maxtime=1000)
+    if x<=0:
+        x=1
         sound.stop()
-        pygame.mixer.Channel(0).play(sound, maxtime=600)
+        pygame.mixer.Channel(0).play(sound, maxtime=1000)
+    if y<=0:
+        y=1
+        sound.stop()
+        pygame.mixer.Channel(0).play(sound, maxtime=1000)
 
     
 
