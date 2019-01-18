@@ -29,63 +29,75 @@ directionX =1
 directionY =1
 clock = pygame.time.Clock()
 #pygame.mouse.set_visible(0) #removes the visibility of the mouse
+pygame.key.set_repeat(1000,10)
 
 pygame.mixer.music.play(1,0.0)#starts the music
 
 while 1:
-    clock.tick(300)#runs # of times per second. More times means faster
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
+	clock.tick(60)#runs # of times per second. More times means faster
+
+	
+	
+	keys = pygame.key.get_pressed()
+	if keys[pygame.K_UP]:
+		y -= 5
+	if keys[pygame.K_DOWN]:
+		y += 5
+	if keys[pygame.K_LEFT]:
+		x -= 5
+	if keys[pygame.K_RIGHT]:
+		x += 5
+
+
+	for event in pygame.event.get():	
+		if event.type == pygame.QUIT:
+			sys.exit()
 #KEYBOARD COMMANDS
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                x += 5
-            if event.key == pygame.K_LEFT:
-                x -= 5
-            if event.key == pygame.K_DOWN:
-                y += 5
-            if event.key == pygame.K_UP:
-                y -= 5
-                
+#		if event.type == pygame.KEYDOWN:
+#			if event.key == pygame.K_RIGHT:
+#				x += 5
+#			if event.key == pygame.K_LEFT:
+#				x -= 5
+#			if event.key == pygame.K_DOWN:
+#				y += 5
+#			if event.key == pygame.K_UP:
+#				y -= 5
 
 
+	SCREEN.fill((0,0,0))
+	#SCREEN.blit(HELLO,(x,y))
+	SCREEN.blit(image,(x,y))
+	
+	#working with Mouse:
+	# mousePosistion = pygame.mouse.get_pos()
+	# x,y = mousePosistion
+	if x +imageSize[0]>800 :
+		x=800-imageSize[0]
+		sound.stop()
+		pygame.mixer.Channel(0).play(sound, maxtime=1000)# allows to play over top of music in background
+	if y +imageSize[1]>600 :
+		y=600-imageSize[1]
+		sound.stop()
+		pygame.mixer.Channel(0).play(sound, maxtime=1000)
+	if x<=0:
+		x=1
+		sound.stop()
+		pygame.mixer.Channel(0).play(sound, maxtime=1000)
+	if y<=0:
+		y=1
+		sound.stop()
+		pygame.mixer.Channel(0).play(sound, maxtime=1000)
 
-    SCREEN.fill((0,0,0))
-    #SCREEN.blit(HELLO,(x,y))
-    SCREEN.blit(image,(x,y))
-    
-    #working with Mouse:
-    # mousePosistion = pygame.mouse.get_pos()
-    # x,y = mousePosistion
-    if x +imageSize[0]>800 :
-        x=800-imageSize[0]
-        sound.stop()
-        pygame.mixer.Channel(0).play(sound, maxtime=1000)# allows to play over top of music in background
-    if y +imageSize[1]>600 :
-        y=600-imageSize[1]
-        sound.stop()
-        pygame.mixer.Channel(0).play(sound, maxtime=1000)
-    if x<=0:
-        x=1
-        sound.stop()
-        pygame.mixer.Channel(0).play(sound, maxtime=1000)
-    if y<=0:
-        y=1
-        sound.stop()
-        pygame.mixer.Channel(0).play(sound, maxtime=1000)
+	
 
-    
-
-    #Bouncing Hellow world
-    # x +=directionX
-    # y += directionY
-    # if x + HELLOsize[0]>800 or x<=0:
-    #     directionX *=-1
-    # if y + HELLOsize[1]>600 or y<=0:
-    #     directionY *=-1
-        
-    
+	#Bouncing Hellow world
+	# x +=directionX
+	# y += directionY
+	# if x + HELLOsize[0]>800 or x<=0:
+	#     directionX *=-1
+	# if y + HELLOsize[1]>600 or y<=0:
+	#     directionY *=-1
+		
+	
    
-    pygame.display.update()
+	pygame.display.update()
