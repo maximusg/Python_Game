@@ -76,6 +76,14 @@ def main():
                 going = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 going = False
+            elif event.type == KEYDOWN and event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+                bad_guy = enemy()
+                if len(enemysprites) == 0:
+                    enemysprites.add(bad_guy)
+            elif event.type == KEYDOWN and event.key == K_F2: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+                player = player_ship()
+                if len(playersprites) == 0:
+                    playersprites.add(player)
             elif event.type == KEYUP and event.key == K_SPACE:
                 bullet_count = 0
             
@@ -83,13 +91,17 @@ def main():
         enemysprites.update()
       
         for sprite in playersprites:
+            #collision = pygame.sprite.spritecollideany(sprite, enemysprites)
+            #if collision:
+                #explode.play()
+                #playersprites.remove(sprite)
             if sprite.visible == 0:
                 playersprites.remove(sprite)    
         for sprite in enemysprites:
             collision = pygame.sprite.spritecollideany(sprite, playersprites)
             if collision:
+                explode.play()
                 enemysprites.remove(sprite)
-                playersprites.remove(collision)
             if sprite.visible == 0:
                 enemysprites.remove(sprite)         
 
