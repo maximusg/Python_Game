@@ -43,7 +43,9 @@ class Weapon(object):
     def __init__(self, weaponName):
         self.name = weaponName
         self.weapon_func = master_weapons_dict.get(weaponName)[0]
+        self.rof = master_weapons_dict.get(weaponName)[1] # rof is the rate of fire in bullets per second
         self.weapon_image = master_weapons_dict.get(weaponName)[2]
+
         #self.damage = master_weapons_dict.get(weaponName)[2]
         #print(damage)
         #print(master_weapons_dict.get('spitfire')[0])
@@ -53,3 +55,4 @@ class Weapon(object):
 
 testWeapon = Weapon('spitfire')
 #testWeapon.weapon_func()
+
