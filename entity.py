@@ -68,11 +68,36 @@ class player_ship(entity):
 		else:
 			self.rect = self.rect.move((new_x, new_y))
 		self.dirty = 1
+
+	def fire(self):
+		origin_x = (self.rect.left + self.rect.right) / 2
+		origin_y = self.rect.top
+		return bullet(origin_x, origin_y, 5)
 	
 class enemy(entity):
 	def __init__(self):
 		pass
 
+class bullet(pygame.sprite.DirtySprite):
+	def __init__(self, origin_x, origin_y, speed):
+		super().__init__()
+		self.speed = speed
+		self.image, self.rect = load_image('bullet_art.png')
+		self.image = self.image.convert()
+		self.rect.centerx, self.rect.top = origin_x, origin_y
+		self.off_screen = False
+		self.dirty = 1
+
+	def move(self):
+		self.rect = self.rect.move(0,-self.speed)
+		self.dirty = 1
+
+	def update(self):
+		if self.rect.bottom > 0:
+			self.move()
+		else:
+			self.visible = 0
+			self.dirty = 1
 
 	
 

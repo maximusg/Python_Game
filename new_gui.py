@@ -33,8 +33,8 @@ def main():
 
     pygame.mixer.music.load('roboCop3NES.mp3')
     pygame.mixer.music.play(loops=-1)
-    #explode = load_sound('explosn.wav')
-    #fire_shot = load_sound('pewpew.wav')
+    explode = load_sound('explosn.wav')
+    fire_shot = load_sound('pewpew.wav')
 
     clock = pygame.time.Clock()
     player = player_ship()
@@ -61,9 +61,10 @@ def main():
         if keys[pygame.K_RIGHT]:
             player.move(player.speed, 0)
         if keys[pygame.K_SPACE]:
-            #fire_shot.play() ##how do we slow this down to only fire at our assigned ROF?
             if bullet_count % 15 == 0:
-                print(str(bullet_count), 'pew!')
+                fire_shot.play() ##how do we slow this down to only fire at our assigned ROF?
+                bullet = player.fire()
+                allsprites.add(bullet)
             bullet_count += 1
 
         for event in pygame.event.get():
@@ -75,6 +76,10 @@ def main():
                 bullet_count = 0
             
         allsprites.update()
+      
+        for sprite in allsprites:
+            if sprite.visible == 0:
+                allsprites.remove(sprite)         
 
         rects = allsprites.draw(screen)
         pygame.display.update(rects)
