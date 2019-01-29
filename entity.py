@@ -11,6 +11,7 @@ from pygame.locals import *
 from pygame.compat import geterror
 from pathlib import *
 import os
+import weapon
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 
@@ -47,7 +48,7 @@ class entity(pygame.sprite.DirtySprite):
 class player_ship(entity):
 	def __init__(self):
 		super().__init__()
-		self.weapon = 'spitfire' ##placeholder
+		self.weapon = weapon.Weapon('spitfire')
 		self.control_scheme = 'wasd' ##placeholder
 		self.point_total = 0
 		self.image, self.rect = load_image('SweetShip.png', -1)
@@ -72,7 +73,7 @@ class player_ship(entity):
 	def fire(self):
 		origin_x = (self.rect.left + self.rect.right) / 2
 		origin_y = self.rect.top
-		return bullet(origin_x, origin_y, 5)
+		return bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
 	
 class enemy(entity):
 	def __init__(self):
@@ -81,15 +82,17 @@ class enemy(entity):
 		self.point_value = 500
 		self.image, self.rect = load_image('enemy.png')
 		self.rect.centerx, self.rect.top = 300, 50
-		self.speed = 10
+		screen = pygame.display.get_surface()
+		self.area = screen.get_rect()
+		self.speed = 4
 	
 	def move(self, x, y):
 		if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
 			self.rect.left = self.area.left
-			speed = -speed
+			self.speed = -self.speed
 		elif self.rect.right > self.area.right:
 			self.rect.right = self.area.right
-			speed = -speed
+			self.speed = -self.speed
 		else:
 			self.rect = self.rect.move((x, y))
 		self.dirty = 1
@@ -99,14 +102,15 @@ class enemy(entity):
 
 
 class bullet(pygame.sprite.DirtySprite):
-	def __init__(self, origin_x, origin_y, speed):
+	def __init__(self, origin_x, origin_y, speed, path_to_img):
 		super().__init__()
 		self.speed = speed
-		self.image, self.rect = load_image('bullet_art.png')
+		self.image, self.rect = load_image(path_to_img)
 		self.image = self.image.convert()
 		self.rect.centerx, self.rect.top = origin_x, origin_y
 		self.off_screen = False
 		self.dirty = 1
+		self.mask = pygame.mask.from_surface(self.image)
 
 	def move(self):
 		self.rect = self.rect.move(0,-self.speed)

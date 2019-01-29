@@ -39,9 +39,12 @@ def main():
 
     clock = pygame.time.Clock()
     player = player_ship()
-    allsprites = pygame.sprite.LayeredDirty((player))
+    bad_guy = enemy()
+    playersprites = pygame.sprite.LayeredDirty((player))
+    enemysprites = pygame.sprite.LayeredDirty((bad_guy))
 
-    allsprites.clear(screen, background)
+    playersprites.clear(screen, background)
+    enemysprites.clear(screen, background)
 
     pygame.key.set_repeat(10,10)
 
@@ -62,10 +65,10 @@ def main():
         if keys[pygame.K_RIGHT]:
             player.move(player.speed, 0)
         if keys[pygame.K_SPACE]:
-            if bullet_count % (int(FRAMERATE/6)) == 0:
+            if bullet_count % (int(FRAMERATE/player.weapon.rof)) == 0:
                 fire_shot.play() 
                 bullet = player.fire()
-                allsprites.add(bullet)
+                playersprites.add(bullet)
             bullet_count += 1
 
         for event in pygame.event.get():
@@ -76,14 +79,25 @@ def main():
             elif event.type == KEYUP and event.key == K_SPACE:
                 bullet_count = 0
             
-        allsprites.update()
+        playersprites.update()
+        enemysprites.update()
       
-        for sprite in allsprites:
+        for sprite in playersprites:
             if sprite.visible == 0:
-                allsprites.remove(sprite)         
+                playersprites.remove(sprite)    
+        for sprite in enemysprites:
+            collision = pygame.sprite.spritecollideany(sprite, playersprites)
+            if collision:
+                enemysprites.remove(sprite)
+                playersprites.remove(collision)
+            if sprite.visible == 0:
+                enemysprites.remove(sprite)         
 
-        rects = allsprites.draw(screen)
-        pygame.display.update(rects)
+        player_rects = playersprites.draw(screen)
+        enemy_rects = enemysprites.draw(screen)
+
+        pygame.display.update(player_rects)
+        pygame.display.update(enemy_rects)
     
     pygame.quit()
 

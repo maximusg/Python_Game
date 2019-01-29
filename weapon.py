@@ -44,6 +44,7 @@ class Weapon(object):
         self.name = weaponName
         self.weapon_func = master_weapons_dict.get(weaponName)[0]
         self.weapon_image = master_weapons_dict.get(weaponName)[2]
+        self.rof = master_weapons_dict.get(weaponName)[1]
         #self.damage = master_weapons_dict.get(weaponName)[2]
         #print(damage)
         #print(master_weapons_dict.get('spitfire')[0])
