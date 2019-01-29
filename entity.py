@@ -7,52 +7,32 @@
 
 ##import section
 import pygame
+from pygame.locals import *
+from pygame.compat import geterror
+from pathlib import *
+import os
 
-##class defs
-class Point(object):
-	def __init__(self, xIn, yIn):
-		self.x = xIn
-		self.y = yIn
+main_dir = os.path.split(os.path.abspath(__file__))[0]
 
-	@property
-	def x(self):
-		return self.__x
-	
-	@property
-	def y(self):
-		return self.__y
+# functions to create our resources
+def load_image(name, colorkey=None):
+    fullname = os.path.join(main_dir, name)
+    try:
+        image = pygame.image.load(fullname)
+    except pygame.error:
+        print ('Cannot load image:', fullname)
+        raise SystemExit(str(geterror()))
+    image = image.convert()
+    if colorkey is not None:
+        if colorkey is -1:
+            colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey, RLEACCEL)
+    return image, image.get_rect()
 
-	@x.setter
-	def x(self, xIn):
-		if not isinstance(xIn, int) and not isinstance(xIn, float):
-			raise RuntimeError(xIn + ' is not a valid value for Point.xIn.')  
-		self.__x = xIn  
-	
-	@y.setter
-	def y(self, yIn):
-		if not isinstance(yIn, int) and not isinstance(yIn, float):
-			raise RuntimeError(yIn + ' is not a valid value for Point.yIn.')  
-		self.__y = yIn  
-
-	def __str__(self):
-		return '('+str(self.x)+','+str(self.y)+')'
-
-class entity(object):
+class entity(pygame.sprite.DirtySprite):
 	def __init__(self):
-		self.sprite = None
-		self.location = None
+		super().__init__()
 		self.health = 1
-		self.weapon = None
-
-		@property
-		def location(self):
-			return self.__location
-
-		@location.setter
-		def location(self, new_point):
-			if not isinstance(new_point, Point):
-				raise RuntimeError(new_point + ' is not a valid Point for update.')
-			self.__location = new_point
 
 		@property
 		def health(self):
@@ -64,31 +44,31 @@ class entity(object):
 				raise RuntimeError(value + ' is not a valid int for health.')
 			self.__health = value
 
-		@property
-		def sprite(self):
-			return self.__sprite
-		
-		@sprite.setter
-		def sprite(self, new_sprite):
-			###figure out error checking for this
-			self.__sprite = new_sprite
-
-		@property
-		def weapon(self):
-			return self.__weapon
-
-		@weapon.setter
-		def weapon(self, new_weapon):
-			if not isinstance(new_weapon, Weapon):
-				raise RuntimeError(new_weapon + ' is not a valid weapon class.')
-
-
 class player_ship(entity):
 	def __init__(self):
 		super().__init__()
 		self.weapon = 'basic gun 1' ##placeholder
 		self.control_scheme = 'wasd' ##placeholder
 		self.point_total = 0
+		self.image, self.rect = load_image('SweetShip.png', -1)
+		screen = pygame.display.get_surface()
+		self.area = screen.get_rect()
+		self.rect.topleft = 500,600
+		self.speed = 10
+
+	def move(self, new_x, new_y):
+		if self.rect.left < self.area.left:
+			self.rect.left = self.area.left
+		elif self.rect.right > self.area.right:
+			self.rect.right = self.area.right
+		elif self.rect.top < self.area.top:
+			self.rect.top = self.area.top
+		elif self.rect.bottom > self.area.bottom:
+			self.rect.bottom = self.area.bottom
+		else:
+			self.rect = self.rect.move((new_x, new_y))
+		print(self.rect.topleft)
+		self.dirty = 1
 
 class enemy(entity):
 	def __init__(self):
