@@ -57,7 +57,7 @@ class player_ship(entity):
 		self.speed = 10
 
 	def move(self, new_x, new_y):
-		if self.rect.left < self.area.left:
+		if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
 			self.rect.left = self.area.left
 		elif self.rect.right > self.area.right:
 			self.rect.right = self.area.right
@@ -67,7 +67,6 @@ class player_ship(entity):
 			self.rect.bottom = self.area.bottom
 		else:
 			self.rect = self.rect.move((new_x, new_y))
-		print(self.rect.topleft)
 		self.dirty = 1
 
 class enemy(entity):

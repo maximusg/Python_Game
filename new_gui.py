@@ -6,14 +6,14 @@ from pygame.locals import *
 from pygame.compat import geterror
 from pathlib import *
 
-
+main_dir = os.path.split(os.path.abspath(__file__))[0]
 def load_sound(name):
     class NoneSound:
         def play(self):
             pass
     if not pygame.mixer or not pygame.mixer.get_init():
         return NoneSound()
-    fullname = os.path.join(data_dir, name)
+    fullname = os.path.join(main_dir, name)
     try:
         sound = pygame.mixer.Sound(fullname)
     except pygame.error:
