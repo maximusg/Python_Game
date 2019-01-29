@@ -1,6 +1,6 @@
 '''
 File: weapon.py
-01/28/19
+01/29/19
 '''
 
 
@@ -9,7 +9,7 @@ MASTER WEAPONS DICTIONARY
 
 Tuple Index:         |       0       |       1          |       2          |       3          |
 Description:         | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | BULLET FUNCTION  |
-Units:               | 0-100         | bullets per sec  | pathlib          | n/a
+Units:               | 0-100         | bullets per sec  | pathlib          | n/a              |
 
 '''
 
@@ -32,9 +32,12 @@ weapon_images_path = cwd.joinpath('resources', 'weapon_images')
 def spitfire():
     print('spitfire here')
 
-master_weapons_dict = {
-    'spitfire': (10, 4, weapon_images_path.joinpath('spitfire.png'), spitfire())
+def blue_lazer():
+    print('blue lazer here')
 
+master_weapons_dict = {
+    'spitfire': (10, 4, weapon_images_path.joinpath('spitfire.png'), spitfire),
+    'blue_lazer': (10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer)
 }
 
 
@@ -42,9 +45,10 @@ class Weapon(object):
 
     def __init__(self, weaponName):
         self.name = weaponName
-        self.weapon_func = master_weapons_dict.get(weaponName)[0]
+        self.weapon_damage = master_weapons_dict.get(weaponName)[0]
         self.rof = master_weapons_dict.get(weaponName)[1] # rof is the rate of fire in bullets per second
         self.weapon_image = master_weapons_dict.get(weaponName)[2]
+        self.weapon_func = master_weapons_dict.get(weaponName)[3]
 
         #self.damage = master_weapons_dict.get(weaponName)[2]
         #print(damage)
@@ -54,5 +58,7 @@ class Weapon(object):
 
 
 testWeapon = Weapon('spitfire')
+testWeapon2 = Weapon('blue_lazer')
+#os.startfile(testWeapon2.weapon_image)
 #testWeapon.weapon_func()
 
