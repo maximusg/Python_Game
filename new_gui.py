@@ -22,6 +22,7 @@ def load_sound(name):
     return sound
 
 def main():
+    FRAMERATE = 60
     pygame.init()
     screen = pygame.display.set_mode((1024,786))
     pygame.display.set_caption('Raiden Clone - Day 0')
@@ -49,7 +50,7 @@ def main():
     bullet_count = 0
 
     while going:
-        clock.tick(60)
+        clock.tick(FRAMERATE)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
@@ -61,8 +62,8 @@ def main():
         if keys[pygame.K_RIGHT]:
             player.move(player.speed, 0)
         if keys[pygame.K_SPACE]:
-            if bullet_count % 15 == 0:
-                fire_shot.play() ##how do we slow this down to only fire at our assigned ROF?
+            if bullet_count % (int(FRAMERATE/6)) == 0:
+                fire_shot.play() 
                 bullet = player.fire()
                 allsprites.add(bullet)
             bullet_count += 1

@@ -76,7 +76,27 @@ class player_ship(entity):
 	
 class enemy(entity):
 	def __init__(self):
-		pass
+		super().__init__()
+		self.weapon = 'enemy_spitfire'
+		self.point_value = 500
+		self.image, self.rect = load_image('enemy.png')
+		self.rect.centerx, self.rect.top = 300, 50
+		self.speed = 10
+	
+	def move(self, x, y):
+		if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
+			self.rect.left = self.area.left
+			speed = -speed
+		elif self.rect.right > self.area.right:
+			self.rect.right = self.area.right
+			speed = -speed
+		else:
+			self.rect = self.rect.move((x, y))
+		self.dirty = 1
+
+	def update(self):
+		self.move(self.speed, 0)
+
 
 class bullet(pygame.sprite.DirtySprite):
 	def __init__(self, origin_x, origin_y, speed):
