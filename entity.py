@@ -47,7 +47,7 @@ class entity(pygame.sprite.DirtySprite):
 class player_ship(entity):
 	def __init__(self):
 		super().__init__()
-		self.weapon = 'basic gun 1' ##placeholder
+		self.weapon = 'spitfire' ##placeholder
 		self.control_scheme = 'wasd' ##placeholder
 		self.point_total = 0
 		self.image, self.rect = load_image('SweetShip.png', -1)
@@ -68,7 +68,7 @@ class player_ship(entity):
 		else:
 			self.rect = self.rect.move((new_x, new_y))
 		self.dirty = 1
-
+	
 class enemy(entity):
 	def __init__(self):
 		pass

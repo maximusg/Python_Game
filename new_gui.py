@@ -31,15 +31,23 @@ def main():
     background = background.convert()
     background.fill((0,0,0))
 
+    pygame.mixer.music.load('roboCop3NES.mp3')
+    pygame.mixer.music.play(loops=-1)
+    #explode = load_sound('explosn.wav')
+    #fire_shot = load_sound('pewpew.wav')
+
     clock = pygame.time.Clock()
     player = player_ship()
     allsprites = pygame.sprite.LayeredDirty((player))
 
     allsprites.clear(screen, background)
 
-    pygame.key.set_repeat(100,10)
+    pygame.key.set_repeat(10,10)
 
     going=True
+
+    bullet_count = 0
+
     while going:
         clock.tick(60)
 
@@ -52,12 +60,19 @@ def main():
             player.move(-player.speed, 0)
         if keys[pygame.K_RIGHT]:
             player.move(player.speed, 0)
+        if keys[pygame.K_SPACE]:
+            #fire_shot.play() ##how do we slow this down to only fire at our assigned ROF?
+            if bullet_count % 15 == 0:
+                print(str(bullet_count), 'pew!')
+            bullet_count += 1
 
         for event in pygame.event.get():
             if event.type == QUIT:
                 going = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 going = False
+            elif event.type == KEYUP and event.key == K_SPACE:
+                bullet_count = 0
             
         allsprites.update()
 
