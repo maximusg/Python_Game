@@ -60,23 +60,17 @@ def main():
     enemy_bullet_sprites.clear(screen, background)
 
     going=True
-    ##Helper variable for weapon ROF calculations
-    bullet_count = 0
-   
- 
 
     while going:
         ##Force FRAMERATE ticks per second
         clock.tick(FRAMERATE)
 
-
         ##Keyboard polling this way (as opposed to the pygame.event queue) allows multiple (as in up+left) input
-        addBullet = playerShip.control(bullet_count,FRAMERATE)
+        addBullet = playerShip.control(FRAMERATE)
         if addBullet:
             fire_shot.play() 
             bullet = playerShip.fire()
             player_bullet_sprites.add(bullet)
-            bullet_count+=1
 
         # keys = pygame.key.get_pressed()
         # if keys[pygame.K_UP]:
@@ -105,8 +99,8 @@ def main():
             #     bad_guy = enemy()
             #     if len(enemy_sprites) == 0:
             #         enemy_sprites.add(bad_guy)
-            elif event.type == KEYUP and event.key == K_SPACE:
-                bullet_count = 0
+            #elif event.type == KEYUP and event.key == K_SPACE:
+            #    bullet_count = 0
             
         ##Helper to call update() on each sprite in the group.    
         player_sprites.update()

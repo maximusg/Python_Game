@@ -15,6 +15,7 @@ class player(entity2.entity2):
         self.area = self.screen.get_rect()
         self.rect.topleft = 500,600
         self.speed = 10
+        self.bullet_count = 0
 
     def move(self, new_x, new_y):
         if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
@@ -34,9 +35,10 @@ class player(entity2.entity2):
         origin_y = self.rect.top
         return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
     
-    def control(self, bullet_count, FRAMERATE):
+    def control(self, FRAMERATE):
         keys = pygame.key.get_pressed()
         addBullet=False
+        print(self.bullet_count)
         if self.control_scheme=="arrows":
             if keys[pygame.K_UP]:
                 self.move(0,-self.speed)
@@ -46,8 +48,11 @@ class player(entity2.entity2):
                 self.move(-self.speed, 0)
             if keys[pygame.K_RIGHT]:
                 self.move(self.speed, 0)
+            
             if keys[pygame.K_SPACE]:
-                if bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
+                if self.bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
                     addBullet=True
-                    bullet_count+=1
+                self.bullet_count += 1
+            else:
+                self.bullet_count = 0
         return addBullet
