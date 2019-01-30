@@ -6,9 +6,9 @@ import weapon
 
 
 class player(entity2.entity2):
-    def __init__(self, weapon, imgFile,scheme):
+    def __init__(self, init_wep, imgFile, scheme):
         super().__init__()
-        self.weapon = weapon.Weapon(weapon)
+        self.weapon = weapon.Weapon(init_wep)
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
         self.image, self.rect = self.load_image(imgFile, -1)
@@ -47,7 +47,7 @@ class player(entity2.entity2):
             if keys[pygame.K_RIGHT]:
                 self.move(self.speed, 0)
             if keys[pygame.K_SPACE]:
-                if self.bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
+                if bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
                     addBullet=True
                     bullet_count+=1
-            return addBullet
+        return addBullet

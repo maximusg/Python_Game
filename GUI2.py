@@ -49,7 +49,7 @@ def main():
     playerShip = player.player('spitfire','SweetShip.png',"arrows")
     bad_guy = enemy.enemy('spitfire','enemy.png')
     #Initialize sprite groups
-    player_sprites = pygame.sprite.LayeredDirty((player))
+    player_sprites = pygame.sprite.LayeredDirty((playerShip))
     player_bullet_sprites = pygame.sprite.LayeredDirty()
     enemy_sprites = pygame.sprite.LayeredDirty((bad_guy))
     enemy_bullet_sprites = pygame.sprite.LayeredDirty()
@@ -71,7 +71,7 @@ def main():
 
 
         ##Keyboard polling this way (as opposed to the pygame.event queue) allows multiple (as in up+left) input
-        addBullet= playerShip.control(bullet_count,FRAMERATE)
+        addBullet = playerShip.control(bullet_count,FRAMERATE)
         if addBullet:
             fire_shot.play() 
             bullet = playerShip.fire()
