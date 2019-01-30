@@ -38,7 +38,6 @@ class player(entity2.entity2):
     def control(self, FRAMERATE):
         keys = pygame.key.get_pressed()
         addBullet=False
-        print(self.bullet_count)
         if self.control_scheme=="arrows":
             if keys[pygame.K_UP]:
                 self.move(0,-self.speed)
