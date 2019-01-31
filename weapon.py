@@ -9,7 +9,13 @@ MASTER WEAPONS DICTIONARY
 
 Tuple Index:         |       0       |       1          |       2          |       3          |
 Description:         | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | BULLET FUNCTION  |
-Units:               | 0-100         | bullets per sec  | pathlib          | n/a              |
+Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a              |
+                     |               |                  |                  |
+-----------------------------------------------------------------------------------------------
+    WEAPON NAME      | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | BULLET FUNCTION  |
+                     |               |                  |                  |
+   spitfire          |       10      |       4          |       n/a        |       n/a        |
+   blue_lazer        |       10      |       4          |       n/a        |       n/a        |
 
 '''
 
@@ -44,6 +50,9 @@ master_weapons_dict = {
 class Weapon(object):
 
     def __init__(self, weaponName):
+
+        if weaponName not in master_weapons_dict:
+            raise Exception('the weapon must be in the master weapons dictionary.')
         self.name = weaponName
         self.weapon_damage = master_weapons_dict.get(weaponName)[0]
         self.rof = master_weapons_dict.get(weaponName)[1] # rof is the rate of fire in bullets per second
@@ -57,8 +66,14 @@ class Weapon(object):
         #os.startfile(self.weapon_image)
 
 
-testWeapon = Weapon('spitfire')
-testWeapon2 = Weapon('blue_lazer')
-#os.startfile(testWeapon2.weapon_image)
-#testWeapon.weapon_func()
+
+if __name__=="__main__":
+    def test():
+
+        testWeapon = Weapon('spitfire')
+        testWeapon2 = Weapon('blue_lazer')
+        #os.startfile(testWeapon2.weapon_image)
+        testWeapon.weapon_func()
+    test()
+
 
