@@ -18,10 +18,6 @@ class player(entity2.entity2):
         self.speed = 10
         self.bullet_count = 0
 
-    @property
-    def weapon(self):
-        return self.__weapon
-
     #@property #TODO - implement once control schemes are settled
     #def control_scheme(self):
     #    return self.__control_scheme
@@ -31,26 +27,8 @@ class player(entity2.entity2):
         return self.__point_total
 
     @property
-    def image(self):
-        return self.__image
-    
-    @property
-    def rect(self):
-        return self.__rect
-
-    @property
-    def speed(self):
-        return self.__speed
-
-    @property
     def bullet_count(self):
         return self.__bullet_count
-
-    @weapon.setter
-    def weapon(self, value):
-        if not isinstance(value, weapon.Weapon):
-            raise RuntimeError('Invalid weapon loaded onto player ship')
-        self.__weapon = value
     
     #@control_scheme.setter
     #def control_scheme(self, value):
@@ -62,24 +40,6 @@ class player(entity2.entity2):
         if not isinstance(value, int):
             raise RuntimeError('Illegal value added to point_total')
         self.__point_total = value
-    
-    @image.setter
-    def image(self, value):
-        if not isinstance(value, pygame.Surface):
-            raise RuntimeError('Illegal value set for player sprite')
-        self.__image = value
-
-    @rect.setter
-    def rect(self, value):
-        if not isinstance(value, pygame.Rect):
-            raise RuntimeError('Illegal value set to player rectangle')
-        self.__rect = value
-
-    @speed.setter
-    def speed(self, value):
-        if not isinstance(value, int):
-            raise RuntimeError('Illegal value set to player speed')
-        self.__speed = value
 
     @bullet_count.setter
     def bullet_count(self, value):

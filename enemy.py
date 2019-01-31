@@ -12,6 +12,16 @@ class enemy(entity2.entity2):
 		self.area = self.screen.get_rect()
 		self.speed = 4
 	
+	@property
+	def point_value(self):
+		return self.__point_value
+
+	@point_value.setter
+	def point_value(self, value):
+		if not isinstance(value, int):
+			raise RuntimeError('Illegal value for enemy point_value')
+		self.__point_value = value
+
 	def move(self, x, y):
 		if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
 			self.rect.left = self.area.left
@@ -24,4 +34,8 @@ class enemy(entity2.entity2):
 		self.dirty = 1
 
 	def update(self):
-		self.move(self.speed, 0)
+		if self.health < 1:
+			self.visible = 0
+			self.dirty = 1
+		else:
+			self.move(self.speed, 0)
