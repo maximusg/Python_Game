@@ -21,7 +21,8 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 
 import os
 from pathlib import Path
-
+import player
+import bullet
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
@@ -35,14 +36,43 @@ weapon_images_path = cwd.joinpath('resources', 'weapon_images')
 #    if x.is_file():
 #        print(x)
 #each weapon name will be mapped to its function, an image, and other properties
-def spitfire():
-    print('spitfire here')
+
+def spitfire(origin_x, origin_y):
+    #print('spitfire here')
+    #print(origin_x, origin_y)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+
+    return bullet1
+
+def spitfire3(origin_x, origin_y):
+    #print('spitfire here')
+    #print(origin_x, origin_y)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 2)
+    bullet5 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -2)
+
+    return bullet1, bullet2, bullet3, bullet4, bullet5
+    #self.weapon.weapon_func()
+    #return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
+    #player_bullet_sprites.add(bullet1)
+
+def spitfire2(origin_x, origin_y):
+    #print('spitfire here')
+    #print(origin_x, origin_y)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    return bullet1, bullet2, bullet3
 
 def blue_lazer():
     print('blue lazer here')
 
 master_weapons_dict = {
-    'spitfire': (10, 4, weapon_images_path.joinpath('spitfire.png'), spitfire),
+    'spitfire': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
+    'spitfire2': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire2),
+    'spitfire3': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire3),
     'blue_lazer': (10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer)
 }
 

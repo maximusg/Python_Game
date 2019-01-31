@@ -33,7 +33,9 @@ class player(entity2.entity2):
     def fire(self):
         origin_x = (self.rect.left + self.rect.right) / 2
         origin_y = self.rect.top
-        return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
+
+        return self.weapon.weapon_func(origin_x, origin_y)
+        #return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
     
     def control(self, FRAMERATE):
         keys = pygame.key.get_pressed()
@@ -52,6 +54,16 @@ class player(entity2.entity2):
                 if self.bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
                     addBullet=True
                 self.bullet_count += 1
+            if keys[pygame.K_1]:
+
+                self.weapon = weapon.Weapon('spitfire')
+            if keys[pygame.K_2]:
+
+                self.weapon = weapon.Weapon('spitfire2')
+
+            if keys[pygame.K_3]:
+                self.weapon = weapon.Weapon('spitfire3')
+
             else:
                 self.bullet_count = 0
         return addBullet

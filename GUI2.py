@@ -9,6 +9,7 @@ from pygame.locals import *
 from pygame.compat import geterror
 from pathlib import *
 import os
+import hud
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 def load_sound(name):
@@ -59,9 +60,14 @@ def main():
     player_bullet_sprites.clear(screen, background)
     enemy_bullet_sprites.clear(screen, background)
 
+
     going=True
 
     while going:
+
+        #update the hud
+        #myHUD.showHUD()
+
         ##Force FRAMERATE ticks per second
         clock.tick(FRAMERATE)
 
@@ -101,6 +107,7 @@ def main():
             #         enemy_sprites.add(bad_guy)
             #elif event.type == KEYUP and event.key == K_SPACE:
             #    bullet_count = 0
+
             
         ##Helper to call update() on each sprite in the group.    
         player_sprites.update()
@@ -135,7 +142,8 @@ def main():
         pygame.display.update(player_bullet_rects)
         pygame.display.update(enemy_rects)
         pygame.display.update(enemy_bullet_rects)
-    
+
+
     pygame.quit()
 
 if __name__=='__main__':
