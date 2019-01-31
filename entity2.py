@@ -2,11 +2,8 @@ import pygame
 from pygame.locals import *
 from pygame.compat import geterror
 from pathlib import *
-import os
 import weapon
 from abc import *
-
-main_dir = os.path.split(os.path.abspath(__file__))[0]
 
 class entity2(pygame.sprite.DirtySprite):
     def __init__(self):

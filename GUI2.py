@@ -2,7 +2,6 @@
 import weapon
 import player
 import enemy
-# import launcher
 import control_scheme
 import pygame
 from pygame.locals import *
@@ -10,27 +9,32 @@ from pygame.compat import geterror
 from pathlib import *
 from library import *
 
+##CONSTANTS
+FRAMERATE = 60
+
 def main():
-    ##CONSTANTS
-    FRAMERATE = 60
+
     ##Initialize pygame, set up the screen.
     pygame.init()
     screen = pygame.display.set_mode((1024,786))
     pygame.display.set_caption('Raiden Clone - Day 0')
     pygame.mouse.set_visible(False)
+
     ##Background setup
     background = pygame.Surface(screen.get_size())
     background = background.convert()
     background.fill((0,0,0))
+
     ##Background music setup, load sound bytes
     pygame.mixer.music.load('roboCop3NES.mp3')
     pygame.mixer.music.play(loops=-1)
     explode = load_sound('explosn.wav')
     fire_shot = load_sound('pewpew.wav')
+
     ##Initialize clock
     clock = pygame.time.Clock()
+
     ##Initialize ships
-    
     playerShip = player.player('spitfire','SweetShip.png',"arrows")
     bad_guy = enemy.enemy('spitfire','enemy.png')
     #Initialize sprite groups
