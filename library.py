@@ -3,6 +3,8 @@ import pygame
 from pygame.locals import *
 from pygame.compat import geterror
 
+##CONSTANTS
+FRAMERATE = 60
 main_dir = Path('.')
 
 def load_image(name, colorkey=None):

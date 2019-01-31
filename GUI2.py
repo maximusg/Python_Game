@@ -9,9 +9,6 @@ from pygame.compat import geterror
 from pathlib import *
 from library import *
 
-##CONSTANTS
-FRAMERATE = 60
-
 def main():
 
     ##Initialize pygame, set up the screen.
