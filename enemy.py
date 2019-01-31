@@ -1,5 +1,5 @@
 import entity2
-
+from library import *
 
 
 class enemy(entity2.entity2):
@@ -7,7 +7,7 @@ class enemy(entity2.entity2):
 		super().__init__()
 		self.weapon = weapon
 		self.point_value = 500
-		self.image, self.rect = self.load_image(imgFile)
+		self.image, self.rect = load_image(imgFile)
 		self.rect.centerx, self.rect.top = 300, 50
 		self.area = self.screen.get_rect()
 		self.speed = 4

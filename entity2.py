@@ -4,6 +4,7 @@ from pygame.compat import geterror
 from pathlib import *
 import os
 import weapon
+from abc import *
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 
@@ -23,20 +24,20 @@ class entity2(pygame.sprite.DirtySprite):
                 raise RuntimeError(value + ' is not a valid int for health.')
             self.__health = value
 
+        @property
+        def screen(self):
+            return self.__screen
+        
+        @screen.setter
+        def screen(self, new_screen):
+            if not isinstance(new_screen, pygame.surface):
+                raise RuntimeError('Screen setter failure. Non-screen passed to entity2.screen setter')
+            self.__screen = new_screen
 
-    def load_image(self, name, colorkey=None):
-        fullname = os.path.join(main_dir, name)
-        try:
-            image = pygame.image.load(fullname)
-        except pygame.error:
-            print ('Cannot load image:', fullname)
-            raise SystemExit(str(geterror()))
-        image = image.convert()
-        if colorkey is not None:
-            if colorkey is -1:
-                colorkey = image.get_at((0, 0))
-            image.set_colorkey(colorkey, RLEACCEL)
-        return image, image.get_rect()
+    @abstractmethod
+    def move(self):
+        raise NotImplementedError
     
-    def something(self):
-        pass
+    @abstractmethod
+    def update(self):
+        raise NotImplementedError

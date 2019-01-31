@@ -8,22 +8,7 @@ import pygame
 from pygame.locals import *
 from pygame.compat import geterror
 from pathlib import *
-import os
-
-main_dir = os.path.split(os.path.abspath(__file__))[0]
-def load_sound(name):
-    class NoneSound:
-        def play(self):
-            pass
-    if not pygame.mixer or not pygame.mixer.get_init():
-        return NoneSound()
-    fullname = os.path.join(main_dir, name)
-    try:
-        sound = pygame.mixer.Sound(fullname)
-    except pygame.error:
-        print ('Cannot load sound: %s' % fullname)
-        raise SystemExit(str(geterror()))
-    return sound
+from library import *
 
 def main():
     ##CONSTANTS
@@ -62,31 +47,15 @@ def main():
     going=True
 
     while going:
-        ##Force FRAMERATE ticks per second
+        ##Limit tickrate to FRAMERATE ticks / second
         clock.tick(FRAMERATE)
-
+        
         ##Keyboard polling this way (as opposed to the pygame.event queue) allows multiple (as in up+left) input
         addBullet = playerShip.control(FRAMERATE)
         if addBullet:
             fire_shot.play() 
             bullet = playerShip.fire()
             player_bullet_sprites.add(bullet)
-
-        # keys = pygame.key.get_pressed()
-        # if keys[pygame.K_UP]:
-        #     playerShip.move(0,-playerShip.speed)
-        # if keys[pygame.K_DOWN]:
-        #     player.move(0,player.speed)
-        # if keys[pygame.K_LEFT]:
-        #     player.move(-player.speed, 0)
-        # if keys[pygame.K_RIGHT]:
-        #     player.move(player.speed, 0)
-        # if keys[pygame.K_SPACE]:
-        #     if bullet_count % (int(FRAMERATE/player.weapon.rof)) == 0:
-        #         fire_shot.play() 
-        #         bullet = player.fire()
-        #         player_bullet_sprites.add(bullet)
-        #     bullet_count += 1
 
         ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
         ##Added debug code to spawn enemy sprites at will. -TODO- remove when finished
@@ -95,12 +64,6 @@ def main():
                 going = False
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 going = False
-            # elif event.type == KEYDOWN and event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-            #     bad_guy = enemy()
-            #     if len(enemy_sprites) == 0:
-            #         enemy_sprites.add(bad_guy)
-            #elif event.type == KEYUP and event.key == K_SPACE:
-            #    bullet_count = 0
             
         ##Helper to call update() on each sprite in the group.    
         player_sprites.update()
