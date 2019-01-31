@@ -34,6 +34,7 @@ def main():
     ##Initialize ships
     playerShip = player.player('spitfire','SweetShip.png',"arrows")
     bad_guy = enemy.enemy('spitfire','enemy.png')
+    
     #Initialize sprite groups
     player_sprites = pygame.sprite.LayeredDirty((playerShip))
     player_bullet_sprites = pygame.sprite.LayeredDirty()
