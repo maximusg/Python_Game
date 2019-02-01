@@ -29,26 +29,33 @@ class GUI(object):
     def main(self):
         ##CONSTANTS
         FRAMERATE = 60
+
         ##Initialize pygame, set up the screen.
         pygame.init()
         screen = pygame.display.set_mode((1024,786))
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
+        
         ##Background setup
         background = pygame.Surface(screen.get_size())
         background = background.convert()
-        background.fill((0,0,0))
+        background.fill((255,255,255))
+        bg = pygame.image.load('starfield.png')
+        background.blit(bg, (0,0))
+        
         ##Background music setup, load sound bytes
         pygame.mixer.music.load('roboCop3NES.mp3')
         pygame.mixer.music.play(loops=-1)
         explode = load_sound('explosn.wav')
         fire_shot = load_sound('pewpew.wav')
+        
         ##Initialize clock
         clock = pygame.time.Clock()
-        ##Initialize ships
         
+        ##Initialize ships
         playerShip = player.player('spitfire','SweetShip.png',"arrows")
         bad_guy = enemy.enemy('spitfire','enemy.png')
+        
         #Initialize sprite groups
         player_sprites = pygame.sprite.LayeredDirty((playerShip))
         player_bullet_sprites = pygame.sprite.LayeredDirty()
@@ -61,33 +68,17 @@ class GUI(object):
         enemy_bullet_sprites.clear(screen, background)
 
         going=True
-
         while going:
             ##Force FRAMERATE ticks per second
-            clock.tick(FRAMERATE)
+            
 
             ##Keyboard polling this way (as opposed to the pygame.event queue) allows multiple (as in up+left) input
-            addBullet = playerShip.control(FRAMERATE)
+            keys = pygame.key.get_pressed()
+            addBullet = playerShip.control(keys, FRAMERATE)
             if addBullet:
                 fire_shot.play() 
                 bullet = playerShip.fire()
                 player_bullet_sprites.add(bullet)
-
-            # keys = pygame.key.get_pressed()
-            # if keys[pygame.K_UP]:
-            #     playerShip.move(0,-playerShip.speed)
-            # if keys[pygame.K_DOWN]:
-            #     player.move(0,player.speed)
-            # if keys[pygame.K_LEFT]:
-            #     player.move(-player.speed, 0)
-            # if keys[pygame.K_RIGHT]:
-            #     player.move(player.speed, 0)
-            # if keys[pygame.K_SPACE]:
-            #     if bullet_count % (int(FRAMERATE/player.weapon.rof)) == 0:
-            #         fire_shot.play() 
-            #         bullet = player.fire()
-            #         player_bullet_sprites.add(bullet)
-            #     bullet_count += 1
 
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             ##Added debug code to spawn enemy sprites at will. -TODO- remove when finished
@@ -136,40 +127,54 @@ class GUI(object):
             pygame.display.update(player_bullet_rects)
             pygame.display.update(enemy_rects)
             pygame.display.update(enemy_bullet_rects)
+
+            if pygame.time.get_ticks() % 10 == 0:
+                print(clock.get_fps())
+            
+            clock.tick(FRAMERATE)
         
         pygame.quit()
 
     def menu(self):
-        ##CONSTANTS
-        FRAMERATE = 60
-        ##Initialize pygame, set up the screen.
         pygame.init()
         screen = pygame.display.set_mode((1024,786))
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
-        ##Background setup
-        background = pygame.Surface(screen.get_size())
-        background = background.convert()
-        background.fill((250,250,250))
-        #prep the clock
-        clock = pygame.time.Clock()
 
+        theClock = pygame.time.Clock()
 
-        if pygame.font:
-            myfont = pygame.font.Font(None, 30)
-            textsurface = myfont.render('Day 0', 1, (1, 1, 255))
-            textpos = textsurface.get_rect(centerx=background.get_width() / 2)
-            background.blit(textsurface, textpos)
+        background = pygame.image.load('starfield.png')
 
-        going = True
-        while going:
-            clock.tick(FRAMERATE)
+        background_size = background.get_size()
+        background_rect = background.get_rect()
+        screen = pygame.display.set_mode((1024,786))
+        screen.fill((255,255,255))
+        w,h = screen.get_size()
+        x = 0
+        y = 0
 
+        x1 = 0
+        y1 = -h
+
+        running = True
+
+        while running:
+            #screen.blit(background,background_rect)
+            pygame.display.update()
             for event in pygame.event.get():
-                if event.type == QUIT:
-                    going = False
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                    going = False
+                if event.type == pygame.QUIT:
+                    running = False
+            y1 += 5
+            y += 5
+            screen.blit(background,(x,y))
+            screen.blit(background,(x1,y1))
+            if y > h:
+                y = -h
+            if y1 > h:
+                y1 = -h
+            pygame.display.flip()
+            pygame.display.update()
+            theClock.tick(60)
             
 
 
@@ -177,5 +182,5 @@ class GUI(object):
 if __name__=='__main__':
     gui = GUI()
     gui.menu()
-    #main()
+    #gui.main()
 
