@@ -49,11 +49,14 @@ class player(entity2.entity2):
                 self.move(-self.speed, 0)
             if keys[pygame.K_RIGHT]:
                 self.move(self.speed, 0)
-            
+            ##this if/else statement must stay together
             if keys[pygame.K_SPACE]:
                 if self.bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
                     addBullet=True
                 self.bullet_count += 1
+            else:
+                self.bullet_count = 0
+            ##end if/else            
             if keys[pygame.K_1]:
 
                 self.weapon = weapon.Weapon('spitfire')
@@ -64,6 +67,5 @@ class player(entity2.entity2):
             if keys[pygame.K_3]:
                 self.weapon = weapon.Weapon('spitfire3')
 
-            else:
-                self.bullet_count = 0
+
         return addBullet

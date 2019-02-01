@@ -9,7 +9,7 @@ from pygame.locals import *
 from pygame.compat import geterror
 from pathlib import *
 import os
-import hud
+#import hud
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 def load_sound(name):
@@ -116,6 +116,12 @@ def main():
         enemy_bullet_sprites.update()
       
         ##Collision/Out of Bounds detection.
+        for sprite in player_bullet_sprites:
+            if sprite.visible == 0:
+                player_bullet_sprites.remove(sprite)
+        for sprite in enemy_bullet_sprites:
+            if sprite.visible == 0:
+                enemy_bullet_sprites.remove(sprite)
         for sprite in player_sprites:
             collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
             if collision:
@@ -142,7 +148,10 @@ def main():
         pygame.display.update(player_bullet_rects)
         pygame.display.update(enemy_rects)
         pygame.display.update(enemy_bullet_rects)
-
+    
+        
+        if pygame.time.get_ticks() % 60 == 0:
+            print(clock.get_fps())
 
     pygame.quit()
 
