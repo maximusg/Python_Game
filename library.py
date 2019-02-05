@@ -21,7 +21,7 @@ def load_text(filename):
 
 def text_objects(text, font):
     textSurface = font.render(text, True, WHITE)
-    return textSurface, textSurface.get_rect().convert()
+    return textSurface, textSurface.get_rect()
 
 def load_sound(name):
     main_dir = os.path.split(os.path.abspath(__file__))[0]
