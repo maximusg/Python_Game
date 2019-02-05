@@ -106,16 +106,6 @@ class Scoreboard(object):
             i += 1
             currEntry = currEntry.nextEntry
         return result
-        
-if __name__ == '__main__':
-    #topscores = Scoreboard()
-    #for i in range(21):
-    #    score = Scoreboard.Entry('CRN', 10000)
-    #    topscores.add(score)
-    #print(topscores)
-    #topscores.writeToFile()
-    topscore2 = Scoreboard()
-    topscore2.readFromFile('highscores.asset')
-    print(topscore2)
+
 
     
