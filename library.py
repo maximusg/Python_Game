@@ -20,8 +20,8 @@ def load_text(filename):
         return f.readlines()
 
 def text_objects(text, font):
-    textSurface = font.render(text, True, (255,255,255))
-    return textSurface, textSurface.get_rect()
+    textSurface = font.render(text, True, WHITE)
+    return textSurface, textSurface.get_rect().convert()
 
 def load_sound(name):
     main_dir = os.path.split(os.path.abspath(__file__))[0]
@@ -42,3 +42,4 @@ def do_sound(percentage):
     if random.random() < percentage:
         return True
     return False
+
