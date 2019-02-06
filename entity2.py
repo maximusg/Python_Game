@@ -27,7 +27,7 @@ class entity2(pygame.sprite.DirtySprite):
     def load_image(self, name, colorkey=None):
         fullname = os.path.join(main_dir, name)
         try:
-            image = pygame.image.load(fullname)
+            image = pygame.image.load(fullname).convert()
         except pygame.error:
             print ('Cannot load image:', fullname)
             raise SystemExit(str(geterror()))

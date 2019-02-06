@@ -1,11 +1,12 @@
 import entity2
 import pygame.mask
+from library import *
 
 class bullet(entity2.entity2):
 	def __init__(self, origin_x, origin_y, speed, path_to_img):
 		super().__init__()
 		self.speed = speed
-		self.image, self.rect = self.load_image(path_to_img)
+		self.image, self.rect = load_image(path_to_img)
 		self.image = self.image.convert()
 		self.rect.centerx, self.rect.top = origin_x, origin_y
 		self.off_screen = False

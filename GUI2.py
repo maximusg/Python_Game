@@ -71,8 +71,8 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        background.fill((255,255,255))
-        bg = pygame.image.load('starfield.png')
+        bg = pygame.image.load('starfield.png').convert()
+        background.fill(BLACK)
         background.blit(bg, (0,0))
 
         #Background sound setup
@@ -116,9 +116,9 @@ class GUI(object):
                 #    if len(enemy_sprites) == 0:
                 #        enemy_sprites.add(bad_guy)
 
-            font = pygame.font.Font('OpenSans-Regular.ttf', 25)
-            text = font.render("Score: "+str(playerShip.point_total), True, WHITE)
-            self.screen.blit(text,(0,0)) ##TODO - Clean off old score prior to blitting new one. How?
+            text, score_surf = refresh_score(playerShip.point_total)
+            self.screen.blit(score_surf, (0,0))
+            self.screen.blit(text,(0,0)) 
 
             ##Helper to call update() on each sprite in the group.    
             player_sprites.update()
@@ -139,9 +139,7 @@ class GUI(object):
                 if collision:
                     self.explode.play()
                     collision.visible = 0
-                    print(sprite.point_value)
-                    playerShip.point_total += sprite.point_value
-                    print(playerShip.point_total)
+                    playerShip.point_total += sprite.point_value                    
                     player_bullet_sprites.remove(collision)
                     sprite.visible = 0
                 if sprite.visible == 0:
@@ -203,5 +201,5 @@ if __name__=='__main__':
     gui = GUI()
     #gui.game_intro()
     #gui.menu()
-    #gui.main()
+    gui.main()
 

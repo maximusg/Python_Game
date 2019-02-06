@@ -2,6 +2,7 @@ import entity2
 import pygame
 import bullet
 import weapon
+from library import *
 
 
 
@@ -11,7 +12,7 @@ class player(entity2.entity2):
         self.weapon = weapon.Weapon(init_wep)
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
-        self.image, self.rect = self.load_image(imgFile, -1)
+        self.image, self.rect = load_image(imgFile, -1)
         self.area = self.screen.get_rect()
         self.rect.topleft = 500,600
         self.speed = 10
