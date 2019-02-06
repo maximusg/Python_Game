@@ -118,7 +118,7 @@ class GUI(object):
 
             text, score_surf = refresh_score(playerShip.point_total)
             self.screen.blit(score_surf, (0,0))
-            self.screen.blit(text,(0,0)) 
+            self.screen.blit(text,(0,0))
 
             ##Helper to call update() on each sprite in the group.    
             player_sprites.update()
@@ -150,7 +150,10 @@ class GUI(object):
             enemy_rects = enemy_sprites.draw(self.screen)
             enemy_bullet_rects = enemy_bullet_sprites.draw(self.screen)
 
-            pygame.display.update()
+            pygame.display.update(player_rects)
+            pygame.display.update(player_bullet_rects)
+            pygame.display.update(enemy_rects)
+            pygame.display.update(enemy_bullet_rects)
             
             ##if pygame.time.get_ticks() % 10 == 0:
             ##    print(self.clock.get_fps())
