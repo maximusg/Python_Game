@@ -121,13 +121,12 @@ class GUI(object):
             #enemy_bullet_sprites.clear(self.screen, background)
 
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
-            ##Added debug code to spawn enemy sprites at will. -TODO- remove when finished
             for event in pygame.event.get():
                 if event.type == QUIT:
                     going = False
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     going = False
-                elif event.type == KEYDOWN and event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+                elif event.type == KEYDOWN and event.key == K_F1 and DEBUG: ##DEBUG CODE. DO NOT FORGET TO REMOVE
                     bad_guy = enemy.enemy('spitfire','enemy.png')
                     if len(enemy_sprites) == 0:
                         enemy_sprites.add(bad_guy)
