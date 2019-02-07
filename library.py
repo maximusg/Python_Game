@@ -7,14 +7,18 @@ from pygame.compat import geterror
 
 #CONSTANTS
 FRAMERATE = 60
-SCREEN_HEIGHT = 786
-SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 1080
+SCREEN_WIDTH = 1920
+COLUMN_WIDTH = 200
+
+DEBUG = True ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
+ORIGIN = (0,0)
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
@@ -41,7 +45,12 @@ def load_sound(name):
         raise SystemExit(str(geterror()))
     return sound
 
-def do_sound(percentage):
+def load_background_music(filename):
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load(filename)
+    pygame.mixer.music.play(loops=-1)
+
+def random_sound(percentage):
     if random.random() < percentage:
         return True
     return False
@@ -67,3 +76,9 @@ def refresh_score(points):
     score_surf.fill(BLACK)
     return text, score_surf
 
+def draw_text(to_print):
+    font = pygame.font.Font('OpenSans-Regular.ttf', 25)
+    text = font.render(str(to_print), True, WHITE)
+    score_surf = pygame.Surface(text.get_size())
+    score_surf.fill(BLACK)
+    return text, score_surf

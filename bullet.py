@@ -18,7 +18,7 @@ class bullet(entity2.entity2):
 		self.dirty = 1
 
 	def update(self):
-		if self.rect.bottom > 0:
+		if self.rect.bottom > 0 and self.rect.right < SCREEN_WIDTH-COLUMN_WIDTH and self.rect.left > COLUMN_WIDTH:
 			self.move()
 		else:
 			self.visible = 0

@@ -13,7 +13,9 @@ class player(entity2.entity2):
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
         self.image, self.rect = load_image(imgFile, -1)
-        self.area = self.screen.get_rect()
+
+        self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
+
         self.rect.topleft = 500,600
         self.speed = 10
         self.bullet_count = 0
@@ -38,7 +40,6 @@ class player(entity2.entity2):
         return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
     
     def control(self, keys, FRAMERATE):
-        #keys = pygame.key.get_pressed()
         addBullet=False
         if self.control_scheme=="arrows":
             if keys[pygame.K_UP]:

@@ -3,19 +3,21 @@ import weapon
 import player
 import enemy
 # import launcher
-import control_scheme
+#import control_scheme
 import pygame
 from pygame.locals import *
 from pygame.compat import geterror
-from pathlib import *
-import os
+#from pathlib import *
+#import os
 from library import *
+import random
 
 class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
 
@@ -27,8 +29,15 @@ class GUI(object):
         self.fire_shot = load_sound('pewpew.wav')
 
     def game_intro(self):
-        background = pygame.image.load('starfield.png')
-        self.screen.blit(background, (0,0))
+        ##Background setup
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        bg, bg_rect = load_image('starfield.png')
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
+
+        scrollText = pygame.font.Font('OpenSans-Bold.ttf',25)
+        text = load_text('openingscroll.asset')
 
         going = True
         count = 0
@@ -43,23 +52,23 @@ class GUI(object):
                     going = False ## TODO - needs different handling than ESCAPE or QUIT
 
             #BECAUSE BACKGROUND SOUNDS ARE FUN
-            if do_sound(0.05):
+            if random.random() < 0.05:
                 self.fire_shot.play()
-            if do_sound(0.01):
+            if random.random() < 0.01:
                 self.explode.play()
+
+            self.screen.blit(background, ORIGIN)
 
             x = SCREEN_WIDTH/2
             y = SCREEN_HEIGHT - count
 
-            self.screen.blit(background, (0,0))
-            scrollText = pygame.font.Font('OpenSans-Bold.ttf',25)
-            text = load_text('openingscroll.asset')
             for line in text:
                 line = line.strip('\n')
                 text_surf, text_rect = text_objects(line, scrollText)
                 text_rect.center = (x,y)
                 y += 50
                 self.screen.blit(text_surf, text_rect)
+
             count += 1
             pygame.display.update()
 
@@ -69,19 +78,28 @@ class GUI(object):
 
     def main(self):
         ##Background setup
-        background = pygame.Surface(self.screen.get_size())
-        background = background.convert()
-        bg = pygame.image.load('starfield.png').convert()
-        background.fill(BLACK)
-        background.blit(bg, (0,0))
+        #background = pygame.Surface(self.screen.get_size())
+        #background = background.convert()
+        bg, bg_rect = load_image('starfield.png')
+        bg_size = bg.get_size()
+        bg_w, bg_h = bg_size
+        bg_x = 0
+        bg_y = 0
+        bg_x1 = 0
+        bg_y1 = -bg_h
+        #background.fill(BLACK)
+        #background.blit(bg, ORIGIN)
+        
+        column = pygame.Surface((COLUMN_WIDTH, SCREEN_HEIGHT))
+        column.fill(BLACK)
 
         #Background sound setup
-        pygame.mixer.music.load('roboCop3NES.mp3')
-        pygame.mixer.music.play(loops=-1)
+        #load_background_music('roboCop3NES.ogg')
         
         ##Initialize ships
         playerShip = player.player('spitfire','SweetShip.png',"arrows")
         bad_guy = enemy.enemy('spitfire','enemy.png')
+        #bad_guy.health = 5 ##Verify boss mechanics
         
         #Initialize sprite groups
         player_sprites = pygame.sprite.LayeredDirty((playerShip))
@@ -89,20 +107,18 @@ class GUI(object):
         enemy_sprites = pygame.sprite.LayeredDirty((bad_guy))
         enemy_bullet_sprites = pygame.sprite.LayeredDirty()
 
-        player_sprites.clear(self.screen, background)
-        enemy_sprites.clear(self.screen, background)
-        player_bullet_sprites.clear(self.screen, background)
-        enemy_bullet_sprites.clear(self.screen, background)
+        #player_sprites.clear(self.screen, background)
+        #enemy_sprites.clear(self.screen, background)
+        #player_bullet_sprites.clear(self.screen, background)
+        #enemy_bullet_sprites.clear(self.screen, background)
 
         going=True
         while going:
-            ##Keyboard polling this way (as opposed to the pygame.event queue) allows multiple (as in up+left) input
-            keys = pygame.key.get_pressed()
-            addBullet = playerShip.control(keys, FRAMERATE)
-            if addBullet:
-                self.fire_shot.play() 
-                bullet = playerShip.fire()
-                player_bullet_sprites.add(bullet)
+            
+            #player_sprites.clear(self.screen, background)
+            #enemy_sprites.clear(self.screen, background)
+            #player_bullet_sprites.clear(self.screen, background)
+            #enemy_bullet_sprites.clear(self.screen, background)
 
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             ##Added debug code to spawn enemy sprites at will. -TODO- remove when finished
@@ -111,14 +127,18 @@ class GUI(object):
                     going = False
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     going = False
-                #elif event.type == KEYDOWN and event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                #    bad_guy = enemy()
-                #    if len(enemy_sprites) == 0:
-                #        enemy_sprites.add(bad_guy)
+                elif event.type == KEYDOWN and event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+                    bad_guy = enemy.enemy('spitfire','enemy.png')
+                    if len(enemy_sprites) == 0:
+                        enemy_sprites.add(bad_guy)
 
-            text, score_surf = refresh_score(playerShip.point_total)
-            self.screen.blit(score_surf, (0,0))
-            self.screen.blit(text,(0,0))
+            ##Keyboard polling
+            keys = pygame.key.get_pressed()
+            addBullet = playerShip.control(keys, FRAMERATE)
+            if addBullet:
+                self.fire_shot.play() 
+                bullet = playerShip.fire()
+                player_bullet_sprites.add(bullet)
 
             ##Helper to call update() on each sprite in the group.    
             player_sprites.update()
@@ -137,41 +157,61 @@ class GUI(object):
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
-                    self.explode.play()
+                    sprite.health -= 1
                     collision.visible = 0
-                    playerShip.point_total += sprite.point_value                    
                     player_bullet_sprites.remove(collision)
-                    sprite.visible = 0
+                    if sprite.health == 0:
+                        self.explode.play()                        
+                        playerShip.point_total += sprite.point_value                    
+                        sprite.visible = 0
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)         
-
-            player_rects = player_sprites.draw(self.screen)
-            player_bullet_rects = player_bullet_sprites.draw(self.screen)
-            enemy_rects = enemy_sprites.draw(self.screen)
-            enemy_bullet_rects = enemy_bullet_sprites.draw(self.screen)
-
-            pygame.display.update(player_rects)
-            pygame.display.update(player_bullet_rects)
-            pygame.display.update(enemy_rects)
-            pygame.display.update(enemy_bullet_rects)
             
-            ##if pygame.time.get_ticks() % 10 == 0:
-            ##    print(self.clock.get_fps())
+            ##Start drawing every to the screen
+            rect_list = []
+
+            bg_y1 += 5
+            bg_y += 5
+            self.screen.blit(bg,(bg_x,bg_y))
+            self.screen.blit(bg,(bg_x1,bg_y1))
+            if bg_y > bg_h:
+                bg_y = -bg_h
+            if bg_y1 > bg_h:
+                bg_y1 = -bg_h
+
+            #self.screen.blit(bg, bg_rect)
+            c1 = self.screen.blit(column, ORIGIN)
+            c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
+
+            text, score_surf = refresh_score(playerShip.point_total)
+            score_rect = self.screen.blit(score_surf, ORIGIN)
+            self.screen.blit(text,ORIGIN)
+
+            if DEBUG:
+                debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)))
+                debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
+                self.screen.blit(debug_text, debug_rect)
+            
+            for sprite_list in (player_sprites, player_bullet_sprites, enemy_sprites, enemy_bullet_sprites):
+                temp_rects = sprite_list.draw(self.screen)
+                rect_list.extend(temp_rects)
+            rect_list.extend((c1, c2, score_rect, bg_rect))
+            
+            if DEBUG:
+                rect_list.append(debug_rect)
+            
+            pygame.display.update(rect_list)
             
             self.clock.tick(FRAMERATE)
         
         pygame.quit()
 
     def menu(self):
-        background = pygame.image.load('starfield.png')
-
-        background_size = background.get_size()
-        screen.convert()
-        screen.fill((255,255,255))
-        w, h = background_size
+        bg, bg_rect = load_image('starfield.png')
+        bg_size = bg.get_size()
+        w, h = bg_size
         x = 0
         y = 0
-
         x1 = 0
         y1 = -h
 
@@ -185,20 +225,18 @@ class GUI(object):
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     going = False
             
-            y1 += 5
-            y += 5
-            screen.blit(background,(x,y))
-            screen.blit(background,(x1,y1))
+            y1 += 1
+            y += 1
+            self.screen.blit(bg,(x,y))
+            self.screen.blit(bg,(x1,y1))
             if y > h:
                 y = -h
             if y1 > h:
                 y1 = -h
-            pygame.display.update()
-            self.clock.tick(60)
-            
-            if pygame.time.get_ticks() % 10 == 0:
-                print(self.clock.get_fps())
+            pygame.display.update(bg_rect)
 
+            self.clock.tick(FRAMERATE)
+            
 
 if __name__=='__main__':
     gui = GUI()
