@@ -78,8 +78,8 @@ class GUI(object):
 
     def main(self):
         ##Background setup
-        #background = pygame.Surface(self.screen.get_size())
-        #background = background.convert()
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
         bg, bg_rect = load_image('starfield.png')
         bg_size = bg.get_size()
         bg_w, bg_h = bg_size
@@ -87,8 +87,8 @@ class GUI(object):
         bg_y = 0
         bg_x1 = 0
         bg_y1 = -bg_h
-        #background.fill(BLACK)
-        #background.blit(bg, ORIGIN)
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
         
         column = pygame.Surface((COLUMN_WIDTH, SCREEN_HEIGHT))
         column.fill(BLACK)
@@ -107,18 +107,8 @@ class GUI(object):
         enemy_sprites = pygame.sprite.LayeredDirty((bad_guy))
         enemy_bullet_sprites = pygame.sprite.LayeredDirty()
 
-        #player_sprites.clear(self.screen, background)
-        #enemy_sprites.clear(self.screen, background)
-        #player_bullet_sprites.clear(self.screen, background)
-        #enemy_bullet_sprites.clear(self.screen, background)
-
         going=True
         while going:
-            
-            #player_sprites.clear(self.screen, background)
-            #enemy_sprites.clear(self.screen, background)
-            #player_bullet_sprites.clear(self.screen, background)
-            #enemy_bullet_sprites.clear(self.screen, background)
 
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             for event in pygame.event.get():
@@ -182,26 +172,25 @@ class GUI(object):
             c1 = self.screen.blit(column, ORIGIN)
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
-            text, score_surf = refresh_score(playerShip.point_total)
+            text, score_surf = draw_text("Score: "+ str(playerShip.point_total), WHITE, BLACK)
             score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
             if DEBUG:
-                debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)))
+                debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE, BLACK)
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
-            
+                rect_list.append(debug_rect)
+
             for sprite_list in (player_sprites, player_bullet_sprites, enemy_sprites, enemy_bullet_sprites):
                 temp_rects = sprite_list.draw(self.screen)
                 rect_list.extend(temp_rects)
             rect_list.extend((c1, c2, score_rect, bg_rect))
             
-            if DEBUG:
-                rect_list.append(debug_rect)
-            
-            pygame.display.update(rect_list)
-            
-            self.clock.tick(FRAMERATE)
+            #pygame.display.update(rect_list)
+            pygame.display.flip()
+
+            self.clock.tick_busy_loop(FRAMERATE)
         
         pygame.quit()
 
