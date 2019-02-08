@@ -108,8 +108,11 @@ class GUI(object):
         enemy_bullet_sprites = pygame.sprite.LayeredDirty()
 
         going=True
+        fs_toggle = False
+        self.clock.tick() ##need to dump this particular value of tick() to give me accurate time.
+        time_since_start = 0
+        ##Clock time setup
         while going:
-
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -117,15 +120,25 @@ class GUI(object):
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     going = False
                 elif event.type == KEYDOWN and event.key == K_F1 and DEBUG: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                    for i in range(200):
-                        bad_guy = enemy.enemy('spitfire','enemy.png')
-                        enemy_sprites.add(bad_guy)
+                    #for i in range(200):
+                    bad_guy = enemy.enemy('spitfire','enemy.png')
+                    enemy_sprites.add(bad_guy)
                 elif event.type == KEYDOWN and event.key == K_F12 and DEBUG:
-                    FS_TOGGLE = not FS_TOGGLE
-                    if FS_TOGGLE:
+                    fs_toggle = not fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                    if fs_toggle:
                         pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
                     else:
                         pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+                elif event.type == KEYDOWN and event.key == K_PAUSE and DEBUG:
+                    paused = True
+                    while paused:
+                        paused_text, paused_surf = draw_text('***PAUSED***', BLACK, WHITE)
+                        paused_rect = self.screen.blit(paused_text, (SCREEN_WIDTH//2,SCREEN_HEIGHT//2)) ##THIS IS NOT ACTUALLY CENTERED. TODO FIX ME
+                        for event in pygame.event.get():
+                            if event.type == KEYDOWN and event.key == K_PAUSE:
+                                paused = False
+                        pygame.display.update(paused_rect)
+                        self.clock.tick(10)
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
@@ -196,8 +209,8 @@ class GUI(object):
             #pygame.display.update(rect_list)
             pygame.display.flip()
 
-            self.clock.tick_busy_loop(FRAMERATE)
-        
+            time_since_start += self.clock.tick_busy_loop(FRAMERATE)
+
         pygame.quit()
 
     def menu(self):
@@ -230,6 +243,7 @@ class GUI(object):
             pygame.display.update(bg_rect)
 
             self.clock.tick(FRAMERATE)
+            
             
 
 if __name__=='__main__':
