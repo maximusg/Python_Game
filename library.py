@@ -7,9 +7,9 @@ from pygame.compat import geterror
 
 #CONSTANTS
 FRAMERATE = 60
-SCREEN_HEIGHT = 1080
-SCREEN_WIDTH = 1920
-COLUMN_WIDTH = 200
+SCREEN_HEIGHT = 900
+SCREEN_WIDTH = 1440
+COLUMN_WIDTH = SCREEN_WIDTH//10
 
 DEBUG = True ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
 
@@ -69,16 +69,9 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
     return image, image.get_rect()
 
-def refresh_score(points):
-    font = pygame.font.Font('OpenSans-Regular.ttf', 25)
-    text = font.render("Score: "+str(points), True, WHITE)
-    score_surf = pygame.Surface(text.get_size())
-    score_surf.fill(BLACK)
-    return text, score_surf
-
-def draw_text(to_print):
+def draw_text(to_print, text_color, bg_color):
     font = pygame.font.Font('OpenSans-Regular.ttf', 25)
     text = font.render(str(to_print), True, WHITE)
-    score_surf = pygame.Surface(text.get_size())
-    score_surf.fill(BLACK)
-    return text, score_surf
+    text_surf = pygame.Surface(text.get_size())
+    text_surf.fill(BLACK)
+    return text, text_surf
