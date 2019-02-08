@@ -117,8 +117,8 @@ class GUI(object):
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     going = False
                 elif event.type == KEYDOWN and event.key == K_F1 and DEBUG: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                    bad_guy = enemy.enemy('spitfire','enemy.png')
-                    if len(enemy_sprites) == 0:
+                    for i in range(200):
+                        bad_guy = enemy.enemy('spitfire','enemy.png')
                         enemy_sprites.add(bad_guy)
 
             ##Keyboard polling
