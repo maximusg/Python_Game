@@ -7,6 +7,7 @@ from pygame.compat import geterror
 
 #CONSTANTS
 FRAMERATE = 60
+FS_TOGGLE = False
 SCREEN_HEIGHT = 900
 SCREEN_WIDTH = 1440
 COLUMN_WIDTH = SCREEN_WIDTH//10

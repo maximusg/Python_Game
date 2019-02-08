@@ -120,6 +120,12 @@ class GUI(object):
                     bad_guy = enemy.enemy('spitfire','enemy.png')
                     if len(enemy_sprites) == 0:
                         enemy_sprites.add(bad_guy)
+                elif event.type == KEYDOWN and event.key == K_F12 and DEBUG:
+                    FS_TOGGLE = not FS_TOGGLE
+                    if FS_TOGGLE:
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+                    else:
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
