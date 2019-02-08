@@ -34,7 +34,7 @@ data = {
                 "weapons":["spitfire","spitfire","spitefire"],
                 "images":["enemy.png","enemy.png", "enemy.png"],
                 "behaviors": ["dive","spin","dive"],
-                "health": 2, #enemyhealth= enemyClassHealth*1
+                "health": 2, #enemyhealth= enemyClassHealth*2
                 "centers":[(0,0),(300,0),(800,0)]
                 },
             "enemyBullets":{# note, there are zero bullets thus other properties uncessary
