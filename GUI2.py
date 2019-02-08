@@ -244,7 +244,6 @@ class GUI(object):
 
             self.clock.tick(FRAMERATE)
             
-            
 
 if __name__=='__main__':
     gui = GUI()
