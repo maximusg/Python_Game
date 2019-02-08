@@ -9,13 +9,20 @@ MASTER WEAPONS DICTIONARY
 
 Tuple Index:         |       0       |       1          |       2          |       3          |
 Description:         | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | BULLET FUNCTION  |
-Units:               | 0-100         | bullets per sec  | pathlib          | n/a              |
+Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a              |
+                     |               |                  |                  |
+-----------------------------------------------------------------------------------------------
+    WEAPON NAME      | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | BULLET FUNCTION  |
+                     |               |                  |                  |
+   spitfire          |       10      |       4          |       n/a        |       n/a        |
+   blue_lazer        |       10      |       4          |       n/a        |       n/a        |
 
 '''
 
 import os
 from pathlib import Path
-
+import player
+import bullet
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
@@ -29,14 +36,43 @@ weapon_images_path = cwd.joinpath('resources', 'weapon_images')
 #    if x.is_file():
 #        print(x)
 #each weapon name will be mapped to its function, an image, and other properties
-def spitfire():
-    print('spitfire here')
+
+def spitfire(origin_x, origin_y):
+    #print('spitfire here')
+    #print(origin_x, origin_y)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+
+    return bullet1
+
+def spitfire3(origin_x, origin_y):
+    #print('spitfire here')
+    #print(origin_x, origin_y)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 2)
+    bullet5 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -2)
+
+    return bullet1, bullet2, bullet3, bullet4, bullet5
+    #self.weapon.weapon_func()
+    #return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
+    #player_bullet_sprites.add(bullet1)
+
+def spitfire2(origin_x, origin_y):
+    #print('spitfire here')
+    #print(origin_x, origin_y)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    return bullet1, bullet2, bullet3
 
 def blue_lazer():
     print('blue lazer here')
 
 master_weapons_dict = {
-    'spitfire': (10, 4, weapon_images_path.joinpath('spitfire.png'), spitfire),
+    'spitfire': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
+    'spitfire2': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire2),
+    'spitfire3': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire3),
     'blue_lazer': (10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer)
 }
 
@@ -44,6 +80,9 @@ master_weapons_dict = {
 class Weapon(object):
 
     def __init__(self, weaponName):
+
+        if weaponName not in master_weapons_dict:
+            raise Exception('the weapon must be in the master weapons dictionary.')
         self.name = weaponName
         self.weapon_damage = master_weapons_dict.get(weaponName)[0]
         self.rof = master_weapons_dict.get(weaponName)[1] # rof is the rate of fire in bullets per second
@@ -57,8 +96,14 @@ class Weapon(object):
         #os.startfile(self.weapon_image)
 
 
-testWeapon = Weapon('spitfire')
-testWeapon2 = Weapon('blue_lazer')
-#os.startfile(testWeapon2.weapon_image)
-#testWeapon.weapon_func()
+
+if __name__=="__main__":
+    def test():
+
+        testWeapon = Weapon('spitfire')
+        testWeapon2 = Weapon('blue_lazer')
+        #os.startfile(testWeapon2.weapon_image)
+        testWeapon.weapon_func()
+    test()
+
 

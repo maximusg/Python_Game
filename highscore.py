@@ -1,89 +1,111 @@
-#!/bin/python
-
-import pathlib
-
-def sanitizeName(value):
-    if len(value) > 60:
-        return value[:60]
-    return value
-
-def checkNumerical(value):
-    if value == None or not isinstance(value, int):
-        raise RuntimeError(value + 'is not a valid input.')
-    return value
-
-class scoreboard(object):
-
-    class score_entry(object):
+class Scoreboard(object):
+    class Entry(object):
         def __init__(self, name, score):
-            self.score = score
             self.name = name
+            self.score = score
             self.nextEntry = None
-            self.prevEntry = None
         
-        @property
-        def score(self):
-            return self.__score
-
         @property
         def name(self):
             return self.__name
 
         @property
+        def score(self):
+            return self.__score
+
+        @property
         def nextEntry(self):
             return self.__nextEntry
 
-        @score.setter
-        def score(self, value):
-            self.__score = checkNumerical(value)
-        
         @name.setter
-        def name(self, value):
-            self.__name = sanitizeInput(value)
+        def name(self, nameIn):
+            if not isinstance(nameIn, str):
+                raise RuntimeError(nameIn + 'is not a valid name for score entry')
+            self.__name = nameIn
         
-        @nextEntry.setter
-        def nextEntry(self, value):
-            if not None or not isinstance(value, self.__class__):
-                raise RuntimeErorr(value + 'is not a valid scoreboard entry')
-            self.__nextEntry = value
+        @score.setter
+        def score(self, scoreIn):
+            if not isinstance(scoreIn, int):
+                raise RuntimeError(scoreIn + 'is not a valid score for score entry')
+            self.__score = scoreIn
 
+        @nextEntry.setter
+        def nextEntry(self, entryIn):
+            if not (isinstance(entryIn, self.__class__) or entryIn == None):
+                raise RuntimeError(entryIn + 'is not a valid assignment for nextEntry')
+            self.__nextEntry = entryIn
+
+        def __str__(self):
+            return self.name + '  |  ' + str(self.score)
+        
     def __init__(self):
         self.head = None
         self.tail = None
-        pass
-    
-    def add(self, value):
-        if not isinstance(value, self.score_entry):
-            raise RuntimeError(value + 'is not a valid scoreboard entry')
-        if not self.head:
-            self.head = value
-            self.tail = value
+        self.__length = 0
+
+    def add(self, entry):
+        if self.head == None:
+            self.head = entry
+            self.tail = entry
+
+        if self.head.score < entry.score:
+            entry.nextEntry = self.head
+            self.head = entry
         else:
-            while currEntry.score > value.score and currEntry.nextEntry != None:
+            currEntry = self.head
+            while currEntry.nextEntry != None and currEntry.nextEntry.score >= entry.score:
                 currEntry = currEntry.nextEntry
-            value.prevEntry = currEntry.prevEntry
-            value.nextEntry = currEntry
-            value.prevEntry.nextEntry = value
-            currEntry.prevEntry = value
+            entry.nextEntry = currEntry.nextEntry
+            currEntry.nextEntry = entry
+        self.__trim()
 
-    def getOnList(self, value):
-        if value <= self.tail.value:
-            return False
-        return True
-
-    def reset(self):
+    def resetList(self):
         self.head = None
         self.tail = None
+        self.__length = 0
+
+    def belongsOnList(self, score):
+        return score > self.tail.score
+
+    def writeToFile(self):
+        fileName = open('highscores.asset', 'w')
+        currEntry = self.head
+        while currEntry.nextEntry:
+            if currEntry.nextEntry.nextEntry != None:
+                fileName.write(currEntry.name+'.'+str(currEntry.score)+',')
+            else:
+                fileName.write(currEntry.name+'.'+str(currEntry.score))
+            currEntry = currEntry.nextEntry
+        fileName.close()
+
+    def readFromFile(self, fileName):
+        with open(fileName) as f:
+            read_data = f.read().split(',')
+        for entry in read_data:
+            temp = entry.split('.')
+            self.add(self.Entry(temp[0],int(temp[1])))
+
+
+    def __trim(self):
+        currEntry = self.head
+        i = 0
+        while currEntry.nextEntry != None and i < 20:
+            currEntry = currEntry.nextEntry
+            i += 1
+        self.tail = currEntry
+        self.tail.nextEntry = None 
 
     def __str__(self):
+        result = '***HALL OF FAME!***\n'
         currEntry = self.head
-        result = ''
-        result += '***HALL OF FAME!!!***\n'
-        if currEntry != None:
-            while currEntry.nextEntry:
-                result += currEntry.name + ',' + str(currEntry.score)
+        i = 1
+        result += str(i) + ') ' + str(currEntry) + '\n'
+        i += 1
+        while currEntry.nextEntry:
+            result += str(i) + ') ' + str(currEntry) + '\n'
+            i += 1
+            currEntry = currEntry.nextEntry
         return result
-        
-if __name__ == '__main__':
-    high_score_list = scoreboard()
-    print(high_score_list)
+
+
+    
