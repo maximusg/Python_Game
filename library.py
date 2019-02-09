@@ -23,6 +23,7 @@ RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
 ORIGIN = (0,0)
+SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
@@ -78,4 +79,10 @@ def draw_text(to_print, text_color, bg_color):
     text = font.render(str(to_print), True, WHITE)
     text_surf = pygame.Surface(text.get_size())
     text_surf.fill(BLACK)
+
     return text, text_surf
+
+def draw_boss_health(sprite):
+    bar = pygame.Surface((SCREEN_WIDTH//2-2*COLUMN_WIDTH, 50))
+    bar_rect = bar.fill(BLACK)
+     

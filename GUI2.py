@@ -2,13 +2,8 @@
 import weapon
 import player
 import enemy
-# import launcher
-#import control_scheme
 import pygame
-from pygame.locals import *
 from pygame.compat import geterror
-#from pathlib import *
-#import os
 from library import *
 import random
 
@@ -16,7 +11,8 @@ class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.NOFRAME)
+        self.screen_rect = self.screen.get_rect()
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
@@ -126,19 +122,11 @@ class GUI(object):
                 elif event.type == KEYDOWN and event.key == K_F12 and DEBUG:
                     fs_toggle = not fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                     if fs_toggle:
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.FULLSCREEN)
                     else:
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-                elif event.type == KEYDOWN and event.key == K_PAUSE and DEBUG:
-                    paused = True
-                    while paused:
-                        paused_text, paused_surf = draw_text('***PAUSED***', BLACK, WHITE)
-                        paused_rect = self.screen.blit(paused_text, (SCREEN_WIDTH//2,SCREEN_HEIGHT//2)) ##THIS IS NOT ACTUALLY CENTERED. TODO FIX ME
-                        for event in pygame.event.get():
-                            if event.type == KEYDOWN and event.key == K_PAUSE:
-                                paused = False
-                        pygame.display.update(paused_rect)
-                        self.clock.tick(10)
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+                elif event.type == KEYDOWN and event.key == K_PAUSE:
+                    self.pause_screen()
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
@@ -175,9 +163,6 @@ class GUI(object):
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)         
             
-            ##Start drawing every to the screen
-            rect_list = []
-
             bg_y1 += 5
             bg_y += 5
             self.screen.blit(bg,(bg_x,bg_y))
@@ -199,19 +184,31 @@ class GUI(object):
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE, BLACK)
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
-                rect_list.append(debug_rect)
 
             for sprite_list in (player_sprites, player_bullet_sprites, enemy_sprites, enemy_bullet_sprites):
                 temp_rects = sprite_list.draw(self.screen)
-                rect_list.extend(temp_rects)
-            rect_list.extend((c1, c2, score_rect, bg_rect))
-            
-            #pygame.display.update(rect_list)
+
             pygame.display.flip()
 
-            time_since_start += self.clock.tick_busy_loop(FRAMERATE)
+            time_since_start += self.clock.tick(FRAMERATE)
 
-        pygame.quit()
+ 
+
+    def pause_screen(self):
+        paused = True
+        while paused:
+            paused_text, paused_surf = draw_text('***PAUSED***', BLACK, WHITE)
+            paused_rect = paused_text.get_rect()
+            paused_rect.center = SCREEN_CENTER 
+            self.screen.blit(paused_text, paused_rect)
+            for event in pygame.event.get():
+                if event.type == KEYDOWN and event.key == K_PAUSE or event.key == K_ESCAPE:
+                    paused = False
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+            pygame.display.update(paused_rect)
+            self.clock.tick(10)
 
     def menu(self):
         bg, bg_rect = load_image('starfield.png')
@@ -225,13 +222,13 @@ class GUI(object):
         going = True
 
         while going:
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     going = False
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     going = False
-            
+                elif event.type == KEYDOWN and event.key == K_SPACE:
+                    gui.main()
             y1 += 1
             y += 1
             self.screen.blit(bg,(x,y))
@@ -240,14 +237,30 @@ class GUI(object):
                 y = -h
             if y1 > h:
                 y1 = -h
-            pygame.display.update(bg_rect)
 
-            self.clock.tick(FRAMERATE)
+            text1, text1_surf = draw_text('PRESS SPACE TO START!', BLACK, WHITE)
+            text_rect1 = text1.get_rect()
+            text_rect1.center = SCREEN_CENTER
+            
+            text2, text2_surf = draw_text('PRESS ESC TO EXIT!', BLACK, WHITE)
+            text_rect2 = text2.get_rect()
+            text_rect2.centerx, text_rect2.top = text_rect1.centerx, text_rect1.bottom 
+
+            self.screen.blit(text1, text_rect1)
+            self.screen.blit(text2, text_rect2)
+            
+            pygame.display.update()
+
+            self.clock.tick(FRAMERATE//6)
+        
+        pygame.quit()
             
 
 if __name__=='__main__':
+
     gui = GUI()
-    #gui.game_intro()
-    #gui.menu()
-    gui.main()
+    gui.game_intro()
+    gui.menu()
+    
+
 
