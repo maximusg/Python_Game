@@ -7,6 +7,7 @@ from pygame.locals import *
 from pygame.compat import geterror
 from library import *
 import random
+import highscore
 
 class GUI(object):
     def __init__(self):
@@ -26,6 +27,52 @@ class GUI(object):
         self.fire_spitfire = load_sound('spitfire.ogg')
         self.fire_laser = load_sound('laser.ogg')
 
+    def high_scores(self):
+        #get the scoreboard out from storage
+        high_scores = highscore.Scoreboard()
+        high_scores.readFromFile('highscores.asset')
+        ##Background setup
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        bg, bg_rect = load_image('starfield.png')
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
+
+        hs_list = str(high_scores).split(sep='\n')
+        print(hs_list)
+
+
+        going = True
+        count = 0
+
+        while going:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    going = False ## TODO - needs different handling than SPACE 
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                        going = False ## TODO - needs different handling than SPACE
+
+
+            self.screen.blit(background, ORIGIN)
+
+            x = SCREEN_WIDTH/2
+            y = SCREEN_HEIGHT - count
+
+            for line in hs_list:
+                text, text_surf = draw_text(line, WHITE, None)
+                text_rect = text_surf.get_rect()
+                text_rect.center = (x,y)
+                y += 50
+                self.screen.blit(text, text_rect)
+
+            count += 1
+            pygame.display.update()
+
+            if text_rect.bottom < 0:
+                going = False
+            self.clock.tick(FRAMERATE)
+
     def game_intro(self):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
@@ -44,10 +91,10 @@ class GUI(object):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     going = False ## TODO - needs different handling than SPACE 
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                    going = False ## TODO - needs different handling than SPACE
-                elif event.type == KEYDOWN and event.key == K_SPACE:
-                    going = False ## TODO - needs different handling than ESCAPE or QUIT
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                        going = False ## TODO - needs different handling than SPACE
+
 
             #BECAUSE BACKGROUND SOUNDS ARE FUN
             if random.random() < 0.01:
@@ -74,7 +121,9 @@ class GUI(object):
 
             if text_rect.bottom < 0:
                 going = False
-            self.clock.tick(60)
+            self.clock.tick(FRAMERATE)
+
+        gui.menu()
 
     def main(self):
         ##Background setup
@@ -127,9 +176,9 @@ class GUI(object):
                     elif event.key == K_F12 and DEBUG:
                         fs_toggle = not fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if fs_toggle:
-                            pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.FULLSCREEN)
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
-                            pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
                     elif event.key == K_PAUSE:
                         self.pause_screen()
 
@@ -149,12 +198,14 @@ class GUI(object):
         
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
-                collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
-                if collision:
-                    self.explode.play()
-                    sprite.visible = 0
-                    if sprite.visible == 0:
-                        player_sprites.remove(sprite)    
+                collision = pygame.sprite.spritecollideany(sprite, enemy_bullet_sprites)
+                if collision == None:
+                    collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
+                    if collision:
+                        self.explode.play()
+                        sprite.visible = 0
+                if sprite.visible == 0:
+                    player_sprites.remove(sprite)    
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
@@ -202,7 +253,7 @@ class GUI(object):
     def pause_screen(self):
         paused = True
         while paused:
-            paused_text, paused_surf = draw_text('***PAUSED***', BLACK, WHITE)
+            paused_text, paused_surf = draw_text('***PAUSED***', WHITE, BLACK)
             paused_rect = paused_text.get_rect()
             paused_rect.center = SCREEN_CENTER 
             self.screen.blit(paused_text, paused_rect)
@@ -236,6 +287,9 @@ class GUI(object):
                         going = False
                     elif event.key == K_SPACE:
                         gui.main()
+                    elif event.key == K_s:
+                        gui.high_scores()
+                        
             y1 += 1
             y += 1
             self.screen.blit(bg,(x,y))
@@ -245,16 +299,21 @@ class GUI(object):
             if y1 > h:
                 y1 = -h
 
-            text1, text1_surf = draw_text('PRESS SPACE TO START!', BLACK, WHITE)
+            text1, text1_surf = draw_text('PRESS SPACE TO START!', WHITE, BLACK)
             text_rect1 = text1.get_rect()
             text_rect1.center = SCREEN_CENTER
             
-            text2, text2_surf = draw_text('PRESS ESC TO EXIT!', BLACK, WHITE)
+            text2, text2_surf = draw_text('PRESS ESC TO EXIT!', WHITE, BLACK)
             text_rect2 = text2.get_rect()
             text_rect2.centerx, text_rect2.top = text_rect1.centerx, text_rect1.bottom 
 
+            text3, text3_surf = draw_text('PRESS S TO SEE THE HALL OF FAME!', WHITE, BLACK)
+            text_rect3 = text3.get_rect()
+            text_rect3.centerx, text_rect3.top = text_rect2.centerx, text_rect2.bottom
+
             self.screen.blit(text1, text_rect1)
             self.screen.blit(text2, text_rect2)
+            self.screen.blit(text3, text_rect3)
             
             pygame.display.update()
 
@@ -267,7 +326,6 @@ if __name__=='__main__':
 
     gui = GUI()
     gui.game_intro()
-    gui.menu()
     
 
 

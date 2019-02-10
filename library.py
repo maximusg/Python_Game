@@ -13,6 +13,9 @@ FRAMERATE = 60
 SCREEN_HEIGHT = 1080
 SCREEN_WIDTH = 1920
 
+WINDOW_OPTIONS_FULLSCREEN = (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN|pygame.DOUBLEBUF|pygame.HWSURFACE
+WINDOW_OPTIONS_WINDOWED = (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME 
+
 COLUMN_WIDTH = SCREEN_WIDTH//5
 
 DEBUG = True ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
@@ -76,10 +79,10 @@ def load_image(name, colorkey=None):
 
 def draw_text(to_print, text_color, bg_color):
     font = pygame.font.Font('OpenSans-Regular.ttf', 25)
-    text = font.render(str(to_print), True, WHITE)
+    text = font.render(str(to_print), True, text_color)
     text_surf = pygame.Surface(text.get_size())
-    text_surf.fill(BLACK)
-
+    if bg_color != None:
+        text_surf.fill(bg_color)
     return text, text_surf
 
 def draw_boss_health(sprite):
