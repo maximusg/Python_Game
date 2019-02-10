@@ -3,6 +3,7 @@ import weapon
 import player
 import enemy
 import pygame
+from pygame.locals import *
 from pygame.compat import geterror
 from library import *
 import random
@@ -21,8 +22,9 @@ class GUI(object):
         self.clock = pygame.time.Clock()
 
         ##load sound bytes
-        self.explode = load_sound('explosn.wav')
-        self.fire_shot = load_sound('pewpew.wav')
+        self.explode = load_sound('explosion.ogg')
+        self.fire_spitfire = load_sound('spitfire.ogg')
+        self.fire_laser = load_sound('laser.ogg')
 
     def game_intro(self):
         ##Background setup
@@ -48,8 +50,10 @@ class GUI(object):
                     going = False ## TODO - needs different handling than ESCAPE or QUIT
 
             #BECAUSE BACKGROUND SOUNDS ARE FUN
-            if random.random() < 0.05:
-                self.fire_shot.play()
+            if random.random() < 0.01:
+                self.fire_spitfire.play()
+            if random.random() < 0.01:
+                self.fire_laser.play()
             if random.random() < 0.01:
                 self.explode.play()
 
@@ -104,8 +108,8 @@ class GUI(object):
         enemy_bullet_sprites = pygame.sprite.LayeredDirty()
 
         going=True
-        fs_toggle = False
-        self.clock.tick() ##need to dump this particular value of tick() to give me accurate time.
+        fs_toggle = False ##This here is kinda crappy.
+        self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
         ##Clock time setup
         while going:
@@ -113,26 +117,27 @@ class GUI(object):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     going = False
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                    going = False
-                elif event.type == KEYDOWN and event.key == K_F1 and DEBUG: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                    #for i in range(200):
-                    bad_guy = enemy.enemy('spitfire','enemy.png')
-                    enemy_sprites.add(bad_guy)
-                elif event.type == KEYDOWN and event.key == K_F12 and DEBUG:
-                    fs_toggle = not fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                    if fs_toggle:
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.FULLSCREEN)
-                    else:
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
-                elif event.type == KEYDOWN and event.key == K_PAUSE:
-                    self.pause_screen()
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        going = False
+                    elif event.key == K_F1 and DEBUG: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+                        #for i in range(200):
+                        bad_guy = enemy.enemy('spitfire','enemy.png')
+                        enemy_sprites.add(bad_guy)
+                    elif event.key == K_F12 and DEBUG:
+                        fs_toggle = not fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if fs_toggle:
+                            pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.FULLSCREEN)
+                        else:
+                            pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+                    elif event.key == K_PAUSE:
+                        self.pause_screen()
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
             addBullet = playerShip.control(keys, FRAMERATE)
             if addBullet:
-                self.fire_shot.play() 
+                self.fire_spitfire.play() 
                 bullet = playerShip.fire()
                 player_bullet_sprites.add(bullet)
 
@@ -163,8 +168,8 @@ class GUI(object):
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)         
             
-            bg_y1 += 5
-            bg_y += 5
+            bg_y1 += .2
+            bg_y += .2
             self.screen.blit(bg,(bg_x,bg_y))
             self.screen.blit(bg,(bg_x1,bg_y1))
             if bg_y > bg_h:
@@ -202,8 +207,9 @@ class GUI(object):
             paused_rect.center = SCREEN_CENTER 
             self.screen.blit(paused_text, paused_rect)
             for event in pygame.event.get():
-                if event.type == KEYDOWN and event.key == K_PAUSE or event.key == K_ESCAPE:
-                    paused = False
+                if event.type == KEYDOWN:
+                    if event.key == K_PAUSE or event.key == K_ESCAPE:
+                        paused = False
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
@@ -225,10 +231,11 @@ class GUI(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     going = False
-                elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                    going = False
-                elif event.type == KEYDOWN and event.key == K_SPACE:
-                    gui.main()
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        going = False
+                    elif event.key == K_SPACE:
+                        gui.main()
             y1 += 1
             y += 1
             self.screen.blit(bg,(x,y))
