@@ -34,13 +34,11 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image('starfield.png')
+        bg, bg_rect = load_image('nebula.jpg')
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
         hs_list = str(high_scores).split(sep='\n')
-        print(hs_list)
-
 
         going = True
         count = 0
@@ -60,7 +58,7 @@ class GUI(object):
             y = SCREEN_HEIGHT - count
 
             for line in hs_list:
-                text, text_surf = draw_text(line, WHITE, None)
+                text, text_surf = draw_text(line, WHITE)
                 text_rect = text_surf.get_rect()
                 text_rect.center = (x,y)
                 y += 50
@@ -81,8 +79,7 @@ class GUI(object):
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        scrollText = pygame.font.Font('OpenSans-Bold.ttf',25)
-        text = load_text('openingscroll.asset')
+        story_scroll = load_text('openingscroll.asset')
 
         going = True
         count = 0
@@ -109,12 +106,13 @@ class GUI(object):
             x = SCREEN_WIDTH/2
             y = SCREEN_HEIGHT - count
 
-            for line in text:
+            for line in story_scroll:
                 line = line.strip('\n')
-                text_surf, text_rect = text_objects(line, scrollText)
+                text, text_surf = draw_text(line, WHITE)
+                text_rect = text_surf.get_rect()
                 text_rect.center = (x,y)
                 y += 50
-                self.screen.blit(text_surf, text_rect)
+                self.screen.blit(text, text_rect)
 
             count += 1
             pygame.display.update()
@@ -143,16 +141,17 @@ class GUI(object):
         column.fill(BLACK)
 
         #Background sound setup
-        #load_background_music('roboCop3NES.ogg')
+        load_background_music('roboCop3NES.ogg')
         
         ##Initialize ships
         playerShip = player.player('spitfire','SweetShip.png',"arrows")
         bad_guy = enemy.enemy('spitfire','enemy.png')
         #bad_guy.health = 5 ##Verify boss mechanics
-        
+
         #Initialize sprite groups
-        player_sprites = pygame.sprite.LayeredDirty((playerShip))
+        player_sprites = pygame.sprite.GroupSingle(playerShip)
         player_bullet_sprites = pygame.sprite.LayeredDirty()
+        pickup_sprites = pygame.sprite.LayeredDirty()
         enemy_sprites = pygame.sprite.LayeredDirty((bad_guy))
         enemy_bullet_sprites = pygame.sprite.LayeredDirty()
 
@@ -160,6 +159,7 @@ class GUI(object):
         fs_toggle = False ##This here is kinda crappy.
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
+        player_score = 0
         ##Clock time setup
         while going:
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
@@ -173,7 +173,10 @@ class GUI(object):
                         #for i in range(200):
                         bad_guy = enemy.enemy('spitfire','enemy.png')
                         enemy_sprites.add(bad_guy)
-                    elif event.key == K_F12 and DEBUG:
+                    elif event.key == K_F2 and player_sprites.sprite == None and DEBUG:
+                        playerShip = playerShip = player.player('spitfire','SweetShip.png',"arrows")
+                        player_sprites.add(playerShip)
+                    elif event.key == K_F12:
                         fs_toggle = not fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
@@ -185,7 +188,7 @@ class GUI(object):
             ##Keyboard polling
             keys = pygame.key.get_pressed()
             addBullet = playerShip.control(keys, FRAMERATE)
-            if addBullet:
+            if addBullet and player_sprites.sprite != None:
                 self.fire_spitfire.play() 
                 bullet = playerShip.fire()
                 player_bullet_sprites.add(bullet)
@@ -205,7 +208,11 @@ class GUI(object):
                         self.explode.play()
                         sprite.visible = 0
                 if sprite.visible == 0:
-                    player_sprites.remove(sprite)    
+                    player_sprites.remove(sprite)
+                #collision = pygame.sprite.spritecollideany(sprite, pickup_sprites)
+                #if collision:
+                #    playerShip.pickUp(collision)
+                #    pickup_sprites.remove(collision)
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
@@ -214,7 +221,7 @@ class GUI(object):
                     player_bullet_sprites.remove(collision)
                     if sprite.health == 0:
                         self.explode.play()                        
-                        playerShip.point_total += sprite.point_value                    
+                        player_score += sprite.point_value
                         sprite.visible = 0
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)         
@@ -232,12 +239,12 @@ class GUI(object):
             c1 = self.screen.blit(column, ORIGIN)
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
-            text, score_surf = draw_text("Score: "+ str(playerShip.point_total), WHITE, BLACK)
+            text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
             score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
             if DEBUG:
-                debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE, BLACK)
+                debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
 
@@ -253,7 +260,7 @@ class GUI(object):
     def pause_screen(self):
         paused = True
         while paused:
-            paused_text, paused_surf = draw_text('***PAUSED***', WHITE, BLACK)
+            paused_text, paused_surf = draw_text('***PAUSED***', WHITE)
             paused_rect = paused_text.get_rect()
             paused_rect.center = SCREEN_CENTER 
             self.screen.blit(paused_text, paused_rect)
@@ -299,22 +306,22 @@ class GUI(object):
             if y1 > h:
                 y1 = -h
 
-            text1, text1_surf = draw_text('PRESS SPACE TO START!', WHITE, BLACK)
+            text1, text1_surf = draw_text('PRESS SPACE TO START!', WHITE)
             text_rect1 = text1.get_rect()
             text_rect1.center = SCREEN_CENTER
             
-            text2, text2_surf = draw_text('PRESS ESC TO EXIT!', WHITE, BLACK)
+            text2, text2_surf = draw_text('PRESS ESC TO EXIT!', WHITE)
             text_rect2 = text2.get_rect()
             text_rect2.centerx, text_rect2.top = text_rect1.centerx, text_rect1.bottom 
 
-            text3, text3_surf = draw_text('PRESS S TO SEE THE HALL OF FAME!', WHITE, BLACK)
+            text3, text3_surf = draw_text('PRESS S TO SEE THE HALL OF FAME!', WHITE)
             text_rect3 = text3.get_rect()
             text_rect3.centerx, text_rect3.top = text_rect2.centerx, text_rect2.bottom
 
             self.screen.blit(text1, text_rect1)
             self.screen.blit(text2, text_rect2)
             self.screen.blit(text3, text_rect3)
-            
+
             pygame.display.update()
 
             self.clock.tick(FRAMERATE//6)
