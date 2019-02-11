@@ -205,12 +205,11 @@ class GUI(object):
         collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
 
         #Initialize sprite groups
-        player_sprites = pygame.sprite.GroupSingle(playerShip)
-        player_bullet_sprites = pygame.sprite.LayeredDirty()
-        pickup_sprites = pygame.sprite.LayeredDirty()
-        enemy_sprites = pygame.sprite.LayeredDirty((bad_guy))
-        enemy_bullet_sprites = pygame.sprite.LayeredDirty()
-        items=pygame.sprite.LayeredDirty(collectible)
+        player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
+        player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
+        enemy_sprites = pygame.sprite.LayeredDirty(bad_guy, _default_layer = 4)
+        enemy_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
+        items=pygame.sprite.LayeredDirty(collectible, _default_layer = 2)
 
         going=True
         #fs_toggle = False ##This here is kinda crappy.
@@ -239,14 +238,14 @@ class GUI(object):
                             #for i in range(200):
                             bad_guy = enemy.enemy('spitfire','enemy.png')
                             enemy_sprites.add(bad_guy)
-                        if event.key == K_F2 and player_sprites.sprite == None:
-                            playerShip = playerShip = player.player('spitfire','SweetShip.png',"arrows")
+                        if event.key == K_F2 and len(player_sprites) == 0:
+                            playerShip = player.player('spitfire','SweetShip.png',"arrows")
                             player_sprites.add(playerShip)
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
             addBullet = playerShip.control(keys, FRAMERATE)
-            if addBullet and player_sprites.sprite != None:
+            if addBullet and len(player_sprites) != 0:
                 self.fire_spitfire.play() 
                 bullet = playerShip.fire()
                 player_bullet_sprites.add(bullet)
@@ -321,16 +320,14 @@ class GUI(object):
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
 
-            for sprite_list in (player_sprites, player_bullet_sprites, enemy_sprites, enemy_bullet_sprites, items):
+            for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites, enemy_sprites):
                 temp_rects = sprite_list.draw(self.screen)
                 #pyganim animation here?
 
 
             pygame.display.flip()
 
-            time_since_start += self.clock.tick(FRAMERATE)
-
- 
+            time_since_start += self.clock.tick(FRAMERATE) 
 
     def pause_screen(self):
         paused = True
@@ -353,7 +350,7 @@ class GUI(object):
                     pygame.quit()
                     exit()
             pygame.display.update(paused_rect)
-            self.clock.tick(10)
+            self.clock.tick(FRAMERATE)
 
     def menu(self):
         bg, bg_rect = load_image('starfield.png')
