@@ -238,8 +238,16 @@ class GUI(object):
                         player_score += sprite.point_value
                         sprite.visible = 0
                 if sprite.visible == 0:
-                    enemy_sprites.remove(sprite)         
+                    enemy_sprites.remove(sprite)     
+
+            for sprite in player_bullet_sprites:
+                if sprite.visible == 0:
+                    player_bullet_sprites.remove(sprite)    
             
+            for sprite in enemy_bullet_sprites:
+                if sprite.visible == 0:
+                    enemy_bullet_sprites.remove(sprite)
+
             bg_y1 += 1
             bg_y += 1
             self.screen.blit(bg,(bg_x,bg_y))
