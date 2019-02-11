@@ -26,15 +26,7 @@ import bullet
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
-#os.startfile(weapon_images_path)
 
-#spitfire_path = cwd.joinpath('/resources/weapon_images')
-#print(cwd)
-#print(spitfire_path)
-#print(spitfire_path)
-#for x in spitfire_path.iterdir():
-#    if x.is_file():
-#        print(x)
 #each weapon name will be mapped to its function, an image, and other properties
 
 def spitfire(origin_x, origin_y):
@@ -66,8 +58,9 @@ def spitfire2(origin_x, origin_y):
     bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
     return bullet1, bullet2, bullet3
 
-def blue_lazer():
-    print('blue lazer here')
+def blue_lazer(origin_x, origin_y):
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('blue_lazer.gif'), angle = 0)
+    return bullet1
 
 master_weapons_dict = {
     'spitfire': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
