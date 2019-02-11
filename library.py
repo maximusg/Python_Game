@@ -88,4 +88,4 @@ def draw_text(to_print, text_color, bg_color=None):
 def draw_boss_health(sprite):
     bar = pygame.Surface((SCREEN_WIDTH//2-2*COLUMN_WIDTH, 50))
     bar_rect = bar.fill(BLACK)
-     
+    ###-TODO- FINISH THIS

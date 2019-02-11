@@ -15,11 +15,12 @@ class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.NOFRAME)
+        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0],WINDOW_OPTIONS_FULLSCREEN[1])
         self.screen_rect = self.screen.get_rect()
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
+        self.fs_toggle = True
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -28,6 +29,49 @@ class GUI(object):
         self.explode = load_sound('explosion.ogg')
         self.fire_spitfire = load_sound('spitfire.ogg')
         self.fire_laser = load_sound('laser.ogg')
+
+    def credits(self):
+        ##Background setup
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        bg, bg_rect = load_image('nebula.jpg')
+        with open('credits.asset') as infile:
+            credit_list = infile.readlines()
+
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
+
+        going = True
+        count = 0
+
+        while going:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    going = False ## TODO - needs different handling than SPACE 
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                        going = False ## TODO - needs different handling than SPACE
+
+            self.screen.blit(background, ORIGIN)
+
+            x = SCREEN_WIDTH/2
+            y = SCREEN_HEIGHT - count
+
+            for line in credit_list:
+                line = line.strip('\n')
+                text, text_surf = draw_text(line, WHITE)
+                text_rect = text_surf.get_rect()
+                text_rect.center = (x,y)
+                y += 50
+                self.screen.blit(text, text_rect)
+
+            count += 1
+            pygame.display.update()
+
+            if text_rect.bottom < 0: ###because of the for loop, this is guaranteed to be the last line of text
+                going = False
+            self.clock.tick(FRAMERATE)
+
 
     def high_scores(self):
         #get the scoreboard out from storage
@@ -93,6 +137,12 @@ class GUI(object):
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE or event.key == K_SPACE:
                         going = False ## TODO - needs different handling than SPACE
+                    if event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                        else:
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
 
 
             #BECAUSE BACKGROUND SOUNDS ARE FUN
@@ -163,7 +213,7 @@ class GUI(object):
         items=pygame.sprite.LayeredDirty(collectible)
 
         going=True
-        fs_toggle = False ##This here is kinda crappy.
+        #fs_toggle = False ##This here is kinda crappy.
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
         player_score = 0
@@ -176,21 +226,22 @@ class GUI(object):
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         going = False
-                    elif event.key == K_F1 and DEBUG: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                        #for i in range(200):
-                        bad_guy = enemy.enemy('spitfire','enemy.png')
-                        enemy_sprites.add(bad_guy)
-                    elif event.key == K_F2 and player_sprites.sprite == None and DEBUG:
-                        playerShip = playerShip = player.player('spitfire','SweetShip.png',"arrows")
-                        player_sprites.add(playerShip)
-                    elif event.key == K_F12:
-                        fs_toggle = not fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if fs_toggle:
+                    if event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
-                    elif event.key == K_PAUSE:
+                    if event.key == K_PAUSE:
                         self.pause_screen()
+                    if DEBUG:
+                        if event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+                            #for i in range(200):
+                            bad_guy = enemy.enemy('spitfire','enemy.png')
+                            enemy_sprites.add(bad_guy)
+                        if event.key == K_F2 and player_sprites.sprite == None:
+                            playerShip = playerShip = player.player('spitfire','SweetShip.png',"arrows")
+                            player_sprites.add(playerShip)
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
@@ -292,6 +343,12 @@ class GUI(object):
                 if event.type == KEYDOWN:
                     if event.key == K_PAUSE or event.key == K_ESCAPE:
                         paused = False
+                if event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                        else:
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
@@ -320,6 +377,14 @@ class GUI(object):
                         gui.main()
                     elif event.key == K_s:
                         gui.high_scores()
+                    elif event.key == K_c:
+                        gui.credits()
+                    elif event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                        else:
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
                         
             y1 += 1
             y += 1
@@ -342,9 +407,14 @@ class GUI(object):
             text_rect3 = text3.get_rect()
             text_rect3.centerx, text_rect3.top = text_rect2.centerx, text_rect2.bottom
 
+            text4, text4_surf = draw_text('PRESS C TO SEE THE CREDITS!', WHITE)
+            text_rect4 = text4.get_rect()
+            text_rect4.centerx, text_rect4.top = text_rect3.centerx, text_rect3.bottom
+
             self.screen.blit(text1, text_rect1)
             self.screen.blit(text2, text_rect2)
             self.screen.blit(text3, text_rect3)
+            self.screen.blit(text4, text_rect4)
 
             pygame.display.update()
 
