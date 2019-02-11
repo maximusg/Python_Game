@@ -8,6 +8,8 @@ from pygame.compat import geterror
 from library import *
 import random
 import highscore
+import item_pickup
+import pyganim
 
 class GUI(object):
     def __init__(self):
@@ -149,12 +151,16 @@ class GUI(object):
         playerShip = player.player('spitfire','SweetShip.png',"arrows")
         bad_guy = enemy.enemy('spitfire','enemy.png')
         #bad_guy.health = 5 ##Verify boss mechanics
-        
+
+        #spawn a test item
+        collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
+
         #Initialize sprite groups
         player_sprites = pygame.sprite.LayeredDirty((playerShip))
         player_bullet_sprites = pygame.sprite.LayeredDirty()
         enemy_sprites = pygame.sprite.LayeredDirty((bad_guy))
         enemy_bullet_sprites = pygame.sprite.LayeredDirty()
+        items=pygame.sprite.LayeredDirty(collectible)
 
         going=True
         fs_toggle = False ##This here is kinda crappy.
@@ -195,6 +201,7 @@ class GUI(object):
             player_bullet_sprites.update()
             enemy_sprites.update()
             enemy_bullet_sprites.update()
+            items.update()
         
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
@@ -205,7 +212,20 @@ class GUI(object):
                         self.explode.play()
                         sprite.visible = 0
                 if sprite.visible == 0:
-                    player_sprites.remove(sprite)    
+                    player_sprites.remove(sprite)
+
+            for sprite in items:
+                collision = pygame.sprite.spritecollideany(sprite, player_sprites)
+                if collision:
+                    print('you picked up an item', sprite.name)
+                    sprite.visible = 0
+                    if sprite.is_weapon:
+                        playerShip.weapon = weapon.Weapon(sprite.name)
+                    items.remove(sprite)
+
+
+
+
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
@@ -219,8 +239,8 @@ class GUI(object):
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)         
             
-            bg_y1 += .2
-            bg_y += .2
+            bg_y1 += 1
+            bg_y += 1
             self.screen.blit(bg,(bg_x,bg_y))
             self.screen.blit(bg,(bg_x1,bg_y1))
             if bg_y > bg_h:
@@ -241,8 +261,10 @@ class GUI(object):
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
 
-            for sprite_list in (player_sprites, player_bullet_sprites, enemy_sprites, enemy_bullet_sprites):
+            for sprite_list in (player_sprites, player_bullet_sprites, enemy_sprites, enemy_bullet_sprites, items):
                 temp_rects = sprite_list.draw(self.screen)
+                #pyganim animation here?
+
 
             pygame.display.flip()
 
