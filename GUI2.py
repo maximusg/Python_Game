@@ -357,12 +357,11 @@ class GUI(object):
         player_sprites.add(playerShip)
 
         #set the background
-        background_rect = self.screen.blit(background, ORIGIN)
-        #bg_sprites.clear(self.screen, background)
-        #player_sprites.clear(self.screen, background)
-        #enemy_sprites.clear(self.screen, background)
-        #player_bullet_sprites.clear(self.screen, background)
-        #enemy_bullet_sprites.clear(self.screen, background)
+        bg_sprites.clear(self.screen, background)
+        player_sprites.clear(self.screen, background)
+        enemy_sprites.clear(self.screen, background)
+        player_bullet_sprites.clear(self.screen, background)
+        enemy_bullet_sprites.clear(self.screen, background)
 
         #variables that need to be outside the loop
         fs_toggle = True
@@ -421,7 +420,7 @@ class GUI(object):
             enemy_rects = enemy_sprites.draw(self.screen)
             en_bullet_rects = enemy_bullet_sprites.draw(self.screen)
 
-            allsprites = [background_rect]
+            allsprites = []
             for sprite_list in (bg_rects, pl_bullet_rects, en_bullet_rects, player_rects, enemy_rects):
                 for sprite in sprite_list:
                     allsprites.append(sprite)
