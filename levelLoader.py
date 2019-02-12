@@ -1,3 +1,4 @@
+
 #!/bin/python
 #this file will load files made by level loader, and retrun all the values in the format expected by the GUI,
 #To not have to change the GUI's functionality to much, levelLoader is kind of like a helper class for GUI
@@ -21,6 +22,17 @@ class LevelLoader():
         self.PLAYER_TYPES = ["health", "location", "image"]
         self.ENEMY_TYPES = ["class", "health"]
         self.ENEMYBULLETS_TYPE = ["class"]
+
+#this file will load files made by level loader, and retrun all the values in the format expected by the GUI,
+#To not have to change the GUI's functionality to much, levelLoader is kind of like a helper class for GUI
+
+import json
+
+class levelLoader():
+    def __init__(self, startingLevelNumber):
+        self.levelNumber = startingLevelNumber
+        self.levelName = "level"+self.levelNumber 
+        self.level = self.__levelLoad__()
         
 
     def __levelLoad__(self):
@@ -67,7 +79,7 @@ class LevelLoader():
     
     def bulletClass (self,className):
         '''contructs and returns enemy bullets off a 1 input nameing convention'''
-
+        pass
 
         #delete items for each time called
         
