@@ -60,7 +60,7 @@ def load_background_music(filename):
     pygame.mixer.music.play(loops=-1)
 
 def load_image(name, colorkey=None):
-    '''Accepts a filename and colorkey, throws an exception if the file does not exist. Returns the pygame.image object
+    '''Accepts a filename and colorkey (color to treat as transparent), throws an exception if the file does not exist. Returns the pygame.image object
        as well as it's rectangle for manipulation.'''
     fullname = os.path.join(MAIN_DIR, name)
     try:

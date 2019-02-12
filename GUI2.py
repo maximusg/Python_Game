@@ -16,12 +16,12 @@ class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
-        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0],WINDOW_OPTIONS_FULLSCREEN[1])
+        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0],WINDOW_OPTIONS_WINDOWED[1])
         self.screen_rect = self.screen.get_rect()
         #self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
-        self.fs_toggle = True
+        self.fs_toggle = False
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -332,7 +332,7 @@ class GUI(object):
 
     def main(self):
         ##Background setup
-        background = pygame.Surface(self.screen.get_size())
+        background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         background = background.convert()
         bg, bg_rect = load_image('starfield.png')
 
@@ -341,22 +341,35 @@ class GUI(object):
         column = pygame.Surface((COLUMN_WIDTH, SCREEN_HEIGHT))
         column.fill(BLACK)
 
-        background.blit(column, ORIGIN)
-        background.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
+        # background.blit(column, ORIGIN)
+        # background.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
+
+        #Ship setup
+        playerShip = player.player('spitfire','SweetShip.png',"arrows")
 
         ##Build our groups
-        bg_sprites = pygame.sprite.LayeredDirty(_default_layer=1)
-        player_sprites = pygame.sprite.LayeredDirty(_default_layer=2)
-        enemy_sprites = pygame.sprite.LayeredDirty(_default_layer=3)
+        bg_sprites = pygame.sprite.LayeredDirty()
+        player_sprites = pygame.sprite.LayeredDirty()
+        player_bullet_sprites = pygame.sprite.LayeredDirty()
+        enemy_sprites = pygame.sprite.LayeredDirty()
+        enemy_bullet_sprites = pygame.sprite.LayeredDirty()
 
+        player_sprites.add(playerShip)
+
+        #set the background
+        background_rect = self.screen.blit(background, ORIGIN)
+        #bg_sprites.clear(self.screen, background)
+        #player_sprites.clear(self.screen, background)
+        #enemy_sprites.clear(self.screen, background)
+        #player_bullet_sprites.clear(self.screen, background)
+        #enemy_bullet_sprites.clear(self.screen, background)
+
+        #variables that need to be outside the loop
         fs_toggle = True
+        player_score = 0
+        
         going = True
         while going:
-        #set the background
-            bg_sprites.clear(self.screen, background)
-            player_sprites.clear(self.screen, background)
-            enemy_sprites.clear(self.screen, background)
-
             for event in pygame.event.get():
                 if event.type == QUIT:
                     going = False
@@ -369,20 +382,32 @@ class GUI(object):
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
-                        pygame.display.update()
 
             if random.random() < 0.01:
                 new_x = random.randint(COLUMN_WIDTH, SCREEN_WIDTH-COLUMN_WIDTH)
-                new_bg_sprite = bg_object.bg_object(new_x, 0, 4, 'asteroid.png', angle=random.randint(-2,2))
+                new_bg_sprite = bg_object.bg_object(new_x, 0, 4, 'asteroid.png')
                 bg_sprites.add(new_bg_sprite)
                 print('made an asteroid!')
 
+            ##Keyboard polling
+            keys = pygame.key.get_pressed()
+            addBullet = playerShip.control(keys, FRAMERATE)
+            if addBullet and len(player_sprites) != 0:
+                self.fire_spitfire.play() 
+                bullet = playerShip.fire()
+                player_bullet_sprites.add(bullet)
+
             bg_sprites.update()
             player_sprites.update()
+            player_bullet_sprites.update()
             enemy_sprites.update()
+            enemy_bullet_sprites.update()
 
-            #text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
-            text, score_surf = draw_text("Score: ", WHITE)
+            c1 = self.screen.blit(column, ORIGIN)
+            c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
+
+            text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
+            #text, score_surf = draw_text("Score: ", WHITE)
             score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
             if DEBUG:
@@ -392,21 +417,30 @@ class GUI(object):
 
             bg_rects = bg_sprites.draw(self.screen)
             player_rects = player_sprites.draw(self.screen)
+            pl_bullet_rects = player_bullet_sprites.draw(self.screen)
             enemy_rects = enemy_sprites.draw(self.screen)
+            en_bullet_rects = enemy_bullet_sprites.draw(self.screen)
 
-            allsprites = []
-            for sprite_list in (bg_rects, player_rects, enemy_rects):
+            allsprites = [background_rect]
+            for sprite_list in (bg_rects, pl_bullet_rects, en_bullet_rects, player_rects, enemy_rects):
                 for sprite in sprite_list:
                     allsprites.append(sprite)
             allsprites.append(score_rect)
             if DEBUG:
                 allsprites.append(debug_rect)
+            allsprites.extend([c1,c2])
 
             pygame.display.update(allsprites)
 
             for sprite in bg_sprites:
                 if sprite.visible == 0:
                     bg_sprites.remove(sprite)
+            for sprite in player_bullet_sprites:
+                if sprite.visible == 0:
+                    player_bullet_sprites.remove(sprite)
+            for sprite in enemy_bullet_sprites:
+                if sprite.visible == 0:
+                    enemy_bullet_sprites.remove(sprite)
 
             # pygame.display.update(score_rect)
             # if DEBUG:
