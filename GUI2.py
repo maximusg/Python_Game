@@ -342,10 +342,14 @@ class GUI(object):
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
-
-            for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites_invuln, player_sprites, enemy_sprites):
-                temp_rects = sprite_list.draw(self.screen)
-                #pyganim animation here?
+            if invuln_flag and invuln_timer % 3 == 0:
+                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites_invuln, player_sprites, enemy_sprites):
+                    temp_rects = sprite_list.draw(self.screen)
+                    #pyganim animation here?
+            else:
+                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites, enemy_sprites):
+                    temp_rects = sprite_list.draw(self.screen)
+                    #pyganim animation here?
 
 
             pygame.display.flip()
