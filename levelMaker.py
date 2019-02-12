@@ -15,22 +15,19 @@ data = {
             {"player":{ #starting info if dead
                 "health":1,
                 "location":(500,700),
-                "image":"SweetShip.png"
+                "image":"SweetShip.png",
+                "weapon": "spitfire",
+                "scheme": " arrows",
                 },
             "enemy":{
-                "number":2,
-                "weapons":["spitfire","spitfire"],
-                "images":["enemy.png","enemy.png"],
-                "behaviors": ["dive","spin"],
-                "health": 1, #enemyhealth= enemyClassHealth*1
-                "centers":[(0,0),(50,0)]
+                "class":["powermanLeft","spritzRight"],
+                "health": 1
                 },
             "enemyBullets":{
-                "number":1,
-                "images":["bullet_art.png"],
-                "behaviors": ["horizontal_spitfire"],
-                "centers":[(900,400)]
-                }
+                "class": ["downwardLeft","downwardRight"],
+                },
+            "background": "starfield.png"
+
             },
             5: #time 5 seconds elapsed
             {"enemy":{ #note that player info removed
@@ -50,7 +47,7 @@ data = {
                 }
             }
         },
-        "end": {"time":15, "boss":None} #this gives the ending parameters
+    "end": {"time":15, "boss":None} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
