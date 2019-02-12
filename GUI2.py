@@ -15,7 +15,7 @@ class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
-        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0],WINDOW_OPTIONS_WINDOWED[1])
+        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0],WINDOW_OPTIONS_FULLSCREEN[1])
         self.screen_rect = self.screen.get_rect()
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
@@ -127,6 +127,7 @@ class GUI(object):
 
         going = True
         count = 0
+        pygame.time.wait(1500)
 
         while going:
             for event in pygame.event.get():
@@ -169,7 +170,7 @@ class GUI(object):
 
             if text_rect.bottom < 0:
                 going = False
-            self.clock.tick(FRAMERATE)
+            self.clock.tick_busy_loop(FRAMERATE)
 
         gui.menu()
 
@@ -203,6 +204,7 @@ class GUI(object):
         collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
 
         #Initialize sprite groups
+        player_sprites_invuln = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guy, _default_layer = 4)
@@ -215,19 +217,29 @@ class GUI(object):
         time_since_start = 0
         player_score = 0
         player_lives = 3
+        invuln_timer = 120 ##frames of invulnerability post-death
+        invuln_flag = False
         ##Clock time setup
         while going:
             ##Beginning of the loop checking for death and lives remaining.
-            if len(player_sprites) == 0:
+            if len(player_sprites) == 0 and not invuln_flag:
                 player_lives -= 1
                 if player_lives:
                     self.death_loop()
                     playerShip = player.player('spitfire','SweetShip.png',"arrows")
-                    player_sprites.add(playerShip)
+                    invuln_flag = True
+                    player_sprites_invuln.add(playerShip)
                 else:
                     self.game_over(player_score)
                     #break (potentially cleaner than setting going to False)
                     going = False
+
+            ##check if the invuln timer is complete
+            if invuln_timer == 0 and len(player_sprites_invuln) != 0:
+                invuln_flag = False
+                player_sprites_invuln.remove(playerShip)
+                player_sprites.add(playerShip)
+                invuln_timer = 120
 
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             for event in pygame.event.get():
@@ -256,7 +268,7 @@ class GUI(object):
             ##Keyboard polling
             keys = pygame.key.get_pressed()
             addBullet = playerShip.control(keys, FRAMERATE)
-            if addBullet and len(player_sprites) != 0:
+            if addBullet:
                 self.fire_spitfire.play() 
                 bullet = playerShip.fire()
                 player_bullet_sprites.add(bullet)
@@ -331,14 +343,16 @@ class GUI(object):
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
 
-            for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites, enemy_sprites):
+            for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites_invuln, player_sprites, enemy_sprites):
                 temp_rects = sprite_list.draw(self.screen)
                 #pyganim animation here?
 
 
             pygame.display.flip()
 
-            time_since_start += self.clock.tick_busy_loop(FRAMERATE) 
+            time_since_start += self.clock.tick_busy_loop(FRAMERATE)
+            if invuln_flag:
+                invuln_timer -= 1
 
     def pause_screen(self):
         paused = True
@@ -351,6 +365,7 @@ class GUI(object):
                 if event.type == KEYDOWN:
                     if event.key == K_PAUSE or event.key == K_ESCAPE:
                         paused = False
+                        pygame.time.wait(500)
                 if event.key == K_F12:
                         self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if self.fs_toggle:
@@ -374,6 +389,7 @@ class GUI(object):
                 if event.type == KEYDOWN:
                     if event.key == K_SPACE:
                         dead = False
+                        pygame.time.wait(500)
                     if event.key == K_F12:
                         self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if self.fs_toggle:
@@ -389,10 +405,14 @@ class GUI(object):
     def game_over(self, player_score):
         dead = True
         while dead:
-            dead_text, dead_surf = draw_text('***YOU\'VE BEEN DESTROYED! Country Orange has won! Press Space to return to the main menu.***', WHITE)
+            dead_text, dead_surf = draw_text('YOU\'VE BEEN DESTROYED! Country Orange has won!', WHITE)
             dead_rect = dead_text.get_rect()
             dead_rect.center = SCREEN_CENTER 
+            dead_text2, dead_surf2 = draw_text('Press Space to return to the main menu.', WHITE)
+            dead_rect2 = dead_text2.get_rect()
+            dead_rect2.centerx, dead_rect2.top = dead_rect.centerx, dead_rect.bottom  
             self.screen.blit(dead_text, dead_rect)
+            self.screen.blit(dead_text2, dead_rect2)
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_SPACE:
@@ -406,7 +426,7 @@ class GUI(object):
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-            pygame.display.update(dead_rect)
+            pygame.display.update([dead_rect, dead_rect2])
             self.clock.tick(FRAMERATE)
         hs_list = highscore.Scoreboard()
         if hs_list.belongsOnList(player_score):
