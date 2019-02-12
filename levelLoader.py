@@ -3,9 +3,11 @@
 #this file will load files made by level loader, and retrun all the values in the format expected by the GUI,
 #To not have to change the GUI's functionality to much, levelLoader is kind of like a helper class for GUI
 
+import weapon
 import player
 import enemy
-import bullet
+
+
 import json
 
 
@@ -23,20 +25,8 @@ class LevelLoader():
         self.ENEMY_TYPES = ["class", "health"]
         self.ENEMYBULLETS_TYPE = ["class"]
 
-#this file will load files made by level loader, and retrun all the values in the format expected by the GUI,
-#To not have to change the GUI's functionality to much, levelLoader is kind of like a helper class for GUI
-
-import json
-
-class levelLoader():
-    def __init__(self, startingLevelNumber):
-        self.levelNumber = startingLevelNumber
-        self.levelName = "level"+self.levelNumber 
-        self.level = self.__levelLoad__()
-        
 
     def __levelLoad__(self):
-        
         with open (self.levelName,"r") as read_file:
             self.level= json.load(read_file)
 
@@ -55,11 +45,13 @@ class levelLoader():
         except:
             return False #GUI handles false with no behavior
         sprites = []
+
         for each in events:
             if each in self.TIME_TYPES:
                 if each == "player":
-                    print(each)
-                    # playerShip = player.player(each["weapon"],each["image"],"arrows")
+                    print(events[each])
+                    playerShip = player.player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
+                    # print(playerShip)
         # bad_guy = enemy.enemy('spitfire','enemy.png')
 
 
