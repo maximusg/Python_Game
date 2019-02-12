@@ -1,11 +1,15 @@
 import json
+from library import *
 
 
 ##Create Levels here with this level maker! Just make a dictionary with spawn times and enemies, and the background elements.
 #then run the script, make sure to not overwrite a file unintentially.
 
 
-levelName="level1.json"
+
+
+levelName="level3.json" #level follwed level_number
+writeLocation = "levels/"+levelName
 data = {
     "time":{ 0: #time zero
             {"player":{ #starting info if dead
@@ -34,6 +38,7 @@ data = {
                 "weapons":["spitfire","spitfire","spitefire"],
                 "images":["enemy.png","enemy.png", "enemy.png"],
                 "behaviors": ["dive","spin","dive"],
+                "layer":[BG,GROUND,ITEM,AIR,OVERHEAD],
                 "health": 2, #enemyhealth= enemyClassHealth*2
                 "centers":[(0,0),(300,0),(800,0)]
                 },
@@ -51,12 +56,9 @@ data = {
 
 }
 
-# with open ("levels/lvl1.json","w") as write_file:
-#     json.dump (data,write_file)
+#When we execute levelMaker in Python, it saves a copy of the script we build
+with open (writeLocation,"w") as write_file:
+    json.dump (data, write_file, indent=4, sort_keys=True )
 
-print (data)
 
-with open ("lvl1.json","r") as read_file:
-    script= json.load(read_file)
-
-print (script)
+print(data)

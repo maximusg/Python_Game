@@ -44,11 +44,18 @@ class GUI(object):
         # greenBlock = block.Block(GREEN,60,90) #Highest LAYER
         
         
-        redBlock = block.Block(group,RED,60,90,1) #Lowest LAYER
-        whiteBlock = block.Block(group,WHITE,60,80,2) 
+        # redBlock = block.Block(group,RED,60,90,1) #Lowest LAYER
+        # whiteBlock = block.Block(group,WHITE,60,80,2) 
 
-        blueBlock = block.Block(group,BLUE,60,80,3)
-        greenBlock = block.Block(group,GREEN,60,90,4) #Highest LAYER
+        # blueBlock = block.Block(group,BLUE,60,80,3)
+        # greenBlock = block.Block(group,GREEN,60,90,4) #Highest LAYER
+        redBlock = block.Block(RED,60,90,1) #Lowest LAYER
+        whiteBlock = block.Block(WHITE,60,80,2) 
+
+        blueBlock = block.Block(BLUE,60,80,3)
+        greenBlock = block.Block(GREEN,60,90,4) #Highest LAYER
+
+        group.add(redBlock,whiteBlock,blueBlock,greenBlock)
 
         # blockGrp1.add(whiteBlock,redBlock)
         whiteBlock.rect.x = 50
