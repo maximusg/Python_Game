@@ -15,12 +15,13 @@ class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
-        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0],WINDOW_OPTIONS_FULLSCREEN[1])
+        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0],WINDOW_OPTIONS_WINDOWED[1])
         self.screen_rect = self.screen.get_rect()
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
         self.fs_toggle = True
+        self.hs_list = highscore.Scoreboard()
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -74,9 +75,6 @@ class GUI(object):
 
 
     def high_scores(self):
-        #get the scoreboard out from storage
-        high_scores = highscore.Scoreboard()
-        high_scores.readFromFile('highscores.asset')
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
@@ -84,7 +82,7 @@ class GUI(object):
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        hs_list = str(high_scores).split(sep='\n')
+        hs_list = str(self.hs_list).split(sep='\n')
 
         going = True
         count = 0
@@ -216,8 +214,21 @@ class GUI(object):
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
         player_score = 0
+        player_lives = 3
         ##Clock time setup
         while going:
+            ##Beginning of the loop checking for death and lives remaining.
+            if len(player_sprites) == 0:
+                player_lives -= 1
+                if player_lives:
+                    self.death_loop()
+                    playerShip = player.player('spitfire','SweetShip.png',"arrows")
+                    player_sprites.add(playerShip)
+                else:
+                    self.game_over(player_score)
+                    #break (potentially cleaner than setting going to False)
+                    going = False
+
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -327,7 +338,7 @@ class GUI(object):
 
             pygame.display.flip()
 
-            time_since_start += self.clock.tick(FRAMERATE) 
+            time_since_start += self.clock.tick_busy_loop(FRAMERATE) 
 
     def pause_screen(self):
         paused = True
@@ -351,6 +362,107 @@ class GUI(object):
                     exit()
             pygame.display.update(paused_rect)
             self.clock.tick(FRAMERATE)
+
+    def death_loop(self):
+        dead = True
+        while dead:
+            dead_text, dead_surf = draw_text('***YOUR SHIP WAS DESTROYED! Press Space to re-deploy!***', WHITE)
+            dead_rect = dead_text.get_rect()
+            dead_rect.center = SCREEN_CENTER 
+            self.screen.blit(dead_text, dead_rect)
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_SPACE:
+                        dead = False
+                    if event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                        else:
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+            pygame.display.update(dead_rect)
+            self.clock.tick(FRAMERATE)
+    
+    def game_over(self, player_score):
+        dead = True
+        while dead:
+            dead_text, dead_surf = draw_text('***YOU\'VE BEEN DESTROYED! Country Orange has won! Press Space to return to the main menu.***', WHITE)
+            dead_rect = dead_text.get_rect()
+            dead_rect.center = SCREEN_CENTER 
+            self.screen.blit(dead_text, dead_rect)
+            for event in pygame.event.get():
+                if event.type == KEYDOWN:
+                    if event.key == K_SPACE:
+                        dead = False
+                    if event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                        else:
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+            pygame.display.update(dead_rect)
+            self.clock.tick(FRAMERATE)
+        hs_list = highscore.Scoreboard()
+        if hs_list.belongsOnList(player_score):
+            self.hs_list.add(highscore.Scoreboard.Entry(self.add_to_hs('You\'ve set a new high score! What are your initials?'), player_score))
+            self.hs_list.writeToFile()
+
+    def add_to_hs(self, txt):
+
+        def blink(screen):
+            for color in [BLACK, WHITE]:
+                pygame.draw.circle(box, color, (bx//2, int(by*0.7)), 7, 0)
+                self.screen.blit(box, (0, by//2))
+                pygame.display.flip()
+                pygame.time.wait(300)
+        def show_name(screen, name):
+            pygame.draw.rect(box, WHITE, (50, 60, bx-100, 20), 0)
+            txt_surf = font.render(name, True, BLACK)
+            txt_rect = txt_surf.get_rect(center=(bx//2, int(by*0.7)))
+            box.blit(txt_surf, txt_rect)
+            self.screen.blit(box, (0, by//2))
+            pygame.display.flip()
+        font = pygame.font.Font('OpenSans-Regular.ttf', 16)
+        bx = 480
+        by = 100
+        # make box
+        box = pygame.surface.Surface((bx, by))
+        box.fill(BLACK)
+        pygame.draw.rect(box, BLACK, (0, 0, bx, by), 1)
+        txt_surf = font.render(txt, True, WHITE)
+        txt_rect = txt_surf.get_rect(center=(bx//2, int(by*0.3)))
+        box.blit(txt_surf, txt_rect)
+        name = ""
+        show_name(self.screen, name)
+        # the input-loop
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    inkey = event.key
+                    if inkey in [13, 271]:  # enter/return key
+                        return name
+                    elif inkey == 8:  # backspace key
+                        name = name[:-1]
+                    elif inkey <= 300:
+                        if pygame.key.get_mods() & pygame.KMOD_SHIFT and 122 >= inkey >= 97:
+                            inkey -= 32  # handles CAPITAL input
+                        name += chr(inkey)
+            if name == "":
+                blink(self.screen)
+            show_name(self.screen, name)
+
+ 
+
+        
 
     def menu(self):
         bg, bg_rect = load_image('starfield.png')

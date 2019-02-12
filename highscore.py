@@ -42,6 +42,7 @@ class Scoreboard(object):
         self.head = None
         self.tail = None
         self.__length = 0
+        self.readFromFile('highscores.asset')
 
     def add(self, entry):
         if self.head == None:
@@ -89,7 +90,7 @@ class Scoreboard(object):
     def __trim(self):
         currEntry = self.head
         i = 0
-        while currEntry.nextEntry != None and i < 20:
+        while currEntry.nextEntry != None and i < 21:
             currEntry = currEntry.nextEntry
             i += 1
         self.tail = currEntry
@@ -99,12 +100,13 @@ class Scoreboard(object):
         result = '***HALL OF FAME!***\n'
         currEntry = self.head
         i = 1
-        result += str(i) + ') ' + str(currEntry) + '\n'
-        i += 1
+        #result += str(i) + ') ' + str(currEntry) + '\n'
+        #i += 1
         while currEntry.nextEntry:
             result += str(i) + ') ' + str(currEntry) + '\n'
             i += 1
             currEntry = currEntry.nextEntry
+        result += str(i) + ') ' + str(currEntry) + '\n'
         return result
 
 
