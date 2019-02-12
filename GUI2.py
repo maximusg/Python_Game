@@ -2,6 +2,7 @@
 import weapon
 import player
 import enemy
+import bg_object
 import pygame
 from pygame.locals import *
 from pygame.compat import geterror
@@ -17,7 +18,7 @@ class GUI(object):
         pygame.init()
         self.screen = pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0],WINDOW_OPTIONS_FULLSCREEN[1])
         self.screen_rect = self.screen.get_rect()
-        self.screen.fill(BLACK)
+        #self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
         self.fs_toggle = True
@@ -175,50 +176,187 @@ class GUI(object):
 
         gui.menu()
 
+    # def main(self):
+    #     ##Background setup
+    #     background = pygame.Surface(self.screen.get_size())
+    #     background = background.convert()
+    #     bg, bg_rect = load_image('starfield.png')
+    #     bg_size = bg.get_size()
+    #     bg_w, bg_h = bg_size
+    #     bg_x = 0
+    #     bg_y = 0
+    #     bg_x1 = 0
+    #     bg_y1 = -bg_h
+    #     background.fill(BLACK)
+    #     background.blit(bg, ORIGIN)
+        
+    #     column = pygame.Surface((COLUMN_WIDTH, SCREEN_HEIGHT))
+    #     column.fill(BLACK)
+
+    #     #Background sound setup
+    #     load_background_music('roboCop3NES.ogg')
+        
+    #     ##Initialize ships
+    #     playerShip = player.player('spitfire','SweetShip.png',"arrows")
+    #     bad_guy = enemy.enemy('spitfire','enemy.png')
+    #     #bad_guy.health = 5 ##Verify boss mechanics
+
+
+    #     #spawn a test item
+    #     collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
+
+    #     #Initialize sprite groups
+    #     player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
+    #     player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
+    #     enemy_sprites = pygame.sprite.LayeredDirty(bad_guy, _default_layer = 4)
+    #     enemy_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
+    #     items=pygame.sprite.LayeredDirty(collectible, _default_layer = 2)
+
+    #     going=True
+    #     #fs_toggle = False ##This here is kinda crappy.
+    #     self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
+    #     time_since_start = 0
+    #     player_score = 0
+    #     ##Clock time setup
+    #     while going:
+    #         ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
+    #         for event in pygame.event.get():
+    #             if event.type == QUIT:
+    #                 going = False
+    #             elif event.type == KEYDOWN:
+    #                 if event.key == K_ESCAPE:
+    #                     going = False
+    #                 if event.key == K_F12:
+    #                     self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+    #                     if self.fs_toggle:
+    #                         pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+    #                     else:
+    #                         pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+    #                 if event.key == K_PAUSE:
+    #                     self.pause_screen()
+    #                 if DEBUG:
+    #                     if event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+    #                         #for i in range(200):
+    #                         bad_guy = enemy.enemy('spitfire','enemy.png')
+    #                         enemy_sprites.add(bad_guy)
+    #                     if event.key == K_F2 and len(player_sprites) == 0:
+    #                         playerShip = player.player('spitfire','SweetShip.png',"arrows")
+    #                         player_sprites.add(playerShip)
+
+    #         ##Keyboard polling
+    #         keys = pygame.key.get_pressed()
+    #         addBullet = playerShip.control(keys, FRAMERATE)
+    #         if addBullet and len(player_sprites) != 0:
+    #             self.fire_spitfire.play() 
+    #             bullet = playerShip.fire()
+    #             player_bullet_sprites.add(bullet)
+
+    #         ##Helper to call update() on each sprite in the group.    
+    #         player_sprites.update()
+    #         player_bullet_sprites.update()
+    #         enemy_sprites.update()
+    #         enemy_bullet_sprites.update()
+    #         items.update()
+        
+    #         ##Collision/Out of Bounds detection.
+    #         for sprite in player_sprites:
+    #             collision = pygame.sprite.spritecollideany(sprite, enemy_bullet_sprites)
+    #             if collision == None:
+    #                 collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
+    #                 if collision:
+    #                     self.explode.play()
+    #                     sprite.visible = 0
+    #             if sprite.visible == 0:
+    #                 player_sprites.remove(sprite)
+                    
+    #         for sprite in items:
+    #             collision = pygame.sprite.spritecollideany(sprite, player_sprites)
+    #             if collision:
+    #                 print('you picked up an item', sprite.name)
+    #                 sprite.visible = 0
+    #                 if sprite.is_weapon:
+    #                     playerShip.weapon = weapon.Weapon(sprite.name)
+    #                 items.remove(sprite)
+
+    #         for sprite in enemy_sprites:
+    #             collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
+    #             if collision:
+    #                 sprite.health -= 1
+    #                 collision.visible = 0
+    #                 player_bullet_sprites.remove(collision)
+    #                 if sprite.health == 0:
+    #                     self.explode.play()                        
+    #                     player_score += sprite.point_value
+    #                     sprite.visible = 0
+    #             if sprite.visible == 0:
+    #                 enemy_sprites.remove(sprite)     
+
+    #         for sprite in player_bullet_sprites:
+    #             if sprite.visible == 0:
+    #                 player_bullet_sprites.remove(sprite)    
+            
+    #         for sprite in enemy_bullet_sprites:
+    #             if sprite.visible == 0:
+    #                 enemy_bullet_sprites.remove(sprite)
+
+    #         bg_y1 += 1
+    #         bg_y += 1
+    #         self.screen.blit(bg,(bg_x,bg_y))
+    #         self.screen.blit(bg,(bg_x1,bg_y1))
+    #         if bg_y > bg_h:
+    #             bg_y = -bg_h
+    #         if bg_y1 > bg_h:
+    #             bg_y1 = -bg_h
+
+    #         #self.screen.blit(bg, bg_rect)
+    #         c1 = self.screen.blit(column, ORIGIN)
+    #         c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
+
+    #         text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
+    #         score_rect = self.screen.blit(score_surf, ORIGIN)
+    #         self.screen.blit(text,ORIGIN)
+
+    #         if DEBUG:
+    #             debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
+    #             debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
+    #             self.screen.blit(debug_text, debug_rect)
+
+    #         for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites, enemy_sprites):
+    #             temp_rects = sprite_list.draw(self.screen)
+    #             #pyganim animation here?
+
+
+    #         pygame.display.flip()
+
+    #         time_since_start += self.clock.tick(FRAMERATE) 
+
     def main(self):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
         bg, bg_rect = load_image('starfield.png')
-        bg_size = bg.get_size()
-        bg_w, bg_h = bg_size
-        bg_x = 0
-        bg_y = 0
-        bg_x1 = 0
-        bg_y1 = -bg_h
-        background.fill(BLACK)
+
         background.blit(bg, ORIGIN)
-        
+
         column = pygame.Surface((COLUMN_WIDTH, SCREEN_HEIGHT))
         column.fill(BLACK)
 
-        #Background sound setup
-        load_background_music('roboCop3NES.ogg')
-        
-        ##Initialize ships
-        playerShip = player.player('spitfire','SweetShip.png',"arrows")
-        bad_guy = enemy.enemy('spitfire','enemy.png')
-        #bad_guy.health = 5 ##Verify boss mechanics
+        background.blit(column, ORIGIN)
+        background.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
+        ##Build our groups
+        bg_sprites = pygame.sprite.LayeredDirty(_default_layer=1)
+        player_sprites = pygame.sprite.LayeredDirty(_default_layer=2)
+        enemy_sprites = pygame.sprite.LayeredDirty(_default_layer=3)
 
-        #spawn a test item
-        collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
-
-        #Initialize sprite groups
-        player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
-        player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
-        enemy_sprites = pygame.sprite.LayeredDirty(bad_guy, _default_layer = 4)
-        enemy_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
-        items=pygame.sprite.LayeredDirty(collectible, _default_layer = 2)
-
-        going=True
-        #fs_toggle = False ##This here is kinda crappy.
-        self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
-        time_since_start = 0
-        player_score = 0
-        ##Clock time setup
+        fs_toggle = True
+        going = True
         while going:
-            ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
+        #set the background
+            bg_sprites.clear(self.screen, background)
+            player_sprites.clear(self.screen, background)
+            enemy_sprites.clear(self.screen, background)
+
             for event in pygame.event.get():
                 if event.type == QUIT:
                     going = False
@@ -231,103 +369,56 @@ class GUI(object):
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
-                    if event.key == K_PAUSE:
-                        self.pause_screen()
-                    if DEBUG:
-                        if event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                            #for i in range(200):
-                            bad_guy = enemy.enemy('spitfire','enemy.png')
-                            enemy_sprites.add(bad_guy)
-                        if event.key == K_F2 and len(player_sprites) == 0:
-                            playerShip = player.player('spitfire','SweetShip.png',"arrows")
-                            player_sprites.add(playerShip)
+                        pygame.display.update()
 
-            ##Keyboard polling
-            keys = pygame.key.get_pressed()
-            addBullet = playerShip.control(keys, FRAMERATE)
-            if addBullet and len(player_sprites) != 0:
-                self.fire_spitfire.play() 
-                bullet = playerShip.fire()
-                player_bullet_sprites.add(bullet)
+            if random.random() < 0.01:
+                new_x = random.randint(COLUMN_WIDTH, SCREEN_WIDTH-COLUMN_WIDTH)
+                new_bg_sprite = bg_object.bg_object(new_x, 0, 4, 'asteroid.png', angle=random.randint(-2,2))
+                bg_sprites.add(new_bg_sprite)
+                print('made an asteroid!')
 
-            ##Helper to call update() on each sprite in the group.    
+            bg_sprites.update()
             player_sprites.update()
-            player_bullet_sprites.update()
             enemy_sprites.update()
-            enemy_bullet_sprites.update()
-            items.update()
-        
-            ##Collision/Out of Bounds detection.
-            for sprite in player_sprites:
-                collision = pygame.sprite.spritecollideany(sprite, enemy_bullet_sprites)
-                if collision == None:
-                    collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
-                    if collision:
-                        self.explode.play()
-                        sprite.visible = 0
-                if sprite.visible == 0:
-                    player_sprites.remove(sprite)
-                    
-            for sprite in items:
-                collision = pygame.sprite.spritecollideany(sprite, player_sprites)
-                if collision:
-                    print('you picked up an item', sprite.name)
-                    sprite.visible = 0
-                    if sprite.is_weapon:
-                        playerShip.weapon = weapon.Weapon(sprite.name)
-                    items.remove(sprite)
 
-            for sprite in enemy_sprites:
-                collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
-                if collision:
-                    sprite.health -= 1
-                    collision.visible = 0
-                    player_bullet_sprites.remove(collision)
-                    if sprite.health == 0:
-                        self.explode.play()                        
-                        player_score += sprite.point_value
-                        sprite.visible = 0
-                if sprite.visible == 0:
-                    enemy_sprites.remove(sprite)     
-
-            for sprite in player_bullet_sprites:
-                if sprite.visible == 0:
-                    player_bullet_sprites.remove(sprite)    
-            
-            for sprite in enemy_bullet_sprites:
-                if sprite.visible == 0:
-                    enemy_bullet_sprites.remove(sprite)
-
-            bg_y1 += 1
-            bg_y += 1
-            self.screen.blit(bg,(bg_x,bg_y))
-            self.screen.blit(bg,(bg_x1,bg_y1))
-            if bg_y > bg_h:
-                bg_y = -bg_h
-            if bg_y1 > bg_h:
-                bg_y1 = -bg_h
-
-            #self.screen.blit(bg, bg_rect)
-            c1 = self.screen.blit(column, ORIGIN)
-            c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
-
-            text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
+            #text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
+            text, score_surf = draw_text("Score: ", WHITE)
             score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
-
             if DEBUG:
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
 
-            for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites, enemy_sprites):
-                temp_rects = sprite_list.draw(self.screen)
-                #pyganim animation here?
+            bg_rects = bg_sprites.draw(self.screen)
+            player_rects = player_sprites.draw(self.screen)
+            enemy_rects = enemy_sprites.draw(self.screen)
+
+            allsprites = []
+            for sprite_list in (bg_rects, player_rects, enemy_rects):
+                for sprite in sprite_list:
+                    allsprites.append(sprite)
+            allsprites.append(score_rect)
+            if DEBUG:
+                allsprites.append(debug_rect)
+
+            pygame.display.update(allsprites)
+
+            for sprite in bg_sprites:
+                if sprite.visible == 0:
+                    bg_sprites.remove(sprite)
+
+            # pygame.display.update(score_rect)
+            # if DEBUG:
+            #     pygame.display.update(debug_rect)
+            # pygame.display.update(bg_rects)
+            # pygame.display.update(player_rects)
+            # pygame.display.update(enemy_rects)
+
+            self.clock.tick_busy_loop(FRAMERATE)
 
 
-            pygame.display.flip()
-
-            time_since_start += self.clock.tick(FRAMERATE) 
+        
 
     def pause_screen(self):
         paused = True
@@ -423,7 +514,9 @@ class GUI(object):
 if __name__=='__main__':
 
     gui = GUI()
-    gui.game_intro()
+    #gui.game_intro()
+    gui.main()
+    pygame.quit()
     
 
 
