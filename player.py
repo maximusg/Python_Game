@@ -13,10 +13,11 @@ class player(entity2.entity2):
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
         self.image, self.rect = load_image(imgFile, -1)
+        self.invul_flag = False
 
         self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
-        self.rect.topleft = 500,600
+        self.rect.center = self.area.centerx, SCREEN_HEIGHT-100
         self.speed = 10
         self.bullet_count = 0
         self.dirty = 2

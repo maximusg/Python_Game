@@ -31,90 +31,6 @@ class GUI(object):
         self.fire_spitfire = load_sound('spitfire.ogg')
         self.fire_laser = load_sound('laser.ogg')
 
-    def credits(self):
-        ##Background setup
-        background = pygame.Surface(self.screen.get_size())
-        background = background.convert()
-        bg, bg_rect = load_image('nebula.jpg')
-        with open('credits.asset') as infile:
-            credit_list = infile.readlines()
-
-        background.fill(BLACK)
-        background.blit(bg, ORIGIN)
-
-        going = True
-        count = 0
-
-        while going:
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    going = False ## TODO - needs different handling than SPACE 
-                elif event.type == KEYDOWN:
-                    if event.key == K_ESCAPE or event.key == K_SPACE:
-                        going = False ## TODO - needs different handling than SPACE
-
-            self.screen.blit(background, ORIGIN)
-
-            x = SCREEN_WIDTH/2
-            y = SCREEN_HEIGHT - count
-
-            for line in credit_list:
-                line = line.strip('\n')
-                text, text_surf = draw_text(line, WHITE)
-                text_rect = text_surf.get_rect()
-                text_rect.center = (x,y)
-                y += 50
-                self.screen.blit(text, text_rect)
-
-            count += 1
-            pygame.display.update()
-
-            if text_rect.bottom < 0: ###because of the for loop, this is guaranteed to be the last line of text
-                going = False
-            self.clock.tick(FRAMERATE)
-
-
-    def high_scores(self):
-        ##Background setup
-        background = pygame.Surface(self.screen.get_size())
-        background = background.convert()
-        bg, bg_rect = load_image('nebula.jpg')
-        background.fill(BLACK)
-        background.blit(bg, ORIGIN)
-
-        hs_list = str(self.hs_list).split(sep='\n')
-
-        going = True
-        count = 0
-
-        while going:
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    going = False ## TODO - needs different handling than SPACE 
-                elif event.type == KEYDOWN:
-                    if event.key == K_ESCAPE or event.key == K_SPACE:
-                        going = False ## TODO - needs different handling than SPACE
-
-
-            self.screen.blit(background, ORIGIN)
-
-            x = SCREEN_WIDTH/2
-            y = SCREEN_HEIGHT - count
-
-            for line in hs_list:
-                text, text_surf = draw_text(line, WHITE)
-                text_rect = text_surf.get_rect()
-                text_rect.center = (x,y)
-                y += 50
-                self.screen.blit(text, text_rect)
-
-            count += 1
-            pygame.display.update()
-
-            if text_rect.bottom < 0:
-                going = False
-            self.clock.tick(FRAMERATE)
-
     def game_intro(self):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
@@ -204,7 +120,7 @@ class GUI(object):
         collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
 
         #Initialize sprite groups
-        player_sprites_invuln = pygame.sprite.LayeredDirty(_default_layer = 4)
+        player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guy, _default_layer = 4)
@@ -218,26 +134,25 @@ class GUI(object):
         player_score = 0
         player_lives = 3
         invuln_timer = 120 ##frames of invulnerability post-death
-        invuln_flag = False
         ##Clock time setup
         while going:
             ##Beginning of the loop checking for death and lives remaining.
-            if len(player_sprites) == 0 and not invuln_flag:
+            if len(player_sprites) == 0 and not playerShip.invul_flag:
                 player_lives -= 1
                 if player_lives:
                     self.death_loop()
                     playerShip = player.player('spitfire','SweetShip.png',"arrows")
-                    invuln_flag = True
-                    player_sprites_invuln.add(playerShip)
+                    playerShip.invul_flag = True
+                    player_sprites_invul.add(playerShip)
                 else:
                     self.game_over(player_score)
                     #break (potentially cleaner than setting going to False)
                     going = False
 
             ##check if the invuln timer is complete
-            if invuln_timer == 0 and len(player_sprites_invuln) != 0:
-                invuln_flag = False
-                player_sprites_invuln.remove(playerShip)
+            if invuln_timer == 0 and len(player_sprites_invul) != 0:
+                playerShip.invul_flag = False
+                player_sprites_invul.remove(playerShip)
                 player_sprites.add(playerShip)
                 invuln_timer = 120
 
@@ -342,8 +257,10 @@ class GUI(object):
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
-            if invuln_flag and invuln_timer//6 % 2 == 0:
-                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites_invuln, player_sprites, enemy_sprites):
+            
+            ##Special handling for when the player respawns.
+            if playerShip.invul_flag and invuln_timer//6 % 2 == 0:
+                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites_invul, player_sprites, enemy_sprites):
                     temp_rects = sprite_list.draw(self.screen)
                     #pyganim animation here?
             else:
@@ -355,7 +272,7 @@ class GUI(object):
             pygame.display.flip()
 
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
-            if invuln_flag:
+            if playerShip.invul_flag:
                 invuln_timer -= 1
 
     def pause_screen(self):
@@ -482,11 +399,7 @@ class GUI(object):
                         name += chr(inkey)
             if name == "":
                 blink(self.screen)
-            show_name(self.screen, name)
-
- 
-
-        
+            show_name(self.screen, name)        
 
     def menu(self):
         bg, bg_rect = load_image('starfield.png')
@@ -554,6 +467,89 @@ class GUI(object):
             self.clock.tick(FRAMERATE//6)
         
         pygame.quit()
+
+    def credits(self):
+        ##Background setup
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        bg, bg_rect = load_image('nebula.jpg')
+        with open('credits.asset') as infile:
+            credit_list = infile.readlines()
+
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
+
+        going = True
+        count = 0
+
+        while going:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    going = False ## TODO - needs different handling than SPACE 
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                        going = False ## TODO - needs different handling than SPACE
+
+            self.screen.blit(background, ORIGIN)
+
+            x = SCREEN_WIDTH/2
+            y = SCREEN_HEIGHT - count
+
+            for line in credit_list:
+                line = line.strip('\n')
+                text, text_surf = draw_text(line, WHITE)
+                text_rect = text_surf.get_rect()
+                text_rect.center = (x,y)
+                y += 50
+                self.screen.blit(text, text_rect)
+
+            count += 1
+            pygame.display.update()
+
+            if text_rect.bottom < 0: ###because of the for loop, this is guaranteed to be the last line of text
+                going = False
+            self.clock.tick(FRAMERATE)
+
+    def high_scores(self):
+        ##Background setup
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        bg, bg_rect = load_image('nebula.jpg')
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
+
+        hs_list = str(self.hs_list).split(sep='\n')
+
+        going = True
+        count = 0
+
+        while going:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    going = False ## TODO - needs different handling than SPACE 
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                        going = False ## TODO - needs different handling than SPACE
+
+
+            self.screen.blit(background, ORIGIN)
+
+            x = SCREEN_WIDTH/2
+            y = SCREEN_HEIGHT - count
+
+            for line in hs_list:
+                text, text_surf = draw_text(line, WHITE)
+                text_rect = text_surf.get_rect()
+                text_rect.center = (x,y)
+                y += 50
+                self.screen.blit(text, text_rect)
+
+            count += 1
+            pygame.display.update()
+
+            if text_rect.bottom < 0:
+                going = False
+            self.clock.tick(FRAMERATE)
             
 
 if __name__=='__main__':
