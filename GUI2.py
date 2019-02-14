@@ -90,7 +90,7 @@ class GUI(object):
 
         gui.menu()
 
-    def main(self):
+    def main(self,cheat=False):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
@@ -132,7 +132,10 @@ class GUI(object):
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
         player_score = 0
-        player_lives = 3
+        if cheat:
+            player_lives = 100
+        else:
+            player_lives = 3
         invuln_timer = 120 ##frames of invulnerability post-death
         ##Clock time setup
         while going:
