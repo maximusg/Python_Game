@@ -212,7 +212,7 @@ class GUI(object):
             for sprite in items:
                 collision = pygame.sprite.spritecollideany(sprite, player_sprites)
                 if collision:
-                    print('you picked up an item', sprite.name)
+                    # print('you picked up an item', sprite.name)
                     sprite.visible = 0
                     if sprite.is_weapon:
                         playerShip.weapon = weapon.Weapon(sprite.name)
@@ -432,6 +432,8 @@ class GUI(object):
                     elif event.key == K_SPACE:
                         if code_accepted:
                             gui.main(cheat=True)
+                            in_code = []
+                            code_accepted = False
                         else:
                             gui.main()
                     elif event.key == K_s:

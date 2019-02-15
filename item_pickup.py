@@ -7,7 +7,7 @@ class item(entity2.entity2):
     def __init__(self, origin_x, origin_y, speed, path_to_img, angle = 0, name = None):
         super().__init__()
         self.speed = speed
-        print('path to img', path_to_img)
+        # print('path to img', path_to_img)
         self.image, self.rect = load_image(path_to_img)
         self.image = self.image.convert()
         self.rect.centerx, self.rect.top = origin_x, origin_y
@@ -49,5 +49,5 @@ class item(entity2.entity2):
         else:
             self.visible = 0
             self.dirty = 1
-            print('i died') #DEBUGGING, remove when done
+            # print('i died') #DEBUGGING, remove when done
 
