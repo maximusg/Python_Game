@@ -55,7 +55,7 @@ class Move(object):
         else: self.currMove -=1 #decrments 1 frame from move count
         return False
         
-    def Move(self,spriteObject):
+    def update(self,spriteObject):
         
         if self.__updateCurrMove__(): # will initialize currSpeed, currMove, and currBehavior, and return True if no more moves left
             if not self.exitsceen: #will update reset the bahavior
