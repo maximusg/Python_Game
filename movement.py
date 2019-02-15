@@ -20,7 +20,6 @@ class Move(object):
         self.currBehavior = None
         self.moveCounts = moveCountArray# array frame amounts to do move count
         self.currMove = 0 
-        self.__updateCurrMove__()
         self.speeds = speedArray #used to change speeds between behaviors, if no more speeds left, defaults to last speed given
         self.currSpeed = 0 
         self.exitsceen = exitscreen #if true, this behaivor will result in enemy moving down and off screen after executing movements to be deleted else enemy will stay put
@@ -58,7 +57,7 @@ class Move(object):
         
     def Move(self,spriteObject):
         
-        if self.__updateCurrMove__(): # checks if there are no more moves left
+        if self.__updateCurrMove__(): # will initialize currSpeed, currMove, and currBehavior, and return True if no more moves left
             if not self.exitsceen: #will update reset the bahavior
                 self.save[0]
                 self.behaviors = self.save[0] 
