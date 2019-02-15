@@ -47,6 +47,8 @@ class LevelLoader():
         except:
             return False #GUI handles false with no behavior
         timeEvents = {"player":[],"enemy":[],"bullets":[]}
+        del self.level["time"][str(levelTime)] #removes this time entry from the dictionary
+        
 
         for each in events:
             if each in self.TIME_TYPES:
@@ -65,6 +67,8 @@ class LevelLoader():
                         timeEvents["bullets"].append(bullet)
                 if each == "background":
                     timeEvents["background"]=events[each]
+
+        
         return timeEvents #all sprites and background in a dictionary returned to GUI
 
         # bad_guy = enemy.enemy('spitfire','enemy.png')
