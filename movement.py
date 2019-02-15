@@ -58,7 +58,7 @@ class Move(object):
         
     def Move(self,spriteObject):
         
-        if self.__updateCurrMove__():
+        if self.__updateCurrMove__(): # checks if there are no more moves left
             if not self.exitsceen: #will update reset the bahavior
                 self.save[0]
                 self.behaviors = self.save[0] 
@@ -72,7 +72,6 @@ class Move(object):
                 self.__updateCurrMove__()
         
         updatedObject = self.behaveDict[self.currBehavior](spriteObject)
-        self.__updateCurrMove__()
         return updatedObject
 
     # def upAndDown(self):
