@@ -8,54 +8,54 @@ Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up an
 
 
 class Move(object):
-    def __init__(self, rect_to_move, behaviorArray, moveCountArray, speedArray=10, exitscreen=True):
+    def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], exitscreen=True):
 
-        behaveDic = {"dive": self.__dive__(), "up":self.__up__(), 
-        "left":self.__left__(), "right":self.__right__()}
+        behaveDic = {"down": self.__dive__(), "up":self.__up__(), 
+        "left":self.__left__(), "right":self.__right__(), "stop": self.__stop__()}
  
         self.beaviors = behaviorArray #list of things to run from the behaveDic
         self.moveCounts = moveCountArray# array frame amounts to do move count
+        self.currMove = None 
+        self.__updateCurrMove__()
         self.speeds = speedArray #used to change speeds between behaviors, if no more speeds left, defaults to last speed given
-        self.speed = self.latestSpeed() #method that will update the current speed from self.speeds,
-        self.exitsceen = exitscreen #if true, this behaivor will result in enemy off screen and gone
-        
-        #execute default behaviors
+        self.speed = self.__latestSpeed__() #method that will update the current speed from self.speeds,
+        self.exitsceen = exitscreen #if true, this behaivor will result in enemy moving down and off screen after executing movements to be deleted else enemy will stay put
 
-        
-        #self.rect.centerx, self.rect.top origin_x, origin_y
 
-        #location
-        #self.origin_x = origin_x
-        #self.origin_y = origin_y
 
-        self.rect = rect_to_move
-        self.rect
 
-        #angle and speed
-        self.angle = angle
-        self.speed = speed
+    def __up__(self):
+        pass
+    def __down__(self):
+        pass
+    def __left__(self):
+        pass
+    def __right__(self):
+        pass
+    def __stop__(self):
+        pass
+    def __updateCurrMove__():
+        pass
+    def __latestSpeed__():
+        pass
+    def Move(self):
+        pass
+    
 
-        #move limit is how much is moved before changing behavior, reversed and move_counter can be used to track this
-        self.move_limit = move_limit
-        self.reversed = False
-        self.move_counter = 0
+    # def upAndDown(self):
+    #     if self.reversed == False:
+    #             self.rect = self.rect.move(self.angle,-self.speed)
+    #             self.move_counter += 1
 
-        print(id(self.rect), self.angle, self.speed, self.move_limit)
+    #             if self.move_counter == self.move_limit:
+    #                 self.reversed = True
 
-    def upAndDown(self):
-        if self.reversed == False:
-                self.rect = self.rect.move(self.angle,-self.speed)
-                self.move_counter += 1
+    #     elif self.reversed == True:
 
-                if self.move_counter == self.move_limit:
-                    self.reversed = True
+    #         self.rect = self.rect.move(self.angle, self.speed)
+    #         self.move_counter -= 1
 
-        elif self.reversed == True:
-
-            self.rect = self.rect.move(self.angle, self.speed)
-            self.move_counter -= 1
-
-            if self.move_counter == 0:
-                self.reversed = False
+    #         if self.move_counter == 0:
+    #             self.reversed = False
 
 
