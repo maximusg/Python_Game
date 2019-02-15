@@ -6,6 +6,8 @@
 import weapon
 import player
 import enemy
+import bullet
+from library import *
 
 
 import json
@@ -44,34 +46,67 @@ class LevelLoader():
             events = self.level["time"][str(levelTime)]
         except:
             return False #GUI handles false with no behavior
-        sprites = []
+        timeEvents = {"player":[],"enemy":[],"bullets":[]}
 
         for each in events:
             if each in self.TIME_TYPES:
                 if each == "player":
                     print(events[each])
                     playerShip = player.player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
-                    # print(playerShip)
+                    timeEvents["player"].append(playerShip)
+                if each == "enemy":
+                    health = events[each]["health"]
+                    for enemyType in events[each]["class"]:
+                        enemy = self.enemyClass(enemyType, health)
+                        timeEvents["enemy"].append(enemy)
+                if each == "enemyBullets":
+                    for bulletType in events[each]["class"]:
+                        bullet = self.bulletClass(bulletType)
+                        timeEvents["bullets"].append(bullet)
+                if each == "background":
+                    timeEvents["background"]=events[each]
+        return timeEvents #all sprites and background in a dictionary returned to GUI
+
         # bad_guy = enemy.enemy('spitfire','enemy.png')
 
 
     def getEndBehavior(self):
         '''returns how the level can end'''
-        pass
+        try:
+            events = self.level["end"]
+        except:
+            return False #GUI handles false with no behavior
+        
+        end = events #returns dictionary with "time" last time in level and boss at end "true or false"
         
         
 
-    def enemyClass(self,className):
+    def enemyClass(self,className, health):
         '''contructs and returns enemies based off a 1 input nameing convention'''
-        pass
+        enemySprite = None
+        if className == "powermanLeft":
+            enemySprite = enemy.enemy('spitfire','enemy.png') # this will change, need to add spawn location and behavior
+        if className == "spritzRight":
+            enemySprite = enemy.enemy('spitfire','enemy.png') # this will change, need to add spawn location and behavior
+
+        return enemySprite
+
+
         
     def playerClass(self,className):
-        '''contructs and returns player object for spawn purposes'''
+        '''contructs and returns player object for spawn purposes, 
+            could load a player saved state profile for unique ships'''
         pass
     
     def bulletClass (self,className):
         '''contructs and returns enemy bullets off a 1 input nameing convention'''
-        pass
+        bulletSprite = None
+        if className == "downwardLeft":
+            bulletSprite = bullet.bullet(30,SCREEN_HEIGHT, 10, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
+        if className == "downwardRight":
+            bulletSprite = bullet.bullet(SCREEN_WIDTH-30,SCREEN_HEIGHT, 10, "bullet_art.png", 180 ) # this will change, need to add spawn location and behavior
+
+        return bulletSprite
 
         #delete items for each time called
         
@@ -79,7 +114,17 @@ class LevelLoader():
 #************* automated tests run below
 #
 if __name__ == "__main__":
-    loader = LevelLoader(3)
-    loader.getEvents(0)
+    import pygame
+
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen.fill(BLACK)
+    pygame.display.set_caption('Testy mcTetsterson')
+
+
+    loader = LevelLoader(3) #loads level 3
+    dic=loader.getEvents(0) #retrieves all the objects from time 0
+
+    print(dic)
 
         
