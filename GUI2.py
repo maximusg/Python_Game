@@ -256,9 +256,13 @@ class GUI(object):
             score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
+            lives_text, lives_surf = draw_text('Lives Remaining: '+str(player_lives), WHITE)
+            lives_rect = self.screen.blit(lives_surf, (0, score_rect.bottom))
+            self.screen.blit(lives_text, lives_rect)
+
             if DEBUG:
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
-                debug_rect = self.screen.blit(debug_surf, (0, score_rect.bottom))
+                debug_rect = self.screen.blit(debug_surf, (0, lives_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
             
             ##Special handling for when the player respawns.
@@ -414,6 +418,9 @@ class GUI(object):
         y1 = -h
 
         going = True
+        konami = [K_UP, K_UP, K_DOWN, K_DOWN, K_LEFT, K_RIGHT, K_LEFT, K_RIGHT, K_b, K_a, K_RETURN]
+        in_code  = []
+        code_accepted = False
 
         while going:
             for event in pygame.event.get():
@@ -423,7 +430,10 @@ class GUI(object):
                     if event.key == K_ESCAPE:
                         going = False
                     elif event.key == K_SPACE:
-                        gui.main()
+                        if code_accepted:
+                            gui.main(cheat=True)
+                        else:
+                            gui.main()
                     elif event.key == K_s:
                         gui.high_scores()
                     elif event.key == K_c:
@@ -434,6 +444,24 @@ class GUI(object):
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+                    elif event.key == K_UP:
+                        in_code.append(K_UP)
+                    elif event.key == K_DOWN:
+                        in_code.append(K_DOWN)
+                    elif event.key == K_LEFT:
+                        in_code.append(K_LEFT)
+                    elif event.key == K_RIGHT:
+                        in_code.append(K_RIGHT)
+                    elif event.key == K_b:
+                        in_code.append(K_b)
+                    elif event.key == K_a:
+                        in_code.append(K_a)
+                    elif event.key == K_RETURN:
+                        in_code.append(K_RETURN)
+                        if in_code == konami:
+                            code_accepted = True
+                        else:
+                            in_code = []
                         
             y1 += 1
             y += 1
@@ -460,10 +488,16 @@ class GUI(object):
             text_rect4 = text4.get_rect()
             text_rect4.centerx, text_rect4.top = text_rect3.centerx, text_rect3.bottom
 
+            text5, text5_surf = draw_text('CODE ACCEPTED. ENJOY YOUR GAME!', WHITE)
+            text_rect5 = text5.get_rect()
+            text_rect5.centerx, text_rect5.bottom = text_rect4.centerx, SCREEN_HEIGHT
+
             self.screen.blit(text1, text_rect1)
             self.screen.blit(text2, text_rect2)
             self.screen.blit(text3, text_rect3)
             self.screen.blit(text4, text_rect4)
+            if code_accepted:
+                self.screen.blit(text5, text_rect5)
 
             pygame.display.update()
 
