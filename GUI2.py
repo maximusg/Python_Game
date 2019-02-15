@@ -589,7 +589,17 @@ class GUI(object):
             if text_rect.bottom < 0:
                 going = False
             self.clock.tick(FRAMERATE)
-            
+
+    def level_loop(self):
+        still_playing = True
+        curr_level = first_level
+        while still_playing:
+            curr_level = self.main(curr_level)
+            if curr_level == None: ##game over
+                still_playing = False
+            elif curr_level == 'the end':
+                self.ending()
+                still_playing = False           
 
 if __name__=='__main__':
 
