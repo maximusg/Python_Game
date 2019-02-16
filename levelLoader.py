@@ -40,7 +40,7 @@ class LevelLoader():
     def nextLevel(self):
         '''Attempts to load the next level, if success returns True, else False'''
         self.levelNumber += 1
-        self.levelName = "level"+self.levelNumber 
+        self.levelName = "levels/"+"level"+str(self.levelNumber)+".json"
         self.success = self.__levelLoad__()
         return self.success
 
@@ -60,7 +60,6 @@ class LevelLoader():
         for each in events:
             if each in self.TIME_TYPES:
                 if each == "player":
-                    print(events[each])
                     playerShip = player.player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
                     timeEvents["player"].append(playerShip)
                 if each == "enemy":
@@ -88,7 +87,7 @@ class LevelLoader():
         except:
             return False #GUI handles false with no behavior
         
-        end = events #returns dictionary with "time" last time in level and boss at end "true or false"
+        return events #returns dictionary with "time" last time in level and boss at end "true or false"
         
         
 
@@ -142,12 +141,25 @@ if __name__ == "__main__":
     screen.fill(BLACK)
     pygame.display.set_caption('Testy mcTetsterson')
 
-
+    dic ={}
     loader = LevelLoader() #loads level 1 by default
-    if loader.success:
-        dic=loader.getEvents(5) #dic returns False if nothing to load at that time
+    pretendLevelTime=0
+    
+    while loader.success:
+        levelEndTime = loader.getEndBehavior()["time"] #needs error checkingi n case level doesn't have end time. Also levels could hae end boss as well
+        
+        dic=loader.getEvents(pretendLevelTime) #dic returns False if nothing to load at that time
+        if dic != False:
+            print(loader.levelName)
+            print("TIME: " , pretendLevelTime, " " , dic)
 
-    if dic != False:
-        print(dic)
+        pretendLevelTime +=1
+        if pretendLevelTime == levelEndTime:
+            loader.nextLevel()
+            pretendLevelTime =0
 
+
+    
+    # print ("HERE IT IS",dic)
+    
         

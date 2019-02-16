@@ -8,7 +8,7 @@ from library import *
 
 
 
-levelName="level1.json" #level follwed level_number
+levelName="level2.json" #level follwed level_number
 writeLocation = "levels/"+levelName
 data = {
     "time":{ 0: #time zero
