@@ -18,7 +18,8 @@ import json
 class LevelLoader():
     def __init__(self, startingLevelNumber=1):
         self.levelNumber = startingLevelNumber
-        self.levelName = "levels/"+"level"+str(self.levelNumber)+".json"
+        # self.levelName = "level"+str(self.levelNumber)
+        # self.levelPath = "levels/"+self.levelName+".json"
         self.level = None
         self.success = self.__levelLoad__()
         self.DICTYPES = ["time", "end"]
@@ -26,12 +27,45 @@ class LevelLoader():
         # self.PLAYER_TYPES = ["health", "location", "image"]
         # self.ENEMY_TYPES = ["class", "health"]
         # self.ENEMYBULLETS_TYPE = ["class"]
+
+    @property
+    def levelNumber(self):
+        return self.__levelNumber
+
+    @levelNumber.setter
+    def levelNumber(self,number):
+        self.__levelNumber = number
+    
+    @property
+    def levelName(self):
+        return "level"+str(self.levelNumber)
+
+    @property
+    def levelPath(self):
+        return "levels/"+self.levelName+".json"
+
+
+    @property
+    def success(self):
+        return self.__success
+    @success.setter
+    def success(self, tORf):
+        self.__success = tORf
+    
+    # @property 
+    # def DICTYPES(self):
+    #     return self.__DICTYPES
+    
+    # @property
+    # def TIMETYPES(self):
+    #     return self.__TIME_TYPES
+        
        
 
     def __levelLoad__(self):
         
         try:
-            with open (self.levelName,"r") as read_file:
+            with open (self.levelPath,"r") as read_file:
                 self.level= json.load(read_file)
         except FileNotFoundError as Error:
             return False
@@ -40,7 +74,8 @@ class LevelLoader():
     def nextLevel(self):
         '''Attempts to load the next level, if success returns True, else False'''
         self.levelNumber += 1
-        self.levelName = "levels/"+"level"+str(self.levelNumber)+".json"
+        # self.levelName
+        # self.levelPath = "levels/"+"level"+str(self.levelNumber)+".json"
         self.success = self.__levelLoad__()
         return self.success
 
