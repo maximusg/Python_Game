@@ -136,7 +136,7 @@ if __name__ == "__main__":
     pygame.display.set_caption('Testy mcTetsterson')
 
 
-    loader = LevelLoader(3) #loads level 3
+    loader = LevelLoader(1) #loads level 3
     dic=loader.getEvents(0) #retrieves all the objects from time 0
 
     print(dic)
