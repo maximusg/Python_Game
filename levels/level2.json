@@ -1,0 +1,52 @@
+{
+    "end": {
+        "boss": false,
+        "time": 15
+    },
+    "time": {
+        "0": {
+            "background": "starfield.png",
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight"
+                ],
+                "health": 1
+            },
+            "enemyBullets": {
+                "class": [
+                    "downwardLeft",
+                    "downwardRight"
+                ]
+            },
+            "player": {
+                "health": 1,
+                "image": "SweetShip.png",
+                "location": [
+                    500,
+                    700
+                ],
+                "scheme": " arrows",
+                "weapon": "spitfire"
+            }
+        },
+        "5": {
+            "enemy": {
+                "class": [
+                    "camperMid",
+                    "camperRight"
+                ],
+                "health": 1
+            }
+        },
+        "10": {
+            "enemy": {
+                "class": [
+                    "diverLeft",
+                    "camperRight"
+                ],
+                "health": 1
+            }
+        }
+    }
+}
