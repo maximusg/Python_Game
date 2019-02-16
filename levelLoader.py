@@ -16,26 +16,33 @@ import json
 
 
 class LevelLoader():
-    def __init__(self, startingLevelNumber):
+    def __init__(self, startingLevelNumber=1):
         self.levelNumber = startingLevelNumber
         self.levelName = "levels/"+"level"+str(self.levelNumber)+".json"
         self.level = None
-        self.__levelLoad__()
+        self.success = self.__levelLoad__()
         self.DICTYPES = ["time", "end"]
         self.TIME_TYPES = ["player", "enemy", "enemyBullets", "background"]
         # self.PLAYER_TYPES = ["health", "location", "image"]
         # self.ENEMY_TYPES = ["class", "health"]
         # self.ENEMYBULLETS_TYPE = ["class"]
-
+       
 
     def __levelLoad__(self):
-        with open (self.levelName,"r") as read_file:
-            self.level= json.load(read_file)
+        
+        try:
+            with open (self.levelName,"r") as read_file:
+                self.level= json.load(read_file)
+        except FileNotFoundError as Error:
+            return False
+        return True
 
     def nextLevel(self):
+        '''Attempts to load the next level, if success returns True, else False'''
         self.levelNumber += 1
         self.levelName = "level"+self.levelNumber 
-        self.level = self.__levelLoad__()
+        self.success = self.__levelLoad__()
+        return self.success
 
 
     
@@ -136,9 +143,11 @@ if __name__ == "__main__":
     pygame.display.set_caption('Testy mcTetsterson')
 
 
-    loader = LevelLoader(1) #loads level 3
-    dic=loader.getEvents(0) #retrieves all the objects from time 0
+    loader = LevelLoader() #loads level 1 by default
+    if loader.success:
+        dic=loader.getEvents(5) #dic returns False if nothing to load at that time
 
-    print(dic)
+    if dic != False:
+        print(dic)
 
         
