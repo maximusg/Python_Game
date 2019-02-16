@@ -1,50 +1,23 @@
 {
     "end": {
-        "boss": null,
+        "boss": false,
         "time": 15
     },
     "time": {
         "0": {
+            "background": "starfield.png",
             "enemy": {
-                "behaviors": [
-                    "dive",
-                    "spin"
+                "class": [
+                    "diveLeft",
+                    "diveRight"
                 ],
-                "centers": [
-                    [
-                        0,
-                        0
-                    ],
-                    [
-                        50,
-                        0
-                    ]
-                ],
-                "health": 1,
-                "images": [
-                    "enemy.png",
-                    "enemy.png"
-                ],
-                "number": 2,
-                "weapons": [
-                    "spitfire",
-                    "spitfire"
-                ]
+                "health": 1
             },
             "enemyBullets": {
-                "behaviors": [
-                    "horizontal_spitfire"
-                ],
-                "centers": [
-                    [
-                        900,
-                        400
-                    ]
-                ],
-                "images": [
-                    "bullet_art.png"
-                ],
-                "number": 1
+                "class": [
+                    "downwardLeft",
+                    "downwardRight"
+                ]
             },
             "player": {
                 "health": 1,
@@ -52,48 +25,27 @@
                 "location": [
                     500,
                     700
-                ]
+                ],
+                "scheme": " arrows",
+                "weapon": "spitfire"
             }
         },
         "5": {
             "enemy": {
-                "behaviors": [
-                    "dive",
-                    "spin",
-                    "dive"
+                "class": [
+                    "camperMid",
+                    "camperRight"
                 ],
-                "centers": [
-                    [
-                        0,
-                        0
-                    ],
-                    [
-                        300,
-                        0
-                    ],
-                    [
-                        800,
-                        0
-                    ]
+                "health": 1
+            }
+        },
+        "10": {
+            "enemy": {
+                "class": [
+                    "diverLeft",
+                    "camperRight"
                 ],
-                "health": 2,
-                "images": [
-                    "enemy.png",
-                    "enemy.png",
-                    "enemy.png"
-                ],
-                "number": 3,
-                "weapons": [
-                    "spitfire",
-                    "spitfire",
-                    "spitefire"
-                ]
-            },
-            "enemyBullets": {
-                "behaviors": [],
-                "centers": [],
-                "images": [],
-                "number": 0
+                "health": 1
             }
         }
     }

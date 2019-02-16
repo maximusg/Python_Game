@@ -8,7 +8,7 @@ from library import *
 
 
 
-levelName="level3.json" #level follwed level_number
+levelName="level1.json" #level follwed level_number
 writeLocation = "levels/"+levelName
 data = {
     "time":{ 0: #time zero
@@ -20,7 +20,7 @@ data = {
                 "scheme": " arrows",
                 },
             "enemy":{
-                "class":["powermanLeft","spritzRight"],
+                "class":["diveLeft","diveRight"],
                 "health": 1
                 },
             "enemyBullets":{
@@ -30,24 +30,19 @@ data = {
 
             },
             5: #time 5 seconds elapsed
-            {"enemy":{ #note that player info removed
-                "number":3,
-                "weapons":["spitfire","spitfire","spitefire"],
-                "images":["enemy.png","enemy.png", "enemy.png"],
-                "behaviors": ["dive","spin","dive"],
-                "layer":[BG,GROUND,ITEM,AIR,OVERHEAD],
-                "health": 2, #enemyhealth= enemyClassHealth*2
-                "centers":[(0,0),(300,0),(800,0)]
+            {"enemy":{
+                "class":["camperMid","camperRight"],
+                "health": 1
                 },
-            "enemyBullets":{# note, there are zero bullets thus other properties uncessary
-                "number":0,
-                "images":[],
-                "behaviors": [],
-                "centers":[]
-                }
+            },
+            10: #time 5 seconds elapsed
+            {"enemy":{
+                "class":["diverLeft","camperRight"],
+                "health": 1
+                },
             }
         },
-    "end": {"time":15, "boss":None} #this gives the ending parameters
+    "end": {"time":15, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
