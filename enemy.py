@@ -5,7 +5,7 @@ from library import *
 
 
 class enemy(entity2.entity2):
-	def __init__(self, origin_x, origin_y, imgFile="enemy.png", speed=1, behavior="dive", weapon="spitfire", health=1):
+	def __init__(self, origin_x, origin_y, imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1):
 		super().__init__()
 		self.weapon = weapon
 		self.point_value = 500
@@ -17,9 +17,13 @@ class enemy(entity2.entity2):
 		self.rect.x = origin_x
 		self.rect.y = origin_y
 
-		self.behaveDic = {"diver":__diver__(), 
-		"camper":__camper__(), "sleeper":__sleeper__()}
-		self.movement = self.behaveDic[behavior]
+		self.behaveDic = {
+			"diver":self.__diver__, 
+			"camper":self.__camper__, 
+			"sleeper":self.__sleeper__
+			}
+		
+		self.movement = self.behaveDic[behavior]()
 
 	def __diver__(self):
 		return movement.Move(speedArray=[10*self.speed]) #default behavior for object, could increase/decrease speed

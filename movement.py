@@ -10,8 +10,13 @@ Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up an
 class Move(object):
     def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], exitscreen=True):
 
-        behaveDic = {"down": self.__down__(), "up":self.__up__(), 
-        "left":self.__left__(), "right":self.__right__(), "stop": self.__stop__()}
+        self.behaveDic = {
+            "down": self.__down__, 
+            "up":self.__up__, 
+            "left":self.__left__, 
+            "right":self.__right__, 
+            "stop": self.__stop__
+            }
 
         self.save=[]
         if exitscreen==False:
