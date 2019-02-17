@@ -1,5 +1,5 @@
 import json
-from library import *
+# from library import *
 from levelLibrary import *
 
 
@@ -15,24 +15,24 @@ data = {
     "time":{ 0: #time zero
             {"player":{ #starting info if dead
                 "health":1,
-                "location":(500,700),
+                "location":[500,700],
                 "image":"SweetShip.png",
                 "weapon": "spitfire",
                 "scheme": "arrows",
                 },
             "enemy":{
-                "class":ENEMY_camperMid,
+                "class": [ ENEMY_camperMid ],
                 "health": 1
                 },
             "enemyBullets":{
-                "class": [BULLET_downwardLeft,BULLET_downwardRight],
+                "class": [ BULLET_downwardLeft,BULLET_downwardRight ],
                 },
             "background": BG_STARFIELD
 
             },
             5: #time 5 seconds elapsed
             {"enemy":{
-                "class":[ENEMY_diveLeft,ENEMY_diveRight],
+                "class":[ ENEMY_diveLeft,ENEMY_diveRight] ,
                 "health": 1
                 },
             },
@@ -42,12 +42,14 @@ data = {
                 "health": 1
                 },
             }
-        },
+    },
     "end": {"time":15, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
 }
+
+print(JSONCHECKER(data))
 
 #When we execute levelMaker in Python, it saves a copy of the script we build
 with open (writeLocation,"w") as write_file:

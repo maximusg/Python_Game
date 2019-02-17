@@ -21,8 +21,7 @@ class LevelLoader():
         # self.levelPath = "levels/"+self.levelName+".json"
         self.level = None
         self.success = self.__levelLoad__()
-        self.DICTYPES = ["time", "end"]
-        self.TIME_TYPES = ["player", "enemy", "enemyBullets", "background"]
+       
         # self.PLAYER_TYPES = ["health", "location", "image"]
         # self.ENEMY_TYPES = ["class", "health"]
         # self.ENEMYBULLETS_TYPE = ["class"]
@@ -89,12 +88,12 @@ class LevelLoader():
             events = self.level["time"][str(levelTime)]
         except:
             return False #GUI handles false with no behavior
-        timeEvents = {"player":[],"enemy":[],"bullets":[]}
+        timeEvents = {"player":[],"enemy":[],"bullets":[],"items":[],"background":None}
         del self.level["time"][str(levelTime)] #removes this time entry from the dictionary
         
 
         for each in events:
-            if each in self.TIME_TYPES:
+            if each in TIME_TYPES:
                 if each == "player":
                     playerShip = player.player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
                     timeEvents["player"].append(playerShip)
@@ -107,6 +106,11 @@ class LevelLoader():
                     for bulletType in events[each]["class"]:
                         bullet = self.bulletClass(bulletType)
                         timeEvents["bullets"].append(bullet)
+                if each == "items":
+                    for items in events[each]["class"]:
+                        # item = self.bulletClass(bulletType)
+                        # timeEvents["items"].append(item)
+                        pass
                 if each == "background":
                     timeEvents["background"]=events[each]
 

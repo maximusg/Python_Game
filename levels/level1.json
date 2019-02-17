@@ -7,7 +7,9 @@
         "0": {
             "background": "starfield.png",
             "enemy": {
-                "class": "camperMid",
+                "class": [
+                    "camperMid"
+                ],
                 "health": 1
             },
             "enemyBullets": {
