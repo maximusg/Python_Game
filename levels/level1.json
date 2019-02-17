@@ -9,7 +9,10 @@
             "enemy": {
                 "class": [
                     "diveLeft",
-                    "diveRight"
+                    "diveRight",
+                    "camperMid",
+                    "camperRight",
+                    "sleeperMid"
                 ],
                 "health": 1
             },
@@ -26,15 +29,15 @@
                     500,
                     700
                 ],
-                "scheme": " arrows",
+                "scheme": "arrows",
                 "weapon": "spitfire"
             }
         },
         "5": {
             "enemy": {
                 "class": [
-                    "camperMid",
-                    "camperRight"
+                    "diveLeft",
+                    "diveRight"
                 ],
                 "health": 1
             }
@@ -42,8 +45,8 @@
         "10": {
             "enemy": {
                 "class": [
-                    "diverLeft",
-                    "camperRight"
+                    "camperMid",
+                    "camperMid"
                 ],
                 "health": 1
             }

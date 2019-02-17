@@ -10,7 +10,7 @@ from library import *
 import random
 import highscore
 import item_pickup
-import pyganim
+# import pyganim
 
 class GUI(object):
     def __init__(self):

@@ -26,19 +26,19 @@ class enemy(entity2.entity2):
 		self.movement = self.behaveDic[behavior]()
 
 	def __diver__(self):
-		return movement.Move(speedArray=[10*self.speed]) #default behavior for object, could increase/decrease speed
+		return movement.Move(speedArray=[1*self.speed]) #default behavior for object, could increase/decrease speed
 	
 	def __camper__(self):#stays on the screen camping, will progress down the screen slowly doing squares
 		behaviorArray = ["down","stop","left","stop","up","stop","right"]
 		moveCountArray = [80,	100,	40,		100,  50,	100,	40]
-		speedArray = [	  25*self.speed,	5*self.speed]
+		speedArray = [	  1*self.speed,	2*self.speed]
 		return movement.Move(behaviorArray,moveCountArray,speedArray,False)
 	
 
 	def __sleeper__(self):# moves down and stops for a LLLONG time =, the wiggles left and right FAST, the stops again, the dives down
-		behaviorArray = ["down","stop","left","right","stop","down","right"]
-		moveCountArray = [80,	600,	40,		40,  	600,	800]
-		speedArray = [	  5*self.speed,	25*self.speed]
+		behaviorArray = ["down","stop","left","right"]
+		moveCountArray = [80,	600,	40,		40]
+		speedArray = [	  1*self.speed,	2*self.speed]
 		return movement.Move(behaviorArray,moveCountArray,speedArray)
 	
 	def move(self, x, y):

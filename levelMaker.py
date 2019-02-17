@@ -1,5 +1,6 @@
 import json
 from library import *
+from levelLibrary import *
 
 
 ##Create Levels here with this level maker! Just make a dictionary with spawn times and enemies, and the background elements.
@@ -8,7 +9,7 @@ from library import *
 
 
 
-levelName="level2.json" #level follwed level_number
+levelName="level1.json" #level follwed level_number
 writeLocation = "levels/"+levelName
 data = {
     "time":{ 0: #time zero
@@ -17,27 +18,27 @@ data = {
                 "location":(500,700),
                 "image":"SweetShip.png",
                 "weapon": "spitfire",
-                "scheme": " arrows",
+                "scheme": "arrows",
                 },
             "enemy":{
-                "class":["diveLeft","diveRight"],
+                "class":ENEMY_basicCluster,
                 "health": 1
                 },
             "enemyBullets":{
-                "class": ["downwardLeft","downwardRight"],
+                "class": [BULLET_downwardLeft,BULLET_downwardRight],
                 },
-            "background": "starfield.png"
+            "background": BG_STARFIELD
 
             },
             5: #time 5 seconds elapsed
             {"enemy":{
-                "class":["camperMid","camperRight"],
+                "class":[ENEMY_diveLeft,ENEMY_diveRight],
                 "health": 1
                 },
             },
             10: #time 5 seconds elapsed
             {"enemy":{
-                "class":["diverLeft","camperRight"],
+                "class":[ENEMY_camperMid,ENEMY_camperMid],
                 "health": 1
                 },
             }

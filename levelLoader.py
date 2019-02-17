@@ -8,6 +8,7 @@ import player
 import enemy
 import bullet
 from library import *
+from levelLibrary import *
 
 
 import json
@@ -130,19 +131,20 @@ class LevelLoader():
         '''contructs and returns enemies based off a 1 input nameing convention'''
         ''' can add enemy classes, just contruct new enemy type'''
         enemySprite = None
-        if className == "diveLeft":
-            enemySprite = enemy.enemy(30,0, health=health) # this will change, need to add spawn location and behavior
-        if className == "diveRight":
-            enemySprite = enemy.enemy(SCREEN_WIDTH-30,0) # this will change, need to add spawn location and behavior
-        if className == "sleeperMid":
+        if className == ENEMY_diveLeft:
+            enemySprite = enemy.enemy(COLUMN_WIDTH,0, health=health) # this will change, need to add spawn location and behavior
+        elif className == ENEMY_diveRight:
+            enemySprite = enemy.enemy(COLUMN_WIDTH*4,0) # this will change, need to add spawn location and behavior
+        elif className == ENEMY_sleeperMid:
             enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, behavior="sleeper",health=health)
-        if className == "camperMid":
+        elif className == ENEMY_camperMid:
             enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, behavior="camper",health=health)
-        if className == "camperRight":
-            enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, behavior="camper",health=health)
-        if className == "weakCamperMid":
+        elif className == ENEMY_camperRight:
+            enemySprite = enemy.enemy(COLUMN_WIDTH*3,0, behavior="camper",health=health)
+        elif className == ENEMY_weakCamperMid:
             enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, behavior="camper") #gets no health scaler
-
+        else:#middle diver is fallback
+            enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, health=health) # this will change, need to add spawn location and behavior
         
         return enemySprite
 
@@ -157,10 +159,11 @@ class LevelLoader():
         '''contructs and returns enemy bullets off a 1 input nameing convention'''
         bulletSprite = None
         if className == "downwardLeft":
-            bulletSprite = bullet.bullet(30,SCREEN_HEIGHT, -10, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
-        if className == "downwardRight":
-            bulletSprite = bullet.bullet(SCREEN_WIDTH-30,SCREEN_HEIGHT, -10, "bullet_art.png", 180 ) # this will change, need to add spawn location and behavior
-
+            bulletSprite = bullet.bullet(COLUMN_WIDTH*1,0, 5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
+        elif className == "downwardRight":
+            bulletSprite = bullet.bullet(COLUMN_WIDTH*4,0, 5, "bullet_art.png", 180 ) # this will change, need to add spawn location and behavior
+        else:#middle bullet is fallback
+            bulletSprite = bullet.bullet(SCREEN_WIDTH//2,0, 5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
         return bulletSprite
 
         #delete items for each time called

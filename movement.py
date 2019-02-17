@@ -5,7 +5,7 @@ Purpose: describes movement patterns that enemies and items can have
 
 Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up and down
 '''
-
+import copy
 
 class Move(object):
     def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], exitscreen=True):
@@ -20,7 +20,10 @@ class Move(object):
 
         self.save=[]
         if exitscreen==False:
-            self.save.append([behaviorArray, moveCountArray, speedArray]) #save to reinitialize arrays to loop movements
+            self.save.append(copy.deepcopy(behaviorArray))
+            self.save.append(copy.deepcopy(moveCountArray))
+            self.save.append(copy.deepcopy(speedArray)) #save to reinitialize arrays to loop movements
+
         self.behaviors = behaviorArray #list of methods to run from the behaveDic
         self.currBehavior = None
         self.moveCounts = moveCountArray# array frame amounts to do move count
@@ -45,13 +48,13 @@ class Move(object):
         return spriteObject.move(self.currSpeed,0)
 
     def __stop__(self,spriteObject):
-        return spriteObject
+        return spriteObject.move(0,0)
 
     def __updateCurrMove__(self): 
         '''updates currMove, as well as currBehavior and currSpeed'''
         if len(self.moveCounts)==0 and self.currMove==0:
             return True # this means there are no more moves to be made, so exitscreen will be checked or movement reset
-        if self.currMove ==0:
+        if self.currMove == 0:
             self.currMove = self.moveCounts.pop(0)
             if len(self.behaviors)>0:
                 self.currBehavior = self.behaviors.pop(0)
@@ -64,10 +67,10 @@ class Move(object):
         
         if self.__updateCurrMove__(): # will initialize currSpeed, currMove, and currBehavior, and return True if no more moves left
             if not self.exitsceen: #will update reset the bahavior
-                self.save[0]
-                self.behaviors = self.save[0] 
-                self.moveCounts = self.save[1]
-                self.speeds = self.save[2] 
+                self.behaviors = copy.deepcopy(self.save[0]) 
+                self.moveCounts = copy.deepcopy(self.save[1])
+                print("save1: ",self.save)
+                self.speeds = copy.deepcopy(self.save[2]) 
                 self.__updateCurrMove__()
             else: #will begin off screen behavior
                 self.behaviors = ["down"] 
