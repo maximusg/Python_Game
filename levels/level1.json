@@ -45,8 +45,13 @@
         "10": {
             "enemy": {
                 "class": [
+<<<<<<< HEAD
                     "camperMid",
                     "camperMid"
+=======
+                    "diveLeft",
+                    "camperRight"
+>>>>>>> 072e798b8cd922ccc785d35ea902d9a089f0bb5d
                 ],
                 "health": 1
             }

@@ -21,7 +21,7 @@ data = {
                 "scheme": "arrows",
                 },
             "enemy":{
-                "class":ENEMY_basicCluster,
+                "class":ENEMY_camperMid,
                 "health": 1
                 },
             "enemyBullets":{
@@ -38,7 +38,7 @@ data = {
             },
             10: #time 5 seconds elapsed
             {"enemy":{
-                "class":[ENEMY_camperMid,ENEMY_camperMid],
+                "class":ENEMY_basicCluster,
                 "health": 1
                 },
             }

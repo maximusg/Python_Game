@@ -159,7 +159,7 @@ class LevelLoader():
         '''contructs and returns enemy bullets off a 1 input nameing convention'''
         bulletSprite = None
         if className == "downwardLeft":
-            bulletSprite = bullet.bullet(COLUMN_WIDTH*1,0, 5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
+            bulletSprite = bullet.bullet(COLUMN_WIDTH*1,0, -5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
         elif className == "downwardRight":
             bulletSprite = bullet.bullet(COLUMN_WIDTH*4,0, 5, "bullet_art.png", 180 ) # this will change, need to add spawn location and behavior
         else:#middle bullet is fallback
