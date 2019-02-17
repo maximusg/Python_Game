@@ -49,11 +49,11 @@ data = {
 
 }
 
-print(JSONCHECKER(data,False))
+if JSONCHECKER(data,False) == "good":
 
-#When we execute levelMaker in Python, it saves a copy of the script we build
-with open (writeLocation,"w") as write_file:
-    json.dump (data, write_file, indent=4, sort_keys=True )
+    #When we execute levelMaker in Python, it saves a copy of the script we build
+    with open (writeLocation,"w") as write_file:
+        json.dump (data, write_file, indent=4, sort_keys=True )
 
 
 print(data)
