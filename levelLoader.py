@@ -63,12 +63,13 @@ class LevelLoader():
 
     def __levelLoad__(self):
         
-        print("path ", self.levelPath)
         try:
             with open (self.levelPath,"r") as read_file:
                 self.level= json.load(read_file)
         except FileNotFoundError as Error:
             return False
+        except json.decoder.JSONDecodeError or TypeError as Error:
+            print ("ERROR: ", self.levelPath, "is likely corrupt! JSON failed")
         return True
 
     def nextLevel(self):
