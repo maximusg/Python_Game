@@ -2,6 +2,7 @@
 import weapon
 import player
 import enemy
+import levelLoader
 import pygame
 from pygame.locals import *
 from pygame.compat import geterror
@@ -15,7 +16,7 @@ class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
-        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0],WINDOW_OPTIONS_FULLSCREEN[1])
+        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0],WINDOW_OPTIONS_WINDOWED[1])
         self.screen_rect = self.screen.get_rect()
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
@@ -91,10 +92,29 @@ class GUI(object):
         gui.menu()
 
     def main(self,cheat=False):
+        ##Level Loader setup
+        loader = levelLoader.LevelLoader(1)
+        starting_events = loader.getEvents(0)
+        print(starting_events)
+        bg_filename = starting_events['background']
+        playerShip = starting_events['player'][0]
+        try:
+            bad_guys = starting_events['enemy']
+        except KeyError:
+            bad_guys = []
+        finally:
+            try:
+                bad_guy_bullets = starting_events['bullets']
+            except KeyError:
+                bad_guy_bullets = []
+            
+        
+
+
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image('starfield.png')
+        bg, bg_rect = load_image(bg_filename)
         bg_size = bg.get_size()
         bg_w, bg_h = bg_size
         bg_x = 0
@@ -111,21 +131,21 @@ class GUI(object):
         load_background_music('roboCop3NES.ogg')
         
         ##Initialize ships
-        playerShip = player.player('spitfire','SweetShip.png',"arrows")
-        bad_guy = enemy.enemy('spitfire','enemy.png')
-        #bad_guy.health = 5 ##Verify boss mechanics
+        # playerShip = player.player('spitfire','SweetShip.png',"arrows")
+        # bad_guy = enemy.enemy('spitfire','enemy.png')
+        # #bad_guy.health = 5 ##Verify boss mechanics
 
 
         #spawn a test item
-        collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
+        #collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
 
         #Initialize sprite groups
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
-        enemy_sprites = pygame.sprite.LayeredDirty(bad_guy, _default_layer = 4)
-        enemy_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
-        items=pygame.sprite.LayeredDirty(collectible, _default_layer = 2)
+        enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
+        enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
+        items=pygame.sprite.LayeredDirty(_default_layer = 2)
 
         going=True
         #fs_toggle = False ##This here is kinda crappy.
@@ -182,6 +202,31 @@ class GUI(object):
                         if event.key == K_F2 and len(player_sprites) == 0:
                             playerShip = player.player('spitfire','SweetShip.png',"arrows")
                             player_sprites.add(playerShip)
+
+            sec_running = time_since_start // 1000 #need seconds since start
+            events = loader.getEvents(sec_running)
+            if events:
+                try:
+                    enemies_to_add = events['enemy']
+                except KeyError:
+                    enemies_to_add = []
+                finally:
+                    try:
+                        enemy_bullets_to_add = events['bullets']
+                    except KeyError:
+                        enemy_bullets_to_add = []
+                    finally:
+                        try:    
+                            items_to_add = events['items']
+                        except KeyError:
+                            items_to_add = []
+                        
+                if enemies_to_add:
+                    enemy_sprites.add(enemies_to_add)
+                if enemy_bullets_to_add:
+                    enemy_bullet_sprites.add(enemy_bullets_to_add)
+                if items_to_add:
+                    items.add(items_to_add)
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
@@ -592,7 +637,7 @@ class GUI(object):
 
     def level_loop(self):
         still_playing = True
-        curr_level = first_level
+        curr_level = 1
         while still_playing:
             curr_level = self.main(curr_level)
             if curr_level == None: ##game over

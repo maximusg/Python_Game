@@ -75,7 +75,7 @@ class Move(object):
                 self.speeds = [10]
                 self.__updateCurrMove__()
         
-        updatedObject = self.behaveDict[self.currBehavior](spriteObject)
+        updatedObject = self.behaveDic[self.currBehavior](spriteObject)
         return updatedObject
 
     # def upAndDown(self):
