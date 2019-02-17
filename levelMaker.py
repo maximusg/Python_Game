@@ -49,7 +49,7 @@ data = {
 
 }
 
-print(JSONCHECKER(data))
+print(JSONCHECKER(data,False))
 
 #When we execute levelMaker in Python, it saves a copy of the script we build
 with open (writeLocation,"w") as write_file:

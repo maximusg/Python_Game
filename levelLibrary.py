@@ -17,7 +17,9 @@ BG_STARFIELD = "starfield.png"
 
 
 #verifying  Properly formatted
+TIME_TYPES = ["player", "enemy", "enemyBullets", "backgroud"]
 END_TYPES =["boss","time"]
+
 
 DICTYPES = {
     "time":{ 0:{ #int check
@@ -46,7 +48,8 @@ DICTYPES = {
     }
 }
 
-def JSONCHECKER(pythonDICT):
+
+def JSONCHECKER(pythonDICT,JSON):
     #high level check
     for item in pythonDICT:
         if item not in DICTYPES:
@@ -57,14 +60,16 @@ def JSONCHECKER(pythonDICT):
     timeDICT = DICTYPES["time"][0] #get types, makes calls shorter
     for timek in timeCheck:
         time = timek
-        if  isinstance (timek, str):
-            time = int(timek) #converts back to int, will throw exception on its own if not a number
+        if JSON:
+            if  isinstance( time, int) : #when it comes back from JSON it is a string but I'm overlooking this check for ease of conversions
+                raise TypeError( str(time) + ' is incorrect time type') 
+        else:
+            if  isinstance (timek, str):
+                time = int(timek) #converts back to int, will throw exception on its own if not a number
 
-        if  not isinstance( time, int) : #when it comes back from JSON it is a string but I'm overlooking this check for ease of conversions
-            raise TypeError( str(time) + ' is incorrect time type') 
         
         for check in timeCheck[time]:
-            if check not in timeDICT: #check player enemy bullet background are the only things here
+            if check not in timeDICT: #checks "player enemy bullet  and background" are the only things here
                 raise TypeError (str(check) +" is not allowed")
             
             #low level looking inside each object

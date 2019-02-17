@@ -69,6 +69,9 @@ class LevelLoader():
             return False
         except json.decoder.JSONDecodeError or TypeError as Error:
             print ("ERROR: ", self.levelPath, "is likely corrupt! JSON failed")
+        
+        JSONCHECKER(self.level,True) #make sure Jason is still good coming in
+
         return True
 
     def nextLevel(self):
