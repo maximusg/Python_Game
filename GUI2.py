@@ -95,6 +95,7 @@ class GUI(object):
     def main(self,cheat=False):
         ##Level Loader setup
         starting_events = self.loader.getEvents(0)
+        ending_events = self.loader.getEndBehavior()
         bg_filename = starting_events['background']
         playerShip = starting_events['player'][0]
         try:
@@ -156,6 +157,20 @@ class GUI(object):
         invuln_timer = 120 ##frames of invulnerability post-death
         ##Clock time setup
         while going:
+            ##Check for end of level conditions
+            if ending_events:
+                endtime = ending_events['time']
+                spawn_boss = ending_events['boss']
+                boss_spawned = False
+            else:
+                endtime = -1
+                spawn_boss = False
+
+            ##check if there is a boss spawned (to figure out when to end the level post boss death)
+            if boss_spawned:
+                if len(enemy_sprites) == 0:
+                    going = False
+
             ##Beginning of the loop checking for death and lives remaining.
             if len(player_sprites) == 0 and not playerShip.invul_flag:
                 player_lives -= 1
@@ -202,6 +217,10 @@ class GUI(object):
 
             sec_running = time_since_start // 1000 #need seconds since start
             events = self.loader.getEvents(sec_running)
+            enemies_to_add = []
+            enemy_bullets_to_add = []
+            items_to_add = []
+            
             if events:
                 try:
                     enemies_to_add = events['enemy']
@@ -217,13 +236,21 @@ class GUI(object):
                             items_to_add = events['items']
                         except KeyError:
                             items_to_add = []
-                        
-                if enemies_to_add:
-                    enemy_sprites.add(enemies_to_add)
-                if enemy_bullets_to_add:
-                    enemy_bullet_sprites.add(enemy_bullets_to_add)
-                if items_to_add:
-                    items.add(items_to_add)
+
+            if sec_running == endtime and spawn_boss:
+                pass
+                ##spawn the boss
+                boss_spawned = True
+            if sec_running >= endtime and not spawn_boss:
+                if len(enemy_sprites) == 0:
+                    going = False ##How do we add some sort of "end of level" animation?
+                    
+            if enemies_to_add:
+                enemy_sprites.add(enemies_to_add)
+            if enemy_bullets_to_add:
+                enemy_bullet_sprites.add(enemy_bullets_to_add)
+            if items_to_add:
+                items.add(items_to_add)
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
@@ -336,12 +363,12 @@ class GUI(object):
                     if event.key == K_PAUSE or event.key == K_ESCAPE:
                         paused = False
                         pygame.time.wait(500)
-                if event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
-                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
-                        else:
-                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+                    if event.key == K_F12:
+                            self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                            if self.fs_toggle:
+                                pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                            else:
+                                pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
                 if event.type == QUIT:
                     pygame.quit()
                     exit()

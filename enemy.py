@@ -53,4 +53,9 @@ class enemy(entity2.entity2):
 		self.dirty = 1
 
 	def update(self):
-		self=self.movement.update(self)
+		# self=self.movement.update(self)
+		self.movement.update(self)
+		if not (COLUMN_WIDTH <= self.rect.right and self.rect.left <= SCREEN_WIDTH-COLUMN_WIDTH):
+			self.visible = 0
+		if not (0 <= self.rect.top <= SCREEN_HEIGHT):
+			self.visible = 0
