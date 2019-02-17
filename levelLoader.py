@@ -9,8 +9,6 @@ import enemy
 import bullet
 from library import *
 from levelLibrary import *
-
-
 import json
 
 
@@ -65,6 +63,7 @@ class LevelLoader():
 
     def __levelLoad__(self):
         
+        print("path ", self.levelPath)
         try:
             with open (self.levelPath,"r") as read_file:
                 self.level= json.load(read_file)
