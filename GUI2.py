@@ -23,6 +23,7 @@ class GUI(object):
         pygame.mouse.set_visible(False)
         self.fs_toggle = True
         self.hs_list = highscore.Scoreboard()
+        self.loader = levelLoader.LevelLoader(1)
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -93,9 +94,7 @@ class GUI(object):
 
     def main(self,cheat=False):
         ##Level Loader setup
-        loader = levelLoader.LevelLoader(1)
-        starting_events = loader.getEvents(0)
-        print(starting_events)
+        starting_events = self.loader.getEvents(0)
         bg_filename = starting_events['background']
         playerShip = starting_events['player'][0]
         try:
@@ -106,9 +105,7 @@ class GUI(object):
             try:
                 bad_guy_bullets = starting_events['bullets']
             except KeyError:
-                bad_guy_bullets = []
-            
-        
+                bad_guy_bullets = []      
 
 
         ##Background setup
@@ -204,7 +201,7 @@ class GUI(object):
                             player_sprites.add(playerShip)
 
             sec_running = time_since_start // 1000 #need seconds since start
-            events = loader.getEvents(sec_running)
+            events = self.loader.getEvents(sec_running)
             if events:
                 try:
                     enemies_to_add = events['enemy']
