@@ -6,6 +6,7 @@ Purpose: describes movement patterns that enemies and items can have
 Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up and down
 '''
 import copy
+import pygame
 
 class Move(object):
     def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], angelArray=[0], exitscreen=True):
@@ -29,7 +30,8 @@ class Move(object):
         if exitscreen==False:
             self.save.append(copy.deepcopy(behaviorArray))
             self.save.append(copy.deepcopy(moveCountArray))
-            self.save.append(copy.deepcopy(speedArray)) #save to reinitialize arrays to loop movements
+            self.save.append(copy.deepcopy(speedArray))
+            self.save.append(copy.deepcopy(angelArray)) #save to reinitialize arrays to loop movements
 
         self.behaviors = behaviorArray #list of methods to run from the behaveDic
         self.currBehavior = None
@@ -37,6 +39,9 @@ class Move(object):
         self.currMove = 0 
         self.speeds = speedArray #used to change speeds between behaviors, if no more speeds left, defaults to last speed given
         self.currSpeed = 0 
+        self.angles = angelArray
+        self.currAngle=0
+        
         self.exitsceen = exitscreen #if true, this behaivor will result in enemy moving down and off screen after executing movements to be deleted else enemy will stay put
 
 
@@ -49,6 +54,7 @@ class Move(object):
         return spriteObject.move(0,self.currSpeed)
 
     def __left__(self,spriteObject):
+        
         return spriteObject.move(-self.currSpeed,0)
 
     def __right__(self,spriteObject):
@@ -85,6 +91,9 @@ class Move(object):
                 self.currBehavior = self.behaviors.pop(0)
             if len(self.speeds) >0:
                 self.currSpeed = self.speeds.pop(0)
+            if len(self.angles) > 0:
+                self.currAngle = self.angles.pop(0)
+                
         else: self.currMove -=1 #decrments 1 frame from move count
         return False
         
@@ -95,17 +104,41 @@ class Move(object):
                 self.behaviors = copy.deepcopy(self.save[0]) 
                 self.moveCounts = copy.deepcopy(self.save[1])
                 self.speeds = copy.deepcopy(self.save[2]) 
+                self.angles = copy.deepcopy(self.save[3]) 
                 self.__updateCurrMove__()
             else: #will begin off screen behavior
                 self.behaviors = ["down"]
                 self.moveCounts = [800]
                 self.speeds = [10]
                 self.__updateCurrMove__()
-        
+
+        if self.currAngle != spriteObject.angle:
+            if spriteObject.angle != 0:
+                spriteObject.image,spriteObject.rect = self.rot_center(spriteObject.image, spriteObject.rect, -spriteObject.angle)
+            
+            spriteObject.image,spriteObject.rect = self.rot_center(spriteObject.image, spriteObject.rect, self.currAngle)
+            spriteObject.angle = self.currAngle
+
+
         spriteObject.move(0,1) #keeps ships constantly moving down
         updatedObject = self.behaveDic[self.currBehavior](spriteObject)
         
         return updatedObject
+
+    # def rot_center(self, image, angle):
+    #     """rotate an image while keeping its center and size"""
+    #     orig_rect = image.get_rect()
+    #     rot_image = pygame.transform.rotate(image, angle)
+    #     rot_rect = orig_rect.copy()
+    #     rot_rect.center = rot_image.get_rect().center
+    #     rot_image = rot_image.subsurface(rot_rect).copy()
+    #     return rot_image
+    
+    def rot_center(self, image, rect, angle):
+        """rotate an image while keeping its center"""
+        rot_image = pygame.transform.rotate(image, angle)
+        rot_rect = rot_image.get_rect(center=rect.center)
+        return rot_image,rot_rect
 
     # def upAndDown(self):
     #     if self.reversed == False:
