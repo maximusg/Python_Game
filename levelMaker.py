@@ -154,7 +154,7 @@ for i in range(61,90):
 
 
 #RUSH generator
-for i in range(91,130):
+for i in range(91,130,2):
     s1 = str((i%4)+1)
     s2 = str((i%4)+2)
     s3 = str((i%6)+5)
@@ -165,10 +165,10 @@ for i in range(91,130):
     spd2 = str(random.randint(1,(i%10+1)))
     spd3 = str(random.randint(1,(i%10+1)))
     spd4 = str(random.randint(1,(i%10+1)))
-    data["time"][i] = {"enemy":{"class":["@s"+s1+"-d-"+spd2+"-2", "@s"+s5+"-c-"+spd3+"-2", "@s"+s4+"-s-"+spd1+"-6", "@s"+s2+"-cz-"+spd3+"-2", "@s"+s3+"-cr-"+spd4+"-2"],"health": 1},}
-
+    data["time"][i] = {"enemy":{"class":["@s"+s1+"-d-"+spd2+"-2", "@s"+s5+"-c-"+spd3+"-2", "@s"+s4+"-s-"+spd1+"-6", "@s"+s2+"-d-"+spd3+"-2", "@s"+s3+"-d-"+spd4+"-2"],"health": 1},}
+    data["time"][i+1] = {"enemy":{"class":["@s"+s1+"-s-"+spd2+"-2", "@s"+s5+"-d-"+spd3+"-2", "@s"+s4+"-d-"+spd1+"-6", "@s"+s2+"-cr-"+spd3+"-2", "@s"+s3+"-c-"+spd4+"-2"],"health": 1},}
 #RUSH generator
-for i in range(131,150):
+for i in range(131,150,2):
     sc1 = str((i%4)+1)
     sc2 = str((i%4)+2)
     sc3 = str((i%6)+5)
@@ -187,8 +187,8 @@ for i in range(131,150):
     spd2 = str(random.randint(3,(i%10+3)))
     spd3 = str(random.randint(3,(i%10+3)))
     spd4 = str(random.randint(3,(i%10+3)))
-    data["time"][i] = {"enemy":{"class":["@s"+s1+"-d-"+spd2+"-2", "@s"+s5+"-c-"+spd3+"-2", "@s"+s4+"-s-"+spd1+"-2", "@s"+s2+"-cz-"+spd3+"-2", "@s"+s3+"-cr-"+spd4+"-2"],"health": 1},}
-
+    data["time"][i] = {"enemy":{"class":["@s"+s1+"-d-"+spd2+"-2", "@s"+s5+"-c-"+spd3+"-2", "@s"+s4+"-s-"+spd1+"-100", "@s"+s2+"-cz-"+spd3+"-2", "@s"+s3+"-cr-"+spd4+"-2"],"health": 1},}
+    data["time"][i+1] = {"enemy":{"class":["@s"+s1+"-c-"+spd2+"-2", "@s"+s5+"-d-"+spd3+"-2", "@s"+s4+"-d-"+spd1+"-2", "@s"+s2+"-d-"+spd3+"-2", "@s"+s3+"-s-"+spd4+"-100"],"health": 1},}
 
 print(JSONCHECKER(data,False))
 
