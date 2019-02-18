@@ -18,7 +18,7 @@ data = {
                 "health":1,
                 "location":[500,700],
                 "image":"SweetShip.png",
-                "weapon": "spitfire",
+                "weapon": "blue_lazer",
                 "scheme": "arrows",
                 },
             "enemy":{
