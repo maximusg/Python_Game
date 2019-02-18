@@ -1,12 +1,32 @@
 #Enemy Classes
 ENEMY_diveLeft ="diveLeft"
 ENEMY_diveRight ="diveRight"
+ENEMY_diveMid1 = "diveMid1"
+ENEMY_diveMid2 = "diveMid2"
+ENEMY_diveMid3 = "diveMid3"
+
+
 ENEMY_sleeperMid ="sleeperMid"
+
+ENEMY_weakCamperMid = "weakCamperMid"
 ENEMY_camperMid ="camperMid"
 ENEMY_camperRight ="camperRight"
-ENEMY_weakCamperMid = "weakCamperMid"
+
+
+ENEMY_crazyMid1 = "crazyMid1"
+ENEMY_crazyMid2 = "crazyMid2"
+ENEMY_crazyMid3 = "crazyMid3"
+
+ENEMY_crazy2Mid1 = "crazy2Mid1"
+ENEMY_crazy2Mid2 = "crazy2Mid2"
+ENEMY_crazy2Mid3 = "crazy2Mid3"
 
 ENEMY_basicCluster = [ENEMY_diveLeft,ENEMY_diveRight, ENEMY_camperMid, ENEMY_camperRight, ENEMY_sleeperMid]
+
+
+ENEMY_diveCluster = [ENEMY_diveLeft,ENEMY_diveRight, ENEMY_diveMid1, ENEMY_diveMid2]
+
+ENEMY_crazyCluster = [ENEMY_crazyMid1,ENEMY_crazyMid2,ENEMY_crazyMid3,ENEMY_crazy2Mid1,ENEMY_crazy2Mid2,ENEMY_crazy2Mid3]
 
 #Bullet Classes
 BULLET_downwardLeft = "downwardLeft"

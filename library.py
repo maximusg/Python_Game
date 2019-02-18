@@ -45,17 +45,20 @@ for i in range(1,ENEMY_SECTORS_AVAIL+1):
     print("SECTOR ",i,":",COLUMN_WIDTH + ENEMY_BUFFER + (DEFAULT_ENEMY_WIDTH*i))
 
 #enemy top screen sectors
-ENEMY_SECTORS={ "s1": [106,0], 
-                "s2": [186,0],
-                "s3": [266,0],
-                "s4": [346,0],
-                "s5": [426,0],
-                "s6": [506,0],
-                "s7": [586,0],
-                "s8": [666,0],
-                "s9": [746,0],
-                "s10": [826,0],
-                "s11": [906,0],
+ENEMY_SECTORS={ "s1": [480,0], 
+                "s2": [560,0],
+                "s3": [640,0],
+                "s4": [720,0],
+                "s5": [800,0],
+                "s6": [880,0],
+                "s7": [960,0],
+                "s8": [1040,0],
+                "s9": [1120,0],
+                "s10": [1200,0],
+                "s11": [1280,0],
+                "s12": [1360,0],
+                "s13": [1440,0],
+                "s14": [1520,0],
             }
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]

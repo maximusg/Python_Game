@@ -1,14 +1,15 @@
 {
     "end": {
         "boss": false,
-        "time": 15
+        "time": 60
     },
     "time": {
         "0": {
             "background": "starfield.png",
             "enemy": {
                 "class": [
-                    "camperMid"
+                    "crazyMid1",
+                    "diveLeft"
                 ],
                 "health": 1
             },
@@ -23,10 +24,35 @@
                 "weapon": "spitfire"
             }
         },
-        "10": {
+        "5": {
             "enemy": {
                 "class": [
-                    "diveLeft"
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
+                ],
+                "health": 1
+            }
+        },
+        "8": {
+            "enemy": {
+                "class": [
+                    "crazy2Mid1",
+                    "crazyMid1"
+                ],
+                "health": 1
+            }
+        },
+        "12": {
+            "enemy": {
+                "class": [
+                    "crazyMid1",
+                    "crazyMid2",
+                    "crazyMid3",
+                    "crazy2Mid1",
+                    "crazy2Mid2",
+                    "crazy2Mid3"
                 ],
                 "health": 1
             }
@@ -34,7 +60,58 @@
         "20": {
             "enemy": {
                 "class": [
-                    "diveRight"
+                    "crazyMid1",
+                    "crazyMid2",
+                    "crazyMid3",
+                    "crazy2Mid1",
+                    "crazy2Mid2",
+                    "crazy2Mid3"
+                ],
+                "health": 1
+            }
+        },
+        "21": {
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
+                ],
+                "health": 1
+            }
+        },
+        "23": {
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
+                ],
+                "health": 1
+            }
+        },
+        "28": {
+            "enemy": {
+                "class": [
+                    "crazyMid1",
+                    "crazyMid2",
+                    "crazyMid3",
+                    "crazy2Mid1",
+                    "crazy2Mid2",
+                    "crazy2Mid3"
+                ],
+                "health": 1
+            }
+        },
+        "29": {
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
                 ],
                 "health": 1
             }
@@ -44,11 +121,67 @@
                 "class": [
                     "diveLeft",
                     "diveRight",
-                    "camperMid",
-                    "camperRight",
-                    "sleeperMid"
+                    "diveMid1",
+                    "diveMid2"
                 ],
                 "health": 1
+            }
+        },
+        "31": {
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
+                ],
+                "health": 1
+            }
+        },
+        "32": {
+            "enemy": {
+                "class": [
+                    "crazyMid1",
+                    "crazyMid2",
+                    "crazyMid3",
+                    "crazy2Mid1",
+                    "crazy2Mid2",
+                    "crazy2Mid3"
+                ],
+                "health": 5
+            }
+        },
+        "33": {
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
+                ],
+                "health": 1
+            }
+        },
+        "34": {
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
+                ],
+                "health": 3
+            }
+        },
+        "35": {
+            "enemy": {
+                "class": [
+                    "diveLeft",
+                    "diveRight",
+                    "diveMid1",
+                    "diveMid2"
+                ],
+                "health": 2
             }
         }
     }

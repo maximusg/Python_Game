@@ -21,32 +21,99 @@ data = {
                 "scheme": "arrows",
                 },
             "enemy":{
-                "class": [ ENEMY_camperMid ],
+                "class": [ENEMY_crazyMid1, ENEMY_diveLeft],
                 "health": 1
                 },
             "background": BG_STARFIELD
 
             },
-            10: #time 5 seconds elapsed
+            5: #time 5 seconds elapsed
             {"enemy":{
-                "class":[ ENEMY_diveLeft] ,
+                "class":ENEMY_diveCluster,
+                "health": 1
+                },
+            },
+            8: #time 5 seconds elapsed
+            {"enemy":{
+                "class":[ENEMY_crazy2Mid1, ENEMY_crazyMid1] ,
+                "health": 1
+                },
+            },
+            12: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_crazyCluster,
                 "health": 1
                 },
             },
             20: #time 5 seconds elapsed
             {"enemy":{
-                "class":[ ENEMY_diveRight] ,
+                "class":ENEMY_crazyCluster,
+                "health": 1
+                },
+            },
+            21: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_diveCluster,
+                "health": 1
+                },
+            },
+            23: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_diveCluster,
+                "health": 1
+                },
+            },
+            28: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_crazyCluster,
+                "health": 1
+                },
+            },
+            29: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_diveCluster,
                 "health": 1
                 },
             },
             30: #time 5 seconds elapsed
             {"enemy":{
-                "class":ENEMY_basicCluster,
+                "class":ENEMY_diveCluster,
                 "health": 1
                 },
-            }
+            },
+            31: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_diveCluster,
+                "health": 1
+                },
+            },
+            32: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_crazyCluster,
+                "health": 5
+                },
+            },
+            33: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_diveCluster,
+                "health": 1
+                },
+            },
+            34: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_diveCluster,
+                "health": 3
+                },
+            },
+            35: #time 5 seconds elapsed
+            {"enemy":{
+                "class":ENEMY_diveCluster,
+                "health": 2
+                },
+            },
+
     },
-    "end": {"time":15, "boss":False} #this gives the ending parameters
+    "end": {"time":40, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 

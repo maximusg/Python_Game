@@ -20,7 +20,9 @@ class enemy(entity2.entity2):
 		self.behaveDic = {
 			"diver":self.__diver__, 
 			"camper":self.__camper__, 
-			"sleeper":self.__sleeper__
+			"sleeper":self.__sleeper__,
+			"crazy":self.__crazy__,
+			"crazyReverse": self.__crazyReverse__
 			}
 		
 		self.movement = self.behaveDic[behavior]()
@@ -30,14 +32,25 @@ class enemy(entity2.entity2):
 	
 	def __camper__(self):#stays on the screen camping, will progress down the screen slowly doing squares
 		behaviorArray = ["down","stop","left","stop","up","stop","right"]
-		moveCountArray = [80,	100,	40,		100,  50,	100,	40]
+		moveCountArray = [80,	20,	40,		20,  50,	20,	40]
 		speedArray = [	  1*self.speed,	1*self.speed]
 		return movement.Move(behaviorArray,moveCountArray,speedArray,False)
-	
+
+	def __crazy__(self):
+		behaviorArray = ["down","left","right","down","up","stop","down"]
+		moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
+		speedArray = [	  1*self.speed,	2*self.speed, 1*self.speed,	3*self.speed,1*self.speed,	2*self.speed]
+		return movement.Move(behaviorArray,moveCountArray,speedArray,False)
+
+	def __crazyReverse__(self):
+		behaviorArray = ["down","stop","up","down","right","left","down"]
+		moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
+		speedArray = [	  1*self.speed,	2*self.speed, 1*self.speed,	3*self.speed,1*self.speed,	2*self.speed]
+		return movement.Move(behaviorArray,moveCountArray,speedArray,False)
 
 	def __sleeper__(self):# moves down and stops for a LLLONG time =, the wiggles left and right FAST, the stops again, the dives down
 		behaviorArray = ["down","stop","left","right"]
-		moveCountArray = [80,	600,	40,		40]
+		moveCountArray = [80,	100,	40,		40]
 		speedArray = [	  1*self.speed,	1*self.speed]
 		return movement.Move(behaviorArray,moveCountArray,speedArray)
 	

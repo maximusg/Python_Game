@@ -85,7 +85,6 @@ class Move(object):
             if not self.exitsceen: #will update reset the bahavior
                 self.behaviors = copy.deepcopy(self.save[0]) 
                 self.moveCounts = copy.deepcopy(self.save[1])
-                print("save1: ",self.save)
                 self.speeds = copy.deepcopy(self.save[2]) 
                 self.__updateCurrMove__()
             else: #will begin off screen behavior
@@ -94,7 +93,9 @@ class Move(object):
                 self.speeds = [10]
                 self.__updateCurrMove__()
         
+        spriteObject.move(0,1) #keeps ships constantly moving down
         updatedObject = self.behaveDic[self.currBehavior](spriteObject)
+        
         return updatedObject
 
     # def upAndDown(self):

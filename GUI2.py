@@ -673,7 +673,7 @@ class GUI(object):
 if __name__=='__main__':
 
     gui = GUI()
-    gui.game_intro()
+    gui.menu()
     
 
 

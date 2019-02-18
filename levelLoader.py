@@ -145,19 +145,46 @@ class LevelLoader():
         ''' can add enemy classes, just contruct new enemy type'''
         enemySprite = None
         if className == ENEMY_diveLeft:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s1"], health=health) # this will change, need to add spawn location and behavior
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s2"], health=health) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveRight:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"]) # this will change, need to add spawn location and behavior
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s12"]) # this will change, need to add spawn location and behavior
+        elif className == ENEMY_diveMid1:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s5"], behavior="diver")
+        elif className == ENEMY_diveMid2:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="diver")
+        elif className == ENEMY_diveMid3:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s9"], behavior="diver")
+        
+        
         elif className == ENEMY_sleeperMid:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], behavior="sleeper",health=health)
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s6"], behavior="sleeper",health=health)
+        
         elif className == ENEMY_camperMid:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s5"], behavior="camper",health=health)
-        elif className == ENEMY_camperRight:
             enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="camper",health=health)
+        elif className == ENEMY_camperRight:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s13"], behavior="camper",health=health)
         elif className == ENEMY_weakCamperMid:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], behavior="camper") #gets no health scaler
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s8"], behavior="camper") #gets no health scaler
+        
+        
+        
+        elif className == ENEMY_crazyMid1:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], behavior="crazy")
+        elif className == ENEMY_crazyMid2:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s6"], behavior="crazy")
+        elif className == ENEMY_crazyMid3:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s8"], behavior="crazy")
+            
+        elif className == ENEMY_crazy2Mid1:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s2"], behavior="crazyReverse", speed=2)
+        elif className == ENEMY_crazy2Mid2:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s13"], behavior="crazyReverse",speed=6)
+        elif className == ENEMY_crazy2Mid3:
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="crazyReverse", speed=9) #gets no health scaler
+        
+        
         else:#middle diver is fallback
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], health=health) # this will change, need to add spawn location and behavior
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], health=health) # this will change, need to add spawn location and behavior
         
         return enemySprite
 
