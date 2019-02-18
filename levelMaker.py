@@ -1,6 +1,7 @@
 import json
 # from library import *
 from levelLibrary import *
+import random
 
 
 ##Create Levels here with this level maker! Just make a dictionary with spawn times and enemies, and the background elements.
@@ -21,7 +22,7 @@ data = {
                 "scheme": "arrows",
                 },
             "enemy":{
-                "class": [ENEMY_crazyMid1, ENEMY_diveLeft],
+                "class": ["@s3-d-3-1", "@s5-d-4-1", "@s6-c-4-1", "@s7-d-4-1", "@s9-d-3-1"],
                 "health": 1
                 },
             "background": BG_STARFIELD
@@ -113,11 +114,75 @@ data = {
             },
 
     },
-    "end": {"time":37, "boss":False} #this gives the ending parameters
+    "end": {"time":150, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
 }
+
+#RUSH generator
+for i in range(36,50):
+    s1 = str(i%13)
+    s2 = str(i%14)
+    spd1 = str(random.randint(1,(i%10+1)))
+    data["time"][i] = {"enemy":{"class":["@s"+s2+"-d-3-1", "@s"+s1+"-d-4-1", "@s6-c-"+spd1+"-1", "@s"+s2+"-d-4-1", "@s"+s1+"-d-3-1"],"health": 1},}
+
+#RUSH generator
+for i in range(51,60):
+    s1 = str(i%13)
+    s2 = str(i%14)
+    spd1 = str(random.randint(1,(i%10+1)))
+    data["time"][i] = {"enemy":{"class":["@s"+s2+"-cr-3-1", "@s"+s1+"-c-4-1", "@s6-d-"+spd1+"-1", "@s"+s2+"-cr-4-1", "@s"+s1+"-c-3-1"],"health": 1},}
+
+
+#RUSH generator
+for i in range(61,90):
+    s1 = str(i%2)
+    s2 = str(i%5)
+    s3 = str(i%8)
+    s4 = str(i%11)
+    s5 = str(i%14)
+    
+    spd1 = str(random.randint(1,(i%10+1)))
+    data["time"][i] = {"enemy":{"class":["@s"+s1+"-d-3-1", "@s"+s5+"-d-4-1", "@s"+s4+"-s-"+spd1+"-1", "@s"+s2+"-c-4-1", "@s"+s3+"-cr-3-1"],"health": 1},}
+
+
+#RUSH generator
+for i in range(91,130):
+    s1 = str(i%2)
+    s2 = str(i%5)
+    s3 = str(i%8)
+    s4 = str(i%11)
+    s5 = str(i%14)
+    
+    spd1 = str(random.randint(1,(i%10+1)))
+    spd2 = str(random.randint(1,(i%10+1)))
+    spd3 = str(random.randint(1,(i%10+1)))
+    spd4 = str(random.randint(1,(i%10+1)))
+    data["time"][i] = {"enemy":{"class":["@s"+s1+"-d-"+spd2+"-1", "@s"+s5+"-c-"+spd3+"-1", "@s"+s4+"-s-"+spd1+"-1", "@s"+s2+"-cz-"+spd3+"-1", "@s"+s3+"-cr-"+spd4+"-1"],"health": 1},}
+
+#RUSH generator
+for i in range(131,150):
+    sc1 = str(i%2)
+    sc2 = str(i%5)
+    sc3 = str(i%8)
+    sc4 = str(i%11)
+    sc5 = str(i%14)
+
+    sectorLoc = [sc1,sc2,sc3,sc4,sc5]
+    s1=sectorLoc.pop(random.randint(0,4))
+    s2=sectorLoc.pop(random.randint(0,3))
+    s3=sectorLoc.pop(random.randint(0,2))
+    s4=sectorLoc.pop(random.randint(0,1))
+    s5=sectorLoc.pop()
+
+    
+    spd1 = str(random.randint(3,(i%10+3)))
+    spd2 = str(random.randint(3,(i%10+3)))
+    spd3 = str(random.randint(3,(i%10+3)))
+    spd4 = str(random.randint(3,(i%10+3)))
+    data["time"][i] = {"enemy":{"class":["@s"+s1+"-d-"+spd2+"-2", "@s"+s5+"-c-"+spd3+"-2", "@s"+s4+"-s-"+spd1+"-2", "@s"+s2+"-cz-"+spd3+"-2", "@s"+s3+"-cr-"+spd4+"-2"],"health": 1},}
+
 
 print(JSONCHECKER(data,False))
 

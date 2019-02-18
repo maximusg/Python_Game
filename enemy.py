@@ -1,11 +1,12 @@
 import entity2
 import movement
 from library import *
+from levelLibrary import *
 
 
 
 class enemy(entity2.entity2):
-	def __init__(self, origin=ENEMY_SECTORS["s4"], imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1):
+	def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1):
 		super().__init__()
 		self.weapon = weapon
 		self.point_value = 500

@@ -1,3 +1,57 @@
+#Enemy simple contruct scheme
+
+'''use '-' between ENEMY_TYPE_MAP - ENEMY_SECTORS - speed - health'''
+#example
+'''@s1-d-3-1'''#uses @ sign to signal it is a simple contruct
+#sector and type, looked up in maps below
+
+#name map
+def ENEMY_TYPE_MAP(x):
+    return{
+        "d":"diver",
+        "c": "camper",
+        "s": "sleeper",
+        "cz": "crazy",
+        "cr": "crazyReverse"
+    }.get(x,"diver") #defaults to diver
+
+#enemy top screen sectors
+def ENEMY_SECTORS (x):
+    return { 
+        "s1": [480,0], 
+        "s2": [560,0],
+        "s3": [640,0],
+        "s4": [720,0],
+        "s5": [800,0],
+        "s6": [880,0],
+        "s7": [960,0],
+        "s8": [1040,0],
+        "s9": [1120,0],
+        "s10": [1200,0],
+        "s11": [1280,0],
+        "s12": [1360,0],
+        "s13": [1440,0],
+        "s14": [1520,0],
+    }.get(x,[1040,0]) # defaults to s7
+
+def PROPER_FORMAT(a):
+    '''checks enemy simple constructis properly formated'''
+    if a[0]== "@":
+        b = a[1::].split("-")
+        if len(b) == 4:
+            try:
+                int(b[2])
+            except:
+                return False
+            try:
+                int(b[3])
+            except:
+                return False
+            return True
+    return False
+
+
+
 #Enemy Classes
 ENEMY_diveLeft ="diveLeft"
 ENEMY_diveRight ="diveRight"
