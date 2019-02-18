@@ -92,10 +92,12 @@ class GUI(object):
 
         gui.menu()
 
-    def main(self,cheat=False):
+    def main(self, lives_remaining, curr_score):
         ##Level Loader setup
         starting_events = self.loader.getEvents(0)
         ending_events = self.loader.getEndBehavior()
+        player_score = curr_score
+        player_lives = lives_remaining        
         bg_filename = starting_events['background']
         playerShip = starting_events['player'][0]
         try:
@@ -149,11 +151,7 @@ class GUI(object):
         #fs_toggle = False ##This here is kinda crappy.
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
-        player_score = 0
-        if cheat:
-            player_lives = 100
-        else:
-            player_lives = 3
+        next_level = True
         invuln_timer = 120 ##frames of invulnerability post-death
         ##Clock time setup
         while going:
@@ -183,6 +181,7 @@ class GUI(object):
                     self.game_over(player_score)
                     #break (potentially cleaner than setting going to False)
                     going = False
+                    next_level = False
 
             ##check if the invuln timer is complete
             if invuln_timer == 0 and len(player_sprites_invul) != 0:
@@ -195,9 +194,11 @@ class GUI(object):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     going = False
+                    next_level = False
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         going = False
+                        next_level = False
                     if event.key == K_F12:
                         self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if self.fs_toggle:
@@ -350,6 +351,8 @@ class GUI(object):
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
             if playerShip.invul_flag:
                 invuln_timer -= 1
+        
+        return player_lives, player_score, next_level
 
     def pause_screen(self):
         paused = True
@@ -425,10 +428,6 @@ class GUI(object):
                     exit()
             pygame.display.update([dead_rect, dead_rect2])
             self.clock.tick(FRAMERATE)
-        hs_list = highscore.Scoreboard()
-        if hs_list.belongsOnList(player_score):
-            self.hs_list.add(highscore.Scoreboard.Entry(self.add_to_hs('You\'ve set a new high score! What are your initials?'), player_score))
-            self.hs_list.writeToFile()
 
     def add_to_hs(self, txt):
 
@@ -478,7 +477,7 @@ class GUI(object):
             show_name(self.screen, name)        
 
     def menu(self):
-        bg, bg_rect = load_image('starfield.png')
+        bg, bg_rect = load_image('nebula_red.png')
         bg_size = bg.get_size()
         w, h = bg_size
         x = 0
@@ -500,11 +499,11 @@ class GUI(object):
                         going = False
                     elif event.key == K_SPACE:
                         if code_accepted:
-                            gui.main(cheat=True)
+                            gui.level_loop(cheat=True)
                             in_code = []
                             code_accepted = False
                         else:
-                            gui.main()
+                            gui.level_loop()
                     elif event.key == K_s:
                         gui.high_scores()
                     elif event.key == K_c:
@@ -659,21 +658,33 @@ class GUI(object):
                 going = False
             self.clock.tick(FRAMERATE)
 
-    def level_loop(self):
+    def level_loop(self, cheat=False):
         still_playing = True
-        curr_level = 1
+        curr_score = 0
+        if cheat:
+            curr_lives = 100
+        else:
+            curr_lives = 3
+        #event_queue = self.loader.getEvents()
         while still_playing:
-            curr_level = self.main(curr_level)
-            if curr_level == None: ##game over
+            curr_lives, curr_score, next_level = self.main(curr_lives, curr_score)
+            if not next_level or not self.loader.nextLevel():
                 still_playing = False
-            elif curr_level == 'the end':
-                self.ending()
-                still_playing = False           
+                #if game won, do something
+            
+            # if not next_level: ##game over
+            #     still_playing = False
+            # elif self.loader.nextLevel():
+            #     pass   
+            # else:
+            #     ##end of game
+            #     ##self.victory_screen() -TODO-
+            #     still_playing = False    
 
 if __name__=='__main__':
 
     gui = GUI()
-    gui.menu()
+    gui.game_intro()
     
 
 
