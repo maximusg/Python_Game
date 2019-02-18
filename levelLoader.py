@@ -149,11 +149,11 @@ class LevelLoader():
         elif className == ENEMY_diveRight:
             enemySprite = enemy.enemy(ENEMY_SECTORS["s12"]) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveMid1:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s5"], behavior="diver")
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s5"], behavior="diver", health=health)
         elif className == ENEMY_diveMid2:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="diver")
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="diver", health=health)
         elif className == ENEMY_diveMid3:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s9"], behavior="diver")
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s9"], behavior="diver",health=health)
         
         
         elif className == ENEMY_sleeperMid:
@@ -164,23 +164,23 @@ class LevelLoader():
         elif className == ENEMY_camperRight:
             enemySprite = enemy.enemy(ENEMY_SECTORS["s13"], behavior="camper",health=health)
         elif className == ENEMY_weakCamperMid:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s8"], behavior="camper") #gets no health scaler
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s8"], behavior="camper",health=health) #gets no health scaler
         
         
         
         elif className == ENEMY_crazyMid1:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], behavior="crazy")
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], behavior="crazy",health=health)
         elif className == ENEMY_crazyMid2:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s6"], behavior="crazy")
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s6"], behavior="crazy",health=health)
         elif className == ENEMY_crazyMid3:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s8"], behavior="crazy")
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s8"], behavior="crazy",health=health)
             
         elif className == ENEMY_crazy2Mid1:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s2"], behavior="crazyReverse", speed=2)
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s2"], behavior="crazyReverse",health=health, speed=2)
         elif className == ENEMY_crazy2Mid2:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s13"], behavior="crazyReverse",speed=6)
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s13"], behavior="crazyReverse",health=health, speed=6)
         elif className == ENEMY_crazy2Mid3:
-            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="crazyReverse", speed=9) #gets no health scaler
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="crazyReverse",health=health, speed=9) #gets no health scaler
         
         
         else:#middle diver is fallback

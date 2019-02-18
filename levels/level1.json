@@ -1,7 +1,7 @@
 {
     "end": {
         "boss": false,
-        "time": 60
+        "time": 37
     },
     "time": {
         "0": {
@@ -148,7 +148,7 @@
                     "crazy2Mid2",
                     "crazy2Mid3"
                 ],
-                "health": 5
+                "health": 99
             }
         },
         "33": {

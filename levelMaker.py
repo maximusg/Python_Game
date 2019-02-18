@@ -90,7 +90,7 @@ data = {
             32: #time 5 seconds elapsed
             {"enemy":{
                 "class":ENEMY_crazyCluster,
-                "health": 5
+                "health": 99
                 },
             },
             33: #time 5 seconds elapsed
@@ -113,7 +113,7 @@ data = {
             },
 
     },
-    "end": {"time":40, "boss":False} #this gives the ending parameters
+    "end": {"time":37, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
