@@ -1,53 +1,34 @@
 import entity2
-import pygame.mask
 import weapon
+from pathlib import Path
 from library import *
 
+cwd = Path.cwd()
+item_images_path = cwd.joinpath('resources', 'item_images')
+
 class item(entity2.entity2):
-    def __init__(self, origin_x, origin_y, speed, path_to_img, angle = 0, name = None):
+    def __init__(self, origin_x, origin_y, speed = 1, path_to_img = 'powerup.gif', name = None):
         super().__init__()
-        self.speed = speed
-        # print('path to img', path_to_img)
-        self.image, self.rect = load_image(path_to_img)
+        self.image, self.rect = load_image(item_images_path.joinpath(path_to_img))
         self.image = self.image.convert()
         self.rect.centerx, self.rect.top = origin_x, origin_y
-        self.off_screen = False
         self.dirty = 1
-        self.mask = pygame.mask.from_surface(self.image)
-        self.angle = angle
-        self.move_counter = 0
-        self.move_limit = 30
-        self.reversed = False
+        self.is_weapon = weapon.is_weapon(name)
         self.name = name
 
 
-        #weapon specific attributes
-        self.is_weapon = False #can quickly check if it is a weapon
-
-        if name in weapon.master_weapons_dict.keys():
-            #if the name of the item is in the master weapons dictionary then it is a Weapon
-            self.is_weapon = True
+        #for item movement
+        self.speed = speed
 
 
-    #I added self.move_counter, move_limit, and reversed to make the item move back and forth, kind of like the bad guy
-    def move(self):
-        if self.reversed == False:
-            self.rect = self.rect.move(self.angle,-self.speed)
-            self.move_counter += 1
-            if self.move_counter == self.move_limit:
-                self.reversed = True
-        elif self.reversed == True:
-            self.rect = self.rect.move(self.angle, self.speed)
-            self.move_counter -= 1
-            if self.move_counter == 0:
-                self.reversed = False
+    def move(self, x, y):
+        self.rect = self.rect.move((x, y))
         self.dirty = 1
 
     def update(self):
-        if self.rect.bottom > 0 and self.rect.right < SCREEN_WIDTH-COLUMN_WIDTH and self.rect.left > COLUMN_WIDTH:
-            self.move()
-        else:
+        if self.rect.bottom < 0 or self.rect.right > SCREEN_WIDTH-COLUMN_WIDTH or self.rect.left < COLUMN_WIDTH: #checks if the rect is out of bounds, and if so, it is no longer visible, meaning it should be deleted by GUI
             self.visible = 0
             self.dirty = 1
-            # print('i died') #DEBUGGING, remove when done
+
+        self.move(0,self.speed)#moves straight down at a given speed
 

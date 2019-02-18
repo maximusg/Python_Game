@@ -19,33 +19,34 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 
 '''
 
-import os
 from pathlib import Path
-import player
 import bullet
-import movement
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
+
+
+#utility functions
+def is_weapon(name):
+        if name in master_weapons_dict:
+            return True
+        else:
+            return False
 
 #each weapon name will be mapped to its function, an image, and other properties
 
 def spitfire(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
-    #bullet1 = movement.Move(bullet1).__left__()
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='up')
 
-    behaviorArray = ["down"]
-    moveCountArray = [80]
-    speedArray = [10]
-    #return movement.Move(behaviorArray,moveCountArray,speedArray)
+
     return bullet1
 
 def spitfire3(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1, behavior='up')
     bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1, behavior='northEast')
     bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='northNorthEast')
     bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 2, behavior='northWest')
@@ -59,7 +60,7 @@ def spitfire3(origin_x, origin_y):
 def spitfire2(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1, behavior='up')
     bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1, behavior='northNorthEast')
     bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='northNorthWest')
     return bullet1, bullet2, bullet3
@@ -93,6 +94,8 @@ class Weapon(object):
         #print(master_weapons_dict.get('spitfire')[0])
         #print(self.weapon_image)
         #os.startfile(self.weapon_image)
+
+
 
 
 
