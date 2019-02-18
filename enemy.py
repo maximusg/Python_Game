@@ -11,6 +11,7 @@ class enemy(entity2.entity2):
 		self.weapon = weapon
 		self.point_value = 500
 		self.image, self.rect = load_image(imgFile)
+		self.imgFile = imgFile
 		#self.rect.centerx, self.rect.top = 300, 50
 		self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 		self.speed = speed #this will be a scaler for movement type
@@ -39,9 +40,9 @@ class enemy(entity2.entity2):
 		return movement.Move(behaviorArray,moveCountArray,speedArray,exitscreen=False)
 
 	def __crazy__(self):
-		behaviorArray = ["down","left","right","down","up","stop","down"]
-		angleArray =    [0,-90,90,0,180,0]
-		moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
+		behaviorArray = ["down","left","right","down","up","down"]
+		angleArray =    [0,		-90,	90,		0,		180, 0]
+		moveCountArray = [20,	20,	20,	20,   20,	20]
 	
 		speedArray = [	  1*self.speed,	2*self.speed, 1*self.speed,	3*self.speed,1*self.speed,	2*self.speed]
 		return movement.Move(behaviorArray,moveCountArray,speedArray,angleArray,exitscreen=False)

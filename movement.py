@@ -7,6 +7,7 @@ Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up an
 '''
 import copy
 import pygame
+from library import *
 
 class Move(object):
     def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], angelArray=[0], exitscreen=True):
@@ -41,6 +42,14 @@ class Move(object):
         self.currSpeed = 0 
         self.angles = angelArray
         self.currAngle=0
+        self.angleBool = False
+        if len(angelArray) != 0:
+            if len(angelArray)>0  or angelArray[0]>0: 
+                self.angleBool=True
+            else:  
+                self.angleBool=False
+        
+
         
         self.exitsceen = exitscreen #if true, this behaivor will result in enemy moving down and off screen after executing movements to be deleted else enemy will stay put
 
@@ -98,6 +107,11 @@ class Move(object):
         return False
         
     def update(self,spriteObject):
+        if self.angleBool:
+            image, rect = load_image(spriteObject.imgFile) 
+
+        
+        
         
         if self.__updateCurrMove__(): # will initialize currSpeed, currMove, and currBehavior, and return True if no more moves left
             if not self.exitsceen: #will update reset the bahavior
@@ -113,12 +127,11 @@ class Move(object):
                 self.__updateCurrMove__()
 
         if self.currAngle != spriteObject.angle:
-            if spriteObject.angle != 0:
-                spriteObject.image,spriteObject.rect = self.rot_center(spriteObject.image, spriteObject.rect, -spriteObject.angle)
-            
-            spriteObject.image,spriteObject.rect = self.rot_center(spriteObject.image, spriteObject.rect, self.currAngle)
+            # sav = spriteObject.angle
+            # if spriteObject.angle != 0:
+            #     image, spriteObject.rect = self.rot_center(image, spriteObject.rect, -spriteObject.angle)
+            spriteObject.image,spriteObject.rect = self.rot_center(image, spriteObject.rect, self.currAngle)
             spriteObject.angle = self.currAngle
-
 
         spriteObject.move(0,1) #keeps ships constantly moving down
         updatedObject = self.behaveDic[self.currBehavior](spriteObject)
