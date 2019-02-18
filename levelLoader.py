@@ -145,19 +145,19 @@ class LevelLoader():
         ''' can add enemy classes, just contruct new enemy type'''
         enemySprite = None
         if className == ENEMY_diveLeft:
-            enemySprite = enemy.enemy(COLUMN_WIDTH,0, health=health) # this will change, need to add spawn location and behavior
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s1"], health=health) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveRight:
-            enemySprite = enemy.enemy(COLUMN_WIDTH*4,0) # this will change, need to add spawn location and behavior
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"]) # this will change, need to add spawn location and behavior
         elif className == ENEMY_sleeperMid:
-            enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, behavior="sleeper",health=health)
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], behavior="sleeper",health=health)
         elif className == ENEMY_camperMid:
-            enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, behavior="camper",health=health)
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s5"], behavior="camper",health=health)
         elif className == ENEMY_camperRight:
-            enemySprite = enemy.enemy(COLUMN_WIDTH*3,0, behavior="camper",health=health)
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s7"], behavior="camper",health=health)
         elif className == ENEMY_weakCamperMid:
-            enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, behavior="camper") #gets no health scaler
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], behavior="camper") #gets no health scaler
         else:#middle diver is fallback
-            enemySprite = enemy.enemy(SCREEN_WIDTH//2,0, health=health) # this will change, need to add spawn location and behavior
+            enemySprite = enemy.enemy(ENEMY_SECTORS["s4"], health=health) # this will change, need to add spawn location and behavior
         
         return enemySprite
 

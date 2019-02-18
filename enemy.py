@@ -5,7 +5,7 @@ from library import *
 
 
 class enemy(entity2.entity2):
-	def __init__(self, origin_x, origin_y, imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1):
+	def __init__(self, origin=ENEMY_SECTORS["s4"], imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1):
 		super().__init__()
 		self.weapon = weapon
 		self.point_value = 500
@@ -14,8 +14,8 @@ class enemy(entity2.entity2):
 		self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 		self.speed = speed #this will be a scaler for movement type
 		self.health = health
-		self.rect.x = origin_x
-		self.rect.y = origin_y
+		self.rect.x = origin[0]
+		self.rect.y = origin[1]
 
 		self.behaveDic = {
 			"diver":self.__diver__, 

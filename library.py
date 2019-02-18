@@ -34,6 +34,30 @@ BLUE = (0,0,255)
 ORIGIN = (0,0)
 SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
+#MATH for sectors
+# DEFAULT_ENEMY_WIDTH = 80 #pixels
+# DEFAULT_ENEMY_HEIGHT = 100
+# SCREEN_SPACE_WIDTH = COLUMN_WIDTH*3
+# ENEMY_SECTORS_AVAIL = SCREEN_SPACE_WIDTH//DEFAULT_ENEMY_HEIGHT
+# ENEMY_BUFFER = (SCREEN_SPACE_WIDTH%DEFAULT_ENEMY_HEIGHT)//2
+# ENEMY_SECTORS={}
+# for i in range(1,ENEMY_SECTORS_AVAIL+1):
+#     print("SECTOR ",i,":",ENEMY_BUFFER + DEFAULT_ENEMY_WIDTH*i)
+
+#enemy top screen sectors
+ENEMY_SECTORS={ "s1": [106,0], 
+                "s2": [186,0],
+                "s3": [266,0],
+                "s4": [346,0],
+                "s5": [426,0],
+                "s6": [506,0],
+                "s7": [586,0],
+                "s8": [666,0],
+                "s9": [746,0],
+                "s10": [826,0],
+                "s11": [906,0],
+            }
+
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 #FUNC DEFS

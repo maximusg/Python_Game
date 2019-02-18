@@ -12,12 +12,6 @@
                 ],
                 "health": 1
             },
-            "enemyBullets": {
-                "class": [
-                    "downwardLeft",
-                    "downwardRight"
-                ]
-            },
             "player": {
                 "health": 1,
                 "image": "SweetShip.png",
@@ -29,16 +23,23 @@
                 "weapon": "spitfire"
             }
         },
-        "5": {
+        "10": {
             "enemy": {
                 "class": [
-                    "diveLeft",
+                    "diveLeft"
+                ],
+                "health": 1
+            }
+        },
+        "20": {
+            "enemy": {
+                "class": [
                     "diveRight"
                 ],
                 "health": 1
             }
         },
-        "10": {
+        "30": {
             "enemy": {
                 "class": [
                     "diveLeft",

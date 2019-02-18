@@ -24,19 +24,22 @@ data = {
                 "class": [ ENEMY_camperMid ],
                 "health": 1
                 },
-            "enemyBullets":{
-                "class": [ BULLET_downwardLeft,BULLET_downwardRight ],
-                },
             "background": BG_STARFIELD
 
             },
-            5: #time 5 seconds elapsed
+            10: #time 5 seconds elapsed
             {"enemy":{
-                "class":[ ENEMY_diveLeft,ENEMY_diveRight] ,
+                "class":[ ENEMY_diveLeft] ,
                 "health": 1
                 },
             },
-            10: #time 5 seconds elapsed
+            20: #time 5 seconds elapsed
+            {"enemy":{
+                "class":[ ENEMY_diveRight] ,
+                "health": 1
+                },
+            },
+            30: #time 5 seconds elapsed
             {"enemy":{
                 "class":ENEMY_basicCluster,
                 "health": 1
@@ -49,11 +52,11 @@ data = {
 
 }
 
-if JSONCHECKER(data,False) == "good":
+print(JSONCHECKER(data,False))
 
-    #When we execute levelMaker in Python, it saves a copy of the script we build
-    with open (writeLocation,"w") as write_file:
-        json.dump (data, write_file, indent=4, sort_keys=True )
+#When we execute levelMaker in Python, it saves a copy of the script we build
+with open (writeLocation,"w") as write_file:
+    json.dump (data, write_file, indent=4, sort_keys=True )
 
 
 print(data)
