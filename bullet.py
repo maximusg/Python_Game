@@ -61,10 +61,10 @@ class bullet(entity2.entity2):
 		return movement.Move(behaviorArray=['northEast'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
 
 	def __northNorthEast__(self):
-		return movement.Move(behaviorArray=['northNorthEast'], moveCountArray=[800], speedArray=[self.speed*0.5]) #default behavior for object, could increase/decrease speed
+		return movement.Move(behaviorArray=['northNorthEast'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
 
 	def __northWest__(self):
 		return movement.Move(behaviorArray=['northWest'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
 
 	def __northNorthWest__(self):
-		return movement.Move(behaviorArray=['northNorthWest'], moveCountArray=[800], speedArray=[self.speed*0.5]) #default behavior for object, could increase/decrease speed
+		return movement.Move(behaviorArray=['northNorthWest'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
