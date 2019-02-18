@@ -17,9 +17,12 @@ class Move(object):
             "right":self.__right__, 
             "stop": self.__stop__,
             "northWest": self.__northWest__,
+            "northNorthWest": self.__northNorthWest__,
             "northEast": self.__northEast__,
-            "soutWest": self.__southWest__,
+            "northNorthEast": self.__northNorthEast__,
+            "southWest": self.__southWest__, #typo, change to southWest
             "southEast": self.__southEast__
+
             }
 
         self.save=[]
@@ -56,9 +59,15 @@ class Move(object):
     
     def __northWest__(self,spriteObject):
         return spriteObject.move(-self.currSpeed,-self.currSpeed)
+
+    def __northNorthWest__(self,spriteObject):
+        return spriteObject.move(-self.currSpeed,-self.currSpeed*2)
     
     def __northEast__(self,spriteObject):
         return spriteObject.move(self.currSpeed,-self.currSpeed)
+
+    def __northNorthEast__(self,spriteObject):
+        return spriteObject.move(self.currSpeed,-self.currSpeed*2)
 
     def __southEast__(self,spriteObject):
         return spriteObject.move(self.currSpeed,self.currSpeed)
@@ -88,7 +97,7 @@ class Move(object):
                 self.speeds = copy.deepcopy(self.save[2]) 
                 self.__updateCurrMove__()
             else: #will begin off screen behavior
-                self.behaviors = ["down"] 
+                self.behaviors = ["down"]
                 self.moveCounts = [800]
                 self.speeds = [10]
                 self.__updateCurrMove__()
