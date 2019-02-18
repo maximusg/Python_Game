@@ -17,7 +17,7 @@ BG_STARFIELD = "starfield.png"
 
 
 #verifying  Properly formatted
-TIME_TYPES = ["player", "enemy", "enemyBullets", "background"]
+TIME_TYPES = ["player", "enemy", "enemyBullets", "background", "items"]
 END_TYPES =["boss","time"]
 
 

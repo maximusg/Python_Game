@@ -15,7 +15,11 @@ class Move(object):
             "up":self.__up__, 
             "left":self.__left__, 
             "right":self.__right__, 
-            "stop": self.__stop__
+            "stop": self.__stop__,
+            "northWest": self.__northWest__,
+            "northEast": self.__northEast__,
+            "soutWest": self.__southWest__,
+            "southEast": self.__southEast__
             }
 
         self.save=[]
@@ -49,6 +53,18 @@ class Move(object):
 
     def __stop__(self,spriteObject):
         return spriteObject.move(0,0)
+    
+    def __northWest__(self,spriteObject):
+        return spriteObject.move(-self.currSpeed,-self.currSpeed)
+    
+    def __northEast__(self,spriteObject):
+        return spriteObject.move(self.currSpeed,-self.currSpeed)
+
+    def __southEast__(self,spriteObject):
+        return spriteObject.move(self.currSpeed,self.currSpeed)
+
+    def __southWest__(self,spriteObject):
+        return spriteObject.move(-self.currSpeed,self.currSpeed)
 
     def __updateCurrMove__(self): 
         '''updates currMove, as well as currBehavior and currSpeed'''
