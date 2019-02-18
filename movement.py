@@ -8,7 +8,7 @@ Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up an
 import copy
 
 class Move(object):
-    def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], exitscreen=True):
+    def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], angelArray=[0], exitscreen=True):
 
         self.behaveDic = {
             "down": self.__down__, 
