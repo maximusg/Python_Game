@@ -46,10 +46,10 @@ def spitfire3(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
     bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
-    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
-    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
-    bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 2)
-    bullet5 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -2)
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1, behavior='northEast')
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='northNorthEast')
+    bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 2, behavior='northWest')
+    bullet5 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -2, behavior='northNorthWest')
 
     return bullet1, bullet2, bullet3, bullet4, bullet5
     #self.weapon.weapon_func()
