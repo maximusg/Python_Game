@@ -23,6 +23,7 @@ import os
 from pathlib import Path
 import player
 import bullet
+import movement
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
@@ -33,7 +34,12 @@ def spitfire(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
     bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    #bullet1 = movement.Move(bullet1).__left__()
 
+    behaviorArray = ["down"]
+    moveCountArray = [80]
+    speedArray = [10]
+    #return movement.Move(behaviorArray,moveCountArray,speedArray)
     return bullet1
 
 def spitfire3(origin_x, origin_y):
@@ -54,8 +60,8 @@ def spitfire2(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
     bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
-    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
-    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1, behavior='northNorthEast')
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='northNorthWest')
     return bullet1, bullet2, bullet3
 
 def blue_lazer(origin_x, origin_y):
