@@ -17,7 +17,7 @@ BG_STARFIELD = "starfield.png"
 
 
 #verifying  Properly formatted
-TIME_TYPES = ["player", "enemy", "enemyBullets", "backgroud"]
+TIME_TYPES = ["player", "enemy", "enemyBullets", "background"]
 END_TYPES =["boss","time"]
 
 
@@ -53,7 +53,7 @@ def JSONCHECKER(pythonDICT,JSON):
     #high level check
     for item in pythonDICT:
         if item not in DICTYPES:
-            raise TypeError (item + " is not allowed")
+            raise TypeError ("\'"+item + "\' is not allowed")
         
     #intermediate level
     timeCheck = pythonDICT["time"]#starts a layer up from timeDict, as it needs to check at each time

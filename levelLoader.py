@@ -95,7 +95,7 @@ class LevelLoader():
             events = self.level["time"][str(levelTime)]
         except:
             return False #GUI handles false with no behavior
-        timeEvents = {"player":[],"enemy":[],"bullets":[],"items":[],"background":None}
+        timeEvents = {"player":[],"enemy":[],"bullets":[],"items":[]}
         del self.level["time"][str(levelTime)] #removes this time entry from the dictionary
         
 
@@ -120,6 +120,8 @@ class LevelLoader():
                         pass
                 if each == "background":
                     timeEvents["background"]=events[each]
+            else:
+                print (each, " is not in levelLibrary TIME_TYPES so it will not be loaded")
 
         
         return timeEvents #all sprites and background in a dictionary returned to GUI
