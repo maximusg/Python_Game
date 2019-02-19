@@ -221,6 +221,9 @@ class GUI(object):
                         if event.key == K_F2 and len(player_sprites) == 0:
                             playerShip = player.player('spitfire','SweetShip.png',"arrows")
                             player_sprites.add(playerShip)
+                        if event.key == K_F11:
+                            enemy_sprites.empty()
+                            enemy_bullet_sprites.empty()
 
             sec_running = time_since_start // 1000 #need seconds since start
             events = self.loader.getEvents(sec_running)
@@ -360,7 +363,8 @@ class GUI(object):
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
             if playerShip.invul_flag:
                 invuln_timer -= 1
-        
+        if next_level:
+            self.level_complete()
         return player_lives, player_score, next_level
 
     def pause_screen(self):
@@ -386,6 +390,24 @@ class GUI(object):
                     exit()
             pygame.display.update(paused_rect)
             self.clock.tick(FRAMERATE)
+
+    def level_complete(self):
+        going = True
+        start_time = pygame.time.get_ticks()
+        while going:
+            victory_text, victory_surf = draw_text('Area cleared! Level Complete!', WHITE)
+            victory_rect = victory_text.get_rect()
+            victory_rect.center = SCREEN_CENTER 
+            self.screen.blit(victory_text, victory_rect)
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+            pygame.display.update(victory_rect)
+            if pygame.time.get_ticks() > start_time + 5000: ###add 5sec for the victory dance.
+                going = False
+            self.clock.tick(FRAMERATE)
+
 
     def death_loop(self):
         dead = True
