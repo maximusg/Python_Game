@@ -42,7 +42,7 @@ class Scoreboard(object):
         self.head = None
         self.tail = None
         self.__length = 0
-        self.readFromFile('highscores.asset')
+        self.readFromFile('resources/event_scrolls/highscores.asset')
 
     def add(self, name, score):
         entry = self.Entry(name, score)
@@ -70,7 +70,7 @@ class Scoreboard(object):
         return score > self.tail.score
 
     def writeToFile(self):
-        fileName = open('highscores.asset', 'w')
+        fileName = open('resources/event_scrolls/highscores.asset', 'w')
         currEntry = self.head
         while currEntry.nextEntry:
             if currEntry.nextEntry.nextEntry != None:

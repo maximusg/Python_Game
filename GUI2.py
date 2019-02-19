@@ -41,7 +41,7 @@ class GUI(object):
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        story_scroll = load_text('openingscroll.asset')
+        story_scroll = load_text('resources/event_scrolls/openingscroll.asset')
 
         going = True
         count = 0
@@ -614,7 +614,7 @@ class GUI(object):
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
         bg, bg_rect = load_image('nebula.jpg')
-        with open('credits.asset') as infile:
+        with open('resources/event_scrolls/credits.asset') as infile:
             credit_list = infile.readlines()
 
         background.fill(BLACK)
@@ -730,7 +730,7 @@ class GUI(object):
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        story_scroll = load_text('ending.asset')
+        story_scroll = load_text('resources/event_scrolls/ending.asset')
 
         going = True
         count = 0
