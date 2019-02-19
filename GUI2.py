@@ -102,13 +102,8 @@ class GUI(object):
         playerShip = starting_events.get('player')
         if playerShip:
             playerShip = playerShip[0]
-        bad_guys = starting_events.get('enemy')
-        bad_guy_bullets = starting_events.get('bullets')
-        if not bad_guys:
-            bad_guys = []
-        if not bad_guy_bullets:
-            bad_guy_bullets = []    
-
+        bad_guys = starting_events.get('enemy',[])
+        bad_guy_bullets = starting_events.get('bullets',[])
 
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
@@ -234,16 +229,9 @@ class GUI(object):
             items_to_add = []
             
             if events:
-                enemies_to_add = events.get('enemy')
-                enemy_bullets_to_add = events.get('bullets')
-                items_to_add = events.get('items')
-            
-                if not enemies_to_add:
-                    enemies_to_add = []
-                if not enemy_bullets_to_add:
-                    enemy_bullets_to_add = []
-                if not items_to_add:
-                    items_to_add = []
+                enemies_to_add = events.get('enemy', [])
+                enemy_bullets_to_add = events.get('bullets', [])
+                items_to_add = events.get('items', [])
                 
             # if events:
             #     try:
