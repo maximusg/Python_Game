@@ -89,8 +89,8 @@ class enemy(entity2.entity2):
 		droppedItem = None
 		for item in self.itemDropTable:
 			items.append(item[0])
-			probability.append(total_probability + item[1])
-			total_probability += item[1]
+			probability.append(total_probability + float(item[1]))
+			total_probability += float(item[1])
 			#if total_probability > 1:
 			#	raise RunTimeError('probabilities cannot add up to more than 1')
 
@@ -103,7 +103,7 @@ class enemy(entity2.entity2):
 			if rand_num >= intervals[i][0] and rand_num <= intervals[i][1]:
 				droppedItem = items[i]
 		#add more logic on what to do with the dropped item later
-		print(droppedItem)
+		#print(droppedItem) #debugging
 		if droppedItem is None:
 			return None
 		else:

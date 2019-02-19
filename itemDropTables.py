@@ -14,4 +14,6 @@ purpose: create tables linking items to their drop rates, to be used when creati
 
 common = (('coin', 0.4),('powerup', 0.1))
 
-rare = (('coin', 0.2), 'powerup', 0.8)
+#rare = (('coin', 0.2), 'powerup', 0.7)
+
+rare = (('coin', 0.1),('powerup', 0.7))
