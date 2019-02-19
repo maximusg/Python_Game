@@ -136,8 +136,7 @@ class GUI(object):
         # #bad_guy.health = 5 ##Verify boss mechanics
 
 
-        #spawn a test item
-        #collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
+
 
         #Initialize sprite groups
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
@@ -146,6 +145,13 @@ class GUI(object):
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
+
+
+        #spawn a test item
+        #collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
+        #collectible = item_pickup.item(500, 500, 1)
+        #items.add(collectible)
+
 
         going=True
         #fs_toggle = False ##This here is kinda crappy.
@@ -298,6 +304,9 @@ class GUI(object):
                         self.explode.play()                        
                         player_score += sprite.point_value
                         sprite.visible = 0
+                        item_drop = sprite.getDrop()
+                        if item_drop is not None:
+                            items.add(item_drop)
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)     
 

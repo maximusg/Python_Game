@@ -5,7 +5,7 @@ from library import *
 
 
 class bullet(entity2.entity2):
-	def __init__(self, origin_x, origin_y, speed, path_to_img, angle = 0, behavior = 'straightUp'):
+	def __init__(self, origin_x, origin_y, speed, path_to_img, angle = 0, behavior = 'up'):
 		super().__init__()
 		self.speed = speed
 		self.image, self.rect = load_image(path_to_img)
@@ -21,7 +21,7 @@ class bullet(entity2.entity2):
 		self.rect.y = origin_y
 
 		self.behaveDic = {
-			"straightUp":self.__straightUp__,
+			"up":self.__up__,
 			"northWest":self.__northWest__,
 			"northEast":self.__northEast__,
 			"northNorthEast":self.__northNorthEast__,
@@ -52,7 +52,7 @@ class bullet(entity2.entity2):
 		# if not (0 <= self.rect.top <= SCREEN_HEIGHT):
 		# 	self.visible = 0
 
-	def __straightUp__(self):
+	def __up__(self):
 		# behaviorArray = ["down","stop","left","stop","up","stop","right"]
 		# speedArray = [	  1*self.speed,	1*self.speed]
 		return movement.Move(behaviorArray=['up'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
