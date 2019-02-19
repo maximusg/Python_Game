@@ -13,6 +13,8 @@ class entity2(pygame.sprite.DirtySprite):
         self.health = 1
         self.screen = pygame.display.get_surface()
         self.angle = 0
+        self.speed = 0
+        self.acceleration = 0
 
         @property
         def health(self):
