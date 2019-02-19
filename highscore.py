@@ -44,7 +44,8 @@ class Scoreboard(object):
         self.__length = 0
         self.readFromFile('highscores.asset')
 
-    def add(self, entry):
+    def add(self, name, score):
+        entry = self.Entry(name, score)
         if self.head == None:
             self.head = entry
             self.tail = entry

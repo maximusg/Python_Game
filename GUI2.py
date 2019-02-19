@@ -185,6 +185,9 @@ class GUI(object):
                     player_sprites_invul.add(playerShip)
                 else:
                     self.game_over(player_score)
+                    if self.hs_list.belongsOnList(player_score):
+                        name = self.add_to_hs('You\'ve set a high score! Enter your initials!')
+                        self.hs_list.add(name, player_score)
                     #break (potentially cleaner than setting going to False)
                     going = False
                     next_level = False
@@ -701,6 +704,13 @@ class GUI(object):
             curr_lives, curr_score, next_level = self.main(curr_lives, curr_score)
             if not next_level or not self.loader.nextLevel():
                 still_playing = False
+            elif next_level and not self.loader.nextLevel():
+                still_playing = False
+                self.victory()
+                if self.hs_list.belongsOnList(curr_score):
+                    name = self.add_to_hs('You set a new high score! Enter your initials!')
+                    self.hs_list.add(name, curr_score)
+        self.loader = levelLoader.LevelLoader()
                 #if game won, do something
             
             # if not next_level: ##game over
@@ -711,6 +721,56 @@ class GUI(object):
             #     ##end of game
             #     ##self.victory_screen() -TODO-
             #     still_playing = False    
+
+    def victory(self):
+        ##Background setup
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        bg, bg_rect = load_image('nebula_blue.png')
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
+
+        story_scroll = load_text('ending.asset')
+
+        going = True
+        count = 0
+        pygame.time.wait(1500)
+
+        while going:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    going = False ## TODO - needs different handling than SPACE 
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                        going = False ## TODO - needs different handling than SPACE
+                    if event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                        else:
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+
+            self.screen.blit(background, ORIGIN)
+
+            x = SCREEN_WIDTH/2
+            y = SCREEN_HEIGHT - count
+
+            for line in story_scroll:
+                line = line.strip('\n')
+                text, text_surf = draw_text(line, WHITE)
+                text_rect = text_surf.get_rect()
+                text_rect.center = (x,y)
+                y += 50
+                self.screen.blit(text, text_rect)
+
+            count += 1
+            pygame.display.update()
+
+            if text_rect.bottom < 0:
+                going = False
+            self.clock.tick_busy_loop(FRAMERATE)
+
+
 
 if __name__=='__main__':
 
