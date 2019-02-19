@@ -9,14 +9,15 @@ class bullet(entity2.entity2):
 		super().__init__()
 		self.speed = speed
 		self.image, self.rect = load_image(path_to_img)
-		self.image = self.image.convert()
-		self.rect.centerx, self.rect.top = origin_x, origin_y
+		# self.image = self.image.convert()
+		self.imgFile = path_to_img
+		# self.rect.centerx, self.rect.top = origin_x, origin_y
 		self.off_screen = False
 		self.dirty = 1
 		self.mask = pygame.mask.from_surface(self.image)
 		self.angle = angle
 
-		self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
+		# self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 		self.rect.x = origin_x
 		self.rect.y = origin_y
 
@@ -25,7 +26,8 @@ class bullet(entity2.entity2):
 			"northWest":self.__northWest__,
 			"northEast":self.__northEast__,
 			"northNorthEast":self.__northNorthEast__,
-			"northNorthWest":self.__northNorthWest__
+			"northNorthWest":self.__northNorthWest__,
+			"missle":self.__missle__
 
 
 			}
@@ -55,16 +57,24 @@ class bullet(entity2.entity2):
 	def __up__(self):
 		# behaviorArray = ["down","stop","left","stop","up","stop","right"]
 		# speedArray = [	  1*self.speed,	1*self.speed]
-		return movement.Move(behaviorArray=['up'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
+		return movement.Move(behaviorArray=['up'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
 
 	def __northEast__(self):
-		return movement.Move(behaviorArray=['northEast'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
+		return movement.Move(behaviorArray=['northEast'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
 
 	def __northNorthEast__(self):
-		return movement.Move(behaviorArray=['northNorthEast'], moveCountArray=[800], speedArray=[self.speed*0.5]) #default behavior for object, could increase/decrease speed
+		return movement.Move(behaviorArray=['northNorthEast'], moveCountArray=[800], speedArray=[self.speed*0.5], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
 
 	def __northWest__(self):
-		return movement.Move(behaviorArray=['northWest'], moveCountArray=[800], speedArray=[self.speed]) #default behavior for object, could increase/decrease speed
+		return movement.Move(behaviorArray=['northWest'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
 
 	def __northNorthWest__(self):
-		return movement.Move(behaviorArray=['northNorthWest'], moveCountArray=[800], speedArray=[self.speed*0.5]) #default behavior for object, could increase/decrease speed
+		return movement.Move(behaviorArray=['northNorthWest'], moveCountArray=[800], speedArray=[self.speed*0.5],angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
+
+	def __missle__(self):
+
+		behaviorArray = ["up","northWest","left","right","up","northEast","right"]
+		moveCountArray = [50,   20,	20,		20,  50,	20,	20]
+		angleArray = [0,   45,	-90,		90,  0,	-45,	90]
+		speedArray = [1*self.speed]
+		return movement.Move(behaviorArray,moveCountArray,speedArray,angleArray,exitscreen=False)

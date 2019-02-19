@@ -107,12 +107,16 @@ class Move(object):
         return False
         
     def update(self,spriteObject):
-        if self.angleBool:
-            image, rect = load_image(spriteObject.imgFile) 
+        if self.angleBool: #just to save cycles, prevent loading picture if uncessary
+            if self.currAngle != spriteObject.angle:
+                image, rect = load_image(spriteObject.imgFile) 
+                # sav = spriteObject.angle
+                # if spriteObject.angle != 0:
+                #     image, spriteObject.rect = self.rot_center(image, spriteObject.rect, -spriteObject.angle)
+                spriteObject.image,spriteObject.rect = self.rot_center(image, spriteObject.rect, self.currAngle)
+                
+                spriteObject.angle = self.currAngle
 
-        
-        
-        
         if self.__updateCurrMove__(): # will initialize currSpeed, currMove, and currBehavior, and return True if no more moves left
             if not self.exitsceen: #will update reset the bahavior
                 self.behaviors = copy.deepcopy(self.save[0]) 
@@ -125,13 +129,6 @@ class Move(object):
                 self.moveCounts = [800]
                 self.speeds = [10]
                 self.__updateCurrMove__()
-
-        if self.currAngle != spriteObject.angle:
-            # sav = spriteObject.angle
-            # if spriteObject.angle != 0:
-            #     image, spriteObject.rect = self.rot_center(image, spriteObject.rect, -spriteObject.angle)
-            spriteObject.image,spriteObject.rect = self.rot_center(image, spriteObject.rect, self.currAngle)
-            spriteObject.angle = self.currAngle
 
         spriteObject.move(0,1) #keeps ships constantly moving down
         updatedObject = self.behaveDic[self.currBehavior](spriteObject)
