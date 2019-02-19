@@ -19,31 +19,38 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 
 '''
 
-import os
 from pathlib import Path
-import player
 import bullet
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
+
+
+#utility functions
+def is_weapon(name):
+        if name in master_weapons_dict:
+            return True
+        else:
+            return False
 
 #each weapon name will be mapped to its function, an image, and other properties
 
 def spitfire(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='up')
+
 
     return bullet1
 
 def spitfire3(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
-    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
-    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
-    bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 2)
-    bullet5 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -2)
+    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northEast')
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
+    bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northWest')
+    bullet5 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
 
     return bullet1, bullet2, bullet3, bullet4, bullet5
     #self.weapon.weapon_func()
@@ -53,20 +60,27 @@ def spitfire3(origin_x, origin_y):
 def spitfire2(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('spitfire.png'), angle = 1)
-    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = -1)
-    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 5, weapon_images_path.joinpath('spitfire.png'), angle = 0)
+    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
+    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
     return bullet1, bullet2, bullet3
 
 def blue_lazer(origin_x, origin_y):
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('blue_lazer.gif'), angle = 0)
+    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('blue_lazer.gif'))
+    print("bluelaser")
+    return bullet1
+
+def missle(origin_x, origin_y):
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('blue_lazer.gif'), behavior="missle")
     return bullet1
 
 master_weapons_dict = {
     'spitfire': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
     'spitfire2': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire2),
     'spitfire3': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire3),
-    'blue_lazer': (10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer)
+    'blue_lazer': (10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
+    'missle': (10, 5, weapon_images_path.joinpath('blue_lazer.gif'), missle)
+
 }
 
 
@@ -78,6 +92,7 @@ class Weapon(object):
             raise Exception('the weapon must be in the master weapons dictionary.')
         self.name = weaponName
         self.weapon_damage = master_weapons_dict.get(weaponName)[0]
+
         self.rof = master_weapons_dict.get(weaponName)[1] # rof is the rate of fire in bullets per second
         self.weapon_image = master_weapons_dict.get(weaponName)[2]
         self.weapon_func = master_weapons_dict.get(weaponName)[3]
@@ -87,6 +102,8 @@ class Weapon(object):
         #print(master_weapons_dict.get('spitfire')[0])
         #print(self.weapon_image)
         #os.startfile(self.weapon_image)
+
+
 
 
 

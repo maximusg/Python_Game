@@ -2,6 +2,7 @@
 import weapon
 import player
 import enemy
+import levelLoader
 import pygame
 from pygame.locals import *
 from pygame.compat import geterror
@@ -9,19 +10,20 @@ from library import *
 import random
 import highscore
 import item_pickup
-import pyganim
+# import pyganim
 
 class GUI(object):
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
-        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0],WINDOW_OPTIONS_FULLSCREEN[1])
+        self.screen = pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0],WINDOW_OPTIONS_WINDOWED[1])
         self.screen_rect = self.screen.get_rect()
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
         self.fs_toggle = True
         self.hs_list = highscore.Scoreboard()
+        self.loader = levelLoader.LevelLoader()
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -39,7 +41,7 @@ class GUI(object):
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        story_scroll = load_text('openingscroll.asset')
+        story_scroll = load_text('resources/event_scrolls/openingscroll.asset')
 
         going = True
         count = 0
@@ -90,11 +92,28 @@ class GUI(object):
 
         gui.menu()
 
-    def main(self,cheat=False):
+    def main(self, lives_remaining, curr_score):
+        ##Level Loader setup
+        starting_events = self.loader.getEvents(0)
+        ending_events = self.loader.getEndBehavior()
+        player_score = curr_score
+        player_lives = lives_remaining    
+        bg_filename = starting_events.get('background')
+        playerShip = starting_events.get('player')
+        if playerShip:
+            playerShip = playerShip[0]
+        bad_guys = starting_events.get('enemy')
+        bad_guy_bullets = starting_events.get('bullets')
+        if not bad_guys:
+            bad_guys = []
+        if not bad_guy_bullets:
+            bad_guy_bullets = []    
+
+
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image('starfield.png')
+        bg, bg_rect = load_image(bg_filename)
         bg_size = bg.get_size()
         bg_w, bg_h = bg_size
         bg_x = 0
@@ -111,34 +130,50 @@ class GUI(object):
         load_background_music('roboCop3NES.ogg')
         
         ##Initialize ships
-        playerShip = player.player('spitfire','SweetShip.png',"arrows")
-        bad_guy = enemy.enemy('spitfire','enemy.png')
-        #bad_guy.health = 5 ##Verify boss mechanics
+        # playerShip = player.player('spitfire','SweetShip.png',"arrows")
+        # bad_guy = enemy.enemy('spitfire','enemy.png')
+        # #bad_guy.health = 5 ##Verify boss mechanics
 
 
-        #spawn a test item
-        collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
+
 
         #Initialize sprite groups
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
-        enemy_sprites = pygame.sprite.LayeredDirty(bad_guy, _default_layer = 4)
-        enemy_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
-        items=pygame.sprite.LayeredDirty(collectible, _default_layer = 2)
+        enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
+        enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
+        items=pygame.sprite.LayeredDirty(_default_layer = 2)
+
+
+        #spawn a test item
+        #collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
+        #collectible = item_pickup.item(500, 500, 1)
+        #items.add(collectible)
+
 
         going=True
         #fs_toggle = False ##This here is kinda crappy.
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
-        player_score = 0
-        if cheat:
-            player_lives = 100
-        else:
-            player_lives = 3
+        next_level = True
         invuln_timer = 120 ##frames of invulnerability post-death
         ##Clock time setup
         while going:
+            ##Check for end of level conditions
+            if ending_events:
+                endtime = ending_events.get('time')
+                spawn_boss = ending_events.get('boss')
+                boss_spawned = False
+            else:
+                endtime = -1
+                spawn_boss = False
+
+            ##check if there is a boss spawned (to figure out when to end the level post boss death)
+            if boss_spawned:
+                if len(enemy_sprites) == 0:
+                    going = False
+
             ##Beginning of the loop checking for death and lives remaining.
             if len(player_sprites) == 0 and not playerShip.invul_flag:
                 player_lives -= 1
@@ -149,8 +184,12 @@ class GUI(object):
                     player_sprites_invul.add(playerShip)
                 else:
                     self.game_over(player_score)
+                    if self.hs_list.belongsOnList(player_score):
+                        name = self.add_to_hs('You\'ve set a high score! Enter your initials!')
+                        self.hs_list.add(name, player_score)
                     #break (potentially cleaner than setting going to False)
                     going = False
+                    next_level = False
 
             ##check if the invuln timer is complete
             if invuln_timer == 0 and len(player_sprites_invul) != 0:
@@ -163,9 +202,11 @@ class GUI(object):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     going = False
+                    next_level = False
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         going = False
+                        next_level = False
                     if event.key == K_F12:
                         self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if self.fs_toggle:
@@ -182,6 +223,58 @@ class GUI(object):
                         if event.key == K_F2 and len(player_sprites) == 0:
                             playerShip = player.player('spitfire','SweetShip.png',"arrows")
                             player_sprites.add(playerShip)
+                        if event.key == K_F11:
+                            enemy_sprites.empty()
+                            enemy_bullet_sprites.empty()
+
+            sec_running = time_since_start // 1000 #need seconds since start
+            events = self.loader.getEvents(sec_running)
+            enemies_to_add = []
+            enemy_bullets_to_add = []
+            items_to_add = []
+            
+            if events:
+                enemies_to_add = events.get('enemy')
+                enemy_bullets_to_add = events.get('bullets')
+                items_to_add = events.get('items')
+            
+                if not enemies_to_add:
+                    enemies_to_add = []
+                if not enemy_bullets_to_add:
+                    enemy_bullets_to_add = []
+                if not items_to_add:
+                    items_to_add = []
+                
+            # if events:
+            #     try:
+            #         enemies_to_add = events['enemy']
+            #     except KeyError:
+            #         enemies_to_add = []
+            #     finally:
+            #         try:
+            #             enemy_bullets_to_add = events['bullets']
+            #         except KeyError:
+            #             enemy_bullets_to_add = []
+            #         finally:
+            #             try:    
+            #                 items_to_add = events['items']
+            #             except KeyError:
+            #                 items_to_add = []
+
+            if sec_running == endtime and spawn_boss:
+                pass
+                ##spawn the boss
+                boss_spawned = True
+            if sec_running >= endtime and not spawn_boss:
+                if len(enemy_sprites) == 0:
+                    going = False ##How do we add some sort of "end of level" animation?
+                    
+            if enemies_to_add:
+                enemy_sprites.add(enemies_to_add)
+            if enemy_bullets_to_add:
+                enemy_bullet_sprites.add(enemy_bullets_to_add)
+            if items_to_add:
+                items.add(items_to_add)
 
             ##Keyboard polling
             keys = pygame.key.get_pressed()
@@ -228,6 +321,9 @@ class GUI(object):
                         self.explode.play()                        
                         player_score += sprite.point_value
                         sprite.visible = 0
+                        item_drop = sprite.getDrop()
+                        if item_drop is not None:
+                            items.add(item_drop)
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)     
 
@@ -281,6 +377,9 @@ class GUI(object):
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
             if playerShip.invul_flag:
                 invuln_timer -= 1
+        if next_level:
+            self.level_complete()
+        return player_lives, player_score, next_level
 
     def pause_screen(self):
         paused = True
@@ -294,17 +393,35 @@ class GUI(object):
                     if event.key == K_PAUSE or event.key == K_ESCAPE:
                         paused = False
                         pygame.time.wait(500)
-                if event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
-                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
-                        else:
-                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+                    if event.key == K_F12:
+                            self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                            if self.fs_toggle:
+                                pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                            else:
+                                pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
             pygame.display.update(paused_rect)
             self.clock.tick(FRAMERATE)
+
+    def level_complete(self):
+        going = True
+        start_time = pygame.time.get_ticks()
+        while going:
+            victory_text, victory_surf = draw_text('Area cleared! Level Complete!', WHITE)
+            victory_rect = victory_text.get_rect()
+            victory_rect.center = SCREEN_CENTER 
+            self.screen.blit(victory_text, victory_rect)
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+            pygame.display.update(victory_rect)
+            if pygame.time.get_ticks() > start_time + 5000: ###add 5sec for the victory dance.
+                going = False
+            self.clock.tick(FRAMERATE)
+
 
     def death_loop(self):
         dead = True
@@ -356,10 +473,6 @@ class GUI(object):
                     exit()
             pygame.display.update([dead_rect, dead_rect2])
             self.clock.tick(FRAMERATE)
-        hs_list = highscore.Scoreboard()
-        if hs_list.belongsOnList(player_score):
-            self.hs_list.add(highscore.Scoreboard.Entry(self.add_to_hs('You\'ve set a new high score! What are your initials?'), player_score))
-            self.hs_list.writeToFile()
 
     def add_to_hs(self, txt):
 
@@ -409,7 +522,7 @@ class GUI(object):
             show_name(self.screen, name)        
 
     def menu(self):
-        bg, bg_rect = load_image('starfield.png')
+        bg, bg_rect = load_image('nebula_red.png')
         bg_size = bg.get_size()
         w, h = bg_size
         x = 0
@@ -431,11 +544,11 @@ class GUI(object):
                         going = False
                     elif event.key == K_SPACE:
                         if code_accepted:
-                            gui.main(cheat=True)
+                            gui.level_loop(cheat=True)
                             in_code = []
                             code_accepted = False
                         else:
-                            gui.main()
+                            gui.level_loop()
                     elif event.key == K_s:
                         gui.high_scores()
                     elif event.key == K_c:
@@ -512,7 +625,7 @@ class GUI(object):
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
         bg, bg_rect = load_image('nebula.jpg')
-        with open('credits.asset') as infile:
+        with open('resources/event_scrolls/credits.asset') as infile:
             credit_list = infile.readlines()
 
         background.fill(BLACK)
@@ -590,16 +703,85 @@ class GUI(object):
                 going = False
             self.clock.tick(FRAMERATE)
 
-    def level_loop(self):
+    def level_loop(self, cheat=False):
         still_playing = True
-        curr_level = first_level
+        curr_score = 0
+        if cheat:
+            curr_lives = 100
+        else:
+            curr_lives = 3
+        #event_queue = self.loader.getEvents()
         while still_playing:
-            curr_level = self.main(curr_level)
-            if curr_level == None: ##game over
+            curr_lives, curr_score, next_level = self.main(curr_lives, curr_score)
+            if not next_level or not self.loader.nextLevel():
                 still_playing = False
-            elif curr_level == 'the end':
-                self.ending()
-                still_playing = False           
+            elif next_level and not self.loader.nextLevel():
+                still_playing = False
+                self.victory()
+                if self.hs_list.belongsOnList(curr_score):
+                    name = self.add_to_hs('You set a new high score! Enter your initials!')
+                    self.hs_list.add(name, curr_score)
+                    self.hs_list.writeToFile('resources/event_scrolls/highscores.asset')
+        self.loader = levelLoader.LevelLoader()
+                #if game won, do something
+            
+            # if not next_level: ##game over
+            #     still_playing = False
+            # elif self.loader.nextLevel():
+            #     pass   
+            # else:
+            #     ##end of game
+            #     ##self.victory_screen() -TODO-
+            #     still_playing = False    
+
+    def victory(self):
+        ##Background setup
+        background = pygame.Surface(self.screen.get_size())
+        background = background.convert()
+        bg, bg_rect = load_image('nebula_blue.png')
+        background.fill(BLACK)
+        background.blit(bg, ORIGIN)
+
+        story_scroll = load_text('resources/event_scrolls/ending.asset')
+
+        going = True
+        count = 0
+
+        while going:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    going = False ## TODO - needs different handling than SPACE 
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE or event.key == K_SPACE:
+                        going = False ## TODO - needs different handling than SPACE
+                    if event.key == K_F12:
+                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.fs_toggle:
+                            pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
+                        else:
+                            pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+
+            self.screen.blit(background, ORIGIN)
+
+            x = SCREEN_WIDTH/2
+            y = SCREEN_HEIGHT - count
+
+            for line in story_scroll:
+                line = line.strip('\n')
+                text, text_surf = draw_text(line, WHITE)
+                text_rect = text_surf.get_rect()
+                text_rect.center = (x,y)
+                y += 50
+                self.screen.blit(text, text_rect)
+
+            count += 1
+            pygame.display.update()
+
+            if text_rect.bottom < 0:
+                going = False
+            self.clock.tick_busy_loop(FRAMERATE)
+
+
 
 if __name__=='__main__':
 

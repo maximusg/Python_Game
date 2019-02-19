@@ -41,10 +41,30 @@ class Scoreboard(object):
     def __init__(self):
         self.head = None
         self.tail = None
-        self.__length = 0
-        self.readFromFile('highscores.asset')
+        self.readFromFile('resources/event_scrolls/highscores.asset')
 
-    def add(self, entry):
+    @property
+    def head(self):
+        return self.__head
+
+    @property
+    def tail(self):
+        return self.__tail
+
+    @head.setter
+    def head(self, value):
+        if not isinstance(value, Scoreboard.Entry) and value != None:
+            raise RuntimeError(value + 'is not a valid head entry.')
+        self.__head = value
+
+    @tail.setter
+    def tail(self, value):
+        if not isinstance(value, Scoreboard.Entry) and value != None:
+            raise RuntimeError(value + 'is not a valid head entry.')
+        self.__tail = value
+
+    def add(self, name, score):
+        entry = self.Entry(name, score)
         if self.head == None:
             self.head = entry
             self.tail = entry
@@ -63,13 +83,12 @@ class Scoreboard(object):
     def resetList(self):
         self.head = None
         self.tail = None
-        self.__length = 0
 
     def belongsOnList(self, score):
         return score > self.tail.score
 
-    def writeToFile(self):
-        fileName = open('highscores.asset', 'w')
+    def writeToFile(self, filename):
+        fileName = open(filename, 'w')
         currEntry = self.head
         while currEntry.nextEntry:
             if currEntry.nextEntry.nextEntry != None:
@@ -84,7 +103,7 @@ class Scoreboard(object):
             read_data = f.read().split(',')
         for entry in read_data:
             temp = entry.split('.')
-            self.add(self.Entry(temp[0],int(temp[1])))
+            self.add(temp[0],int(temp[1]))
 
 
     def __trim(self):

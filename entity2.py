@@ -12,6 +12,7 @@ class entity2(pygame.sprite.DirtySprite):
         super().__init__()
         self.health = 1
         self.screen = pygame.display.get_surface()
+        self.angle = 0
 
         @property
         def health(self):
@@ -23,6 +24,15 @@ class entity2(pygame.sprite.DirtySprite):
                 raise RuntimeError(value + ' is not a valid int for health.')
             self.__health = value
 
+        @property
+        def angle(self):
+            return self.__angle
+        
+        @angle.setter
+        def angle(self, value):
+            if not isinstance(value, int):
+                raise RuntimeError(value + ' is not a valid int for angle.')
+            self.__angle = value
 
     def something(self):
         pass
