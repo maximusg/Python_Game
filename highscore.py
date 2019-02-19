@@ -109,7 +109,7 @@ class Scoreboard(object):
     def __trim(self):
         currEntry = self.head
         i = 0
-        while currEntry.nextEntry != None and i < 21:
+        while currEntry.nextEntry != None and i < 20:
             currEntry = currEntry.nextEntry
             i += 1
         self.tail = currEntry
