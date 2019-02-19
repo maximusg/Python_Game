@@ -104,4 +104,7 @@ class enemy(entity2.entity2):
 				droppedItem = items[i]
 		#add more logic on what to do with the dropped item later
 		print(droppedItem)
-		return item_pickup.item(self.rect.centerx, self.rect.centery, name= droppedItem)
+		if droppedItem is None:
+			return None
+		else:
+			return item_pickup.item(self.rect.centerx, self.rect.centery, name= droppedItem)

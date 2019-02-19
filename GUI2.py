@@ -147,8 +147,8 @@ class GUI(object):
 
         #spawn a test item
         #collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
-        collectible = item_pickup.item(500, 500, 1)
-        items.add(collectible)
+        #collectible = item_pickup.item(500, 500, 1)
+        #items.add(collectible)
 
 
         going=True
@@ -303,7 +303,9 @@ class GUI(object):
                         self.explode.play()                        
                         player_score += sprite.point_value
                         sprite.visible = 0
-                        items.add(sprite.getDrop())
+                        item_drop = sprite.getDrop()
+                        if item_drop is not None:
+                            items.add(item_drop)
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)     
 
