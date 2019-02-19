@@ -85,7 +85,7 @@ class Scoreboard(object):
             read_data = f.read().split(',')
         for entry in read_data:
             temp = entry.split('.')
-            self.add(self.Entry(temp[0],int(temp[1])))
+            self.add(temp[0],int(temp[1]))
 
 
     def __trim(self):

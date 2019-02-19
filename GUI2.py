@@ -734,7 +734,6 @@ class GUI(object):
 
         going = True
         count = 0
-        pygame.time.wait(1500)
 
         while going:
             for event in pygame.event.get():
