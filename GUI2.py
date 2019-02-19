@@ -23,7 +23,7 @@ class GUI(object):
         pygame.mouse.set_visible(False)
         self.fs_toggle = True
         self.hs_list = highscore.Scoreboard()
-        self.loader = levelLoader.LevelLoader(1)
+        self.loader = levelLoader.LevelLoader()
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -710,6 +710,7 @@ class GUI(object):
                 if self.hs_list.belongsOnList(curr_score):
                     name = self.add_to_hs('You set a new high score! Enter your initials!')
                     self.hs_list.add(name, curr_score)
+                    self.hs_list.writeToFile('resources/event_scrolls/highscores.asset')
         self.loader = levelLoader.LevelLoader()
                 #if game won, do something
             
