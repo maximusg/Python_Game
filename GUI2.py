@@ -122,7 +122,7 @@ class GUI(object):
         column.fill(BLACK)
 
         #Background sound setup
-        load_background_music('roboCop3NES.ogg')
+        #load_background_music('roboCop3NES.ogg')
         
         ##Initialize ships
         # playerShip = player.player('spitfire','SweetShip.png',"arrows")
@@ -275,7 +275,11 @@ class GUI(object):
             ##Helper to call update() on each sprite in the group.    
             player_sprites.update()
             player_bullet_sprites.update()
-            enemy_sprites.update()
+            for sprite in enemy_sprites:
+                bullet = sprite.update()
+                if bullet:
+                    enemy_bullet_sprites.add(bullet)
+            # enemy_sprites.update()
             enemy_bullet_sprites.update()
             items.update()
         
@@ -287,6 +291,9 @@ class GUI(object):
                     if collision:
                         self.explode.play()
                         sprite.visible = 0
+                else:
+                    self.explode.play()
+                    sprite.visible = 0
                 if sprite.visible == 0:
                     player_sprites.remove(sprite)
                     
