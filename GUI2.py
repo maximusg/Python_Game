@@ -296,6 +296,7 @@ class GUI(object):
                 else:
                     self.explode.play()
                     playerShip.take_damage(5)
+                    enemy_bullet_sprites.remove(collision)
                     if playerShip.health <= 0:
                         sprite.visible = 0
                 if sprite.visible == 0:
