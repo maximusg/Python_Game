@@ -152,7 +152,7 @@ class GUI(object):
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
         next_level = True
-        invuln_timer = 120 ##frames of invulnerability post-death
+        invul_timer = 120 ##frames of invulnerability post-death
         ##Clock time setup
         while going:
             ##Check for end of level conditions
@@ -187,11 +187,11 @@ class GUI(object):
                     next_level = False
 
             ##check if the invuln timer is complete
-            if invuln_timer == 0 and len(player_sprites_invul) != 0:
+            if invul_timer == 0 and len(player_sprites_invul) != 0:
                 playerShip.invul_flag = False
                 player_sprites_invul.remove(playerShip)
                 player_sprites.add(playerShip)
-                invuln_timer = 120
+                invul_timer = 120
 
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             for event in pygame.event.get():
@@ -298,6 +298,13 @@ class GUI(object):
                     if sprite.is_weapon:
                         playerShip.weapon = weapon.Weapon(sprite.name)
                     items.remove(sprite)
+                else:
+                    collision = pygame.sprite.spritecollideany(sprite, player_sprites_invul)
+                    if collision:
+                        sprite.visible = 0
+                        if sprite.is_weapon:
+                            playerShip.weapon = weapon.Weapon(sprite.name)
+                        items.remove(sprite)
 
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
@@ -349,22 +356,19 @@ class GUI(object):
                 debug_rect = self.screen.blit(debug_surf, (0, lives_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
             
-            ##Special handling for when the player respawns.
-            if playerShip.invul_flag and invuln_timer//6 % 2 == 0:
-                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites_invul, player_sprites, enemy_sprites):
-                    temp_rects = sprite_list.draw(self.screen)
-                    #pyganim animation here?
-            else:
-                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites, enemy_sprites):
-                    temp_rects = sprite_list.draw(self.screen)
-                    #pyganim animation here?
-
+            player_bullet_sprites.draw(self.screen)
+            enemy_bullet_sprites.draw(self.screen)
+            items.draw(self.screen)
+            if playerShip.invul_flag and invul_timer//6 % 2 == 0: ##allows visual feedback that the player is invulnerable
+                player_sprites_invul.draw(self.screen)
+            player_sprites.draw(self.screen)
+            enemy_sprites.draw(self.screen)
 
             pygame.display.flip()
 
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
             if playerShip.invul_flag:
-                invuln_timer -= 1
+                invul_timer -= 1
         if next_level:
             self.level_complete()
         return player_lives, player_score, next_level
