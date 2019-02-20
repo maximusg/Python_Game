@@ -363,15 +363,14 @@ class GUI(object):
             lives_rect = self.screen.blit(lives_surf, (0, score_rect.bottom))
             self.screen.blit(lives_text, lives_rect)
 
+            health_text, health_surf = draw_text('Health Remaining: '+str(playerShip.health), WHITE)
+            health_rect = self.screen.blit(health_surf, (0, lives_rect.bottom))
+            self.screen.blit(health_text, health_rect)
+
             if DEBUG:
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_surf, (0, lives_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
-
-            health_text, health_surf = draw_text('Health Remaining: '+str(playerShip.health), WHITE)
-            health_rect = health_surf.get_rect()
-            health_rect.left, health_rect.bottom = 0, SCREEN_HEIGHT
-            self.screen.blit(health_text, health_rect)
             
             player_bullet_sprites.draw(self.screen)
             enemy_bullet_sprites.draw(self.screen)
