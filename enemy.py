@@ -70,13 +70,20 @@ class enemy(entity2.entity2):
 		return movement.Move(behaviorArray,moveCountArray,speedArray)
 
 	def __mrVectors__(self): #implements vector movements
+		#vector = [acceleration, speed, angle] if there is an "x" 
+		# you will use the entities default, which if not set is 0.
+
+		#couple of examples
 		down = [1,"x",0]#accelerate down 1 frame more each time
 		up = [1,"x",180]
+		northEast =[.4,"x", 46] #note you can use fractions for acceleration
 		turn_right = [0,3,90] # speed must be combined wtih an angle or it wont change anything
 		turn_left = [1,"x",180]
 		stop =		[0,0,0]
 
+		#fill the vector array to execute each moveCount
 		vectorArray = [ down, up,turn_right, stop]
+		#still uses frame count
 		moveCountArray = [10,21, 10, 30]
 		return movement.Move(behaviorArray=["vector"],moveCountArray=moveCountArray,vectorAray=vectorArray, exitscreen=False)
 	
