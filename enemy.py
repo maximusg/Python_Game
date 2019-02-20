@@ -104,7 +104,7 @@ class enemy(entity2.entity2):
 		self.movement.update(self)
 		if not (COLUMN_WIDTH <= self.rect.right and self.rect.left <= SCREEN_WIDTH-COLUMN_WIDTH):
 			self.visible = 0
-		if not (0 <= self.rect.top <= SCREEN_HEIGHT):
+		if not (0 <= self.rect.centery <= SCREEN_HEIGHT):
 			self.visible = 0
 		if self.visible:
 			if random.random() <= 0.01:
