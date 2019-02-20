@@ -250,12 +250,11 @@ class GUI(object):
             #                 items_to_add = []
 
             if sec_running == endtime and spawn_boss:
-                pass
                 ##spawn the boss
                 boss_spawned = True
             if sec_running >= endtime and not spawn_boss:
-                if len(enemy_sprites) == 0:
-                    going = False ##How do we add some sort of "end of level" animation?
+                if len(enemy_sprites) == 0 and len(enemy_bullet_sprites) == 0:
+                    going = False
                     
             if enemies_to_add:
                 enemy_sprites.add(enemies_to_add)
@@ -712,9 +711,10 @@ class GUI(object):
         #event_queue = self.loader.getEvents()
         while still_playing:
             curr_lives, curr_score, next_level = self.main(curr_lives, curr_score)
-            if not next_level or not self.loader.nextLevel():
+            is_next_level = self.loader.nextLevel()
+            if not next_level or not is_next_level:
                 still_playing = False
-            elif next_level and not self.loader.nextLevel():
+            elif next_level and not is_next_level:
                 still_playing = False
                 self.victory()
                 if self.hs_list.belongsOnList(curr_score):
