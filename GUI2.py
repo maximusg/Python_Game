@@ -371,7 +371,7 @@ class GUI(object):
 
             if DEBUG:
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
-                debug_rect = self.screen.blit(debug_surf, (0, lives_rect.bottom))
+                debug_rect = self.screen.blit(debug_surf, (0, health_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
             
             player_bullet_sprites.draw(self.screen)
