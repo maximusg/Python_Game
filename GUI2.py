@@ -305,10 +305,12 @@ class GUI(object):
             for sprite in items:
                 collision = pygame.sprite.spritecollideany(sprite, player_sprites)
                 if collision:
-                    # print('you picked up an item', sprite.name)
+                    #print('you picked up an item', sprite.name)
                     sprite.visible = 0
                     if sprite.is_weapon:
-                        playerShip.weapon = weapon.Weapon(sprite.name)
+                        #playerShip.weapon = weapon.Weapon(sprite.name)
+                        upgrade = weapon.upgrade(sprite.weapon_name, playerShip.weapon.name)
+                        playerShip.weapon = weapon.Weapon(upgrade)
                     items.remove(sprite)
                 else:
                     collision = pygame.sprite.spritecollideany(sprite, player_sprites_invul)
