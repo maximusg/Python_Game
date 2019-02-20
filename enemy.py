@@ -34,7 +34,7 @@ class enemy(entity2.entity2):
 			"mrVectors": self.__mrVectors__
 			}
 		
-		print("ENEMY ", behavior)
+		
 		self.movement = self.behaveDic[behavior]()
 
 		#item drops
