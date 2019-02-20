@@ -12,6 +12,7 @@ class player(entity2.entity2):
         self.weapon = weapon.Weapon(init_wep)
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
+        self.health = 100
         self.image, self.rect = load_image(imgFile, -1)
         self.invul_flag = False
 
@@ -21,6 +22,14 @@ class player(entity2.entity2):
         self.speed = 10
         self.bullet_count = 0
         self.dirty = 2
+
+    def take_damage(self, value):
+        self.health -= value
+
+    def regen(self):
+        self.health += 5
+        if self.health > 100:
+            self.health = 100
 
     def move(self, new_x, new_y):
         if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris

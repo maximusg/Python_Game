@@ -153,6 +153,7 @@ class GUI(object):
         time_since_start = 0
         next_level = True
         invul_timer = 120 ##frames of invulnerability post-death
+        regen_timer = 60
         ##Clock time setup
         while going:
             ##Check for end of level conditions
@@ -289,10 +290,14 @@ class GUI(object):
                     collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
                     if collision:
                         self.explode.play()
-                        sprite.visible = 0
+                        playerShip.take_damage(1)
+                        if playerShip.health <= 0:
+                            sprite.visible = 0
                 else:
                     self.explode.play()
-                    sprite.visible = 0
+                    playerShip.take_damage(5)
+                    if playerShip.health <= 0:
+                        sprite.visible = 0
                 if sprite.visible == 0:
                     player_sprites.remove(sprite)
                     
@@ -361,6 +366,11 @@ class GUI(object):
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_surf, (0, lives_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
+
+            health_text, health_surf = draw_text('Health Remaining: '+str(playerShip.health), WHITE)
+            health_rect = health_surf.get_rect()
+            health_rect.left, health_rect.bottom = 0, SCREEN_HEIGHT
+            self.screen.blit(health_text, health_rect)
             
             player_bullet_sprites.draw(self.screen)
             enemy_bullet_sprites.draw(self.screen)
@@ -375,6 +385,11 @@ class GUI(object):
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
             if playerShip.invul_flag:
                 invul_timer -= 1
+            regen_timer -= 1
+            if regen_timer == 0:
+                playerShip.regen()
+                regen_timer = 60
+            
         if next_level:
             self.level_complete()
         return player_lives, player_score, next_level
