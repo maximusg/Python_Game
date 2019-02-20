@@ -12,7 +12,7 @@ import os
 class Block(pygame.sprite.DirtySprite):
     # Constructor. Pass in the color of the block,
     # and its x and y position
-   def __init__(self,  color, width,  height, layer):
+   def __init__(self, group, color, width,  height, layer):
        # Call the parent class (Sprite) constructor
        #This is the way pygame does it
       # super().__init__(self, group) #Best practice
@@ -23,7 +23,7 @@ class Block(pygame.sprite.DirtySprite):
       self.image.fill(color)
       self.dirty=1
       self._layer = layer
-    #   pygame.sprite.Sprite.__init__(self,group)
+      pygame.sprite.Sprite.__init__(self,group)
       
 
       # Fetch the rectangle object that has the dimensions of the image
