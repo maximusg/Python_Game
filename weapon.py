@@ -26,12 +26,6 @@ cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
 
 
-#utility functions
-def is_weapon(name):
-        if name in master_weapons_dict:
-            return True
-        else:
-            return False
 
 #each weapon name will be mapped to its function, an image, and other properties
 
@@ -89,7 +83,7 @@ class Weapon(object):
     def __init__(self, weaponName):
 
         if weaponName not in master_weapons_dict:
-            raise Exception('the weapon must be in the master weapons dictionary.')
+            raise Exception('the weapon must be in the master weapons dictionary. you tried', weaponName)
         self.name = weaponName
         self.weapon_damage = master_weapons_dict.get(weaponName)[0]
 
@@ -105,7 +99,26 @@ class Weapon(object):
 
 
 
+#utility functions
+def is_weapon(name):
+        if name in master_weapons_dict:
+            return name
+        else:
+            return False
 
+def upgrade(item_pickup, current_weapon):
+    if item_pickup in master_weapons_dict:
+        if item_pickup == 'spitfire':
+            if current_weapon == 'spitfire':
+                return 'spitfire2'
+            elif current_weapon == 'spitfire2':
+                return 'spitfire3'
+            elif current_weapon == 'spitfire3':
+                return 'spitfire3'
+            else:
+                return 'spitfire'
+    else:
+        return None
 
 if __name__=="__main__":
     def test():
