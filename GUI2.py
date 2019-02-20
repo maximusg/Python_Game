@@ -317,7 +317,8 @@ class GUI(object):
                     if collision:
                         sprite.visible = 0
                         if sprite.is_weapon:
-                            playerShip.weapon = weapon.Weapon(sprite.name)
+                            upgrade = weapon.upgrade(sprite.weapon_name, playerShip.weapon.name)
+                            playerShip.weapon = weapon.Weapon(upgrade)
                         items.remove(sprite)
 
             for sprite in enemy_sprites:
@@ -494,7 +495,8 @@ class GUI(object):
         def blink(screen):
             for color in [BLACK, WHITE]:
                 pygame.draw.circle(box, color, (bx//2, int(by*0.7)), 7, 0)
-                self.screen.blit(box, (0, by//2))
+                #self.screen.blit(box, (0, by//2))
+                self.screen.blit(box, box_rect)
                 pygame.display.flip()
                 pygame.time.wait(300)
         def show_name(screen, name):
@@ -502,7 +504,7 @@ class GUI(object):
             txt_surf = font.render(name, True, BLACK)
             txt_rect = txt_surf.get_rect(center=(bx//2, int(by*0.7)))
             box.blit(txt_surf, txt_rect)
-            self.screen.blit(box, (0, by//2))
+            self.screen.blit(box, box_rect)
             pygame.display.flip()
         font = pygame.font.Font('OpenSans-Regular.ttf', 16)
         bx = 480
@@ -510,7 +512,8 @@ class GUI(object):
         # make box
         box = pygame.surface.Surface((bx, by))
         box.fill(BLACK)
-        pygame.draw.rect(box, BLACK, (0, 0, bx, by), 1)
+        box_rect = pygame.draw.rect(box, BLACK, (0, 0, bx, by), 1)
+        box_rect.center = SCREEN_CENTER
         txt_surf = font.render(txt, True, WHITE)
         txt_rect = txt_surf.get_rect(center=(bx//2, int(by*0.3)))
         box.blit(txt_surf, txt_rect)
