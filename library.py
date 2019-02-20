@@ -14,7 +14,7 @@ SCREEN_HEIGHT = 1080
 SCREEN_WIDTH = 1920
 
 WINDOW_OPTIONS_FULLSCREEN = (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN|pygame.DOUBLEBUF|pygame.HWSURFACE
-WINDOW_OPTIONS_WINDOWED = (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME 
+WINDOW_OPTIONS_WINDOWED = (SCREEN_WIDTH, SCREEN_HEIGHT), 0
 
 COLUMN_WIDTH = SCREEN_WIDTH//5
 
@@ -92,7 +92,7 @@ def load_background_music(filename):
     pygame.mixer.music.load(filename)
     pygame.mixer.music.play(loops=-1)
 
-def load_image(name, colorkey=None):
+def load_image(name, colorkey=-1):
     '''Accepts a filename and colorkey, throws an exception if the file does not exist. Returns the pygame.image object
        as well as it's rectangle for manipulation.'''
     fullname = os.path.join(MAIN_DIR, name)
@@ -101,11 +101,14 @@ def load_image(name, colorkey=None):
     except pygame.error:
         print ('Cannot load image:', fullname)
         raise SystemExit(str(geterror()))
-    image = image.convert()
-    if colorkey is not None:
-        if colorkey is -1:
-            colorkey = image.get_at((0, 0))
-        image.set_colorkey(colorkey, RLEACCEL)
+    if image.get_alpha():
+        image = image.convert_alpha()
+    else:
+        image = image.convert()
+        if colorkey is not None:
+            if colorkey is -1:
+                colorkey = image.get_at((0, 0))
+            image.set_colorkey(colorkey, RLEACCEL)
     return image, image.get_rect()
 
 def draw_text(to_print, text_color, bg_color=None):
@@ -118,7 +121,3 @@ def draw_text(to_print, text_color, bg_color=None):
         text_surf.fill(bg_color)
     return text, text_surf
 
-def draw_boss_health(sprite):
-    bar = pygame.Surface((SCREEN_WIDTH//2-2*COLUMN_WIDTH, 50))
-    bar_rect = bar.fill(BLACK)
-    ###-TODO- FINISH THIS

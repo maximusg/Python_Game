@@ -20,7 +20,6 @@ class item(entity2.entity2):
             if name in master_items_dict:
                 path_to_img = master_items_dict.get(name)
         self.image, self.rect = load_image(item_images_path.joinpath(path_to_img))
-        self.image = self.image.convert()
         self.rect.centerx, self.rect.top = origin_x, origin_y
         self.dirty = 1
         self.is_weapon = weapon.is_weapon(name)

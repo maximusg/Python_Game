@@ -122,7 +122,7 @@ class GUI(object):
         column.fill(BLACK)
 
         #Background sound setup
-        load_background_music('roboCop3NES.ogg')
+        #load_background_music('roboCop3NES.ogg')
         
         ##Initialize ships
         # playerShip = player.player('spitfire','SweetShip.png',"arrows")
@@ -152,7 +152,7 @@ class GUI(object):
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
         next_level = True
-        invuln_timer = 120 ##frames of invulnerability post-death
+        invul_timer = 120 ##frames of invulnerability post-death
         ##Clock time setup
         while going:
             ##Check for end of level conditions
@@ -187,11 +187,11 @@ class GUI(object):
                     next_level = False
 
             ##check if the invuln timer is complete
-            if invuln_timer == 0 and len(player_sprites_invul) != 0:
+            if invul_timer == 0 and len(player_sprites_invul) != 0:
                 playerShip.invul_flag = False
                 player_sprites_invul.remove(playerShip)
                 player_sprites.add(playerShip)
-                invuln_timer = 120
+                invul_timer = 120
 
             ##Look out for QUIT events (hitting the x in the corner of the window) or escape to quit.
             for event in pygame.event.get():
@@ -250,12 +250,11 @@ class GUI(object):
             #                 items_to_add = []
 
             if sec_running == endtime and spawn_boss:
-                pass
                 ##spawn the boss
                 boss_spawned = True
             if sec_running >= endtime and not spawn_boss:
-                if len(enemy_sprites) == 0:
-                    going = False ##How do we add some sort of "end of level" animation?
+                if len(enemy_sprites) == 0 and len(enemy_bullet_sprites) == 0:
+                    going = False
                     
             if enemies_to_add:
                 enemy_sprites.add(enemies_to_add)
@@ -275,7 +274,11 @@ class GUI(object):
             ##Helper to call update() on each sprite in the group.    
             player_sprites.update()
             player_bullet_sprites.update()
-            enemy_sprites.update()
+            for sprite in enemy_sprites:
+                bullet = sprite.update()
+                if bullet:
+                    enemy_bullet_sprites.add(bullet)
+            # enemy_sprites.update()
             enemy_bullet_sprites.update()
             items.update()
         
@@ -287,6 +290,9 @@ class GUI(object):
                     if collision:
                         self.explode.play()
                         sprite.visible = 0
+                else:
+                    self.explode.play()
+                    sprite.visible = 0
                 if sprite.visible == 0:
                     player_sprites.remove(sprite)
                     
@@ -298,6 +304,13 @@ class GUI(object):
                     if sprite.is_weapon:
                         playerShip.weapon = weapon.Weapon(sprite.name)
                     items.remove(sprite)
+                else:
+                    collision = pygame.sprite.spritecollideany(sprite, player_sprites_invul)
+                    if collision:
+                        sprite.visible = 0
+                        if sprite.is_weapon:
+                            playerShip.weapon = weapon.Weapon(sprite.name)
+                        items.remove(sprite)
 
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
@@ -349,22 +362,19 @@ class GUI(object):
                 debug_rect = self.screen.blit(debug_surf, (0, lives_rect.bottom))
                 self.screen.blit(debug_text, debug_rect)
             
-            ##Special handling for when the player respawns.
-            if playerShip.invul_flag and invuln_timer//6 % 2 == 0:
-                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites_invul, player_sprites, enemy_sprites):
-                    temp_rects = sprite_list.draw(self.screen)
-                    #pyganim animation here?
-            else:
-                for sprite_list in (player_bullet_sprites, enemy_bullet_sprites, items, player_sprites, enemy_sprites):
-                    temp_rects = sprite_list.draw(self.screen)
-                    #pyganim animation here?
-
+            player_bullet_sprites.draw(self.screen)
+            enemy_bullet_sprites.draw(self.screen)
+            items.draw(self.screen)
+            if playerShip.invul_flag and invul_timer//6 % 2 == 0: ##allows visual feedback that the player is invulnerable
+                player_sprites_invul.draw(self.screen)
+            player_sprites.draw(self.screen)
+            enemy_sprites.draw(self.screen)
 
             pygame.display.flip()
 
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
             if playerShip.invul_flag:
-                invuln_timer -= 1
+                invul_timer -= 1
         if next_level:
             self.level_complete()
         return player_lives, player_score, next_level
@@ -701,9 +711,10 @@ class GUI(object):
         #event_queue = self.loader.getEvents()
         while still_playing:
             curr_lives, curr_score, next_level = self.main(curr_lives, curr_score)
-            if not next_level or not self.loader.nextLevel():
+            is_next_level = self.loader.nextLevel()
+            if not next_level or not is_next_level:
                 still_playing = False
-            elif next_level and not self.loader.nextLevel():
+            elif next_level and not is_next_level:
                 still_playing = False
                 self.victory()
                 if self.hs_list.belongsOnList(curr_score):

@@ -1,4 +1,5 @@
 import entity2
+import bullet
 import movement
 
 from library import *
@@ -13,8 +14,8 @@ class enemy(entity2.entity2):
 		super().__init__()
 		self.weapon = weapon
 		self.point_value = 500
-		self.image, self.rect = load_image(imgFile)
-		self.imgFile = imgFile
+		self.imgFile = 'enemy'+str(random.randint(1,3))+'.png'
+		self.image, self.rect = load_image(self.imgFile)
 		#self.rect.centerx, self.rect.top = 300, 50
 		self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 		self.speed = speed #this will be a scaler for movement type
@@ -78,11 +79,16 @@ class enemy(entity2.entity2):
 
 	def update(self):
 		# self=self.movement.update(self)
+		bullet_to_add = []
 		self.movement.update(self)
 		if not (COLUMN_WIDTH <= self.rect.right and self.rect.left <= SCREEN_WIDTH-COLUMN_WIDTH):
 			self.visible = 0
 		if not (0 <= self.rect.top <= SCREEN_HEIGHT):
 			self.visible = 0
+		if self.visible:
+			if random.random() <= 0.01:
+				bullet_to_add.append(bullet.bullet(self.rect.centerx, self.rect.centery, 20, 'resources/weapon_images/spitfire.png', behavior='down'))
+		return bullet_to_add
 
 	def getDrop(self):
 		#build the working drop table
