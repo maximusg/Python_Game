@@ -121,7 +121,3 @@ def draw_text(to_print, text_color, bg_color=None):
         text_surf.fill(bg_color)
     return text, text_surf
 
-def draw_boss_health(sprite):
-    bar = pygame.Surface((SCREEN_WIDTH//2-2*COLUMN_WIDTH, 50))
-    bar_rect = bar.fill(BLACK)
-    ###-TODO- FINISH THIS
