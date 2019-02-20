@@ -41,8 +41,27 @@ class Scoreboard(object):
     def __init__(self):
         self.head = None
         self.tail = None
-        self.__length = 0
         self.readFromFile('resources/event_scrolls/highscores.asset')
+
+    @property
+    def head(self):
+        return self.__head
+
+    @property
+    def tail(self):
+        return self.__tail
+
+    @head.setter
+    def head(self, value):
+        if not isinstance(value, Scoreboard.Entry) and value != None:
+            raise RuntimeError(value + 'is not a valid head entry.')
+        self.__head = value
+
+    @tail.setter
+    def tail(self, value):
+        if not isinstance(value, Scoreboard.Entry) and value != None:
+            raise RuntimeError(value + 'is not a valid head entry.')
+        self.__tail = value
 
     def add(self, name, score):
         entry = self.Entry(name, score)
@@ -64,13 +83,12 @@ class Scoreboard(object):
     def resetList(self):
         self.head = None
         self.tail = None
-        self.__length = 0
 
     def belongsOnList(self, score):
         return score > self.tail.score
 
-    def writeToFile(self):
-        fileName = open('resources/event_scrolls/highscores.asset', 'w')
+    def writeToFile(self, filename):
+        fileName = open(filename, 'w')
         currEntry = self.head
         while currEntry.nextEntry:
             if currEntry.nextEntry.nextEntry != None:

@@ -23,7 +23,7 @@ class GUI(object):
         pygame.mouse.set_visible(False)
         self.fs_toggle = True
         self.hs_list = highscore.Scoreboard()
-        self.loader = levelLoader.LevelLoader(1)
+        self.loader = levelLoader.LevelLoader()
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -97,18 +97,17 @@ class GUI(object):
         starting_events = self.loader.getEvents(0)
         ending_events = self.loader.getEndBehavior()
         player_score = curr_score
-        player_lives = lives_remaining        
-        bg_filename = starting_events['background']
-        playerShip = starting_events['player'][0]
-        try:
-            bad_guys = starting_events['enemy']
-        except KeyError:
+        player_lives = lives_remaining    
+        bg_filename = starting_events.get('background')
+        playerShip = starting_events.get('player')
+        if playerShip:
+            playerShip = playerShip[0]
+        bad_guys = starting_events.get('enemy')
+        bad_guy_bullets = starting_events.get('bullets')
+        if not bad_guys:
             bad_guys = []
-        finally:
-            try:
-                bad_guy_bullets = starting_events['bullets']
-            except KeyError:
-                bad_guy_bullets = []      
+        if not bad_guy_bullets:
+            bad_guy_bullets = []    
 
 
         ##Background setup
@@ -163,8 +162,8 @@ class GUI(object):
         while going:
             ##Check for end of level conditions
             if ending_events:
-                endtime = ending_events['time']
-                spawn_boss = ending_events['boss']
+                endtime = ending_events.get('time')
+                spawn_boss = ending_events.get('boss')
                 boss_spawned = False
             else:
                 endtime = -1
@@ -235,20 +234,32 @@ class GUI(object):
             items_to_add = []
             
             if events:
-                try:
-                    enemies_to_add = events['enemy']
-                except KeyError:
+                enemies_to_add = events.get('enemy')
+                enemy_bullets_to_add = events.get('bullets')
+                items_to_add = events.get('items')
+            
+                if not enemies_to_add:
                     enemies_to_add = []
-                finally:
-                    try:
-                        enemy_bullets_to_add = events['bullets']
-                    except KeyError:
-                        enemy_bullets_to_add = []
-                    finally:
-                        try:    
-                            items_to_add = events['items']
-                        except KeyError:
-                            items_to_add = []
+                if not enemy_bullets_to_add:
+                    enemy_bullets_to_add = []
+                if not items_to_add:
+                    items_to_add = []
+                
+            # if events:
+            #     try:
+            #         enemies_to_add = events['enemy']
+            #     except KeyError:
+            #         enemies_to_add = []
+            #     finally:
+            #         try:
+            #             enemy_bullets_to_add = events['bullets']
+            #         except KeyError:
+            #             enemy_bullets_to_add = []
+            #         finally:
+            #             try:    
+            #                 items_to_add = events['items']
+            #             except KeyError:
+            #                 items_to_add = []
 
             if sec_running == endtime and spawn_boss:
                 pass
@@ -710,6 +721,7 @@ class GUI(object):
                 if self.hs_list.belongsOnList(curr_score):
                     name = self.add_to_hs('You set a new high score! Enter your initials!')
                     self.hs_list.add(name, curr_score)
+                    self.hs_list.writeToFile('resources/event_scrolls/highscores.asset')
         self.loader = levelLoader.LevelLoader()
                 #if game won, do something
             
