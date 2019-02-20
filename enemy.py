@@ -10,7 +10,7 @@ import item_pickup
 import random
 
 class enemy(entity2.entity2):
-	def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, itemDropTable = itemDropTables.common):
+	def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common):
 		super().__init__()
 		self.weapon = weapon
 		self.point_value = 500
@@ -20,6 +20,7 @@ class enemy(entity2.entity2):
 		self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 		self.speed = speed #this will be a scaler for movement type
 		self.health = health
+		self.acceleration = acceleration
 		self.rect.x = origin[0]
 		self.rect.y = origin[1]
 		
@@ -29,9 +30,11 @@ class enemy(entity2.entity2):
 			"camper":self.__camper__, 
 			"sleeper":self.__sleeper__,
 			"crazy":self.__crazy__,
-			"crazyReverse": self.__crazyReverse__
+			"crazyReverse": self.__crazyReverse__,
+			"mrVectors": self.__mrVectors__
 			}
 		
+		print("ENEMY ", behavior)
 		self.movement = self.behaveDic[behavior]()
 
 		#item drops
@@ -65,6 +68,17 @@ class enemy(entity2.entity2):
 		moveCountArray = [80,	100,	40,		40]
 		speedArray = [	  1*self.speed,	1*self.speed]
 		return movement.Move(behaviorArray,moveCountArray,speedArray)
+
+	def __mrVectors__(self): #implements vector movements
+		down = [1,"x",0]#accelerate down 1 frame more each time
+		up = [1,"x",180]
+		turn_right = [0,3,90] # speed must be combined wtih an angle or it wont change anything
+		turn_left = [1,"x",180]
+		stop =		[0,0,0]
+
+		vectorArray = [ down, up,turn_right, stop]
+		moveCountArray = [10,21, 10, 30]
+		return movement.Move(behaviorArray=["vector"],moveCountArray=moveCountArray,vectorAray=vectorArray, exitscreen=False)
 	
 	def move(self, x, y):
 		if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris

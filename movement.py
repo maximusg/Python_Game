@@ -8,10 +8,11 @@ Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up an
 import copy
 import pygame
 from library import *
+import math
 
 class Move(object):
-    def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], angelArray=[0], exitscreen=True):
-
+    def __init__(self, behaviorArray=["down"], moveCountArray=[800], speedArray=[10], angelArray=[0], vectorAray=[["x","x","x"]], exitscreen=True):
+        '''The vector Array contains all the information needed for movment over frames'''
         self.behaveDic = {
             "down": self.__down__, 
             "up":self.__up__, 
@@ -23,16 +24,18 @@ class Move(object):
             "northEast": self.__northEast__,
             "northNorthEast": self.__northNorthEast__,
             "southWest": self.__southWest__, #typo, change to southWest
-            "southEast": self.__southEast__
+            "southEast": self.__southEast__,
+            "vector": self.__vector__
 
             }
 
-        self.save=[]
+        self.save=[]#save to reinitialize arrays to loop movements
         if exitscreen==False:
             self.save.append(copy.deepcopy(behaviorArray))
             self.save.append(copy.deepcopy(moveCountArray))
             self.save.append(copy.deepcopy(speedArray))
-            self.save.append(copy.deepcopy(angelArray)) #save to reinitialize arrays to loop movements
+            self.save.append(copy.deepcopy(angelArray)) 
+            self.save.append(copy.deepcopy(vectorAray))
 
         self.behaviors = behaviorArray #list of methods to run from the behaveDic
         self.currBehavior = None
@@ -43,6 +46,13 @@ class Move(object):
         self.angles = angelArray
         self.currAngle=0
         self.angleBool = False
+       
+       #NEW STUFF HERE
+
+       
+        self.currVector = 0 # [#frames, entityAcceleration, entitySpeed, entityAngle]
+        self.vectors = vectorAray # contains a list frames to go through for each speed accerlation and angle change
+
         if len(angelArray) != 0:
             if len(angelArray)>0  or angelArray[0]>0: 
                 self.angleBool=True
@@ -90,6 +100,96 @@ class Move(object):
     def __southWest__(self,spriteObject):
         return spriteObject.move(-self.currSpeed,self.currSpeed)
 
+    def __vector__ (self,spriteObject):
+        '''do all the vector math here'''
+        changeAccel = self.currVector[0]
+        changeSpeed = self.currVector[1]
+        changeAngel = self.currVector[2]
+        changeAngel = changeAngel%360 # converts change angle to positive direction
+        #speed v= Dv + a[frame]
+        #so accel will speed up speed by the number of frames given unless it is 0
+        
+        #  #check for X's ensure the correct values placed in all locations
+        if changeAccel != "x":
+            spriteObject.acceleration = changeAccel
+        if changeSpeed != "x" and changeAngel != "x":
+            spriteObject.speedX  = math.sin(math.radians(changeAngel))*changeSpeed # get speed if there is angle change
+            spriteObject.speedY =  math.cos(math.radians(changeAngel))*changeSpeed
+        if changeAngel != "x": #when angle changes, that speed diff needs to be added to current speed
+            spriteObject.angle = changeAngel
+
+
+        
+
+        aX = math.sin(math.radians(changeAngel))*spriteObject.acceleration # get speed if there is angle change
+        aY = math.cos(math.radians(changeAngel))*spriteObject.acceleration
+        
+       
+
+        spriteObject.speedX += aX
+        spriteObject.speedY += aY
+        
+        print (spriteObject.speedY)
+        # spriteObject.angle = math.degrees(math.atan2(sY,sX))
+        
+        # spriteObject.speed = math.sqrt(sX**2+sY**2) 
+        
+        
+        return spriteObject.move(int(spriteObject.speedX),int(spriteObject.speedY))
+
+
+
+
+       
+        #     newXSpeed = math.sin(math.radians(spriteObject.angle))*spriteObject.speed + oldX # get speed if there is angle change
+        #     newYSpeed = math.cos(math.radians(spriteObject.angle))*spriteObject.speed + oldX
+        
+        # newXSpeed = newXSpeed - oldX
+        
+        
+        
+        # #add acceleration
+        # print("Yspeed ", newYSpeed, math.cos(math.radians(spriteObject.angle))*spriteObject.acceleration)
+        
+        # print("Yspeed ", newYSpeed)
+        # spriteObject.speed = math.sqrt(newXSpeed**2+newYSpeed**2)
+        # print("SPEED CHANGE", spriteObject.speed)
+
+        
+
+        # #Sign = Opp/Hyp Cos = Adj/Hyp Tang=Opp/Adj
+        # #x = adj = sin(angle)*speed
+        # #y = opp = cos(angle)*speed
+        
+        # aclX = math.sin(math.radians(changeAngel))*changeAccel
+        # aclY = math.cos(math.radians(changeAngel))*changeAccel
+
+        # spdX = math.sin(math.radians(changeAngel))*changeSpeed # get speed if there is angle change
+        # spdY = math.cos(math.radians(changeAngel))*changeSpeed
+
+        # # print("SPRITE-X",spriteObject.speedX,"SPRIT-Y",spriteObject.speedY)
+        # spriteObject.speedX = spdX
+        # spriteObject.speedY = spdY
+
+        # spriteObject.speedX += aclX
+        # spriteObject.speedY += aclY
+        
+        
+        # print("spdX",spdX,"spdY",spdY, "SPRITE-X",spriteObject.speedX,"SPRIT-Y",spriteObject.speedY)
+        # # spriteObject.speed = 0 #we have speedX and speedY now. SO we will not need speed to change unless it is set.
+        # # spriteObject.acceleration = 0 #set to zero as movement is given accelearation, this can change later
+
+
+
+        
+        # return spriteObject.move(int(spriteObject.speedX),int(spriteObject.speedY))
+
+        
+
+        
+
+    
+
     def __updateCurrMove__(self): 
         '''updates currMove, as well as currBehavior and currSpeed'''
         if len(self.moveCounts)==0 and self.currMove==0:
@@ -102,6 +202,8 @@ class Move(object):
                 self.currSpeed = self.speeds.pop(0)
             if len(self.angles) > 0:
                 self.currAngle = self.angles.pop(0)
+            if len(self.vectors) > 0:
+                self.currVector = self.vectors.pop(0)
                 
         else: self.currMove -=1 #decrments 1 frame from move count
         return False
@@ -123,6 +225,7 @@ class Move(object):
                 self.moveCounts = copy.deepcopy(self.save[1])
                 self.speeds = copy.deepcopy(self.save[2]) 
                 self.angles = copy.deepcopy(self.save[3]) 
+                self.vectors = copy.deepcopy(self.save[4])
                 self.__updateCurrMove__()
             else: #will begin off screen behavior
                 self.behaviors = ["down"]
@@ -130,7 +233,7 @@ class Move(object):
                 self.speeds = [10]
                 self.__updateCurrMove__()
 
-        spriteObject.move(0,1) #keeps ships constantly moving down
+        #spriteObject.move(0,1) #keeps ships constantly moving down
         updatedObject = self.behaveDic[self.currBehavior](spriteObject)
         
         return updatedObject

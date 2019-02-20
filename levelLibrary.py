@@ -1,8 +1,9 @@
 #Enemy simple contruct scheme
 
-'''use '-' between ENEMY_TYPE_MAP - ENEMY_SECTORS - speed - health'''
+''' use'-' between @ENEMY_TYPE_MAP - ENEMY_SECTORS - speed - health - **acceleration**'''
+''' updated: added acceleration as an optional'''
 #example
-'''@s1-d-3-1'''#uses @ sign to signal it is a simple contruct
+'''@s1-d-3-1-0'''#uses @ sign to signal it is a simple contruct
 #sector and type, looked up in maps below
 
 #name map
@@ -12,7 +13,8 @@ def ENEMY_TYPE_MAP(x):
         "c": "camper",
         "s": "sleeper",
         "cz": "crazy",
-        "cr": "crazyReverse"
+        "cr": "crazyReverse",
+        "mv": "mrVectors"
     }.get(x,"diver") #defaults to diver
 
 #enemy top screen sectors
@@ -38,7 +40,7 @@ def PROPER_FORMAT(a):
     '''checks enemy simple constructis properly formated'''
     if a[0]== "@":
         b = a[1::].split("-")
-        if len(b) == 4:
+        if len(b) >=4: #no acceleration
             try:
                 int(b[2])
             except:
@@ -47,7 +49,13 @@ def PROPER_FORMAT(a):
                 int(b[3])
             except:
                 return False
-            return True
+        if len(b) == 4: return True #no acceleration
+        if len(b) ==5: #if acceleration added
+                try:
+                    int(b[4])
+                except:
+                    return False
+                return True
     return False
 
 

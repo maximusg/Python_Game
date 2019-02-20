@@ -147,15 +147,13 @@ class LevelLoader():
         if className[0]=="@": #quick naming scheme ex: "@s1-d-3-1" -check levelLibrary.py for more
             a=className[1::].split("-")
             if PROPER_FORMAT(className):
-                enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]))
+                if len(a)==4:
+                    enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]))
+                else:
+                    enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]), acceleration=int(a[4]))
                 return enemySprite
         
 
-        def f(x):
-            return {
-                'a': 1,
-                'b': 2
-            }.get(x, 9)    # 9 is default if x not found
         if className == ENEMY_diveLeft:
             enemySprite = enemy.enemy(ENEMY_SECTORS("s2"), health=health) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveRight:
