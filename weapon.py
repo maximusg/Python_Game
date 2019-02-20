@@ -67,7 +67,7 @@ def spitfire2(origin_x, origin_y):
 
 def blue_lazer(origin_x, origin_y):
     bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('blue_lazer.gif'))
-    print("bluelaser")
+    
     return bullet1
 
 def missle(origin_x, origin_y):

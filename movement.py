@@ -129,7 +129,7 @@ class Move(object):
         spriteObject.speedX += aX
         spriteObject.speedY += aY
         
-        print (spriteObject.speedY)
+    
         # spriteObject.angle = math.degrees(math.atan2(sY,sX))
         
         # spriteObject.speed = math.sqrt(sX**2+sY**2) 
