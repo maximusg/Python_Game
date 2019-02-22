@@ -129,9 +129,6 @@ class GUI(object):
         # bad_guy = enemy.enemy('spitfire','enemy.png')
         # #bad_guy.health = 5 ##Verify boss mechanics
 
-
-
-
         #Initialize sprite groups
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
@@ -732,9 +729,9 @@ class GUI(object):
         while still_playing:
             curr_lives, curr_score, next_level = self.main(curr_lives, curr_score)
             is_next_level = self.loader.nextLevel()
-            if not next_level or not is_next_level:
+            if not next_level:
                 still_playing = False
-            elif next_level and not is_next_level:
+            elif not is_next_level:
                 still_playing = False
                 self.victory()
                 if self.hs_list.belongsOnList(curr_score):
