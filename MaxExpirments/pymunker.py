@@ -4,7 +4,7 @@ space = pymunk.Space()      # Create a Space which contain the simulation
 space.gravity = 0,0        # Set its gravity
 
 
-space.fi
+
 body = pymunk.Body(1,10)  # Create a Body with mass and moment
 body.position = 50,100      # Set the position of the body
 
@@ -14,8 +14,8 @@ pymunk.Body.update_velocity(body,(5,2),1,2)
 poly = pymunk.Poly.create_box(body) # Create a box shape and attach to body
 space.add(body, poly)       # Add both body and shape to the simulation
 
-x=5
-y=5
+x=5 #initial acceleration on x
+y=5 #inital accleration on y
 for i in range(100):
     print(body.position)
     
