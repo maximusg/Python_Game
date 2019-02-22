@@ -7,13 +7,15 @@ SCREEN_HEIGHT = 1080
 COLUMN_WIDTH = 1920//5
 X_MIN = COLUMN_WIDTH
 X_MAX = SCREEN_WIDTH - COLUMN_WIDTH
-SCREEN_TITLE = 'Day 0'
+SCREEN_TITLE = 'Raiden Clone - Day 0'
+
 EXIT = 0
-MENU = 1
-GAME = 2
-PAUSED = 3
-HIGH_SCORE_LIST = 4
-CREDITS = 5
+INTRO = 1
+MENU = 2
+GAME = 3
+PAUSED = 4
+HIGH_SCORE_LIST = 5
+CREDITS = 6
 
 class Bullet(arcade.Sprite):
     def __init__(self, path_to_img, startx, starty, speedx, speedy):
@@ -96,7 +98,7 @@ class GUI(arcade.Window):
         self.menu_background = None
 
         self.scroll_x1, self.scroll_y1 = SCREEN_WIDTH//2,SCREEN_HEIGHT//2
-        self.scroll_x2, self.scroll_y2 = SCREEN_WIDTH//2,(SCREEN_HEIGHT//2)-SCREEN_HEIGHT
+        self.scroll_x2, self.scroll_y2 = SCREEN_WIDTH//2,(SCREEN_HEIGHT//2)+SCREEN_HEIGHT 
 
         self.player_sprites = None
         self.player_bullet_sprites = None
@@ -130,6 +132,14 @@ class GUI(arcade.Window):
         self.playerShip = PlayerShip('CoolShip.png',1000,100)
         self.player_sprites.append(self.playerShip)        
 
+    def scroll_update(self):
+        self.scroll_y1 -= 1
+        if self.scroll_y1 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
+            self.scroll_y1 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
+        self.scroll_y2 -= 1
+        if self.scroll_y2 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
+            self.scroll_y2 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
+
     def on_draw(self):
         """
         Render the screen.
@@ -139,6 +149,9 @@ class GUI(arcade.Window):
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
         arcade.start_render()            
+
+        if self.curr_state == INTRO:
+            self.draw_intro()
 
         if self.curr_state == MENU:
             self.draw_menu()
@@ -166,23 +179,11 @@ class GUI(arcade.Window):
         #draw background
         arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
         arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
-        self.scroll_y1 -= .5
-        if self.scroll_y1 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
-            self.scroll_y1 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
-        self.scroll_y2 -= .5
-        if self.scroll_y2 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
-            self.scroll_y2 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
 
     def draw_game(self):
         #draw background
         arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
         arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
-        self.scroll_y1 -= 1
-        if self.scroll_y1 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
-            self.scroll_y1 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
-        self.scroll_y2 -= 1
-        if self.scroll_y2 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
-            self.scroll_y2 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
 
         # Call draw() on all your sprite lists below
         self.playerShip.draw()
@@ -209,6 +210,7 @@ class GUI(arcade.Window):
         self.frame_count += 1
 
         if self.curr_state == MENU:
+            self.scroll_update()
             if self.SPACEBAR_PRESSED:
                 self.curr_state = GAME
                 arcade.pause(1)
@@ -224,6 +226,7 @@ class GUI(arcade.Window):
                 arcade.pause(1)
 
         if self.curr_state == GAME:
+            self.scroll_update()
             self.playerShip.change_x, self.playerShip.change_y = 0, 0
 
             if self.UP_PRESSED and not self.DOWN_PRESSED:

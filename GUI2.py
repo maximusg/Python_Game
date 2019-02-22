@@ -129,9 +129,6 @@ class GUI(object):
         # bad_guy = enemy.enemy('spitfire','enemy.png')
         # #bad_guy.health = 5 ##Verify boss mechanics
 
-
-
-
         #Initialize sprite groups
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
