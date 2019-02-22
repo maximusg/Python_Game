@@ -1,5 +1,6 @@
 import arcade
 import timeit
+import sys
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -7,16 +8,20 @@ COLUMN_WIDTH = 1920//5
 X_MIN = COLUMN_WIDTH
 X_MAX = SCREEN_WIDTH - COLUMN_WIDTH
 SCREEN_TITLE = 'Day 0'
+EXIT = 0
 MENU = 1
 GAME = 2
+PAUSED = 3
+HIGH_SCORE_LIST = 4
+CREDITS = 5
 
 class Bullet(arcade.Sprite):
-    def __init__(self, path_to_img, startx, starty):
+    def __init__(self, path_to_img, startx, starty, speedx, speedy):
         super().__init__(path_to_img)
         self.center_x = startx
         self.center_y = starty
-        self.change_x = 0
-        self.change_y = 15
+        self.change_x = speedx
+        self.change_y = speedy
 
     def update(self):
         self.center_x += self.change_x
@@ -26,6 +31,23 @@ class Bullet(arcade.Sprite):
             self.kill()
         if not (0 < self.center_y < SCREEN_HEIGHT):
             self.kill()
+
+class EnemyShip(arcade.Sprite):
+    def __init__(self, path_to_img, startx, starty, speedx, speedy):
+        super().__init__(path_to_img)
+        self.center_x = startx
+        self.center_y = starty
+        self.change_x = speedx
+        self.change_y = speedy
+    
+    def update(self):
+        self.center_x += self.change_x
+        self.center_y += self.change_y
+
+        if not (X_MIN < self.center_x < X_MAX):
+            self.kill()
+        if not (0 < self.center_y < SCREEN_HEIGHT):
+            self.kill() 
 
 class PlayerShip(arcade.Sprite):
     def __init__(self, path_to_img, startx, starty):
@@ -49,7 +71,7 @@ class PlayerShip(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 1
 
     def shoot(self):
-        return Bullet('resources/weapon_images/spitfire.png', self.center_x, self.top)
+        return Bullet('resources/weapon_images/spitfire.png', self.center_x, self.top, 0, 15)
 
 class GUI(arcade.Window):
     """
@@ -65,7 +87,7 @@ class GUI(arcade.Window):
         self.drawing_time = 0
         self.processing_time = 0
         self.frame_count = 0
-        self.curr_state = MENU
+        self.curr_state = MENU        
 
         # If you have sprite lists, you should create them here,
         # and set them to None
@@ -73,8 +95,13 @@ class GUI(arcade.Window):
         self.game_background = None
         self.menu_background = None
 
+        self.scroll_x1, self.scroll_y1 = SCREEN_WIDTH//2,SCREEN_HEIGHT//2
+        self.scroll_x2, self.scroll_y2 = SCREEN_WIDTH//2,(SCREEN_HEIGHT//2)-SCREEN_HEIGHT
+
         self.player_sprites = None
         self.player_bullet_sprites = None
+        self.enemy_sprites = None
+        self.enemy_bullet_sprites = None
 
         ##key pressed setup
         self.UP_PRESSED = False
@@ -83,6 +110,7 @@ class GUI(arcade.Window):
         self.RIGHT_PRESSED = False
         self.SPACEBAR_PRESSED = False
         self.ESCAPE_PRESSED = False
+        self.PAUSE_PRESSED = False
 
         #Window setup
         arcade.set_background_color(arcade.color.BLACK)
@@ -96,6 +124,8 @@ class GUI(arcade.Window):
         # Create your sprites and sprite lists here
         self.player_sprites = arcade.SpriteList()
         self.player_bullet_sprites = arcade.SpriteList()
+        self.enemy_sprites = arcade.SpriteList()
+        self.enemy_bullet_sprites = arcade.SpriteList()
 
         self.playerShip = PlayerShip('CoolShip.png',1000,100)
         self.player_sprites.append(self.playerShip)        
@@ -108,15 +138,16 @@ class GUI(arcade.Window):
 
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
-        arcade.start_render()        
-
-        
+        arcade.start_render()            
 
         if self.curr_state == MENU:
             self.draw_menu()
 
         if self.curr_state == GAME:
             self.draw_game()
+
+        if self.curr_state == PAUSED:
+            self.draw_paused()
 
         #draw text
         fps = 1 / (self.drawing_time + self.processing_time)
@@ -125,17 +156,48 @@ class GUI(arcade.Window):
 
         self.drawing_time = timeit.default_timer() - draw_start_time
 
+    def draw_intro(self):
+        #draw background
+        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH,SCREEN_HEIGHT, self.menu_background)
+        ##TODO## Opening Scroll
+
+    def draw_menu(self):
+        ##TODO## I/O
+        #draw background
+        arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
+        arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
+        self.scroll_y1 -= .5
+        if self.scroll_y1 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
+            self.scroll_y1 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
+        self.scroll_y2 -= .5
+        if self.scroll_y2 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
+            self.scroll_y2 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
+
     def draw_game(self):
         #draw background
-        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
+        arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
+        arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
+        self.scroll_y1 -= 1
+        if self.scroll_y1 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
+            self.scroll_y1 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
+        self.scroll_y2 -= 1
+        if self.scroll_y2 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
+            self.scroll_y2 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
 
         # Call draw() on all your sprite lists below
         self.playerShip.draw()
         self.player_bullet_sprites.draw()
 
-    def draw_menu(self):
+    def draw_paused(self):
         #draw background
-        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH,SCREEN_HEIGHT, self.menu_background)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
+
+        #draw text
+        arcade.draw_text('***PAUSED***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24)
+        
+        # Call draw() on all your sprite lists below
+        self.playerShip.draw()
+        self.player_bullet_sprites.draw()
 
     def update(self, delta_time):
         """
@@ -149,6 +211,17 @@ class GUI(arcade.Window):
         if self.curr_state == MENU:
             if self.SPACEBAR_PRESSED:
                 self.curr_state = GAME
+                arcade.pause(1)
+            if self.ESCAPE_PRESSED:
+                self.curr_state = EXIT
+                sys.exit()
+
+        if self.curr_state == PAUSED:
+            if self.ESCAPE_PRESSED:
+                self.curr_state = MENU
+            if self.SPACEBAR_PRESSED or self.PAUSE_PRESSED:
+                self.curr_state = GAME
+                arcade.pause(1)
 
         if self.curr_state == GAME:
             self.playerShip.change_x, self.playerShip.change_y = 0, 0
@@ -166,7 +239,9 @@ class GUI(arcade.Window):
                     bullet = self.playerShip.shoot()
                     self.player_bullet_sprites.append(bullet)     
             if self.ESCAPE_PRESSED:
-                self.curr_state = MENU       
+                self.curr_state = MENU
+            if self.PAUSE_PRESSED:
+                self.curr_state = PAUSED       
 
             self.playerShip.update()
             self.player_bullet_sprites.update()
@@ -192,6 +267,8 @@ class GUI(arcade.Window):
             self.SPACEBAR_PRESSED = True
         if key == arcade.key.ESCAPE:
             self.ESCAPE_PRESSED = True
+        if key == arcade.key.PAUSE:
+            self.PAUSE_PRESSED = True
 
     def on_key_release(self, key, key_modifiers):
         """
@@ -209,6 +286,8 @@ class GUI(arcade.Window):
             self.SPACEBAR_PRESSED = False
         if key == arcade.key.ESCAPE:
             self.ESCAPE_PRESSED = False
+        if key == arcade.key.PAUSE:
+            self.PAUSE_PRESSED = True
 
 def main():
     """ Main method """
