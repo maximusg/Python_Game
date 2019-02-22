@@ -7,6 +7,8 @@ COLUMN_WIDTH = 1920//5
 X_MIN = COLUMN_WIDTH
 X_MAX = SCREEN_WIDTH - COLUMN_WIDTH
 SCREEN_TITLE = 'Day 0'
+MENU = 1
+GAME = 2
 
 class Bullet(arcade.Sprite):
     def __init__(self, path_to_img, startx, starty):
@@ -47,11 +49,7 @@ class PlayerShip(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 1
 
     def shoot(self):
-        self.rof -= 1
-        if self.rof == 0:
-            self.rof = 15
-            return Bullet('resources/weapon_images/spitfire.png', self.center_x, self.top)
-        return None
+        return Bullet('resources/weapon_images/spitfire.png', self.center_x, self.top)
 
 class GUI(arcade.Window):
     """
@@ -66,11 +64,14 @@ class GUI(arcade.Window):
         super().__init__(width, height, title)
         self.drawing_time = 0
         self.processing_time = 0
+        self.frame_count = 0
+        self.curr_state = MENU
 
         # If you have sprite lists, you should create them here,
         # and set them to None
         self.playerShip = None
-        self.background = None
+        self.game_background = None
+        self.menu_background = None
 
         self.player_sprites = None
         self.player_bullet_sprites = None
@@ -81,6 +82,7 @@ class GUI(arcade.Window):
         self.LEFT_PRESSED = False
         self.RIGHT_PRESSED = False
         self.SPACEBAR_PRESSED = False
+        self.ESCAPE_PRESSED = False
 
         #Window setup
         arcade.set_background_color(arcade.color.BLACK)
@@ -88,7 +90,9 @@ class GUI(arcade.Window):
 
     def setup(self):
         #background setup
-        self.background = arcade.load_texture('nebula_blue.png')
+        self.game_background = arcade.load_texture('nebula_blue.png')
+        self.menu_background = arcade.load_texture('nebula_red.png')
+
         # Create your sprites and sprite lists here
         self.player_sprites = arcade.SpriteList()
         self.player_bullet_sprites = arcade.SpriteList()
@@ -104,21 +108,34 @@ class GUI(arcade.Window):
 
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
-        arcade.start_render()
+        arcade.start_render()        
 
-        #draw background
-        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.background)
+        
+
+        if self.curr_state == MENU:
+            self.draw_menu()
+
+        if self.curr_state == GAME:
+            self.draw_game()
 
         #draw text
         fps = 1 / (self.drawing_time + self.processing_time)
         output = "Max FPS: {:3.1f}".format(fps)
-        arcade.draw_text(output, 20, SCREEN_HEIGHT - 80, arcade.color.WHITE, 16)
+        arcade.draw_text(output, 20, 80, arcade.color.WHITE, 16)
+
+        self.drawing_time = timeit.default_timer() - draw_start_time
+
+    def draw_game(self):
+        #draw background
+        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
 
         # Call draw() on all your sprite lists below
         self.playerShip.draw()
         self.player_bullet_sprites.draw()
 
-        self.drawing_time = timeit.default_timer() - draw_start_time
+    def draw_menu(self):
+        #draw background
+        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH,SCREEN_HEIGHT, self.menu_background)
 
     def update(self, delta_time):
         """
@@ -127,25 +144,32 @@ class GUI(arcade.Window):
         need it.
         """
         process_start_time = timeit.default_timer()
+        self.frame_count += 1
 
-        self.playerShip.change_x, self.playerShip.change_y = 0, 0
+        if self.curr_state == MENU:
+            if self.SPACEBAR_PRESSED:
+                self.curr_state = GAME
 
-        if self.UP_PRESSED and not self.DOWN_PRESSED:
-            self.playerShip.change_y = 10 
-        if self.DOWN_PRESSED and not self.UP_PRESSED:
-            self.playerShip.change_y = -10 
-        if self.RIGHT_PRESSED and not self.LEFT_PRESSED:
-            self.playerShip.change_x = 10 
-        if self.LEFT_PRESSED and not self.RIGHT_PRESSED:
-            self.playerShip.change_x = -10  
-        if self.SPACEBAR_PRESSED:
-            bullet = self.playerShip.shoot()
-            if bullet:   
-                self.player_bullet_sprites.append(bullet)
-        
+        if self.curr_state == GAME:
+            self.playerShip.change_x, self.playerShip.change_y = 0, 0
 
-        self.playerShip.update()
-        self.player_bullet_sprites.update()
+            if self.UP_PRESSED and not self.DOWN_PRESSED:
+                self.playerShip.change_y = 10 
+            if self.DOWN_PRESSED and not self.UP_PRESSED:
+                self.playerShip.change_y = -10 
+            if self.RIGHT_PRESSED and not self.LEFT_PRESSED:
+                self.playerShip.change_x = 10 
+            if self.LEFT_PRESSED and not self.RIGHT_PRESSED:
+                self.playerShip.change_x = -10  
+            if self.SPACEBAR_PRESSED:
+                if self.frame_count % self.playerShip.rof == 0:
+                    bullet = self.playerShip.shoot()
+                    self.player_bullet_sprites.append(bullet)     
+            if self.ESCAPE_PRESSED:
+                self.curr_state = MENU       
+
+            self.playerShip.update()
+            self.player_bullet_sprites.update()
 
         self.processing_time = timeit.default_timer() - process_start_time
 
@@ -166,6 +190,8 @@ class GUI(arcade.Window):
             self.RIGHT_PRESSED = True
         if key == arcade.key.SPACE:
             self.SPACEBAR_PRESSED = True
+        if key == arcade.key.ESCAPE:
+            self.ESCAPE_PRESSED = True
 
     def on_key_release(self, key, key_modifiers):
         """
@@ -181,6 +207,8 @@ class GUI(arcade.Window):
             self.RIGHT_PRESSED = False
         if key == arcade.key.SPACE:
             self.SPACEBAR_PRESSED = False
+        if key == arcade.key.ESCAPE:
+            self.ESCAPE_PRESSED = False
 
 def main():
     """ Main method """
