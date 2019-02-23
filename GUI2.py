@@ -491,28 +491,28 @@ class GUI(object):
 
         def blink(screen):
             for color in [BLACK, WHITE]:
-                pygame.draw.circle(box, color, (bx//2, int(by*0.7)), 7, 0)
-                #self.screen.blit(box, (0, by//2))
+                pygame.draw.circle(box, color, (x//2, int(y*0.7)), 7, 0)
+                #self.screen.blit(box, (0, y//2))
                 self.screen.blit(box, box_rect)
                 pygame.display.flip()
                 pygame.time.wait(300)
         def show_name(screen, name):
-            pygame.draw.rect(box, WHITE, (50, 60, bx-100, 20), 0)
+            pygame.draw.rect(box, WHITE, (50, 60, x-100, 20), 0)
             txt_surf = font.render(name, True, BLACK)
-            txt_rect = txt_surf.get_rect(center=(bx//2, int(by*0.7)))
+            txt_rect = txt_surf.get_rect(center=(x//2, int(y*0.7)))
             box.blit(txt_surf, txt_rect)
             self.screen.blit(box, box_rect)
             pygame.display.flip()
         font = pygame.font.Font('OpenSans-Regular.ttf', 16)
-        bx = 480
-        by = 100
+        x = 480
+        y = 100
         # make box
-        box = pygame.surface.Surface((bx, by))
+        box = pygame.surface.Surface((x, y))
         box.fill(BLACK)
-        box_rect = pygame.draw.rect(box, BLACK, (0, 0, bx, by), 1)
+        box_rect = pygame.draw.rect(box, BLACK, (0, 0, x, y), 1)
         box_rect.center = SCREEN_CENTER
         txt_surf = font.render(txt, True, WHITE)
-        txt_rect = txt_surf.get_rect(center=(bx//2, int(by*0.3)))
+        txt_rect = txt_surf.get_rect(center=(x//2, int(y*0.3)))
         box.blit(txt_surf, txt_rect)
         name = ""
         show_name(self.screen, name)
@@ -739,16 +739,7 @@ class GUI(object):
                     self.hs_list.add(name, curr_score)
                     self.hs_list.writeToFile('resources/event_scrolls/highscores.asset')
         self.loader = levelLoader.LevelLoader()
-                #if game won, do something
-            
-            # if not next_level: ##game over
-            #     still_playing = False
-            # elif self.loader.nextLevel():
-            #     pass   
-            # else:
-            #     ##end of game
-            #     ##self.victory_screen() -TODO-
-            #     still_playing = False    
+   
 
     def victory(self):
         ##Background setup
