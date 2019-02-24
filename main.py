@@ -1,5 +1,6 @@
 import arcade
 import timeit
+from pyglet import clock
 import sys
 
 SCREEN_WIDTH = 1920
@@ -75,6 +76,18 @@ class PlayerShip(arcade.Sprite):
     def shoot(self):
         return Bullet('resources/weapon_images/spitfire.png', self.center_x, self.top, 0, 15)
 
+class BackgroundSprite(arcade.Sprite):
+    def __init__(self, path_to_img, img_height, img_width, centerx, centery, velocity):
+        super().__init__(path_to_img, image_height = img_height, image_width = img_width)
+        self.center_x = centerx
+        self.center_y = centery
+        self.velocity = velocity
+
+    def update(self):
+        super().update()
+        if self.center_y <= -self.height//2:
+            self.center_y = self.height + self.height//2
+
 class GUI(arcade.Window):
     """
     Main application class.
@@ -120,8 +133,13 @@ class GUI(arcade.Window):
 
     def setup(self):
         #background setup
-        self.game_background = arcade.load_texture('nebula_blue.png')
-        self.menu_background = arcade.load_texture('nebula_red.png')
+        #self.game_background = arcade.Sprite('nebula_blue.png')
+        self.game_background = arcade.SpriteList()
+        for i in range(2):
+            self.game_background.append(BackgroundSprite('nebula_blue.png', 4096, 3*SCREEN_WIDTH//5, SCREEN_WIDTH//2, i*4096 + 2048, (0,-4))) ##velocity _MUST BE_ a divisor of the height.
+        self.menu_background = arcade.SpriteList()
+        for i in range(2):
+            self.menu_background.append(BackgroundSprite('nebula_red.png', 4096, 4096, SCREEN_WIDTH//2, i*4096 + 2048, (0,-.5)))  ##velocity _MUST BE_ a divisor of the height.
 
         # Create your sprites and sprite lists here
         self.player_sprites = arcade.SpriteList()
@@ -164,7 +182,7 @@ class GUI(arcade.Window):
 
         #draw text
         fps = 1 / (self.drawing_time + self.processing_time)
-        output = "Max FPS: {:3.1f}".format(fps)
+        output = "Max FPS: {:3.1f}".format(clock.get_fps())
         arcade.draw_text(output, 20, 80, arcade.color.WHITE, 16)
 
         self.drawing_time = timeit.default_timer() - draw_start_time
@@ -177,26 +195,29 @@ class GUI(arcade.Window):
     def draw_menu(self):
         ##TODO## I/O
         #draw background
-        arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
-        arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
+        self.menu_background.draw()
+        #arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
+        #arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
 
     def draw_game(self):
         #draw background
-        arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
-        arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
+        #arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
+        #arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
 
+        self.game_background.draw()
         # Call draw() on all your sprite lists below
         self.playerShip.draw()
         self.player_bullet_sprites.draw()
 
     def draw_paused(self):
         #draw background
-        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
+        #arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
 
         #draw text
         arcade.draw_text('***PAUSED***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24)
         
         # Call draw() on all your sprite lists below
+        self.game_background.draw()
         self.playerShip.draw()
         self.player_bullet_sprites.draw()
 
@@ -217,12 +238,15 @@ class GUI(arcade.Window):
             if self.ESCAPE_PRESSED:
                 self.curr_state = EXIT
                 sys.exit()
+            self.menu_background.update()
 
         if self.curr_state == PAUSED:
             if self.ESCAPE_PRESSED:
                 self.curr_state = MENU
             if self.SPACEBAR_PRESSED or self.PAUSE_PRESSED:
                 self.curr_state = GAME
+                for sprite in self.game_background:
+                    sprite.velocity = (0,-4) 
                 arcade.pause(1)
 
         if self.curr_state == GAME:
@@ -244,8 +268,11 @@ class GUI(arcade.Window):
             if self.ESCAPE_PRESSED:
                 self.curr_state = MENU
             if self.PAUSE_PRESSED:
-                self.curr_state = PAUSED       
+                for sprite in self.game_background:
+                    sprite.velocity = (0,0)
+                self.curr_state = PAUSED      
 
+            self.game_background.update()
             self.playerShip.update()
             self.player_bullet_sprites.update()
 
@@ -290,7 +317,7 @@ class GUI(arcade.Window):
         if key == arcade.key.ESCAPE:
             self.ESCAPE_PRESSED = False
         if key == arcade.key.PAUSE:
-            self.PAUSE_PRESSED = True
+            self.PAUSE_PRESSED = False
 
 def main():
     """ Main method """
