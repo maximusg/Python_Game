@@ -17,20 +17,20 @@ GAME = 3
 PAUSED = 4
 HIGH_SCORE_LIST = 5
 CREDITS = 6
+DEAD = 99
 
 DEBUG = True
 
 class Bullet(arcade.Sprite):
-    def __init__(self, path_to_img, startx, starty, speedx, speedy):
+    def __init__(self, path_to_img, startx, starty, damage, velocity):
         super().__init__(path_to_img)
         self.center_x = startx
         self.center_y = starty
-        self.change_x = speedx
-        self.change_y = speedy
+        self.velocity = velocity
+        self.damage = damage
 
     def update(self):
-        self.center_x += self.change_x
-        self.center_y += self.change_y
+        super().update()
 
         if not (X_MIN < self.center_x < X_MAX):
             self.kill()
@@ -38,32 +38,36 @@ class Bullet(arcade.Sprite):
             self.kill()
 
 class EnemyShip(arcade.Sprite):
-    def __init__(self, path_to_img, startx, starty, speedx, speedy):
+    def __init__(self, path_to_img, startx, starty, velocity):
         super().__init__(path_to_img)
+        self.health = 4
         self.center_x = startx
         self.center_y = starty
-        self.change_x = speedx
-        self.change_y = speedy
+        self.velocity = velocity
     
     def update(self):
-        self.center_x += self.change_x
-        self.center_y += self.change_y
+        super().update()
 
         if not (X_MIN < self.center_x < X_MAX):
             self.kill()
         if not (0 < self.center_y < SCREEN_HEIGHT):
             self.kill() 
 
+    def take_damage(self, amount):
+        self.health -= amount
+
 class PlayerShip(arcade.Sprite):
     def __init__(self, path_to_img, startx, starty):
         super().__init__(path_to_img)
+        self.health = 100
+        self.regen = 5
         self.center_x = startx
         self.center_y = starty
-        self.rof = 15
+        self.rof = 10
+        self.rof_CD = 0
 
     def update(self):
-        self.center_x += self.change_x
-        self.center_y += self.change_y
+        super().update()
 
         if self.left < X_MIN:
             self.left = X_MIN
@@ -76,7 +80,13 @@ class PlayerShip(arcade.Sprite):
             self.top = SCREEN_HEIGHT - 1
 
     def shoot(self):
-        return Bullet('resources/weapon_images/spitfire.png', self.center_x, self.top, 0, 15)
+        return Bullet('resources/weapon_images/spitfire.png', self.center_x, self.top, 1, (0, 15))
+    
+    def take_damage(self, amount):
+        self.health -= amount
+
+    def regen_health(self):
+        self.health += self.regen
 
 class BackgroundSprite(arcade.Sprite):
     def __init__(self, path_to_img, img_height, img_width, centerx, centery, velocity):
@@ -99,13 +109,14 @@ class GUI(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
         self.frame_count = 0
-        self.curr_state = MENU        
+        self.curr_state = INTRO       
 
         # If you have sprite lists, you should create them here,
         # and set them to None
         self.playerShip = None
-        self.game_background = None
+        self.intro_background = None
         self.menu_background = None
+        self.game_background = None
 
         self.player_sprites = None
         self.player_bullet_sprites = None
@@ -128,6 +139,7 @@ class GUI(arcade.Window):
     def setup(self):
         #background setup
         #self.game_background = arcade.Sprite('nebula_blue.png')
+        self.intro_background = arcade.load_texture('starfield.png')
         self.game_background = arcade.SpriteList()
         for i in range(2):
             self.game_background.append(BackgroundSprite('nebula_blue.png', 4096, 3*SCREEN_WIDTH//5, SCREEN_WIDTH//2, i*4096 + 2048, (0,-4))) ##velocity _MUST BE_ a divisor of the height.
@@ -143,6 +155,8 @@ class GUI(arcade.Window):
 
         self.playerShip = PlayerShip('CoolShip.png',1000,100)
         self.player_sprites.append(self.playerShip)        
+        self.enemy_sprites.append(EnemyShip('enemy1.png',SCREEN_WIDTH//2, SCREEN_HEIGHT//2, (0,0)))
+
 
     def null_input(self):
         self.UP_PRESSED = False
@@ -174,6 +188,9 @@ class GUI(arcade.Window):
         if self.curr_state == PAUSED:
             self.draw_paused()
 
+        if self.curr_state == DEAD:
+            self.draw_dead()
+
         if DEBUG:
             #draw text
             output = "Max FPS: {:3.1f}".format(clock.get_fps())
@@ -182,7 +199,7 @@ class GUI(arcade.Window):
 
     def draw_intro(self):
         #draw background
-        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH,SCREEN_HEIGHT, self.menu_background)
+        arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH,SCREEN_HEIGHT, self.intro_background)
         ##TODO## Opening Scroll
 
     def draw_menu(self):
@@ -194,8 +211,10 @@ class GUI(arcade.Window):
         #draw background
         self.game_background.draw()
 
-        self.playerShip.draw()
+        self.player_sprites.draw()
+        self.enemy_sprites.draw()
         self.player_bullet_sprites.draw()
+        self.enemy_bullet_sprites.draw()
 
     def draw_paused(self):
         #draw background
@@ -203,8 +222,20 @@ class GUI(arcade.Window):
         #draw text
         arcade.draw_text('***PAUSED***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24, align='center', anchor_x='center', anchor_y ='center')
 
-        self.playerShip.draw()
+        self.player_sprites.draw()
+        self.enemy_sprites.draw()
         self.player_bullet_sprites.draw()
+        self.enemy_bullet_sprites.draw()
+
+    def draw_dead(self):
+        self.game_background.draw()
+        #draw text
+        arcade.draw_text('***YOU DIED! PRESS SPACEBAR TO RESPAWN***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24, align='center', anchor_x='center', anchor_y ='center')
+
+        self.player_sprites.draw()
+        self.enemy_sprites.draw()
+        self.player_bullet_sprites.draw()
+        self.enemy_bullet_sprites.draw()
 
     def update(self, delta_time):
         """
@@ -214,10 +245,15 @@ class GUI(arcade.Window):
         """
         self.frame_count += 1
 
+        if self.curr_state == INTRO:
+            if self.SPACEBAR_PRESSED or self.ESCAPE_PRESSED:
+                self.null_input()
+                self.curr_state = MENU
+
         if self.curr_state == MENU:
             if self.SPACEBAR_PRESSED:
-                self.curr_state = GAME
                 self.null_input()
+                self.curr_state = GAME
                 arcade.pause(1)
             if self.ESCAPE_PRESSED:
                 self.curr_state = EXIT
@@ -247,9 +283,14 @@ class GUI(arcade.Window):
             if self.LEFT_PRESSED and not self.RIGHT_PRESSED:
                 self.playerShip.change_x = -10  
             if self.SPACEBAR_PRESSED:
-                if self.frame_count % self.playerShip.rof == 0:
+                if self.playerShip.rof == self.playerShip.rof_CD:
+                    self.playerShip.rof_CD = 0
+                if self.playerShip.rof_CD == 0:
                     bullet = self.playerShip.shoot()
-                    self.player_bullet_sprites.append(bullet)     
+                    self.player_bullet_sprites.append(bullet)  
+                self.playerShip.rof_CD += 1
+            else:
+                self.playerShip.rof_CD = 0   
             if self.ESCAPE_PRESSED:
                 self.null_input()
                 self.curr_state = MENU
@@ -257,7 +298,43 @@ class GUI(arcade.Window):
                 self.null_input()
                 for sprite in self.game_background:
                     sprite.velocity = (0,0)
-                self.curr_state = PAUSED      
+                self.curr_state = PAUSED     
+
+        if self.curr_state == DEAD:
+            if self.ESCAPE_PRESSED:
+                self.null_input()
+                self.curr_state = MENU
+            if self.SPACEBAR_PRESSED:
+                self.curr_state = GAME
+                self.null_input()
+                for sprite in self.game_background:
+                    sprite.velocity = (0,-4) 
+                arcade.pause(1)
+
+            ##Collision Detection
+            for sprite in self.enemy_sprites:
+                collision_list = arcade.check_for_collision_with_list(sprite, self.player_bullet_sprites)
+                if collision_list:
+                    for collision_sprite in collision_list:
+                        sprite.take_damage(collision_sprite.damage)
+                        collision_sprite.kill()
+                if sprite.health <= 0:
+                    sprite.kill()
+
+            for sprite in self.player_sprites:
+                collision_list = arcade.check_for_collision_with_list(sprite, self.enemy_bullet_sprites)
+                if collision_list:
+                    for collision_sprite in collision_list:
+                        sprite.take_damage(collision_sprite.damage)
+                        collision_sprite.kill()
+                if sprite.health <= 0:
+                    sprite.kill()
+                    for sprite in self.game_background:
+                        sprite.velocity = (0,0)
+                    self.curr_state = DEAD
+
+            if self.frame_count % 120 == 0:
+                self.playerShip.regen_health()
 
             self.game_background.update()
             self.playerShip.update()
