@@ -277,7 +277,7 @@ class GUI(arcade.Window):
             if self.SPACEBAR_PRESSED or self.ESCAPE_PRESSED:
                 self.null_input()
                 self.curr_state = MENU
-            if self.opening_crawl.bottom > SCREEN_HEIGHT:
+            if self.opening_crawl.y > SCREEN_HEIGHT + SCREEN_HEIGHT//2:
                 self.curr_state = MENU
 
         if self.curr_state == MENU:
