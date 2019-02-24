@@ -1,6 +1,7 @@
 import arcade
 import timeit
 from pyglet import clock
+import pyglet.text
 import sys
 
 SCREEN_WIDTH = 1920
@@ -40,10 +41,11 @@ class Bullet(arcade.Sprite):
 class EnemyShip(arcade.Sprite):
     def __init__(self, path_to_img, startx, starty, velocity):
         super().__init__(path_to_img)
-        self.health = 4
+        self.health = 999
         self.center_x = startx
         self.center_y = starty
         self.velocity = velocity
+        self.value = 500
     
     def update(self):
         super().update()
@@ -87,6 +89,8 @@ class PlayerShip(arcade.Sprite):
 
     def regen_health(self):
         self.health += self.regen
+        if self.health > 100:
+            self.health = 100
 
 class BackgroundSprite(arcade.Sprite):
     def __init__(self, path_to_img, img_height, img_width, centerx, centery, velocity):
@@ -109,7 +113,10 @@ class GUI(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
         self.frame_count = 0
-        self.curr_state = INTRO       
+        self.curr_state = INTRO     
+
+        self.score = 0
+        self.lives_remaining = 0  
 
         # If you have sprite lists, you should create them here,
         # and set them to None
@@ -117,6 +124,9 @@ class GUI(arcade.Window):
         self.intro_background = None
         self.menu_background = None
         self.game_background = None
+
+        self.opening_crawl = None
+        self.victory_crawl = None
 
         self.player_sprites = None
         self.player_bullet_sprites = None
@@ -147,18 +157,26 @@ class GUI(arcade.Window):
         for i in range(2):
             self.menu_background.append(BackgroundSprite('nebula_red.png', 4096, 4096, SCREEN_WIDTH//2, i*4096 + 2048, (0,-.5)))  ##velocity _MUST BE_ a divisor of the height.
 
+        self.opening_crawl = pyglet.text.layout.TextLayout(pyglet.text.load('resources/event_scrolls/openingscroll.asset'), multiline=True, wrap_lines=False)
+        self.opening_crawl.anchor_x, self.opening_crawl.anchor_y = 'center', 'top'
+        self.opening_crawl.x, self.opening_crawl.y = SCREEN_WIDTH//2, 0
+
+
         # Create your sprites and sprite lists here
         self.player_sprites = arcade.SpriteList()
         self.player_bullet_sprites = arcade.SpriteList()
         self.enemy_sprites = arcade.SpriteList()
         self.enemy_bullet_sprites = arcade.SpriteList()
 
-        self.playerShip = PlayerShip('CoolShip.png',1000,100)
+        self.playerShip = PlayerShip('CoolShip.png',SCREEN_WIDTH//2,50)
         self.player_sprites.append(self.playerShip)        
         self.enemy_sprites.append(EnemyShip('enemy1.png',SCREEN_WIDTH//2, SCREEN_HEIGHT//2, (0,0)))
 
-
     def null_input(self):
+        '''
+        Helper function to reset key tracking. Useful to prevent keystrokes in a state affecting the state post transition.
+        '''
+
         self.UP_PRESSED = False
         self.DOWN_PRESSED = False
         self.LEFT_PRESSED = False
@@ -200,6 +218,7 @@ class GUI(arcade.Window):
     def draw_intro(self):
         #draw background
         arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH,SCREEN_HEIGHT, self.intro_background)
+        self.opening_crawl.draw()
         ##TODO## Opening Scroll
 
     def draw_menu(self):
@@ -210,6 +229,10 @@ class GUI(arcade.Window):
     def draw_game(self):
         #draw background
         self.game_background.draw()
+
+        arcade.draw_text('Score: {}'.format(self.score), 20, SCREEN_HEIGHT - 20, arcade.color.WHITE, 16)
+        arcade.draw_text('Lives Remaining: {}'.format(self.lives_remaining), 20, SCREEN_HEIGHT - 40, arcade.color.WHITE, 16)
+        arcade.draw_text('Player Ship Health: {}'.format(self.playerShip.health), 20, SCREEN_HEIGHT - 60, arcade.color.WHITE, 16)
 
         self.player_sprites.draw()
         self.enemy_sprites.draw()
@@ -229,13 +252,17 @@ class GUI(arcade.Window):
 
     def draw_dead(self):
         self.game_background.draw()
-        #draw text
-        arcade.draw_text('***YOU DIED! PRESS SPACEBAR TO RESPAWN***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24, align='center', anchor_x='center', anchor_y ='center')
 
         self.player_sprites.draw()
         self.enemy_sprites.draw()
         self.player_bullet_sprites.draw()
         self.enemy_bullet_sprites.draw()
+        #draw text
+        if self.lives_remaining:
+            arcade.draw_text('***YOU DIED! PRESS SPACEBAR TO RESPAWN***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24, align='center', anchor_x='center', anchor_y ='center')
+        else:
+            arcade.draw_text('***GAME OVER! PLANET ORANGE HAS WON!***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24, align='center', anchor_x='center', anchor_y ='center')
+            arcade.draw_text('PRESS SPACEBAR TO RETURN TO THE MAIN MENU', SCREEN_WIDTH//2, SCREEN_HEIGHT//2-30, arcade.color.WHITE, 24, align='center', anchor_x='center', anchor_y='center')
 
     def update(self, delta_time):
         """
@@ -246,13 +273,18 @@ class GUI(arcade.Window):
         self.frame_count += 1
 
         if self.curr_state == INTRO:
+            self.opening_crawl.y += 2
             if self.SPACEBAR_PRESSED or self.ESCAPE_PRESSED:
                 self.null_input()
+                self.curr_state = MENU
+            if self.opening_crawl.bottom > SCREEN_HEIGHT:
                 self.curr_state = MENU
 
         if self.curr_state == MENU:
             if self.SPACEBAR_PRESSED:
                 self.null_input()
+                self.lives_remaining = 3
+                self.score = 0
                 self.curr_state = GAME
                 arcade.pause(1)
             if self.ESCAPE_PRESSED:
@@ -300,17 +332,6 @@ class GUI(arcade.Window):
                     sprite.velocity = (0,0)
                 self.curr_state = PAUSED     
 
-        if self.curr_state == DEAD:
-            if self.ESCAPE_PRESSED:
-                self.null_input()
-                self.curr_state = MENU
-            if self.SPACEBAR_PRESSED:
-                self.curr_state = GAME
-                self.null_input()
-                for sprite in self.game_background:
-                    sprite.velocity = (0,-4) 
-                arcade.pause(1)
-
             ##Collision Detection
             for sprite in self.enemy_sprites:
                 collision_list = arcade.check_for_collision_with_list(sprite, self.player_bullet_sprites)
@@ -320,6 +341,7 @@ class GUI(arcade.Window):
                         collision_sprite.kill()
                 if sprite.health <= 0:
                     sprite.kill()
+                    self.score += sprite.value
 
             for sprite in self.player_sprites:
                 collision_list = arcade.check_for_collision_with_list(sprite, self.enemy_bullet_sprites)
@@ -327,6 +349,14 @@ class GUI(arcade.Window):
                     for collision_sprite in collision_list:
                         sprite.take_damage(collision_sprite.damage)
                         collision_sprite.kill()
+                else:
+                    collision_list = arcade.check_for_collision_with_list(sprite, self.enemy_sprites)
+                    if collision_list:
+                        for collision_sprite in collision_list:
+                            sprite.take_damage(1)
+                            collision_sprite.take_damage(1)
+                            if collision_sprite.health <= 0:
+                                collision_sprite.kill()
                 if sprite.health <= 0:
                     sprite.kill()
                     for sprite in self.game_background:
@@ -339,6 +369,28 @@ class GUI(arcade.Window):
             self.game_background.update()
             self.playerShip.update()
             self.player_bullet_sprites.update()
+
+        if self.curr_state == DEAD:
+            if self.ESCAPE_PRESSED:
+                self.null_input()
+                self.curr_state = MENU
+            if self.SPACEBAR_PRESSED:
+                if self.lives_remaining:
+                    self.curr_state = GAME
+                    self.null_input()
+                    for sprite in self.game_background:
+                        sprite.velocity = (0,-4)
+                    self.playerShip = PlayerShip('CoolShip.png', SCREEN_WIDTH//2, 50) 
+                    self.player_sprites.append(self.playerShip)
+                    self.lives_remaining -= 1
+                    arcade.pause(1)
+                else:
+                    self.curr_state = MENU
+                    self.null_input()
+                    for sprite in self.game_background:
+                        sprite.velocity = (0,-4)
+
+        
 
     def on_key_press(self, key, key_modifiers):
         """
