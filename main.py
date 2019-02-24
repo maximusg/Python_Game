@@ -18,6 +18,8 @@ PAUSED = 4
 HIGH_SCORE_LIST = 5
 CREDITS = 6
 
+DEBUG = True
+
 class Bullet(arcade.Sprite):
     def __init__(self, path_to_img, startx, starty, speedx, speedy):
         super().__init__(path_to_img)
@@ -92,15 +94,10 @@ class GUI(arcade.Window):
     """
     Main application class.
 
-    NOTE: Go ahead and delete the methods you don't need.
-    If you do need a method, delete the 'pass' and replace it
-    with your own code. Don't leave 'pass' in this program.
     """
 
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
-        self.drawing_time = 0
-        self.processing_time = 0
         self.frame_count = 0
         self.curr_state = MENU        
 
@@ -109,9 +106,6 @@ class GUI(arcade.Window):
         self.playerShip = None
         self.game_background = None
         self.menu_background = None
-
-        self.scroll_x1, self.scroll_y1 = SCREEN_WIDTH//2,SCREEN_HEIGHT//2
-        self.scroll_x2, self.scroll_y2 = SCREEN_WIDTH//2,(SCREEN_HEIGHT//2)+SCREEN_HEIGHT 
 
         self.player_sprites = None
         self.player_bullet_sprites = None
@@ -150,19 +144,19 @@ class GUI(arcade.Window):
         self.playerShip = PlayerShip('CoolShip.png',1000,100)
         self.player_sprites.append(self.playerShip)        
 
-    def scroll_update(self):
-        self.scroll_y1 -= 1
-        if self.scroll_y1 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
-            self.scroll_y1 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
-        self.scroll_y2 -= 1
-        if self.scroll_y2 < SCREEN_HEIGHT//2 - SCREEN_HEIGHT:
-            self.scroll_y2 = SCREEN_HEIGHT + SCREEN_HEIGHT//2
+    def null_input(self):
+        self.UP_PRESSED = False
+        self.DOWN_PRESSED = False
+        self.LEFT_PRESSED = False
+        self.RIGHT_PRESSED = False
+        self.SPACEBAR_PRESSED = False
+        self.ESCAPE_PRESSED = False
+        self.PAUSE_PRESSED = False
 
     def on_draw(self):
         """
         Render the screen.
         """
-        draw_start_time = timeit.default_timer()
 
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
@@ -180,12 +174,11 @@ class GUI(arcade.Window):
         if self.curr_state == PAUSED:
             self.draw_paused()
 
-        #draw text
-        fps = 1 / (self.drawing_time + self.processing_time)
-        output = "Max FPS: {:3.1f}".format(clock.get_fps())
-        arcade.draw_text(output, 20, 80, arcade.color.WHITE, 16)
+        if DEBUG:
+            #draw text
+            output = "Max FPS: {:3.1f}".format(clock.get_fps())
+            arcade.draw_text(output, 20, 20, arcade.color.WHITE, 16)
 
-        self.drawing_time = timeit.default_timer() - draw_start_time
 
     def draw_intro(self):
         #draw background
@@ -196,28 +189,20 @@ class GUI(arcade.Window):
         ##TODO## I/O
         #draw background
         self.menu_background.draw()
-        #arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
-        #arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH, SCREEN_HEIGHT, self.menu_background)
 
     def draw_game(self):
         #draw background
-        #arcade.draw_texture_rectangle(self.scroll_x1, self.scroll_y1, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
-        #arcade.draw_texture_rectangle(self.scroll_x2, self.scroll_y2, SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
-
         self.game_background.draw()
-        # Call draw() on all your sprite lists below
+
         self.playerShip.draw()
         self.player_bullet_sprites.draw()
 
     def draw_paused(self):
         #draw background
-        #arcade.draw_texture_rectangle(SCREEN_WIDTH//2, SCREEN_HEIGHT//2,SCREEN_WIDTH-(2*COLUMN_WIDTH),SCREEN_HEIGHT, self.game_background)
-
-        #draw text
-        arcade.draw_text('***PAUSED***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24)
-        
-        # Call draw() on all your sprite lists below
         self.game_background.draw()
+        #draw text
+        arcade.draw_text('***PAUSED***', SCREEN_WIDTH//2, SCREEN_HEIGHT//2, arcade.color.WHITE, 24, align='center', anchor_x='center', anchor_y ='center')
+
         self.playerShip.draw()
         self.player_bullet_sprites.draw()
 
@@ -227,13 +212,12 @@ class GUI(arcade.Window):
         Normally, you'll call update() on the sprite lists that
         need it.
         """
-        process_start_time = timeit.default_timer()
         self.frame_count += 1
 
         if self.curr_state == MENU:
-            self.scroll_update()
             if self.SPACEBAR_PRESSED:
                 self.curr_state = GAME
+                self.null_input()
                 arcade.pause(1)
             if self.ESCAPE_PRESSED:
                 self.curr_state = EXIT
@@ -242,15 +226,16 @@ class GUI(arcade.Window):
 
         if self.curr_state == PAUSED:
             if self.ESCAPE_PRESSED:
+                self.null_input()
                 self.curr_state = MENU
             if self.SPACEBAR_PRESSED or self.PAUSE_PRESSED:
                 self.curr_state = GAME
+                self.null_input()
                 for sprite in self.game_background:
                     sprite.velocity = (0,-4) 
                 arcade.pause(1)
 
         if self.curr_state == GAME:
-            self.scroll_update()
             self.playerShip.change_x, self.playerShip.change_y = 0, 0
 
             if self.UP_PRESSED and not self.DOWN_PRESSED:
@@ -266,8 +251,10 @@ class GUI(arcade.Window):
                     bullet = self.playerShip.shoot()
                     self.player_bullet_sprites.append(bullet)     
             if self.ESCAPE_PRESSED:
+                self.null_input()
                 self.curr_state = MENU
             if self.PAUSE_PRESSED:
+                self.null_input()
                 for sprite in self.game_background:
                     sprite.velocity = (0,0)
                 self.curr_state = PAUSED      
@@ -275,8 +262,6 @@ class GUI(arcade.Window):
             self.game_background.update()
             self.playerShip.update()
             self.player_bullet_sprites.update()
-
-        self.processing_time = timeit.default_timer() - process_start_time
 
     def on_key_press(self, key, key_modifiers):
         """
