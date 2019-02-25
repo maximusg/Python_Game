@@ -87,7 +87,7 @@ class GUI(arcade.Window):
         self.drawing_time = 0
         self.processing_time = 0
         self.frame_count = 0
-        self.curr_state = MENU        
+        self.curr_state = MENU
 
         # If you have sprite lists, you should create them here,
         # and set them to None
