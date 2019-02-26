@@ -8,9 +8,7 @@ from pygame.compat import geterror
 #CONSTANTS
 FRAMERATE = 60
 
-#SCREEN_HEIGHT = 900
-#SCREEN_WIDTH = 1440
-SCREEN_HEIGHT = 1080
+SCREEN_HEIGHT = 1000
 SCREEN_WIDTH = 1920
 
 WINDOW_OPTIONS_FULLSCREEN = (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN|pygame.DOUBLEBUF|pygame.HWSURFACE
@@ -103,8 +101,10 @@ def load_image(name, colorkey=-1):
         raise SystemExit(str(geterror()))
     if image.get_alpha():
         image = image.convert_alpha()
+        print('loading {} alpha'.format(name))
     else:
         image = image.convert()
+        print('loading {} non-alpha'.format(name))
         if colorkey is not None:
             if colorkey is -1:
                 colorkey = image.get_at((0, 0))
