@@ -23,7 +23,7 @@ class GUI(object):
         pygame.mouse.set_visible(False)
         self.fs_toggle = True
         self.hs_list = highscore.Scoreboard()
-        self.loader = levelLoader.LevelLoader()
+        self.loader = None
 
         #Clock setup
         self.clock = pygame.time.Clock()
@@ -551,7 +551,7 @@ class GUI(object):
                     if event.key == K_ESCAPE:
                         going = False
                     elif event.key == K_SPACE:
-                        gui.level_loop(konami_code_accepted, idsoft_code_accepted)
+                        gui.level_loop(1, konami_code_accepted, idsoft_code_accepted)
                         in_code = []
                         konami_code_accepted = False
                         idsoft_code_accepted = False
@@ -706,7 +706,8 @@ class GUI(object):
                 going = False
             self.clock.tick(FRAMERATE)
 
-    def level_loop(self, cheat_lives, cheat_weaps):
+    def level_loop(self, level, cheat_lives, cheat_weaps):
+        self.loader = levelLoader.LevelLoader(level)
         still_playing = True
         curr_score = 0
         playerShip = None
@@ -717,7 +718,7 @@ class GUI(object):
             curr_lives = 3
 
         if cheat_weaps:
-            playerShip = player.player('spitfire3','SweetShip.png',"arrows") 
+            playerShip = player.player('master_lazer','SweetShip.png',"arrows") 
 
         while still_playing:
             curr_lives, curr_score, next_level, playerShip = self.main(curr_lives, curr_score, playerShip)

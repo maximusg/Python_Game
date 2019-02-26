@@ -73,6 +73,7 @@ master_weapons_dict = {
     'spitfire2': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire2),
     'spitfire3': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire3),
     'blue_lazer': (10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
+    'master_lazer': (10, 60, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
     'missle': (10, 5, weapon_images_path.joinpath('blue_lazer.gif'), missle)
 
 }
