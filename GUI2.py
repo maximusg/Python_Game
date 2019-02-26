@@ -128,11 +128,6 @@ class GUI(object):
         #Background sound setup
         #load_background_music('roboCop3NES.ogg')
         
-        ##Initialize ships
-        # playerShip = player.player('spitfire','SweetShip.png',"arrows")
-        # bad_guy = enemy.enemy('spitfire','enemy.png')
-        # #bad_guy.health = 5 ##Verify boss mechanics
-
         #Initialize sprite groups
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
@@ -141,15 +136,7 @@ class GUI(object):
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
 
-
-        #spawn a test item
-        #collectible = item_pickup.item(500, 500, 1, 'powerup.gif', name='blue_lazer')
-        #collectible = item_pickup.item(500, 500, 1)
-        #items.add(collectible)
-
-
         going=True
-        #fs_toggle = False ##This here is kinda crappy.
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
         time_since_start = 0
         next_level = True
@@ -492,7 +479,6 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
 
     def add_to_hs(self, txt):
-
         def blink(screen):
             for color in [BLACK, WHITE]:
                 pygame.draw.circle(box, color, (x//2, int(y*0.7)), 7, 0)
@@ -548,11 +534,14 @@ class GUI(object):
         y = 0
         x1 = 0
         y1 = -h
+        code_frame_counter = 120
 
         going = True
         konami = [K_UP, K_UP, K_DOWN, K_DOWN, K_LEFT, K_RIGHT, K_LEFT, K_RIGHT, K_b, K_a, K_RETURN]
+        idsoft = [K_i, K_d, K_k, K_f, K_a, K_RETURN]
         in_code  = []
-        code_accepted = False
+        konami_code_accepted = False
+        idsoft_code_accepted = False
 
         while going:
             for event in pygame.event.get():
@@ -562,12 +551,10 @@ class GUI(object):
                     if event.key == K_ESCAPE:
                         going = False
                     elif event.key == K_SPACE:
-                        if code_accepted:
-                            gui.level_loop(cheat=True)
-                            in_code = []
-                            code_accepted = False
-                        else:
-                            gui.level_loop()
+                        gui.level_loop(konami_code_accepted, idsoft_code_accepted)
+                        in_code = []
+                        konami_code_accepted = False
+                        idsoft_code_accepted = False
                     elif event.key == K_s:
                         gui.high_scores()
                     elif event.key == K_c:
@@ -578,24 +565,15 @@ class GUI(object):
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
-                    elif event.key == K_UP:
-                        in_code.append(K_UP)
-                    elif event.key == K_DOWN:
-                        in_code.append(K_DOWN)
-                    elif event.key == K_LEFT:
-                        in_code.append(K_LEFT)
-                    elif event.key == K_RIGHT:
-                        in_code.append(K_RIGHT)
-                    elif event.key == K_b:
-                        in_code.append(K_b)
-                    elif event.key == K_a:
-                        in_code.append(K_a)
                     elif event.key == K_RETURN:
                         in_code.append(K_RETURN)
                         if in_code == konami:
-                            code_accepted = True
-                        else:
-                            in_code = []
+                            konami_code_accepted = True
+                        if in_code == idsoft:
+                            idsoft_code_accepted = True
+                        in_code = []
+                    else:
+                        in_code.append(event.key)
                         
             y1 += 1
             y += 1
@@ -622,16 +600,22 @@ class GUI(object):
             text_rect4 = text4.get_rect()
             text_rect4.centerx, text_rect4.top = text_rect3.centerx, text_rect3.bottom
 
-            text5, text5_surf = draw_text('CODE ACCEPTED. ENJOY YOUR GAME!', WHITE)
+            text5, text5_surf = draw_text('CODE ACCEPTED. ENJOY CHEATING WITH ALL THOSE LIVES!', WHITE)
             text_rect5 = text5.get_rect()
-            text_rect5.centerx, text_rect5.bottom = text_rect4.centerx, SCREEN_HEIGHT
+            text_rect5.centerx, text_rect5.bottom = text_rect4.centerx, SCREEN_HEIGHT-100
+
+            text6, text6_surf = draw_text('CODE ACCEPTED. ENJOY YOUR NEW WEAPONS!', WHITE)
+            text_rect6 = text6.get_rect()
+            text_rect6.centerx, text_rect6.top = text_rect5.centerx, text_rect5.bottom
 
             self.screen.blit(text1, text_rect1)
             self.screen.blit(text2, text_rect2)
             self.screen.blit(text3, text_rect3)
             self.screen.blit(text4, text_rect4)
-            if code_accepted:
+            if konami_code_accepted:
                 self.screen.blit(text5, text_rect5)
+            if idsoft_code_accepted:
+                self.screen.blit(text6, text_rect6)
 
             pygame.display.update()
 
@@ -722,14 +706,19 @@ class GUI(object):
                 going = False
             self.clock.tick(FRAMERATE)
 
-    def level_loop(self, cheat=False):
+    def level_loop(self, cheat_lives, cheat_weaps):
         still_playing = True
         curr_score = 0
-        if cheat:
+        playerShip = None
+
+        if cheat_lives:
             curr_lives = 100
         else:
             curr_lives = 3
-        playerShip = None
+
+        if cheat_weaps:
+            playerShip = player.player('spitfire3','SweetShip.png',"arrows") 
+
         while still_playing:
             curr_lives, curr_score, next_level, playerShip = self.main(curr_lives, curr_score, playerShip)
             is_next_level = self.loader.nextLevel()
