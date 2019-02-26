@@ -28,6 +28,7 @@ class item(entity2.entity2):
 
         self.image, self.rect = load_image(item_images_path.joinpath(path_to_img))
         self.rect.centerx, self.rect.top = origin_x, origin_y
+        self.value = 50
         self.dirty = 1
 
 

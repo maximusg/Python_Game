@@ -139,3 +139,8 @@ class enemy(entity2.entity2):
 			return None
 		else:
 			return item_pickup.item(self.rect.centerx, self.rect.centery, name= droppedItem)
+
+	def take_damage(self, value):
+		self.health -= value
+		if self.health <= 0:
+			self.visible = 0

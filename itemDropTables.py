@@ -13,7 +13,7 @@ purpose: create tables linking items to their drop rates, to be used when creati
 '''
 
 #common = (('coin', 0.4),('powerup', 0.1))#, ('spitfire_powerup', 0.3))
-common = (('coin', 0.4),('spitfire_powerup', 0.4))#, ('spitfire_powerup', 0.3))
+common = (('coin', 0.1),('spitfire_powerup', 0.05))#, ('spitfire_powerup', 0.3))
 
 #rare = (('coin', 0.2), 'powerup', 0.7)
 

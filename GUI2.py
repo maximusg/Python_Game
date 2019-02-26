@@ -296,10 +296,9 @@ class GUI(object):
             for sprite in items:
                 collision = pygame.sprite.spritecollideany(sprite, player_sprites)
                 if collision:
-                    #print('you picked up an item', sprite.name)
                     sprite.visible = 0
+                    player_score += sprite.value
                     if sprite.is_weapon:
-                        #playerShip.weapon = weapon.Weapon(sprite.name)
                         upgrade = weapon.upgrade(sprite.weapon_name, playerShip.weapon.name)
                         playerShip.weapon = weapon.Weapon(upgrade)
                     items.remove(sprite)
@@ -315,15 +314,14 @@ class GUI(object):
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
-                    sprite.health -= 1
+                    sprite.take_damage(1)
                     collision.visible = 0
                     player_bullet_sprites.remove(collision)
-                    if sprite.health == 0:
+                    if sprite.health <= 0:
                         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
                         new_explosion.play_sound() 
                         explosions.add(new_explosion)                        
                         player_score += sprite.point_value
-                        sprite.visible = 0
                         item_drop = sprite.getDrop()
                         if item_drop is not None:
                             items.add(item_drop)
