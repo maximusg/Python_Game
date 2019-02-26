@@ -12,7 +12,8 @@ class player(entity2.entity2):
         self.weapon = weapon.Weapon(init_wep)
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
-        self.health = 100
+        self.health = 40
+        self.shield = 100
         self.image, self.rect = load_image(imgFile, -1)
         self.invul_flag = False
 
@@ -24,12 +25,18 @@ class player(entity2.entity2):
         self.dirty = 2
 
     def take_damage(self, value):
-        self.health -= value
+        if self.shield > 0:
+            self.shield -= value*2
+            if self.shield < 0:
+                self.health -= int(abs(self.shield*0.5))
+                self.shield = 0
+        else:
+            self.health -= value
 
     def regen(self):
-        self.health += 5
-        if self.health > 100:
-            self.health = 100
+        self.shield += 1
+        if self.shield > 100:
+            self.shield = 100
 
     def move(self, new_x, new_y):
         if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris

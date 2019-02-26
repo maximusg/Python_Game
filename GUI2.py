@@ -143,7 +143,7 @@ class GUI(object):
         time_since_start = 0
         next_level = True
         invul_timer = 120 ##frames of invulnerability post-death
-        regen_timer = 60
+        regen_timer = 6
         ##Clock time setup
         while going:
             ##Check for end of level conditions
@@ -367,8 +367,12 @@ class GUI(object):
             lives_rect = self.screen.blit(lives_surf, (0, score_rect.bottom))
             self.screen.blit(lives_text, lives_rect)
 
+            shield_text, shield_surf = draw_text('Shield Remaining: '+str(playerShip.shield), WHITE)
+            shield_rect = self.screen.blit(shield_surf, (0, lives_rect.bottom))
+            self.screen.blit(shield_text, shield_rect)
+
             health_text, health_surf = draw_text('Health Remaining: '+str(playerShip.health), WHITE)
-            health_rect = self.screen.blit(health_surf, (0, lives_rect.bottom))
+            health_rect = self.screen.blit(health_surf, (0, shield_rect.bottom))
             self.screen.blit(health_text, health_rect)
 
             if DEBUG:
@@ -393,7 +397,7 @@ class GUI(object):
             regen_timer -= 1
             if regen_timer == 0:
                 playerShip.regen()
-                regen_timer = 60
+                regen_timer = 6
             
         if next_level:
             self.level_complete()
