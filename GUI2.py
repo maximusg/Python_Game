@@ -2,6 +2,7 @@
 import weapon
 import player
 import enemy
+import explosion
 import levelLoader
 import pygame
 from pygame.locals import *
@@ -135,6 +136,7 @@ class GUI(object):
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
+        explosions = pygame.sprite.LayeredUpdates(__default_layer = 5)
 
         going=True
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
@@ -270,6 +272,7 @@ class GUI(object):
             # enemy_sprites.update()
             enemy_bullet_sprites.update()
             items.update()
+            explosions.update()
         
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
@@ -316,7 +319,9 @@ class GUI(object):
                     collision.visible = 0
                     player_bullet_sprites.remove(collision)
                     if sprite.health == 0:
-                        self.explode.play()                        
+                        new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+                        new_explosion.play_sound() 
+                        explosions.add(new_explosion)                        
                         player_score += sprite.point_value
                         sprite.visible = 0
                         item_drop = sprite.getDrop()
@@ -332,6 +337,14 @@ class GUI(object):
             for sprite in enemy_bullet_sprites:
                 if sprite.visible == 0:
                     enemy_bullet_sprites.remove(sprite)
+
+            for sprite in explosions:
+                if sprite.visible == 0:
+                    explosions.remove(sprite)
+
+            for sprite in items:
+                if sprite.visible == 0:
+                    items.remove(sprite)
 
             bg_y1 += 1
             bg_y += 1
@@ -370,6 +383,7 @@ class GUI(object):
                 player_sprites_invul.draw(self.screen)
             player_sprites.draw(self.screen)
             enemy_sprites.draw(self.screen)
+            explosions.draw(self.screen)
 
             pygame.display.flip()
 

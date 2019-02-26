@@ -101,10 +101,10 @@ def load_image(name, colorkey=-1):
         raise SystemExit(str(geterror()))
     if image.get_alpha():
         image = image.convert_alpha()
-        print('loading {} alpha'.format(name))
+        #print('loading {} alpha'.format(name))
     else:
         image = image.convert()
-        print('loading {} non-alpha'.format(name))
+        #print('loading {} non-alpha'.format(name))
         if colorkey is not None:
             if colorkey is -1:
                 colorkey = image.get_at((0, 0))
