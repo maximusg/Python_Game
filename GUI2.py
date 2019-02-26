@@ -92,16 +92,20 @@ class GUI(object):
 
         gui.menu()
 
-    def main(self, lives_remaining, curr_score):
+    def main(self, lives_remaining, curr_score, currPlayerShip):
         ##Level Loader setup
         starting_events = self.loader.getEvents(0)
         ending_events = self.loader.getEndBehavior()
         player_score = curr_score
         player_lives = lives_remaining    
         bg_filename = starting_events.get('background')
-        playerShip = starting_events.get('player')
-        if playerShip:
-            playerShip = playerShip[0]
+        if currPlayerShip:
+            playerShip = currPlayerShip
+            playerShip.center = (SCREEN_WIDTH//2, SCREEN_HEIGHT-100)
+        else:
+            playerShip = starting_events.get('player')
+            if playerShip:
+                playerShip = playerShip[0]
         bad_guys = starting_events.get('enemy',[])
         bad_guy_bullets = starting_events.get('bullets',[])
 
@@ -392,7 +396,7 @@ class GUI(object):
             
         if next_level:
             self.level_complete()
-        return player_lives, player_score, next_level
+        return player_lives, player_score, next_level, playerShip
 
     def pause_screen(self):
         paused = True
@@ -415,7 +419,7 @@ class GUI(object):
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-            pygame.display.update(paused_rect)
+            pygame.display.update()
             self.clock.tick(FRAMERATE)
 
     def level_complete(self):
@@ -457,7 +461,7 @@ class GUI(object):
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-            pygame.display.update(dead_rect)
+            pygame.display.update()
             self.clock.tick(FRAMERATE)
     
     def game_over(self, player_score):
@@ -484,7 +488,7 @@ class GUI(object):
                 if event.type == QUIT:
                     pygame.quit()
                     exit()
-            pygame.display.update([dead_rect, dead_rect2])
+            pygame.display.update()
             self.clock.tick(FRAMERATE)
 
     def add_to_hs(self, txt):
@@ -725,9 +729,9 @@ class GUI(object):
             curr_lives = 100
         else:
             curr_lives = 3
-        #event_queue = self.loader.getEvents()
+        playerShip = None
         while still_playing:
-            curr_lives, curr_score, next_level = self.main(curr_lives, curr_score)
+            curr_lives, curr_score, next_level, playerShip = self.main(curr_lives, curr_score, playerShip)
             is_next_level = self.loader.nextLevel()
             if not next_level:
                 still_playing = False
