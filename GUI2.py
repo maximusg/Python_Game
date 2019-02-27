@@ -369,7 +369,7 @@ class GUI(object):
             shield_rect = self.screen.blit(shield_surf, (0, lives_rect.bottom))
             self.screen.blit(shield_text, shield_rect)
 
-            health_text, health_surf = draw_text('Health Remaining: '+str(playerShip.health), WHITE)
+            health_text, health_surf = draw_text('Armor Remaining: '+str(playerShip.health), WHITE)
             health_rect = self.screen.blit(health_surf, (0, shield_rect.bottom))
             self.screen.blit(health_text, health_rect)
 

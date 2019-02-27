@@ -114,7 +114,7 @@ def load_image(name, colorkey=-1):
 def draw_text(to_print, text_color, bg_color=None):
     '''Draws the string to_print in the color defined by text_color (can be a defined constant, or an RGB value triple)
        with background color defined by bg_color. If bg_color=None, then no background fill is used.'''
-    font = pygame.font.Font('OpenSans-Regular.ttf', 25)
+    font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', 25)
     text = font.render(str(to_print), True, text_color)
     text_surf = pygame.Surface(text.get_size())
     if bg_color != None:
