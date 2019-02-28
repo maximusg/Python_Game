@@ -144,6 +144,7 @@ class GUI(object):
         next_level = True
         invul_timer = 120 ##frames of invulnerability post-death
         regen_timer = 6
+        bomb_timer = 120
         ##Clock time setup
         while going:
             ##Check for end of level conditions
@@ -165,7 +166,7 @@ class GUI(object):
                 player_lives -= 1
                 if player_lives:
                     self.death_loop()
-                    playerShip = player.player('spitfire','SweetShip.png',"arrows")
+                    playerShip = player.player('spitfire','SweetShip.png',"arrows") #TODO: replace this with data from levelLoader
                     playerShip.invul_flag = True
                     player_sprites_invul.add(playerShip)
                 else:
@@ -396,7 +397,18 @@ class GUI(object):
             if regen_timer == 0:
                 playerShip.regen()
                 regen_timer = 6
-            
+
+            #the player needs to wait for the bomb timer before they can drop another bomb
+            # if bomb_timer == 0:
+            #     playerShip.bomb_wait = False
+            # elif bomb_timer > 0:
+            #     bomb_timer -= 1
+            #     print(bomb_timer)
+            if playerShip.bomb_wait == True:
+                bomb_timer -= 1
+                if bomb_timer == 0:
+                    playerShip.bomb_wait = False
+                    bomb_timer = 120
         if next_level:
             self.level_complete()
         return player_lives, player_score, next_level, playerShip
