@@ -12,6 +12,8 @@ class player(entity2.entity2):
         self.weapon = weapon.Weapon(init_wep)
         self.bomb = weapon.Weapon(init_bomb)
         self.bomb_wait = False
+        self.drop_bomb_flag = False
+        self.curr_bomb = None
 
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
@@ -68,7 +70,6 @@ class player(entity2.entity2):
         return self.bomb.weapon_func(origin_x, origin_y)
     
     def control(self, keys, FRAMERATE):
-        addBomb = False
         addBullet=False
         if self.control_scheme=="arrows":
             if keys[pygame.K_UP]:
@@ -92,9 +93,10 @@ class player(entity2.entity2):
             if keys[pygame.K_b]:
                 if self.bomb_wait == False:
                     #self.bomb_timer = self.bomb_countdown
-                    addBomb = True
                     self.bomb_wait = True
                     print('bombs away')
+                    self.drop_bomb_flag = True
+                    #addBullet = True
 
             #     if self.bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
             #         addBullet=True

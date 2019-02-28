@@ -263,6 +263,19 @@ class GUI(object):
                 bullet = playerShip.fire()
                 player_bullet_sprites.add(bullet)
 
+            if playerShip.drop_bomb_flag is True:
+                bullet = playerShip.drop_bomb()
+                playerShip.drop_bomb_flag = False
+                player_bullet_sprites.add(bullet)
+                playerShip.curr_bomb = bullet
+
+            if playerShip.curr_bomb is not None and playerShip.curr_bomb.bomb_explode[0] is True:
+                new_explosion = explosion.ExplosionSprite(playerShip.curr_bomb.bomb_explode[1],playerShip.curr_bomb.bomb_explode[2])
+                new_explosion.play_sound()
+                explosions.add(new_explosion)
+                playerShip.curr_bomb.bomb_explode[0] = False
+
+
             ##Helper to call update() on each sprite in the group.    
             player_sprites.update()
             player_bullet_sprites.update()

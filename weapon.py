@@ -69,7 +69,7 @@ def missle(origin_x, origin_y):
     return bullet1
 
 def bomb(origin_x, origin_y):
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('bomb.png'), behavior='bomb')
+    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('bomb.png'), behavior='bomb', is_bomb=True)
     return bullet1
 
 master_weapons_dict = {

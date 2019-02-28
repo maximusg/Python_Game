@@ -5,7 +5,7 @@ from library import *
 
 
 class bullet(entity2.entity2):
-	def __init__(self, origin_x, origin_y, speed, path_to_img, angle = 0, behavior = 'up'):
+	def __init__(self, origin_x, origin_y, speed, path_to_img, angle = 0, behavior = 'up', is_bomb = False):
 		super().__init__()
 		self.speed = speed
 		self.image, self.rect = load_image(path_to_img)
@@ -21,6 +21,11 @@ class bullet(entity2.entity2):
 		self.rect.x = origin_x
 		self.rect.y = origin_y
 
+		#if the bullet is a bomb, then we need a timer
+		self.is_bomb = is_bomb
+		self.bomb_timer = 100
+		self.bomb_explode = [False, self.rect.x, self.rect.y]
+
 		self.behaveDic = {
 			"up":self.__up__,
 			"northWest":self.__northWest__,
@@ -28,7 +33,8 @@ class bullet(entity2.entity2):
 			"northNorthEast":self.__northNorthEast__,
 			"northNorthWest":self.__northNorthWest__,
 			"missle":self.__missle__,
-			"down":self.__down__
+			"down":self.__down__,
+			"bomb":self.__bomb__
 
 
 			}
@@ -48,6 +54,17 @@ class bullet(entity2.entity2):
 		if self.rect.top > SCREEN_HEIGHT or self.rect.bottom < 0 or self.rect.right > SCREEN_WIDTH-COLUMN_WIDTH or self.rect.left < COLUMN_WIDTH: #checks if the rect is out of bounds, and if so, it is no longer visible, meaning it should be deleted by GUI
 			self.visible = 0
 			self.dirty = 1
+
+		if self.is_bomb:
+			self.bomb_timer -= 1
+			if self.bomb_timer <= 0:
+				self.visible = 0
+				self.is_bomb = False
+				print('BOOM')
+				self.bomb_explode[0] = True
+				self.bomb_explode[1] = self.rect.x
+				self.bomb_explode[2] = self.rect.y
+				#self.image, self.rect = load_image('resources/misc_sprites/explosion1.png')
 
 		self.movement.update(self)
 		# if not (COLUMN_WIDTH <= self.rect.right and self.rect.left <= SCREEN_WIDTH-COLUMN_WIDTH):
@@ -82,3 +99,6 @@ class bullet(entity2.entity2):
 
 	def __down__(self):
 		return movement.Move(behaviorArray=['down'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle])
+
+	def __bomb__(self):
+		return movement.Move(behaviorArray=['up', 'up', 'up', 'up'], moveCountArray=[1, 20, 30, 49], speedArray=[self.speed, self.speed*.5, self.speed*.3, self.speed*.2], angelArray=[self.angle])
