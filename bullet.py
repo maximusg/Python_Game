@@ -101,4 +101,4 @@ class bullet(entity2.entity2):
 		return movement.Move(behaviorArray=['down'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle])
 
 	def __bomb__(self):
-		return movement.Move(behaviorArray=['up', 'up', 'up', 'up'], moveCountArray=[1, 20, 30, 49], speedArray=[self.speed, self.speed*.5, self.speed*.3, self.speed*.2], angelArray=[self.angle])
+		return movement.Move(behaviorArray=['up', 'up', 'up', 'up'], moveCountArray=[1, 20, 30, 49], speedArray=[self.speed, self.speed*.7, self.speed*.5, self.speed*.2], angelArray=[self.angle])
