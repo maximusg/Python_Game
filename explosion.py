@@ -2,11 +2,12 @@ import pygame
 from library import *
 
 class ExplosionSprite(pygame.sprite.Sprite):
-    def __init__(self, startx, starty):
+    def __init__(self, startx, starty, direction='down'):
         super().__init__()
         self.image, self.rect = load_image('resources/misc_sprites/explosion1.png')
         self.rect = pygame.Rect(startx,starty,30,30)
         self.sound = load_sound('explosion.ogg')
+        self.direction = direction
         self.frame_counter = 45
         self.frame = 1
         self.visible = 1
@@ -20,7 +21,10 @@ class ExplosionSprite(pygame.sprite.Sprite):
             old_x, old_y = self.rect.x, self.rect.y
             self.image, self.rect = load_image('resources/misc_sprites/explosion'+str(self.frame)+'.png')
             self.rect.x, self.rect.y = old_x, old_y
-        self.move(0,5)
+        if self.direction == 'down':
+            self.move(0,5)
+        elif self.direction == 'up':
+            self.move(0,-5)
 
     def move(self, diffx, diffy):
         self.rect = self.rect.move(diffx, diffy)

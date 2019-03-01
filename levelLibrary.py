@@ -99,7 +99,7 @@ BG_STARFIELD = "starfield.png"
 
 
 #verifying  Properly formatted
-TIME_TYPES = ["player", "enemy", "enemyBullets", "background", "items"]
+TIME_TYPES = ["player", "enemy", "enemyBullets", "background", "items", "boss_sprite"]
 END_TYPES =["boss","time"]
 
 
@@ -115,6 +115,10 @@ DICTYPES = {
         "enemy":{
             "class":["strings"], #array type w/ stringtypes
             "health": 1 #int type
+        },
+        "boss_sprite": {
+            "image":"stringType",
+            "class":["strings"]           
         },
         "enemyBullets":{
             "class":["strings"] #array type w/ stringtypes
