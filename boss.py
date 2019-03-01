@@ -19,13 +19,18 @@ class BossSprite(entity2.entity2):
         self.health = self.max_health
         self.max_shield = 100
         self.shield = self.max_shield
+        self.regen_counter = 60
 
         self.layer = 1
         self.dirty = 2
         self.visible = 1
 
     def update(self):
-        #self.regen()
+        if self.regen_counter == 0:
+            self.regen()
+            self.regen_counter = 60
+        else:
+            self.regen_counter -= 1
         explosion_list = []
         bullet_list = []
         self.move()

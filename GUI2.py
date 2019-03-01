@@ -290,20 +290,21 @@ class GUI(object):
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, enemy_bullet_sprites)
-                if collision == None:
+                if collision:
+                    self.explode.play()
+                    playerShip.take_damage(5)
+                    enemy_bullet_sprites.remove(collision)
+                else:
                     collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
                     if collision:
                         self.explode.play()
                         playerShip.take_damage(1)
-                        if playerShip.health <= 0:
-                            sprite.visible = 0
-                else:
-                    self.explode.play()
-                    playerShip.take_damage(5)
-                    enemy_bullet_sprites.remove(collision)
-                    if playerShip.health <= 0:
-                        sprite.visible = 0
-                if sprite.visible == 0:
+                    else:
+                        collision = pygame.sprite.spritecollideany(sprite, boss_sprites)
+                        if collision:
+                            self.explode.play()
+                            playerShip.take_damage(1)
+                if playerShip.health <= 0:
                     player_sprites.remove(sprite)
                     
             for sprite in items:
@@ -385,20 +386,8 @@ class GUI(object):
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
             text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
-            score_rect = self.screen.blit(score_surf, ORIGIN)
+            #score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
-
-            # lives_text, lives_surf = draw_text('Lives Remaining: '+str(player_lives), WHITE)
-            # lives_rect = self.screen.blit(lives_surf, (0, score_rect.bottom))
-            # self.screen.blit(lives_text, lives_rect)
-
-            # shield_text, shield_surf = draw_text('Shield Remaining: '+str(playerShip.shield), WHITE)
-            # shield_rect = self.screen.blit(shield_surf, (0, lives_rect.bottom))
-            # self.screen.blit(shield_text, shield_rect)
-
-            # health_text, health_surf = draw_text('Armor Remaining: '+str(playerShip.health), WHITE)
-            # health_rect = self.screen.blit(health_surf, (0, shield_rect.bottom))
-            # self.screen.blit(health_text, health_rect)
 
             if DEBUG:
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
@@ -408,11 +397,17 @@ class GUI(object):
             armor_bar, armor_bar_rect = draw_vertical_bar(RED, 50, SCREEN_HEIGHT-400, (playerShip.health/playerShip.max_health), (COLUMN_WIDTH*4 + 10,200))
             shield_bar, shield_bar_rect = draw_vertical_bar(BLUE, 50, SCREEN_HEIGHT-400, (playerShip.shield/playerShip.max_shield), (COLUMN_WIDTH*4 + 70,200))
             lives_left, lives_left_rect = draw_player_lives(player_lives, (COLUMN_WIDTH*4 + 10, 10))
-            #gun_cooldown_bar = draw_vertical_bar(WHITE, 50, 300, (self.playerShip.health/self.playerShip.total_health), (COLUMN_WIDTH*4 + 130,100))
+
+            if boss_spawned and len(boss_sprites):
+                boss_sprite = boss_sprites.get_sprite(0)
+                boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprite.health/boss_sprite.max_health, boss_sprite.shield/boss_sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
 
             self.screen.blit(lives_left, lives_left_rect)
             self.screen.blit(armor_bar, armor_bar_rect)
             self.screen.blit(shield_bar, shield_bar_rect)
+            
+            if boss_spawned:
+                self.screen.blit(boss_bar, boss_bar_rect)
 
             player_bullet_sprites.draw(self.screen)
             enemy_bullet_sprites.draw(self.screen)
@@ -535,7 +530,6 @@ class GUI(object):
         def blink(screen):
             for color in [BLACK, WHITE]:
                 pygame.draw.circle(box, color, (x//2, int(y*0.7)), 7, 0)
-                #self.screen.blit(box, (0, y//2))
                 self.screen.blit(box, box_rect)
                 pygame.display.flip()
                 pygame.time.wait(300)
@@ -546,7 +540,7 @@ class GUI(object):
             box.blit(txt_surf, txt_rect)
             self.screen.blit(box, box_rect)
             pygame.display.flip()
-        font = pygame.font.Font('OpenSans-Regular.ttf', 16)
+        font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', 16)
         x = 480
         y = 100
         # make box
