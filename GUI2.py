@@ -102,7 +102,7 @@ class GUI(object):
         bg_filename = starting_events.get('background')
         if currPlayerShip:
             playerShip = currPlayerShip
-            playerShip.center = (SCREEN_WIDTH//2, SCREEN_HEIGHT-100)
+            playerShip.rect.center = (SCREEN_WIDTH//2, SCREEN_HEIGHT-100)
         else:
             playerShip = starting_events.get('player')
             if playerShip:
