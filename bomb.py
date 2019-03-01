@@ -1,10 +1,26 @@
+'''
+Purpose:
+
+Provides functionality for bombs. Bombs can be launched by the player by pressing a key other than the
+key reserved for firing the main weapon.
+
+A bomb will slowly move forward before exploding after a set time.
+The explosion will cause a circle with a radius that grows up to a certain point, that will deal damage to all enemies
+that it collides with.
+
+The player should have a set number of bombs that can be collected. However, even if a player
+has multiple bombs, there should be a short duration after a player launches the first bomb that they will not be able
+to launch another bomb.
+
+'''
+
 import entity2
 import pygame.mask
 import movement
 from library import *
 
 
-class bullet(entity2.entity2):
+class bomb(entity2.entity2):
     def __init__(self, origin_x, origin_y, speed, path_to_img, angle=0, behavior='up'):
         super().__init__()
         self.speed = speed
@@ -21,10 +37,11 @@ class bullet(entity2.entity2):
         self.rect.x = origin_x
         self.rect.y = origin_y
 
-        # if the bullet is a bomb, then we need a timer
+
         #self.is_bomb = is_bomb
-        #self.bomb_timer = 100
-        #self.bomb_explode = [False, self.rect.x, self.rect.y]
+        self.bomb_timer = 100
+        self.bomb_explode = [False, self.rect.x, self.rect.y]
+
 
         self.behaveDic = {
             "up": self.__up__,
@@ -53,15 +70,15 @@ class bullet(entity2.entity2):
         if self.rect.top > SCREEN_HEIGHT or self.rect.bottom < 0 or self.rect.right > SCREEN_WIDTH - COLUMN_WIDTH or self.rect.left < COLUMN_WIDTH:  # checks if the rect is out of bounds, and if so, it is no longer visible, meaning it should be deleted by GUI
             self.visible = 0
             self.dirty = 1
-        # if self.is_bomb:
-        #     self.bomb_timer -= 1
-        #     if self.bomb_timer <= 0:
-        #         self.visible = 0
-        #         self.is_bomb = False
-        #         print('BOOM')
-        #         self.bomb_explode[0] = True
-        #         self.bomb_explode[1] = self.rect.x
-        #         self.bomb_explode[2] = self.rect.y
+
+        self.bomb_timer -= 1
+        if self.bomb_timer <= 0 and self.visible == 1:
+            self.visible = 0
+            #self.is_bomb = False
+            print('BOOM')
+            self.bomb_explode[0] = True
+            self.bomb_explode[1] = self.rect.x
+            self.bomb_explode[2] = self.rect.y
         # self.image, self.rect = load_image('resources/misc_sprites/explosion1.png')
 
         self.movement.update(self)

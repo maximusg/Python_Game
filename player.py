@@ -10,6 +10,7 @@ class player(entity2.entity2):
     def __init__(self, init_wep, imgFile, scheme, init_bomb = 'bomb'):
         super().__init__()
         self.weapon = weapon.Weapon(init_wep)
+
         self.bomb = weapon.Weapon(init_bomb)
         self.bomb_wait = False
         self.drop_bomb_flag = False
@@ -66,6 +67,9 @@ class player(entity2.entity2):
     def drop_bomb(self):
         origin_x = (self.rect.left + self.rect.right) / 2
         origin_y = self.rect.top
+        self.drop_bomb_flag = True
+        self.bomb_wait = True
+        #self.curr_bomb = True
 
         return self.bomb.weapon_func(origin_x, origin_y)
     
@@ -93,9 +97,10 @@ class player(entity2.entity2):
             if keys[pygame.K_b]:
                 if self.bomb_wait == False:
                     #self.bomb_timer = self.bomb_countdown
-                    self.bomb_wait = True
+                    #self.bomb_wait = True
                     print('bombs away')
-                    self.drop_bomb_flag = True
+                    #self.drop_bomb_flag = True
+                    self.drop_bomb()
                     #addBullet = True
 
             #     if self.bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:

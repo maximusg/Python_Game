@@ -133,6 +133,7 @@ class GUI(object):
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
+        player_bomb_sprites = pygame.sprite.LayeredDirty(_default_layer = 1) #not sure if bombs should be on the lowest layer
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
@@ -264,21 +265,24 @@ class GUI(object):
                 player_bullet_sprites.add(bullet)
 
             if playerShip.drop_bomb_flag is True:
-                bullet = playerShip.drop_bomb()
+                bomb = playerShip.drop_bomb()
                 playerShip.drop_bomb_flag = False
-                player_bullet_sprites.add(bullet)
-                playerShip.curr_bomb = bullet
+                player_bomb_sprites.add(bomb)
+                playerShip.curr_bomb = bomb
+                #bomb.update()
 
             if playerShip.curr_bomb is not None and playerShip.curr_bomb.bomb_explode[0] is True:
                 new_explosion = explosion.ExplosionSprite(playerShip.curr_bomb.bomb_explode[1],playerShip.curr_bomb.bomb_explode[2])
                 new_explosion.play_sound()
                 explosions.add(new_explosion)
                 playerShip.curr_bomb.bomb_explode[0] = False
+                playerShip.curr_bomb = None
 
 
             ##Helper to call update() on each sprite in the group.    
             player_sprites.update()
             player_bullet_sprites.update()
+            player_bomb_sprites.update()
             for sprite in enemy_sprites:
                 bullet = sprite.update()
                 if bullet:
@@ -393,6 +397,7 @@ class GUI(object):
                 self.screen.blit(debug_text, debug_rect)
             
             player_bullet_sprites.draw(self.screen)
+            player_bomb_sprites.draw(self.screen)
             enemy_bullet_sprites.draw(self.screen)
             items.draw(self.screen)
             if playerShip.invul_flag and invul_timer//6 % 2 == 0: ##allows visual feedback that the player is invulnerable
