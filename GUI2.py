@@ -110,6 +110,15 @@ class GUI(object):
         bad_guys = starting_events.get('enemy',[])
         bad_guy_bullets = starting_events.get('bullets',[])
 
+        ##Check for end of level conditions
+        if ending_events:
+            endtime = ending_events.get('time')
+            spawn_boss = ending_events.get('boss')
+            boss_spawned = False
+        else:
+            endtime = -1
+            spawn_boss = False
+
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
@@ -134,6 +143,7 @@ class GUI(object):
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
+        boss_sprites = pygame.sprite.LayeredDirty( _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
         explosions = pygame.sprite.LayeredUpdates(__default_layer = 5)
@@ -146,18 +156,10 @@ class GUI(object):
         regen_timer = 6
         ##Clock time setup
         while going:
-            ##Check for end of level conditions
-            if ending_events:
-                endtime = ending_events.get('time')
-                spawn_boss = ending_events.get('boss')
-                boss_spawned = False
-            else:
-                endtime = -1
-                spawn_boss = False
-
+            
             ##check if there is a boss spawned (to figure out when to end the level post boss death)
             if boss_spawned:
-                if len(enemy_sprites) == 0:
+                if len(boss_sprites) == 0:
                     going = False
 
             ##Beginning of the loop checking for death and lives remaining.
@@ -216,11 +218,13 @@ class GUI(object):
             sec_running = time_since_start // 1000 #need seconds since start
             events = self.loader.getEvents(sec_running)
             enemies_to_add = []
+            boss_to_add = []
             enemy_bullets_to_add = []
             items_to_add = []
             
             if events:
                 enemies_to_add = events.get('enemy', [])
+                boss_to_add = events.get('boss_sprite', [])
                 enemy_bullets_to_add = events.get('bullets', [])
                 items_to_add = events.get('items', [])
                 
@@ -240,15 +244,15 @@ class GUI(object):
             #             except KeyError:
             #                 items_to_add = []
 
-            if sec_running == endtime and spawn_boss:
-                ##spawn the boss
-                boss_spawned = True
             if sec_running >= endtime and not spawn_boss:
                 if len(enemy_sprites) == 0 and len(enemy_bullet_sprites) == 0:
                     going = False
                     
             if enemies_to_add:
                 enemy_sprites.add(enemies_to_add)
+            if boss_to_add:
+                boss_spawned = True
+                boss_sprites.add(boss_to_add)
             if enemy_bullets_to_add:
                 enemy_bullet_sprites.add(enemy_bullets_to_add)
             if items_to_add:
@@ -272,6 +276,12 @@ class GUI(object):
                 bullet = sprite.update()
                 if bullet:
                     enemy_bullet_sprites.add(bullet)
+            for sprite in boss_sprites:
+                damage, bullets = sprite.update()
+                if damage:
+                    explosions.add(damage)
+                if bullets:
+                    enemy_bullet_sprites.add(bullets)
             # enemy_sprites.update()
             enemy_bullet_sprites.update()
             items.update()
@@ -330,6 +340,20 @@ class GUI(object):
                             items.add(item_drop)
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)     
+
+            for sprite in boss_sprites:
+                collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
+                if collision:
+                    sprite.take_damage(1)
+                    collision.visible = 0
+                    player_bullet_sprites.remove(collision)
+                    if sprite.health <= 0:
+                        new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+                        new_explosion.play_sound() 
+                        explosions.add(new_explosion)                        
+                        player_score += sprite.point_value
+                if sprite.visible == 0:
+                    boss_sprites.remove(sprite)   
 
             for sprite in player_bullet_sprites:
                 if sprite.visible == 0:
@@ -397,6 +421,7 @@ class GUI(object):
                 player_sprites_invul.draw(self.screen)
             player_sprites.draw(self.screen)
             enemy_sprites.draw(self.screen)
+            boss_sprites.draw(self.screen)
             explosions.draw(self.screen)
 
             pygame.display.flip()

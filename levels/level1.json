@@ -1,17 +1,11 @@
 {
     "end": {
-        "boss": false,
+        "boss": true,
         "time": 10
     },
     "time": {
         "0": {
             "background": "starfield.png",
-            "enemy": {
-                "class": [
-                    "@s7-mv-0-1-0"
-                ],
-                "health": 1
-            },
             "player": {
                 "health": 1,
                 "image": "SweetShip.png",
@@ -21,6 +15,14 @@
                 ],
                 "scheme": "arrows",
                 "weapon": "blue_lazer"
+            }
+        },
+        "5": {
+            "boss_sprite": {
+                "image": "boss.png",
+                "class": [
+                    "camperMid"
+                ]
             }
         }
     }

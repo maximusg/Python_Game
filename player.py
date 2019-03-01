@@ -80,16 +80,17 @@ class player(entity2.entity2):
                 self.bullet_count += 1
             else:
                 self.bullet_count = 0
-            ##end if/else            
-            if keys[pygame.K_1]:
+            ##end if/else    
+            if DEBUG:        
+                if keys[pygame.K_1]:
 
-                self.weapon = weapon.Weapon('spitfire')
-            if keys[pygame.K_2]:
+                    self.weapon = weapon.Weapon('spitfire')
+                if keys[pygame.K_2]:
 
-                self.weapon = weapon.Weapon('spitfire2')
+                    self.weapon = weapon.Weapon('spitfire2')
 
-            if keys[pygame.K_3]:
-                self.weapon = weapon.Weapon('spitfire3')
+                if keys[pygame.K_3]:
+                    self.weapon = weapon.Weapon('spitfire3')
 
 
         return addBullet
@@ -101,12 +102,12 @@ class player(entity2.entity2):
                 y = random.randint(self.rect.top, self.rect.bottom)
                 return explosion.ExplosionSprite(x,y)
         elif 0.3 < self.health / self.max_health <= 0.75:
-            if random.random() < 0.1:
+            if random.random() < 0.05:
                 x = random.randint(self.rect.left,self.rect.right)
                 y = random.randint(self.rect.top, self.rect.bottom)
                 return explosion.ExplosionSprite(x,y)
         elif 0 <= self.health / self.max_health <= 0.3:
-            if random.random() < 0.25:
+            if random.random() < 0.15:
                 x = random.randint(self.rect.left,self.rect.right)
                 y = random.randint(self.rect.top, self.rect.bottom)
                 return explosion.ExplosionSprite(x,y)
