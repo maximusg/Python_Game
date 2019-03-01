@@ -29,6 +29,7 @@ WHITE = (255,255,255)
 RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
+GRAY = (25,25,25)
 ORIGIN = (0,0)
 SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
@@ -121,3 +122,41 @@ def draw_text(to_print, text_color, bg_color=None):
         text_surf.fill(bg_color)
     return text, text_surf
 
+def draw_vertical_bar(color, width, height, bar_percentage = 1, topleft_corner = (0,0)):
+    '''Draws a vertical rectangle with (width,height) dimensions and the topleft corner at topleft_corner.
+       bar_percentage will accept a float between 0 and 1 for the amount of the bar to fill it (0.6 will still
+       draw a border around the entire bar, but only fill 60% with solid color). Returns the surface and its rect to blit.'''
+    if not (0 <= bar_percentage <= 1):
+        raise RuntimeError('Invalid percentage for vertical bars.')
+    surface = pygame.surface.Surface((width, height))
+    surface.fill(GRAY)
+    surface.fill(color, pygame.rect.Rect(1,1,width-2,height-2))
+    surface.fill(BLACK, pygame.rect.Rect(1,1,width-2,(1-bar_percentage) * height-2))
+    rect = surface.get_rect()
+    rect.topleft = topleft_corner
+    return surface, rect
+
+def draw_player_lives(player_lives, topleft_corner = (0,0)):
+    ship_sprite, ship_rect = load_image('CoolShip.png')
+    surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
+    surface.fill(BLACK)
+    surface.blit(ship_sprite, (0,0))
+    text, text_surf = draw_text('x {}'.format(player_lives), WHITE)
+    text_rect = text_surf.get_rect()
+    text_rect.left, text_rect.centery = ship_rect.right, ship_rect.centery
+    surface_rect = surface.blit(text, text_rect)
+    surface_rect.topleft = topleft_corner
+    return surface, surface_rect
+
+# def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
+#     ship_sprite, ship_rect = load_image('bomb.png')
+#     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
+#     surface.fill(BLACK)
+#     surface.blit(ship_sprite, (0,0))
+#     text, text_surf = draw_text('x {}'.format(bombs_remaining), WHITE)
+#     text_rect = text_surf.get_rect()
+#     text_rect.left, text_rect.centery = ship_rect.right, ship_rect.centery
+#     surface = surface.blit(text, text_rect)
+#     surface_rect = surface.get_rect()
+#     surface_rect.topleft = topleft_corner
+#     return surface, surface_rect

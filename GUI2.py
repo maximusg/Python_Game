@@ -1,16 +1,16 @@
 #!/bin/python
-import weapon
-import player
-import enemy
-import explosion
-import levelLoader
 import pygame
 from pygame.locals import *
 from pygame.compat import geterror
 from library import *
-import random
-import highscore
+import weapon
+import player
+import enemy
+import explosion
 import item_pickup
+import levelLoader
+import highscore
+import random
 # import pyganim
 
 class GUI(object):
@@ -263,7 +263,10 @@ class GUI(object):
                 player_bullet_sprites.add(bullet)
 
             ##Helper to call update() on each sprite in the group.    
-            player_sprites.update()
+            # player_sprites.update()
+            player_damage = playerShip.update()
+            if player_damage:
+                explosions.add(player_damage)
             player_bullet_sprites.update()
             for sprite in enemy_sprites:
                 bullet = sprite.update()
@@ -361,23 +364,32 @@ class GUI(object):
             score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
-            lives_text, lives_surf = draw_text('Lives Remaining: '+str(player_lives), WHITE)
-            lives_rect = self.screen.blit(lives_surf, (0, score_rect.bottom))
-            self.screen.blit(lives_text, lives_rect)
+            # lives_text, lives_surf = draw_text('Lives Remaining: '+str(player_lives), WHITE)
+            # lives_rect = self.screen.blit(lives_surf, (0, score_rect.bottom))
+            # self.screen.blit(lives_text, lives_rect)
 
-            shield_text, shield_surf = draw_text('Shield Remaining: '+str(playerShip.shield), WHITE)
-            shield_rect = self.screen.blit(shield_surf, (0, lives_rect.bottom))
-            self.screen.blit(shield_text, shield_rect)
+            # shield_text, shield_surf = draw_text('Shield Remaining: '+str(playerShip.shield), WHITE)
+            # shield_rect = self.screen.blit(shield_surf, (0, lives_rect.bottom))
+            # self.screen.blit(shield_text, shield_rect)
 
-            health_text, health_surf = draw_text('Armor Remaining: '+str(playerShip.health), WHITE)
-            health_rect = self.screen.blit(health_surf, (0, shield_rect.bottom))
-            self.screen.blit(health_text, health_rect)
+            # health_text, health_surf = draw_text('Armor Remaining: '+str(playerShip.health), WHITE)
+            # health_rect = self.screen.blit(health_surf, (0, shield_rect.bottom))
+            # self.screen.blit(health_text, health_rect)
 
             if DEBUG:
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
-                debug_rect = self.screen.blit(debug_surf, (0, health_rect.bottom))
+                debug_rect = self.screen.blit(debug_surf, (0, SCREEN_HEIGHT - 100))
                 self.screen.blit(debug_text, debug_rect)
             
+            armor_bar, armor_bar_rect = draw_vertical_bar(RED, 50, SCREEN_HEIGHT-400, (playerShip.health/playerShip.max_health), (COLUMN_WIDTH*4 + 10,200))
+            shield_bar, shield_bar_rect = draw_vertical_bar(BLUE, 50, SCREEN_HEIGHT-400, (playerShip.shield/playerShip.max_shield), (COLUMN_WIDTH*4 + 70,200))
+            lives_left, lives_left_rect = draw_player_lives(player_lives, (COLUMN_WIDTH*4 + 10, 10))
+            #gun_cooldown_bar = draw_vertical_bar(WHITE, 50, 300, (self.playerShip.health/self.playerShip.total_health), (COLUMN_WIDTH*4 + 130,100))
+
+            self.screen.blit(lives_left, lives_left_rect)
+            self.screen.blit(armor_bar, armor_bar_rect)
+            self.screen.blit(shield_bar, shield_bar_rect)
+
             player_bullet_sprites.draw(self.screen)
             enemy_bullet_sprites.draw(self.screen)
             items.draw(self.screen)
