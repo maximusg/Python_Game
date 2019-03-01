@@ -4,6 +4,7 @@ import random
 import pygame
 from pygame.locals import *
 from pygame.compat import geterror
+import pickle
 
 #CONSTANTS
 FRAMERATE = 60
