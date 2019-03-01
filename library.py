@@ -62,6 +62,27 @@ SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
+
+def saveGame(array, stateName="default"):
+    cwd = Path.cwd()
+    saveLocation = cwd.joinpath('levels', 'game_state')
+    with open (saveLocation.joinpath(stateName),"wb") as write_file:
+        pickle.dump(array,write_file,)
+
+
+def loadGame(stateName="default"):
+    cwd = Path.cwd()
+    saveLocation = cwd.joinpath('levels', 'game_state')
+    location = saveLocation.joinpath(stateName)
+    levelState=None
+    try:
+        with open (location,"rb") as read_file:
+            levelState= pickle.load(read_file)
+    except FileNotFoundError as Error:
+        raise ("ERROR: LoadGame failed " + Error)
+    
+    return levelState
+
 #FUNC DEFS
 def load_text(filename):
     '''Accepts a path to a filename. Returns the text contents of the file as a line-by-line list.'''
