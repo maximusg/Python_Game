@@ -151,7 +151,8 @@ def draw_vertical_bar(color, width, height, bar_percentage = 1, topleft_corner =
        bar_percentage will accept a float between 0 and 1 for the amount of the bar to fill it (0.6 will still
        draw a border around the entire bar, but only fill 60% with solid color). Returns the surface and its rect to blit.'''
     if not (0 <= bar_percentage <= 1):
-        raise RuntimeError('Invalid percentage for vertical bars.')
+        bar_percentage = 0
+        # raise RuntimeError('Invalid percentage for vertical bars.')
     surface = pygame.surface.Surface((width, height))
     surface.fill(GRAY)
     surface.fill(color, pygame.rect.Rect(1,1,width-2,height-2))
