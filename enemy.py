@@ -23,7 +23,7 @@ class enemy(entity2.entity2):
 		self.acceleration = acceleration
 		self.rect.x = origin[0]
 		self.rect.y = origin[1]
-		
+		# print("ENEMY ", behavior, origin, acceleration)
 
 		self.behaveDic = {
 			"diver":self.__diver__, 
@@ -31,7 +31,8 @@ class enemy(entity2.entity2):
 			"sleeper":self.__sleeper__,
 			"crazy":self.__crazy__,
 			"crazyReverse": self.__crazyReverse__,
-			"mrVectors": self.__mrVectors__
+			"mrVectors": self.__mrVectors__,
+			"diveBomb": self.__diveBomb__
 			}
 		
 		
@@ -87,6 +88,13 @@ class enemy(entity2.entity2):
 		moveCountArray = [10,21, 10, 30]
 		return movement.Move(behaviorArray=["vector"],moveCountArray=moveCountArray,vectorAray=vectorArray, exitscreen=False)
 	
+	##NEW##
+	def __diveBomb__(self):
+		dive=["x","x",0]
+		return movement.Move(behaviorArray=["vector"],moveCountArray=[100000],vectorAray=[dive])
+
+
+
 	def move(self, x, y):
 		if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
 			self.rect.left = self.area.left

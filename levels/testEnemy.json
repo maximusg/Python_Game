@@ -1,0 +1,27 @@
+{
+    "end": {
+        "boss": false,
+        "time": 10
+    },
+    "time": {
+        "0": {
+            "background": "starfield.png",
+            "enemy": {
+                "class": [
+                    "@s7-mv-0-1-0"
+                ],
+                "health": 1
+            },
+            "player": {
+                "health": 1,
+                "image": "SweetShip.png",
+                "location": [
+                    500,
+                    700
+                ],
+                "scheme": "arrows",
+                "weapon": "blue_lazer"
+            }
+        }
+    }
+}

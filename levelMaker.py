@@ -22,27 +22,47 @@ data = {
                 "scheme": "arrows",
                 },
             "enemy":{
-                "class": ["@s7-mv-0-1-0"],
+                "class": fullDiveCluster("basic"),
                 "health": 1
                 },
-            "background": BG_STARFIELD
+            "background": "starfield.png"
+            
+            },
+            3: #time zero
+            {"enemy":{
+                "class": fullDiveCluster("lvl1"),
+                "health": 1
+                }
+           
+            },
+            5: #time zero
+            {"enemy":{
+                "class": fullDiveCluster("lvl2"),
+                "health": 1
+                }
+            
+            },
+            7: #time zero
+            {"enemy":{
+                "class": fullDiveCluster("lvl3"),
+                "health": 1
+                }
+            
             },
     },
-    "end": {"time":150, "boss":False} #this gives the ending parameters
+    "end": {"time":33, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
 }
 
 # #RUSH generator
-# for i in range(36,50):
-#     s1 = str((i%4)+1)
-#     s2 = str((i%4)+2)
-#     s3 = str((i%6)+5)
-#     s4 = str((i%4)+9)
-#     s5 = str((i%4)+11)
-#     spd1 = str(random.randint(1,(i%10+1)))
-#     data["time"][i] = {"enemy":{"class":["@s"+s2+"-d-3-1", "@s"+s1+"-d-4-1", "@s6-c-"+spd1+"-1", "@s"+s2+"-d-4-1", "@s"+s1+"-d-3-1"],"health": 1},}
+# n=4
+# for i in range(9,30,2):
+#     if n<=17:
+#         lvl = "lvl"+str(n)
+#         n+=1
+#         data["time"][i] = {"enemy":{ "class": fullDiveCluster(lvl),"health":1}}
 
 # #RUSH generator
 # for i in range(51,60):
