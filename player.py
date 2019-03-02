@@ -98,7 +98,7 @@ class player(entity2.entity2):
                 if self.bomb_wait == False:
                     #self.bomb_timer = self.bomb_countdown
                     #self.bomb_wait = True
-                    print('bombs away')
+                    #print('bombs away')
                     #self.drop_bomb_flag = True
                     self.drop_bomb()
                     #addBullet = True

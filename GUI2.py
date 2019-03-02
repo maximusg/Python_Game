@@ -3,6 +3,7 @@ import weapon
 import player
 import enemy
 import explosion
+import bomb_explosion
 import levelLoader
 import pygame
 from pygame.locals import *
@@ -134,6 +135,7 @@ class GUI(object):
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
         player_bomb_sprites = pygame.sprite.LayeredDirty(_default_layer = 1) #not sure if bombs should be on the lowest layer
+        bomb_explosion_sprites = pygame.sprite.LayeredDirty(_default_layer = 4) # the bomb explosion should damage enemies on collision, so it is on the same layer as enemies
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
@@ -266,16 +268,23 @@ class GUI(object):
 
             if playerShip.drop_bomb_flag is True:
                 bomb = playerShip.drop_bomb()
+                #bomb.play_sound() #annoying... need to fix
                 playerShip.drop_bomb_flag = False
                 player_bomb_sprites.add(bomb)
                 playerShip.curr_bomb = bomb
-                #bomb.update()
 
-            if playerShip.curr_bomb is not None and playerShip.curr_bomb.bomb_explode[0] is True:
-                new_explosion = explosion.ExplosionSprite(playerShip.curr_bomb.bomb_explode[1],playerShip.curr_bomb.bomb_explode[2])
+            if playerShip.curr_bomb is not None and playerShip.curr_bomb.bomb_explode is True:
+                new_explosion = bomb_explosion.BombExplosion(playerShip.curr_bomb.centerx,playerShip.curr_bomb.centery)
                 new_explosion.play_sound()
+                #bomb_explosion_sprites.add(new_explosion)
                 explosions.add(new_explosion)
-                playerShip.curr_bomb.bomb_explode[0] = False
+                playerShip.curr_bomb.bomb_explode = False
+
+                #pygame.draw.circle(self.screen, (0,0,0), (200,2000), 5)
+
+
+
+
                 playerShip.curr_bomb = None
 
 
@@ -291,6 +300,7 @@ class GUI(object):
             enemy_bullet_sprites.update()
             items.update()
             explosions.update()
+            bomb_explosion_sprites.update()
         
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
@@ -358,6 +368,14 @@ class GUI(object):
                 if sprite.visible == 0:
                     explosions.remove(sprite)
 
+            for sprite in player_bomb_sprites:
+                if sprite.visible == 0:
+                    player_bomb_sprites.remove(sprite)
+
+            for sprite in bomb_explosion_sprites:
+                if sprite.visible == 0:
+                    bomb_explosion_sprites.remove(sprite)
+
             for sprite in items:
                 if sprite.visible == 0:
                     items.remove(sprite)
@@ -405,6 +423,7 @@ class GUI(object):
             player_sprites.draw(self.screen)
             enemy_sprites.draw(self.screen)
             explosions.draw(self.screen)
+            bomb_explosion_sprites.draw(self.screen)
 
             pygame.display.flip()
 
@@ -416,12 +435,6 @@ class GUI(object):
                 playerShip.regen()
                 regen_timer = 6
 
-            #the player needs to wait for the bomb timer before they can drop another bomb
-            # if bomb_timer == 0:
-            #     playerShip.bomb_wait = False
-            # elif bomb_timer > 0:
-            #     bomb_timer -= 1
-            #     print(bomb_timer)
             if playerShip.bomb_wait == True:
                 bomb_timer -= 1
                 if bomb_timer == 0:

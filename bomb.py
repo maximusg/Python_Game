@@ -1,7 +1,6 @@
 '''
 Purpose:
 
-Provides functionality for bombs. Bombs can be launched by the player by pressing a key other than the
 key reserved for firing the main weapon.
 
 A bomb will slowly move forward before exploding after a set time.
@@ -18,7 +17,10 @@ import entity2
 import pygame.mask
 import movement
 from library import *
+from pathlib import Path
 
+cwd = Path.cwd()
+bomb_sounds = cwd.joinpath('resources', 'sound_effects', 'bomb_sounds')
 
 class bomb(entity2.entity2):
     def __init__(self, origin_x, origin_y, speed, path_to_img, angle=0, behavior='up'):
@@ -33,6 +35,9 @@ class bomb(entity2.entity2):
         self.mask = pygame.mask.from_surface(self.image)
         self.angle = angle
 
+        self.sound = load_sound(str(bomb_sounds.joinpath('drop.wav ')))
+
+
         # self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
         self.rect.x = origin_x
         self.rect.y = origin_y
@@ -40,7 +45,9 @@ class bomb(entity2.entity2):
 
         #self.is_bomb = is_bomb
         self.bomb_timer = 100
-        self.bomb_explode = [False, self.rect.x, self.rect.y]
+        self.bomb_explode = False
+        self.centerx = self.rect.x
+        self.centery = self.rect.y
 
 
         self.behaveDic = {
@@ -60,6 +67,8 @@ class bomb(entity2.entity2):
     # def move(self):
     # 	self.rect = self.rect.move(self.angle,-self.speed)
     # 	self.dirty = 1
+    def play_sound(self):
+        self.sound.play()
 
     def move(self, x, y):
 
@@ -75,10 +84,10 @@ class bomb(entity2.entity2):
         if self.bomb_timer <= 0 and self.visible == 1:
             self.visible = 0
             #self.is_bomb = False
-            print('BOOM')
-            self.bomb_explode[0] = True
-            self.bomb_explode[1] = self.rect.x
-            self.bomb_explode[2] = self.rect.y
+            #print('BOOM')
+            self.bomb_explode = True
+            self.centerx= self.rect.x
+            self.centery = self.rect.y
         # self.image, self.rect = load_image('resources/misc_sprites/explosion1.png')
 
         self.movement.update(self)
