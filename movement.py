@@ -112,17 +112,17 @@ class Move(object):
         #  #check for X's ensure the correct values placed in all locations
         if changeAccel != "x":
             spriteObject.acceleration = changeAccel
-        if changeSpeed != "x" and changeAngel != "x":
-            spriteObject.speedX  = math.sin(math.radians(changeAngel))*changeSpeed # get speed if there is angle change
-            spriteObject.speedY =  math.cos(math.radians(changeAngel))*changeSpeed
         if changeAngel != "x": #when angle changes, that speed diff needs to be added to current speed
             spriteObject.angle = changeAngel
+        if changeSpeed != "x" and changeAngel != "x":
+            spriteObject.speedX  = math.sin(math.radians(spriteObject.angle))*changeSpeed # get speed if there is angle change
+            spriteObject.speedY =  math.cos(math.radians(spriteObject.angle))*changeSpeed
 
 
         
 
-        aX = math.sin(math.radians(changeAngel))*spriteObject.acceleration # get speed if there is angle change
-        aY = math.cos(math.radians(changeAngel))*spriteObject.acceleration
+        aX = math.sin(math.radians(spriteObject.angle))*spriteObject.acceleration # get speed if there is angle change
+        aY = math.cos(math.radians(spriteObject.angle))*spriteObject.acceleration
         
        
 
