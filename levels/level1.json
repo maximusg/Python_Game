@@ -1,6 +1,7 @@
+
 {
     "end": {
-        "boss": false,
+        "boss": true,
         "time": 33
     },
     "time": {
@@ -98,6 +99,15 @@
                 ],
                 "health": 1
             }
+        },
+        "11": {
+            "boss_sprite": {
+                "image": "boss.png",
+                "class": [
+                    "camperMid"
+                ]
+            }
         }
     }
+
 }

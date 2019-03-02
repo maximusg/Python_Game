@@ -102,13 +102,22 @@ class GUI(object):
         bg_filename = starting_events.get('background')
         if currPlayerShip:
             playerShip = currPlayerShip
-            playerShip.center = (SCREEN_WIDTH//2, SCREEN_HEIGHT-100)
+            playerShip.rect.center = (SCREEN_WIDTH//2, SCREEN_HEIGHT-100)
         else:
             playerShip = starting_events.get('player')
             if playerShip:
                 playerShip = playerShip[0]
         bad_guys = starting_events.get('enemy',[])
         bad_guy_bullets = starting_events.get('bullets',[])
+
+        ##Check for end of level conditions
+        if ending_events:
+            endtime = ending_events.get('time')
+            spawn_boss = ending_events.get('boss')
+            boss_spawned = False
+        else:
+            endtime = -1
+            spawn_boss = False
 
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
@@ -134,6 +143,7 @@ class GUI(object):
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
+        boss_sprites = pygame.sprite.LayeredDirty( _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
         explosions = pygame.sprite.LayeredUpdates(__default_layer = 5)
@@ -146,18 +156,10 @@ class GUI(object):
         regen_timer = 6
         ##Clock time setup
         while going:
-            ##Check for end of level conditions
-            if ending_events:
-                endtime = ending_events.get('time')
-                spawn_boss = ending_events.get('boss')
-                boss_spawned = False
-            else:
-                endtime = -1
-                spawn_boss = False
-
+            
             ##check if there is a boss spawned (to figure out when to end the level post boss death)
             if boss_spawned:
-                if len(enemy_sprites) == 0:
+                if len(boss_sprites) == 0:
                     going = False
 
             ##Beginning of the loop checking for death and lives remaining.
@@ -216,11 +218,13 @@ class GUI(object):
             sec_running = time_since_start // 1000 #need seconds since start
             events = self.loader.getEvents(sec_running)
             enemies_to_add = []
+            boss_to_add = []
             enemy_bullets_to_add = []
             items_to_add = []
             
             if events:
                 enemies_to_add = events.get('enemy', [])
+                boss_to_add = events.get('boss_sprite', [])
                 enemy_bullets_to_add = events.get('bullets', [])
                 items_to_add = events.get('items', [])
                 
@@ -240,15 +244,15 @@ class GUI(object):
             #             except KeyError:
             #                 items_to_add = []
 
-            if sec_running == endtime and spawn_boss:
-                ##spawn the boss
-                boss_spawned = True
             if sec_running >= endtime and not spawn_boss:
                 if len(enemy_sprites) == 0 and len(enemy_bullet_sprites) == 0:
                     going = False
                     
             if enemies_to_add:
                 enemy_sprites.add(enemies_to_add)
+            if boss_to_add:
+                boss_spawned = True
+                boss_sprites.add(boss_to_add)
             if enemy_bullets_to_add:
                 enemy_bullet_sprites.add(enemy_bullets_to_add)
             if items_to_add:
@@ -272,6 +276,12 @@ class GUI(object):
                 bullet = sprite.update()
                 if bullet:
                     enemy_bullet_sprites.add(bullet)
+            for sprite in boss_sprites:
+                damage, bullets = sprite.update()
+                if damage:
+                    explosions.add(damage)
+                if bullets:
+                    enemy_bullet_sprites.add(bullets)
             # enemy_sprites.update()
             enemy_bullet_sprites.update()
             items.update()
@@ -280,20 +290,21 @@ class GUI(object):
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, enemy_bullet_sprites)
-                if collision == None:
+                if collision:
+                    self.explode.play()
+                    playerShip.take_damage(5)
+                    enemy_bullet_sprites.remove(collision)
+                else:
                     collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
                     if collision:
                         self.explode.play()
                         playerShip.take_damage(1)
-                        if playerShip.health <= 0:
-                            sprite.visible = 0
-                else:
-                    self.explode.play()
-                    playerShip.take_damage(5)
-                    enemy_bullet_sprites.remove(collision)
-                    if playerShip.health <= 0:
-                        sprite.visible = 0
-                if sprite.visible == 0:
+                    else:
+                        collision = pygame.sprite.spritecollideany(sprite, boss_sprites)
+                        if collision:
+                            self.explode.play()
+                            playerShip.take_damage(1)
+                if playerShip.health <= 0:
                     player_sprites.remove(sprite)
                     
             for sprite in items:
@@ -331,6 +342,20 @@ class GUI(object):
                 if sprite.visible == 0:
                     enemy_sprites.remove(sprite)     
 
+            for sprite in boss_sprites:
+                collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
+                if collision:
+                    sprite.take_damage(1)
+                    collision.visible = 0
+                    player_bullet_sprites.remove(collision)
+                    if sprite.health <= 0:
+                        new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+                        new_explosion.play_sound() 
+                        explosions.add(new_explosion)                        
+                        player_score += sprite.point_value
+                if sprite.visible == 0:
+                    boss_sprites.remove(sprite)   
+
             for sprite in player_bullet_sprites:
                 if sprite.visible == 0:
                     player_bullet_sprites.remove(sprite)    
@@ -361,20 +386,8 @@ class GUI(object):
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
             text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
-            score_rect = self.screen.blit(score_surf, ORIGIN)
+            #score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
-
-            # lives_text, lives_surf = draw_text('Lives Remaining: '+str(player_lives), WHITE)
-            # lives_rect = self.screen.blit(lives_surf, (0, score_rect.bottom))
-            # self.screen.blit(lives_text, lives_rect)
-
-            # shield_text, shield_surf = draw_text('Shield Remaining: '+str(playerShip.shield), WHITE)
-            # shield_rect = self.screen.blit(shield_surf, (0, lives_rect.bottom))
-            # self.screen.blit(shield_text, shield_rect)
-
-            # health_text, health_surf = draw_text('Armor Remaining: '+str(playerShip.health), WHITE)
-            # health_rect = self.screen.blit(health_surf, (0, shield_rect.bottom))
-            # self.screen.blit(health_text, health_rect)
 
             if DEBUG:
                 debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
@@ -384,11 +397,17 @@ class GUI(object):
             armor_bar, armor_bar_rect = draw_vertical_bar(RED, 50, SCREEN_HEIGHT-400, (playerShip.health/playerShip.max_health), (COLUMN_WIDTH*4 + 10,200))
             shield_bar, shield_bar_rect = draw_vertical_bar(BLUE, 50, SCREEN_HEIGHT-400, (playerShip.shield/playerShip.max_shield), (COLUMN_WIDTH*4 + 70,200))
             lives_left, lives_left_rect = draw_player_lives(player_lives, (COLUMN_WIDTH*4 + 10, 10))
-            #gun_cooldown_bar = draw_vertical_bar(WHITE, 50, 300, (self.playerShip.health/self.playerShip.total_health), (COLUMN_WIDTH*4 + 130,100))
+
+            if boss_spawned and len(boss_sprites):
+                boss_sprite = boss_sprites.get_sprite(0)
+                boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprite.health/boss_sprite.max_health, boss_sprite.shield/boss_sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
 
             self.screen.blit(lives_left, lives_left_rect)
             self.screen.blit(armor_bar, armor_bar_rect)
             self.screen.blit(shield_bar, shield_bar_rect)
+            
+            if boss_spawned:
+                self.screen.blit(boss_bar, boss_bar_rect)
 
             player_bullet_sprites.draw(self.screen)
             enemy_bullet_sprites.draw(self.screen)
@@ -397,6 +416,7 @@ class GUI(object):
                 player_sprites_invul.draw(self.screen)
             player_sprites.draw(self.screen)
             enemy_sprites.draw(self.screen)
+            boss_sprites.draw(self.screen)
             explosions.draw(self.screen)
 
             pygame.display.flip()
@@ -510,7 +530,6 @@ class GUI(object):
         def blink(screen):
             for color in [BLACK, WHITE]:
                 pygame.draw.circle(box, color, (x//2, int(y*0.7)), 7, 0)
-                #self.screen.blit(box, (0, y//2))
                 self.screen.blit(box, box_rect)
                 pygame.display.flip()
                 pygame.time.wait(300)
@@ -521,7 +540,7 @@ class GUI(object):
             box.blit(txt_surf, txt_rect)
             self.screen.blit(box, box_rect)
             pygame.display.flip()
-        font = pygame.font.Font('OpenSans-Regular.ttf', 16)
+        font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', 16)
         x = 480
         y = 100
         # make box

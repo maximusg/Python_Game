@@ -6,6 +6,7 @@
 import weapon
 import player
 import enemy
+import boss
 import bullet
 from library import *
 from levelLibrary import *
@@ -95,7 +96,7 @@ class LevelLoader():
             events = self.level["time"][str(levelTime)]
         except:
             return False #GUI handles false with no behavior
-        timeEvents = {"player":[],"enemy":[],"bullets":[],"items":[]}
+        timeEvents = {"player":[],"enemy":[],"bullets":[],"items":[],"boss_sprite":[]}
         del self.level["time"][str(levelTime)] #removes this time entry from the dictionary
         
 
@@ -109,6 +110,9 @@ class LevelLoader():
                     for enemyType in events[each]["class"]:
                         enemy = self.enemyClass(enemyType, health)
                         timeEvents["enemy"].append(enemy)
+                if each == 'boss_sprite':
+                    boss = self.bossClass()
+                    timeEvents["boss_sprite"].append(boss)
                 if each == "enemyBullets":
                     for bulletType in events[each]["class"]:
                         bullet = self.bulletClass(bulletType)
@@ -197,6 +201,8 @@ class LevelLoader():
         
         return enemySprite
 
+    def bossClass(self):
+        return boss.BossSprite(ENEMY_SECTORS("s7"), 'boss.png')
 
         
     def playerClass(self,className):
