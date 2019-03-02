@@ -28,7 +28,8 @@ class bullet(entity2.entity2):
 			"northNorthEast":self.__northNorthEast__,
 			"northNorthWest":self.__northNorthWest__,
 			"missle":self.__missle__,
-			"down":self.__down__
+			"down":self.__down__,
+			"vector":self.__vector__
 
 
 			}
@@ -82,3 +83,7 @@ class bullet(entity2.entity2):
 
 	def __down__(self):
 		return movement.Move(behaviorArray=['down'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle])
+
+	def __vector__(self):
+		vector = ["x",self.speed,self.angle]
+		return movement.Move(behaviorArray=["vector"],moveCountArray=[1000],vectorAray=[vector])
