@@ -277,7 +277,7 @@ class GUI(object):
                 if bullet:
                     enemy_bullet_sprites.add(bullet)
             for sprite in boss_sprites:
-                damage, bullets = sprite.update()
+                damage, bullets = sprite.update(playerShip.rect.center)
                 if damage:
                     explosions.add(damage)
                 if bullets:
