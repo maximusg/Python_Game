@@ -22,33 +22,41 @@ data = {
                 "scheme": "arrows",
                 },
             "enemy":{
-                "class": fullDiveCluster("basic"),
+                "class": diveStrafeCluster("basic"),
                 "health": 1
                 },
             "background": "starfield.png"
             
-            },
-            3: #time zero
-            {"enemy":{
-                "class": fullDiveCluster("lvl1"),
-                "health": 1
-                }
+            }
+        #     3: #time zero
+        #     {"enemy":{
+        #         "class": fullDiveCluster("lvl1"),
+        #         "health": 1
+        #         }
            
-            },
-            5: #time zero
-            {"enemy":{
-                "class": fullDiveCluster("lvl2"),
-                "health": 1
-                }
+        #     },
+        #     5: #time zero
+        #     {"enemy":{
+        #         "class": diveStrafeCluster("lvl2"),
+        #         "health": 1
+        #         }
             
-            },
-            7: #time zero
-            {"enemy":{
-                "class": fullDiveCluster("lvl3"),
-                "health": 1
-                }
+        #     },
+        #     7: #time zero
+        #     {"enemy":{
+        #         "class": fullDiveCluster("lvl3"),
+        #         "health": 1
+        #         }
             
-            },
+        #     },
+        #     11: {
+        #     "boss_sprite": {
+        #         "image": "boss.png",
+        #         "class": [
+        #             "camperMid"
+        #         ]
+        #     }
+        # }
     },
     "end": {"time":33, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated

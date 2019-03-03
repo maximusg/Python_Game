@@ -1,5 +1,6 @@
 #IMPORT SECTION
 import os
+from pathlib import Path
 import random
 import pygame
 from pygame.locals import *

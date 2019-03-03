@@ -10,19 +10,21 @@ import item_pickup
 import random
 
 class enemy(entity2.entity2):
-	def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common):
-		super().__init__()
+	def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common, angle=0):
+		imgFile = 'enemy'+str(random.randint(1,3))+'.png'
+		area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
+
+		super().__init__(origin=origin, imageFile=imgFile, area=area, speed=speed, acceleration=acceleration, angle=angle, health=health)
 		self.weapon = weapon
 		self.point_value = 500
-		self.imgFile = 'enemy'+str(random.randint(1,3))+'.png'
-		self.image, self.rect = load_image(self.imgFile)
+		
+		# self.image, self.rect = load_image(self.imgFile)
 		#self.rect.centerx, self.rect.top = 300, 50
-		self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
-		self.speed = speed #this will be a scaler for movement type
-		self.health = health
-		self.acceleration = acceleration
-		self.rect.x = origin[0]
-		self.rect.y = origin[1]
+		
+		# self.rect.x = origin[0]
+		# self.rect.y = origin[1]
+		self.speed=speed
+		
 		# print("ENEMY ", behavior, origin, acceleration)
 
 		self.behaveDic = {
@@ -32,7 +34,8 @@ class enemy(entity2.entity2):
 			"crazy":self.__crazy__,
 			"crazyReverse": self.__crazyReverse__,
 			"mrVectors": self.__mrVectors__,
-			"diveBomb": self.__diveBomb__
+			"diveBomb": self.__diveBomb__,
+			"diveStrafe": self.__diveStrafe__
 			}
 		
 		
@@ -90,21 +93,20 @@ class enemy(entity2.entity2):
 	
 	##NEW##
 	def __diveBomb__(self):
-		dive=["x","x",0]
+		dive=["x","x","x"]
 		return movement.Move(behaviorArray=["vector"],moveCountArray=[100000],vectorAray=[dive])
+	
+	##NEW##
+	def __diveStrafe__(self):
+		
+		diveLeft=["x","x",45]
+		diveRight=["x","x",-45]
+
+		return movement.Move(behaviorArray=["vector"],moveCountArray=[25,25],vectorAray=[diveLeft,diveRight],exitscreen=False)
 
 
 
-	def move(self, x, y):
-		if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
-			self.rect.left = self.area.left
-			self.speed = -self.speed
-		elif self.rect.right > self.area.right:
-			self.rect.right = self.area.right
-			self.speed = -self.speed
-		else:
-			self.rect = self.rect.move((x, y))
-		self.dirty = 1
+	
 
 	def update(self):
 		# self=self.movement.update(self)
