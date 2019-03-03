@@ -59,7 +59,7 @@ class entity2(pygame.sprite.DirtySprite):
     
     @angle.setter
     def angle(self, value):#speed comes before angel so need to check if it exists like speed chesk for angle
-        if not isinstance(value, int):
+        if not isinstance(value, int) and not isinstance(value,float):
             raise RuntimeError(value + ' is not a valid int for angle.')
         value = value%360
         self.speedX = math.sin(math.radians(value))*self.speed
