@@ -18,15 +18,6 @@ class enemy(entity2.entity2):
 		super().__init__(origin=origin, imageFile=imgFile, area=area, speed=speed, acceleration=acceleration, angle=angle, health=health)
 		self.weapon = weapon
 		self.point_value = 500
-		
-		# self.image, self.rect = load_image(self.imgFile)
-		#self.rect.centerx, self.rect.top = 300, 50
-		
-		# self.rect.x = origin[0]
-		# self.rect.y = origin[1]
-		self.speed=speed
-		
-		# print("ENEMY ", behavior, origin, acceleration)
 
 		self.behaveDic = {
 			"diver":self.__diver__, 
@@ -98,7 +89,7 @@ class enemy(entity2.entity2):
 		vectorArray = [down,stop,left,right]
 		return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
-	def __mrVectors__(self): #implements vector movements
+	def __mrVectors__(self): #EXAMPLE for vector movements
 		#vector = [acceleration, speed, angle] if there is an "x" 
 		# you will use the entities default, which if not set is 0.
 
@@ -129,10 +120,6 @@ class enemy(entity2.entity2):
 
 		return movement.Move(moveCountArray=[25,25],vectorAray=[diveLeft,diveRight],repeat=10)
 
-
-
-	
-
 	def update(self):
 		# self=self.movement.update(self)
 		bullet_to_add = []
@@ -158,8 +145,7 @@ class enemy(entity2.entity2):
 			items.append(item[0])
 			probability.append(total_probability + float(item[1]))
 			total_probability += float(item[1])
-			#if total_probability > 1:
-			#	raise RunTimeError('probabilities cannot add up to more than 1')
+			
 
 		intervals = []
 		curr_prob = 0
