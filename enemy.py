@@ -12,7 +12,19 @@ import random
 class enemy(entity2.entity2):
 	def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common, angle=0):
 		
-		imgFile = 'enemy'+str(random.randint(1,3))+'.png'
+
+		imgs = {
+			"diver":1,
+			"camper":2, 
+			"sleeper":3,
+			"crazy":3,
+			"crazyReverse": 3,
+			"mrVectors": 3,
+			"diveBomb": 1,
+			"diveStrafe": 1
+			}
+
+		imgFile = 'enemy'+str(imgs[behavior])+'.png'
 		area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
 		super().__init__(origin=origin, imageFile=imgFile, area=area, speed=speed, acceleration=acceleration, angle=angle, health=health)
@@ -94,18 +106,18 @@ class enemy(entity2.entity2):
 		# you will use the entities default, which if not set is 0.
 
 		#couple of examples
-		down = [1,"x",0]#accelerate down 1 frame more each time
-		up = [1,"x",180]
-		northEast =[.4,"x", 46] #note you can use fractions for acceleration
-		turn_right = [0,3,90] # speed must be combined wtih an angle or it wont change anything
-		turn_left = [1,"x",180]
+		down = [3,0,0]#accelerate down 1 frame more each time
+		up = [0,3,180]
+		northEast =["x","x", 46] #note you can use fractions for acceleration
+		turn_right = ["x","x",90] # speed must be combined wtih an angle or it wont change anything
+		turn_left = ["x","x",-90]
 		stop =		[0,0,0]
 
 		#fill the vector array to execute each moveCount
-		vectorArray = [ down, up,turn_right, stop]
+		vectorArray = [ down, up,turn_right, turn_left, stop]
 		#still uses frame count
-		moveCountArray = [10,21, 10, 30]
-		return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=10)
+		moveCountArray = [50,5, 15, 15, 30]
+		return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=3)
 	
 	##NEW##
 	def __diveBomb__(self):

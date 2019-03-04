@@ -108,10 +108,10 @@ class entity2(pygame.sprite.DirtySprite):
         self.__acceleration = value
 
     def updateSpeed(self):
-        self.speedX += math.sin(math.radians(self.angle))*self.acceleration # get speed if there is angle change
+        self.speedX += math.sin(math.radians(self.angle))*self.acceleration 
         self.speedY += math.cos(math.radians(self.angle))*self.acceleration
     
-    def move(self, x, y):
+    def move(self, x, y):#keeps object from going past the  sides
         if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
             self.rect.left = self.area.left
             self.speedX = -self.speedX
