@@ -21,6 +21,7 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 
 from pathlib import Path
 import bullet
+import bomb
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
@@ -68,15 +69,17 @@ def missle(origin_x, origin_y):
     bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('blue_lazer.gif'), behavior="missle")
     return bullet1
 
-master_weapons_dict = {
-    'spitfire': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
-    'spitfire2': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire2),
-    'spitfire3': (10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire3),
-    'blue_lazer': (10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
-    'master_lazer': (10, 60, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
-    'missle': (10, 5, weapon_images_path.joinpath('blue_lazer.gif'), missle)
+def bombs(origin_x, origin_y):
+    bomb1 = bomb.bomb(origin_x, origin_y, 5, weapon_images_path.joinpath('bomb.png'), behavior='bomb')
+    return bomb1
 
-}
+master_weapons_dict = dict(spitfire=(10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
+                           spitfire2=(10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire2),
+                           spitfire3=(10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire3),
+                           blue_lazer=(10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
+                           master_lazer=(10, 60, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
+                           missle=(10, 5, weapon_images_path.joinpath('blue_lazer.gif'), missle),
+                           bomb=(10, 5, weapon_images_path.joinpath('bomb.png'), bombs))
 
 
 class Weapon(object):

@@ -7,6 +7,7 @@ import weapon
 import player
 import enemy
 import explosion
+import bomb_explosion
 import item_pickup
 import levelLoader
 import highscore
@@ -142,6 +143,8 @@ class GUI(object):
         player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
+        player_bomb_sprites = pygame.sprite.LayeredDirty(_default_layer = 1) #not sure if bombs should be on the lowest layer
+        bomb_explosion_sprites = pygame.sprite.LayeredUpdates(__default_layer = 4) # the bomb explosion should damage enemies on collision, so it is on the same layer as enemies
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
         boss_sprites = pygame.sprite.LayeredDirty( _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
@@ -154,6 +157,7 @@ class GUI(object):
         next_level = True
         invul_timer = 120 ##frames of invulnerability post-death
         regen_timer = 6
+        bomb_timer = 120
         ##Clock time setup
         while going:
             
@@ -167,7 +171,7 @@ class GUI(object):
                 player_lives -= 1
                 if player_lives:
                     self.death_loop()
-                    playerShip = player.player('spitfire','SweetShip.png',"arrows")
+                    playerShip = player.player('spitfire','SweetShip.png',"arrows") #TODO: replace this with data from levelLoader
                     playerShip.invul_flag = True
                     player_sprites_invul.add(playerShip)
                 else:
@@ -266,12 +270,30 @@ class GUI(object):
                 bullet = playerShip.fire()
                 player_bullet_sprites.add(bullet)
 
+            if playerShip.drop_bomb_flag is True:
+                bomb = playerShip.drop_bomb()
+                #bomb.play_sound() #annoying... need to fix
+                playerShip.drop_bomb_flag = False
+                player_bomb_sprites.add(bomb)
+                playerShip.curr_bomb = bomb
+
+            if playerShip.curr_bomb is not None and playerShip.curr_bomb.bomb_explode is True:
+                new_explosion = bomb_explosion.BombExplosion(playerShip.curr_bomb.centerx,playerShip.curr_bomb.centery)
+                new_explosion.play_sound()
+                bomb_explosion_sprites.add(new_explosion)
+                #explosions.add(new_explosion)
+                playerShip.curr_bomb.bomb_explode = False
+
+                playerShip.curr_bomb = None
+
+
             ##Helper to call update() on each sprite in the group.    
             # player_sprites.update()
             player_damage = playerShip.update()
             if player_damage:
                 explosions.add(player_damage)
             player_bullet_sprites.update()
+            player_bomb_sprites.update()
             for sprite in enemy_sprites:
                 bullet = sprite.update()
                 if bullet:
@@ -286,6 +308,7 @@ class GUI(object):
             enemy_bullet_sprites.update()
             items.update()
             explosions.update()
+            bomb_explosion_sprites.update()
         
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
@@ -368,6 +391,14 @@ class GUI(object):
                 if sprite.visible == 0:
                     explosions.remove(sprite)
 
+            for sprite in player_bomb_sprites:
+                if sprite.visible == 0:
+                    player_bomb_sprites.remove(sprite)
+
+            for sprite in bomb_explosion_sprites:
+                if sprite.visible == 0:
+                    bomb_explosion_sprites.remove(sprite)
+
             for sprite in items:
                 if sprite.visible == 0:
                     items.remove(sprite)
@@ -410,6 +441,7 @@ class GUI(object):
                 self.screen.blit(boss_bar, boss_bar_rect)
 
             player_bullet_sprites.draw(self.screen)
+            player_bomb_sprites.draw(self.screen)
             enemy_bullet_sprites.draw(self.screen)
             items.draw(self.screen)
             if playerShip.invul_flag and invul_timer//6 % 2 == 0: ##allows visual feedback that the player is invulnerable
@@ -418,6 +450,7 @@ class GUI(object):
             enemy_sprites.draw(self.screen)
             boss_sprites.draw(self.screen)
             explosions.draw(self.screen)
+            bomb_explosion_sprites.draw(self.screen)
 
             pygame.display.flip()
 
@@ -428,7 +461,12 @@ class GUI(object):
             if regen_timer == 0:
                 playerShip.regen()
                 regen_timer = 6
-            
+
+            if playerShip.bomb_wait == True:
+                bomb_timer -= 1
+                if bomb_timer == 0:
+                    playerShip.bomb_wait = False
+                    bomb_timer = 120
         if next_level:
             self.level_complete()
         return player_lives, player_score, next_level, playerShip

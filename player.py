@@ -9,9 +9,15 @@ import random
 
 
 class player(entity2.entity2):
-    def __init__(self, init_wep, imgFile, scheme):
+    def __init__(self, init_wep, imgFile, scheme, init_bomb = 'bomb'):
         super().__init__()
         self.weapon = weapon.Weapon(init_wep)
+
+        self.bomb = weapon.Weapon(init_bomb)
+        self.bomb_wait = False
+        self.drop_bomb_flag = False
+        self.curr_bomb = None
+
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
         self.max_health = 40
@@ -61,6 +67,15 @@ class player(entity2.entity2):
 
         return self.weapon.weapon_func(origin_x, origin_y)
         #return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
+
+    def drop_bomb(self):
+        origin_x = (self.rect.left + self.rect.right) / 2
+        origin_y = self.rect.top
+        self.drop_bomb_flag = True
+        self.bomb_wait = True
+        #self.curr_bomb = True
+
+        return self.bomb.weapon_func(origin_x, origin_y)
     
     def control(self, keys, FRAMERATE):
         addBullet=False
@@ -80,6 +95,17 @@ class player(entity2.entity2):
                 self.bullet_count += 1
             else:
                 self.bullet_count = 0
+
+            ##this if/else statement must stay together
+            if keys[pygame.K_b]:
+                if self.bomb_wait == False:
+                    #self.bomb_timer = self.bomb_countdown
+                    #self.bomb_wait = True
+                    #print('bombs away')
+                    #self.drop_bomb_flag = True
+                    self.drop_bomb()
+                    #addBullet = True
+
             ##end if/else    
             if DEBUG:        
                 if keys[pygame.K_1]:
