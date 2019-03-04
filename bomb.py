@@ -35,7 +35,7 @@ class bomb(entity2.entity2):
         self.mask = pygame.mask.from_surface(self.image)
         self.angle = angle
 
-        self.sound = load_sound(str(bomb_sounds.joinpath('drop.wav ')))
+        self.sound = load_sound(str(bomb_sounds.joinpath('bomb_drop.ogg')))
 
 
         # self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)

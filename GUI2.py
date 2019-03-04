@@ -272,7 +272,7 @@ class GUI(object):
 
             if playerShip.drop_bomb_flag is True:
                 bomb = playerShip.drop_bomb()
-                #bomb.play_sound() #annoying... need to fix
+                bomb.play_sound()
                 playerShip.drop_bomb_flag = False
                 player_bomb_sprites.add(bomb)
                 playerShip.curr_bomb = bomb
