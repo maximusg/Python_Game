@@ -86,7 +86,7 @@ class entity2(pygame.sprite.DirtySprite):
     
     @speed.setter
     def speed(self, value):
-        if not isinstance(value, int):
+        if not isinstance(value, int) and not isinstance(value,float):
             raise RuntimeError(value + ' is not a valid int for speed.')
         try :
             self.angle #checks for the first case when angle is being contructed

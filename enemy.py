@@ -11,6 +11,7 @@ import random
 
 class enemy(entity2.entity2):
 	def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common, angle=0):
+		
 		imgFile = 'enemy'+str(random.randint(1,3))+'.png'
 		area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
@@ -45,33 +46,57 @@ class enemy(entity2.entity2):
 		self.itemDropTable = itemDropTable
 
 	def __diver__(self):
-		return movement.Move(speedArray=[1*self.speed]) #default behavior for object, could increase/decrease speed
+		dive=["x",3,"x"]
+		return movement.Move(moveCountArray=[100000],vectorAray=[dive])
 	
 	def __camper__(self):#stays on the screen camping, will progress down the screen slowly doing squares
-		behaviorArray = ["down","stop","left","stop","up","stop","right"]
+		
 		moveCountArray = [80,	20,	40,		20,  50,	20,	40]
-		speedArray = [	  1*self.speed,	1*self.speed]
-		return movement.Move(behaviorArray,moveCountArray,speedArray,exitscreen=False)
+		down =["x","x",0]#comes down at spawn speed
+		stop = [0,0,0]
+		left = [0,3,-90]
+		right = ["x","x",90]
+		up = ["x","x",180]
+
+		moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
+		vectorArray = [down, stop, left, stop, up, stop, right]
+		
+		return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
 	def __crazy__(self):
-		behaviorArray = ["down","left","right","down","up","down"]
-		angleArray =    [0,		-90,	90,		0,		180, 0]
-		moveCountArray = [20,	20,	20,	20,   20,	20]
-	
-		speedArray = [	  1*self.speed,	2*self.speed, 1*self.speed,	3*self.speed,1*self.speed,	2*self.speed]
-		return movement.Move(behaviorArray,moveCountArray,speedArray,angleArray,exitscreen=False)
+		
+		down =["x","x",0]#comes down at spawn speed
+		stop = [0,0,0]
+		left = [0,3,-90]
+		right = ["x","x",90]
+		up = ["x","x",180]
+
+		moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
+		vectorArray = [down, left, right, down, up, stop, down]
+		
+		return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
 	def __crazyReverse__(self):
-		behaviorArray = ["down","stop","up","down","right","left","down"]
+		down =["x","x",0]#comes down at spawn speed
+		stop = [0,0,0]
+		left = [0,3,-90]
+		right = ["x","x",90]
+		up = ["x","x",180]
+
 		moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
-		speedArray = [	  1*self.speed,	2*self.speed, 1*self.speed,	3*self.speed,1*self.speed,	2*self.speed]
-		return movement.Move(behaviorArray,moveCountArray,speedArray,exitscreen=False)
+		vectorArray = [down, stop, up, down, right, left, down]
+		
+		return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
 	def __sleeper__(self):# moves down and stops for a LLLONG time =, the wiggles left and right FAST, the stops again, the dives down
 		behaviorArray = ["down","stop","left","right"]
+		down =["x","x",0]#comes down at spawn speed
+		stop = [0,0,0]
+		left = [0,3,-90]
+		right = ["x","x",90]
 		moveCountArray = [80,	100,	40,		40]
-		speedArray = [	  1*self.speed,	1*self.speed]
-		return movement.Move(behaviorArray,moveCountArray,speedArray)
+		vectorArray = [down,stop,left,right]
+		return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
 	def __mrVectors__(self): #implements vector movements
 		#vector = [acceleration, speed, angle] if there is an "x" 
@@ -89,20 +114,20 @@ class enemy(entity2.entity2):
 		vectorArray = [ down, up,turn_right, stop]
 		#still uses frame count
 		moveCountArray = [10,21, 10, 30]
-		return movement.Move(behaviorArray=["vector"],moveCountArray=moveCountArray,vectorAray=vectorArray, exitscreen=False)
+		return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=10)
 	
 	##NEW##
 	def __diveBomb__(self):
 		dive=["x","x","x"]
-		return movement.Move(behaviorArray=["vector"],moveCountArray=[100000],vectorAray=[dive])
+		return movement.Move(moveCountArray=[100000],vectorAray=[dive])
 	
 	##NEW##
 	def __diveStrafe__(self):
-		
+	
 		diveLeft=["x","x",45]
 		diveRight=["x","x",-45]
 
-		return movement.Move(behaviorArray=["vector"],moveCountArray=[25,25],vectorAray=[diveLeft,diveRight],exitscreen=False)
+		return movement.Move(moveCountArray=[25,25],vectorAray=[diveLeft,diveRight],repeat=10)
 
 
 
@@ -112,6 +137,7 @@ class enemy(entity2.entity2):
 		# self=self.movement.update(self)
 		bullet_to_add = []
 		self.movement.update(self)
+		
 		if not (COLUMN_WIDTH <= self.rect.right and self.rect.left <= SCREEN_WIDTH-COLUMN_WIDTH):
 			self.visible = 0
 		if not (0 <= self.rect.centery <= SCREEN_HEIGHT):
@@ -154,3 +180,5 @@ class enemy(entity2.entity2):
 		self.health -= value
 		if self.health <= 0:
 			self.visible = 0
+
+

@@ -22,7 +22,7 @@ data = {
                 "scheme": "arrows",
                 },
             "enemy":{
-                "class": diveStrafeCluster("basic"),
+                "class": cluster("L4","ds",3,2),
                 "health": 1
                 },
             "background": "starfield.png"
@@ -64,13 +64,46 @@ data = {
 
 }
 
-# #RUSH generator
-# n=4
-# for i in range(9,30,2):
-#     if n<=17:
-#         lvl = "lvl"+str(n)
-#         n+=1
-#         data["time"][i] = {"enemy":{ "class": fullDiveCluster(lvl),"health":1}}
+clusterDIC_FULL ={
+    0:"full",
+    1:"L3",
+    2:"L4",
+    3:"L5",
+    4:"R3",
+    5:"R4",
+    6:"R5",
+    7:"M3",
+    8:"M4",
+    9:"M5",
+    10:"ML3",
+    11:"ML4",
+    12:"ML5",
+    13:"MR3",
+    14:"MR4",
+    15:"MR5"
+
+}
+
+#RUSH Left side
+ClusterDIC_Left ={
+    0:"L3",
+    1:"L4",
+    2:"L5",
+    3:"ML3",
+    4:"ML4",
+    5:"ML5"
+}
+ClusterDIC_Right ={
+    0:"R3",
+    1:"R4",
+    2:"R5",
+    3:"MR3",
+    4:"MR4",
+    5:"MR5"
+}
+for i in range(4,17,3):
+    j=i%6
+    data["time"][i] = {"enemy":{ "class": cluster(ClusterDIC_Left[j])+cluster(ClusterDIC_Right[j]),"health":1}}
 
 # #RUSH generator
 # for i in range(51,60):

@@ -3,6 +3,12 @@ import pygame.mask
 import movement
 from library import *
 
+#CONSTANTS for vector methods, need to find a good home for these
+DEFAULT =["x","x","x"] #whatever the settings for sprite are, continue
+UP = ["x","x",180]
+DOWN = ["x","x",0]
+LEFT = ["x","x",-90]
+RIGHT = ["x","x",90]
 
 class bullet(entity2.entity2):
 	def __init__(self, origin_x, origin_y, speed, path_to_img, angle = 0, behavior = 'up'):
@@ -17,6 +23,13 @@ class bullet(entity2.entity2):
 		self.mask = pygame.mask.from_surface(self.image)
 		self.angle = angle
 
+		#None-Constants for bullet methods, this seems like where they should be, since they need to change the speed
+		#in order to reuse in other methods.
+		self.NE = ["x", self.speed*0.5 ,(180+30)]
+		self.NNE = ["x", self.speed*0.5 ,(180+15)]
+		self.NW = ["x", self.speed*0.5 ,(180-30)]
+		self.NNW = ["x", self.speed*0.5 ,(180-15)]
+
 		# self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 		self.rect.x = origin_x
 		self.rect.y = origin_y
@@ -27,7 +40,7 @@ class bullet(entity2.entity2):
 			"northEast":self.__northEast__,
 			"northNorthEast":self.__northNorthEast__,
 			"northNorthWest":self.__northNorthWest__,
-			"missle":self.__missle__,
+			"missle":self.__missleLeft__,
 			"down":self.__down__,
 			"vector":self.__vector__
 
@@ -56,33 +69,33 @@ class bullet(entity2.entity2):
 		# if not (0 <= self.rect.top <= SCREEN_HEIGHT):
 		# 	self.visible = 0
 
+	
 	def __up__(self):
 		# behaviorArray = ["down","stop","left","stop","up","stop","right"]
 		# speedArray = [	  1*self.speed,	1*self.speed]
-		return movement.Move(behaviorArray=['up'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
+		return movement.Move(moveCountArray=[800], vectorAray=[UP] ) 
 
 	def __northEast__(self):
-		return movement.Move(behaviorArray=['northEast'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
+		return movement.Move(moveCountArray=[800], vectorAray=[self.NE]) 
 
 	def __northNorthEast__(self):
-		return movement.Move(behaviorArray=['northNorthEast'], moveCountArray=[800], speedArray=[self.speed*0.5], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
+		return movement.Move(moveCountArray=[800], vectorAray=[self.NNE])  
 
 	def __northWest__(self):
-		return movement.Move(behaviorArray=['northWest'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
+		return movement.Move(moveCountArray=[800], vectorAray=[self.NW]) 
 
 	def __northNorthWest__(self):
-		return movement.Move(behaviorArray=['northNorthWest'], moveCountArray=[800], speedArray=[self.speed*0.5],angelArray=[self.angle]) #default behavior for object, could increase/decrease speed
+		return movement.Move(moveCountArray=[800], vectorAray=[self.NNW]) 
 
-	def __missle__(self):
+	def __missleLeft__(self):
 
-		behaviorArray = ["up","northWest","left","right","up","northEast","right"]
-		moveCountArray = [50,   20,	20,		20,  50,	20,	20]
-		angleArray = [0,   45,	-90,		90,  0,	-45,	90]
-		speedArray = [1*self.speed]
-		return movement.Move(behaviorArray,moveCountArray,speedArray,angleArray,exitscreen=False)
+		accelerateUp = [2,"x",180] #sets acceleration to 2
+		moveCountArray = [5,1,800]
+		
+		return movement.Move(moveCountArray=moveCountArray, vectorAray=[self.NW,accelerateUp,DEFAULT]) #uses "DEFAULT"to keep the missle moving
 
 	def __down__(self):
-		return movement.Move(behaviorArray=['down'], moveCountArray=[800], speedArray=[self.speed], angelArray=[self.angle])
+		return movement.Move(moveCountArray=[800], vectorAray=[DOWN] ) 
 
 	def __vector__(self):
 		vector = ["x",self.speed,self.angle]
