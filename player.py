@@ -14,6 +14,7 @@ class player(entity2.entity2):
         self.weapon = weapon.Weapon(init_wep)
 
         self.bomb = weapon.Weapon(init_bomb)
+        self.bombs_remaining = 3
         self.bomb_wait = False
         self.drop_bomb_flag = False
         self.curr_bomb = None
@@ -98,14 +99,9 @@ class player(entity2.entity2):
 
             ##this if/else statement must stay together
             if keys[pygame.K_b]:
-                if self.bomb_wait == False:
-                    #self.bomb_timer = self.bomb_countdown
-                    #self.bomb_wait = True
-                    #print('bombs away')
-                    #self.drop_bomb_flag = True
+                if self.bomb_wait == False and self.bombs_remaining > 0:
                     self.drop_bomb()
-                    #addBullet = True
-
+                    self.bombs_remaining -= 1
             ##end if/else    
             if DEBUG:        
                 if keys[pygame.K_1]:

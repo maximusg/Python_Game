@@ -272,7 +272,7 @@ class GUI(object):
 
             if playerShip.drop_bomb_flag is True:
                 bomb = playerShip.drop_bomb()
-                #bomb.play_sound() #annoying... need to fix
+                bomb.play_sound()
                 playerShip.drop_bomb_flag = False
                 player_bomb_sprites.add(bomb)
                 playerShip.curr_bomb = bomb
@@ -363,7 +363,26 @@ class GUI(object):
                         if item_drop is not None:
                             items.add(item_drop)
                 if sprite.visible == 0:
-                    enemy_sprites.remove(sprite)     
+                    enemy_sprites.remove(sprite)
+
+            for sprite in enemy_sprites:
+                collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
+                if collision:
+                    #print('bomb explosion collision')
+                    sprite.take_damage(3) #probably want to take a lot more damage from a bomb
+                    #collision.visible = 0
+                    #player_bullet_sprites.remove(collision)
+                    if sprite.health <= 0:
+                        new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+                        new_explosion.play_sound()
+                        explosions.add(new_explosion)
+                        player_score += sprite.point_value
+                        item_drop = sprite.getDrop()
+                        if item_drop is not None:
+                            items.add(item_drop)
+                if sprite.visible == 0:
+                    enemy_sprites.remove(sprite)
+
 
             for sprite in boss_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
@@ -428,12 +447,14 @@ class GUI(object):
             armor_bar, armor_bar_rect = draw_vertical_bar(RED, 50, SCREEN_HEIGHT-400, (playerShip.health/playerShip.max_health), (COLUMN_WIDTH*4 + 10,200))
             shield_bar, shield_bar_rect = draw_vertical_bar(BLUE, 50, SCREEN_HEIGHT-400, (playerShip.shield/playerShip.max_shield), (COLUMN_WIDTH*4 + 70,200))
             lives_left, lives_left_rect = draw_player_lives(player_lives, (COLUMN_WIDTH*4 + 10, 10))
+            bombs_left, bombs_left_rect = draw_bombs_remaining(playerShip.bombs_remaining, (COLUMN_WIDTH*4 + 40, 100))
 
             if boss_spawned and len(boss_sprites):
                 boss_sprite = boss_sprites.get_sprite(0)
                 boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprite.health/boss_sprite.max_health, boss_sprite.shield/boss_sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
 
             self.screen.blit(lives_left, lives_left_rect)
+            self.screen.blit(bombs_left, bombs_left_rect)
             self.screen.blit(armor_bar, armor_bar_rect)
             self.screen.blit(shield_bar, shield_bar_rect)
             
