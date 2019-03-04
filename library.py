@@ -188,15 +188,14 @@ def draw_player_lives(player_lives, topleft_corner = (0,0)):
     surface_rect.topleft = topleft_corner
     return surface, surface_rect
 
-# def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
-#     ship_sprite, ship_rect = load_image('bomb.png')
-#     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
-#     surface.fill(BLACK)
-#     surface.blit(ship_sprite, (0,0))
-#     text, text_surf = draw_text('x {}'.format(bombs_remaining), WHITE)
-#     text_rect = text_surf.get_rect()
-#     text_rect.left, text_rect.centery = ship_rect.right, ship_rect.centery
-#     surface = surface.blit(text, text_rect)
-#     surface_rect = surface.get_rect()
-#     surface_rect.topleft = topleft_corner
-#     return surface, surface_rect
+def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
+    bomb_sprite, bomb_rect = load_image('resources/weapon_images/bomb.png')
+    surface = pygame.surface.Surface((bomb_rect.right * 6, bomb_rect.bottom))
+    surface.fill(BLACK)
+    surface.blit(bomb_sprite, (0,0))
+    text, text_surf = draw_text('x {}'.format(bombs_remaining), WHITE)
+    text_rect = text_surf.get_rect()
+    text_rect.left, text_rect.centery = bomb_rect.right+30, bomb_rect.centery
+    surface_rect = surface.blit(text, text_rect)
+    surface_rect.topleft = topleft_corner
+    return surface, surface_rect
