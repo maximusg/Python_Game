@@ -1,9 +1,11 @@
 #IMPORT SECTION
 import os
+from pathlib import Path
 import random
 import pygame
 from pygame.locals import *
 from pygame.compat import geterror
+import pickle
 
 #CONSTANTS
 FRAMERATE = 60
@@ -29,18 +31,21 @@ WHITE = (255,255,255)
 RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
+GRAY = (25,25,25)
 ORIGIN = (0,0)
 SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
-#MATH for sectors MOVED to levelLibrary.py
+# # MATH for sectors MOVED to levelLibrary.py
 # DEFAULT_ENEMY_WIDTH = 80 #pixels
 # DEFAULT_ENEMY_HEIGHT = 100
 # SCREEN_SPACE_WIDTH = COLUMN_WIDTH*3
 # ENEMY_SECTORS_AVAIL = SCREEN_SPACE_WIDTH//DEFAULT_ENEMY_WIDTH
 # ENEMY_BUFFER = (SCREEN_SPACE_WIDTH%DEFAULT_ENEMY_WIDTH)//2
 # ENEMY_SECTORS={}
+
+# print (COLUMN_WIDTH)
 # for i in range(1,ENEMY_SECTORS_AVAIL+1):
-#     print("SECTOR ",i,":",COLUMN_WIDTH + ENEMY_BUFFER + (DEFAULT_ENEMY_WIDTH*i))
+#     print("SECTOR ",i,":",COLUMN_WIDTH + ENEMY_BUFFER + (DEFAULT_ENEMY_WIDTH*(i-1)))
 
 # #enemy top screen sectors
 # ENEMY_SECTORS={ "s1": [480,0], 
@@ -60,6 +65,27 @@ SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 #             }
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
+
+
+def saveGame(array, stateName="default"):
+    cwd = Path.cwd()
+    saveLocation = cwd.joinpath('levels', 'game_state')
+    with open (saveLocation.joinpath(stateName),"wb") as write_file:
+        pickle.dump(array,write_file,)
+
+
+def loadGame(stateName="default"):
+    cwd = Path.cwd()
+    saveLocation = cwd.joinpath('levels', 'game_state')
+    location = saveLocation.joinpath(stateName)
+    levelState=None
+    try:
+        with open (location,"rb") as read_file:
+            levelState= pickle.load(read_file)
+    except FileNotFoundError as Error:
+        raise ("ERROR: LoadGame failed " + Error)
+    
+    return levelState
 
 #FUNC DEFS
 def load_text(filename):
@@ -121,3 +147,56 @@ def draw_text(to_print, text_color, bg_color=None):
         text_surf.fill(bg_color)
     return text, text_surf
 
+def draw_vertical_bar(color, width, height, bar_percentage = 1, topleft_corner = (0,0)):
+    '''Draws a vertical rectangle with (width,height) dimensions and the topleft corner at topleft_corner.
+       bar_percentage will accept a float between 0 and 1 for the amount of the bar to fill it (0.6 will still
+       draw a border around the entire bar, but only fill 60% with solid color). Returns the surface and its rect to blit.'''
+    if not (0 <= bar_percentage <= 1):
+        bar_percentage = 0
+        # raise RuntimeError('Invalid percentage for vertical bars.')
+    surface = pygame.surface.Surface((width, height))
+    surface.fill(GRAY)
+    surface.fill(color, pygame.rect.Rect(1,1,width-2,height-2))
+    surface.fill(BLACK, pygame.rect.Rect(1,1,width-2,(1-bar_percentage) * height-2))
+    rect = surface.get_rect()
+    rect.topleft = topleft_corner
+    return surface, rect
+
+def draw_boss_bar(width, height, health_percent, shield_percent, topleft_corner = (0,0)):
+    '''Draws a vertical rectangle with (width,height) dimensions and the topleft corner at topleft_corner.
+       bar_percentage will accept a float between 0 and 1 for the amount of the bar to fill it (0.6 will still
+       draw a border around the entire bar, but only fill 60% with solid color). Returns the surface and its rect to blit.'''
+    if not ((0 <= health_percent <= 1) or (0 <= shield_percent <= 1)):
+        raise RuntimeError('Invalid percentage for boss bars.')
+    surface = pygame.surface.Surface((width, height))
+    surface.fill(GRAY)
+    surface.fill(RED, pygame.rect.Rect(1,1,(health_percent) * width-2, height-2))
+    surface.fill(BLUE, pygame.rect.Rect(1,1,(shield_percent) * width-2, height-2))
+    rect = surface.get_rect()
+    rect.topleft = topleft_corner
+    return surface, rect
+
+def draw_player_lives(player_lives, topleft_corner = (0,0)):
+    ship_sprite, ship_rect = load_image('CoolShip.png')
+    surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
+    surface.fill(BLACK)
+    surface.blit(ship_sprite, (0,0))
+    text, text_surf = draw_text('x {}'.format(player_lives), WHITE)
+    text_rect = text_surf.get_rect()
+    text_rect.left, text_rect.centery = ship_rect.right, ship_rect.centery
+    surface_rect = surface.blit(text, text_rect)
+    surface_rect.topleft = topleft_corner
+    return surface, surface_rect
+
+# def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
+#     ship_sprite, ship_rect = load_image('bomb.png')
+#     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
+#     surface.fill(BLACK)
+#     surface.blit(ship_sprite, (0,0))
+#     text, text_surf = draw_text('x {}'.format(bombs_remaining), WHITE)
+#     text_rect = text_surf.get_rect()
+#     text_rect.left, text_rect.centery = ship_rect.right, ship_rect.centery
+#     surface = surface.blit(text, text_rect)
+#     surface_rect = surface.get_rect()
+#     surface_rect.topleft = topleft_corner
+#     return surface, surface_rect

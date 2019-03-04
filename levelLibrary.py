@@ -14,27 +14,29 @@ def ENEMY_TYPE_MAP(x):
         "s": "sleeper",
         "cz": "crazy",
         "cr": "crazyReverse",
-        "mv": "mrVectors"
+        "mv": "mrVectors",
+        "db": "diveBomb",
+        "ds": "diveStrafe"
     }.get(x,"diver") #defaults to diver
 
 #enemy top screen sectors
 def ENEMY_SECTORS (x):
     return { 
-        "s1": [480,0], 
-        "s2": [560,0],
-        "s3": [640,0],
-        "s4": [720,0],
-        "s5": [800,0],
-        "s6": [880,0],
-        "s7": [960,0],
-        "s8": [1040,0],
-        "s9": [1120,0],
-        "s10": [1200,0],
-        "s11": [1280,0],
-        "s12": [1360,0],
-        "s13": [1440,0],
-        "s14": [1520,0],
-    }.get(x,[1040,0]) # defaults to s7
+        "s1": [400,0], 
+        "s2": [480,0],
+        "s3": [560,0],
+        "s4": [640,0],
+        "s5": [720,0],
+        "s6": [800,0],
+        "s7": [880,0],
+        "s8": [960,0],
+        "s9": [1040,0],
+        "s10": [1120,0],
+        "s11": [1200,0],
+        "s12": [1280,0],
+        "s13": [1360,0],
+        "s14": [1440,0],
+    }.get(x,[880,0]) # defaults to s7
 
 def PROPER_FORMAT(a):
     '''checks enemy simple constructis properly formated'''
@@ -54,9 +56,73 @@ def PROPER_FORMAT(a):
                 try:
                     int(b[4])
                 except:
-                    return False
+                    try:
+                        float(b[4])
+                    except:
+                        return False
+
                 return True
     return False
+
+
+''' use'-' between @ENEMY_TYPE_MAP - ENEMY_SECTORS - speed - health - **acceleration**'''
+def cluster (selection="full",b="db",s=3,h=1):
+    '''Use this function in levelMaker to create clusters of enemy, b=behavior must be in levelMaker dictionary
+    s=speed, 
+    h=health. 
+    Selections to choose from are:
+    "full"- creates enemies with atributes in all sectors
+    "L3-L5"- creates left most 3 4 or 5 enenmies
+    "R3-R5"- creates right most 3 5 or 5 enemies
+    "M3-M5" - middle sectors 3 4 or 5 enemies
+    "ML3-ML5" - middle Left sectors 3 4 or 5 enemies
+    "MR3-MR5" - middle Right sectors 3 4 or 5 enemies
+    '''
+    h = str(h)
+    s = str(s)
+    basic = ["@s1-"+b+"-"+s+"-"+h+"-0", "@s2-"+b+"-"+s+"-"+h+"-0", "@s3-"+b+"-"+s+"-"+h+"-0", "@s4-"+b+"-"+s+"-"+h+"-0", "@s5-"+b+"-"+s+"-"+h+"-0", "@s6-"+b+"-"+s+"-"+h+"-0", "@s7-"+b+"-"+s+"-"+h+"-0", "@s8-"+b+"-"+s+"-"+h+"-0", "@s9-"+b+"-"+s+"-"+h+"-0", "@s10-"+b+"-"+s+"-"+h+"-0", "@s11-"+b+"-"+s+"-"+h+"-0", "@s12-"+b+"-"+s+"-"+h+"-0", "@s13-"+b+"-"+s+"-"+h+"-0", "@s14-"+b+"-"+s+"-"+h+"-0"]
+    return { 
+        "full": basic, 
+        "L3": ["@s1-"+b+"-"+s+"-"+h+"-0", "@s2-"+b+"-"+s+"-"+h+"-0", "@s3-"+b+"-"+s+"-"+h+"-0"],
+        "L4": ["@s1-"+b+"-"+s+"-"+h+"-0", "@s2-"+b+"-"+s+"-"+h+"-0", "@s3-"+b+"-"+s+"-"+h+"-0", "@s4-"+b+"-"+s+"-"+h+"-0"],
+        "L5": ["@s1-"+b+"-"+s+"-"+h+"-0", "@s2-"+b+"-"+s+"-"+h+"-0", "@s3-"+b+"-"+s+"-"+h+"-0", "@s4-"+b+"-"+s+"-"+h+"-0", "@s5-"+b+"-"+s+"-"+h+"-0"],
+        
+        "R3": ["@s14-"+b+"-"+s+"-"+h+"-0", "@s13-"+b+"-"+s+"-"+h+"-0", "@s12-"+b+"-"+s+"-"+h+"-0"],
+        "R4": ["@s14-"+b+"-"+s+"-"+h+"-0", "@s13-"+b+"-"+s+"-"+h+"-0", "@s12-"+b+"-"+s+"-"+h+"-0", "@s11-"+b+"-"+s+"-"+h+"-0"],
+        "R5": ["@s14-"+b+"-"+s+"-"+h+"-0", "@s13-"+b+"-"+s+"-"+h+"-0", "@s12-"+b+"-"+s+"-"+h+"-0", "@s11-"+b+"-"+s+"-"+h+"-0", "@s10-"+b+"-"+s+"-"+h+"-0"],
+        
+        "M3": [ "@s6-"+b+"-"+s+"-"+h+"-0", "@s7-"+b+"-"+s+"-"+h+"-0", "@s8-"+b+"-"+s+"-"+h+"-0"],
+        "M4": [ "@s5-"+b+"-"+s+"-"+h+"-0", "@s6-"+b+"-"+s+"-"+h+"-0", "@s7-"+b+"-"+s+"-"+h+"-0", "@s8-"+b+"-"+s+"-"+h+"-0"],
+        "M5": [ "@s5-"+b+"-"+s+"-"+h+"-0", "@s6-"+b+"-"+s+"-"+h+"-0", "@s7-"+b+"-"+s+"-"+h+"-0", "@s8-"+b+"-"+s+"-"+h+"-0", "@s9-"+b+"-"+s+"-"+h+"-0"],
+
+       
+        "ML3": ["@s4-"+b+"-"+s+"-"+h+"-0", "@s5-"+b+"-"+s+"-"+h+"-0", "@s6-"+b+"-"+s+"-"+h+"-0"],
+        "ML4": ["@s4-"+b+"-"+s+"-"+h+"-0", "@s5-"+b+"-"+s+"-"+h+"-0", "@s6-"+b+"-"+s+"-"+h+"-0", "@s7-"+b+"-"+s+"-"+h+"-0"],
+        "ML5": ["@s4-"+b+"-"+s+"-"+h+"-0", "@s5-"+b+"-"+s+"-"+h+"-0", "@s6-"+b+"-"+s+"-"+h+"-0", "@s7-"+b+"-"+s+"-"+h+"-0", "@s8-"+b+"-"+s+"-"+h+"-0"],
+        
+        
+        "MR3": ["@s11-"+b+"-"+s+"-"+h+"-0", "@s10-"+b+"-"+s+"-"+h+"-0", "@s9-"+b+"-"+s+"-"+h+"-0"],
+        "MR4": ["@s11-"+b+"-"+s+"-"+h+"-0", "@s10-"+b+"-"+s+"-"+h+"-0", "@s9-"+b+"-"+s+"-"+h+"-0", "@s8-"+b+"-"+s+"-"+h+"-0"],
+        "MR5": ["@s11-"+b+"-"+s+"-"+h+"-0", "@s10-"+b+"-"+s+"-"+h+"-0", "@s9-"+b+"-"+s+"-"+h+"-0", "@s8-"+b+"-"+s+"-"+h+"-0", "@s7-"+b+"-"+s+"-"+h+"-0"],
+        
+       
+    }.get(selection,basic) # defaults to basic
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -99,7 +165,7 @@ BG_STARFIELD = "starfield.png"
 
 
 #verifying  Properly formatted
-TIME_TYPES = ["player", "enemy", "enemyBullets", "background", "items"]
+TIME_TYPES = ["player", "enemy", "enemyBullets", "background", "items", "boss_sprite"]
 END_TYPES =["boss","time"]
 
 
@@ -115,6 +181,10 @@ DICTYPES = {
         "enemy":{
             "class":["strings"], #array type w/ stringtypes
             "health": 1 #int type
+        },
+        "boss_sprite": {
+            "image":"stringType",
+            "class":["strings"]           
         },
         "enemyBullets":{
             "class":["strings"] #array type w/ stringtypes

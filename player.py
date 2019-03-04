@@ -2,7 +2,9 @@ import entity2
 import pygame
 import bullet
 import weapon
+import explosion
 from library import *
+import random
 
 
 
@@ -18,7 +20,9 @@ class player(entity2.entity2):
 
         self.control_scheme = scheme ##placeholder
         self.point_total = 0
+        self.max_health = 40
         self.health = 40
+        self.max_shield = 100
         self.shield = 100
         self.image, self.rect = load_image(imgFile, -1)
         self.invul_flag = False
@@ -41,7 +45,7 @@ class player(entity2.entity2):
 
     def regen(self):
         self.shield += 1
-        if self.shield > 100:
+        if self.shield > self.max_shield:
             self.shield = 100
 
     def move(self, new_x, new_y):
@@ -91,7 +95,6 @@ class player(entity2.entity2):
                 self.bullet_count += 1
             else:
                 self.bullet_count = 0
-            ##end if/else
 
             ##this if/else statement must stay together
             if keys[pygame.K_b]:
@@ -103,22 +106,36 @@ class player(entity2.entity2):
                     self.drop_bomb()
                     #addBullet = True
 
-            #     if self.bullet_count % (int(FRAMERATE/self.weapon.rof)) == 0:
-            #         addBullet=True
-            #     self.bullet_count += 1
-            # else:
-            #     self.bullet_count = 0
-            ##end if/else
+            ##end if/else    
+            if DEBUG:        
+                if keys[pygame.K_1]:
 
-            if keys[pygame.K_1]:
+                    self.weapon = weapon.Weapon('spitfire')
+                if keys[pygame.K_2]:
 
-                self.weapon = weapon.Weapon('spitfire')
-            if keys[pygame.K_2]:
+                    self.weapon = weapon.Weapon('spitfire2')
 
-                self.weapon = weapon.Weapon('spitfire2')
-
-            if keys[pygame.K_3]:
-                self.weapon = weapon.Weapon('spitfire3')
+                if keys[pygame.K_3]:
+                    self.weapon = weapon.Weapon('spitfire3')
 
 
         return addBullet
+
+    def update(self):
+        if 0.75 < self.health / self.max_health <= 0.9:
+            if random.random() < 0.01:
+                x = random.randint(self.rect.left,self.rect.right)
+                y = random.randint(self.rect.top, self.rect.bottom)
+                return explosion.ExplosionSprite(x,y)
+        elif 0.3 < self.health / self.max_health <= 0.75:
+            if random.random() < 0.05:
+                x = random.randint(self.rect.left,self.rect.right)
+                y = random.randint(self.rect.top, self.rect.bottom)
+                return explosion.ExplosionSprite(x,y)
+        elif 0 <= self.health / self.max_health <= 0.3:
+            if random.random() < 0.15:
+                x = random.randint(self.rect.left,self.rect.right)
+                y = random.randint(self.rect.top, self.rect.bottom)
+                return explosion.ExplosionSprite(x,y)
+        else:
+            return None

@@ -6,6 +6,7 @@
 import weapon
 import player
 import enemy
+import boss
 import bullet
 from library import *
 from levelLibrary import *
@@ -95,7 +96,7 @@ class LevelLoader():
             events = self.level["time"][str(levelTime)]
         except:
             return False #GUI handles false with no behavior
-        timeEvents = {"player":[],"enemy":[],"bullets":[],"items":[]}
+        timeEvents = {"player":[],"enemy":[],"bullets":[],"items":[],"boss_sprite":[]}
         del self.level["time"][str(levelTime)] #removes this time entry from the dictionary
         
 
@@ -109,6 +110,9 @@ class LevelLoader():
                     for enemyType in events[each]["class"]:
                         enemy = self.enemyClass(enemyType, health)
                         timeEvents["enemy"].append(enemy)
+                if each == 'boss_sprite':
+                    boss = self.bossClass()
+                    timeEvents["boss_sprite"].append(boss)
                 if each == "enemyBullets":
                     for bulletType in events[each]["class"]:
                         bullet = self.bulletClass(bulletType)
@@ -143,14 +147,13 @@ class LevelLoader():
         '''contructs and returns enemies based off a 1 input nameing convention'''
         ''' can add enemy classes, just contruct new enemy type'''
         enemySprite = None
-
         if className[0]=="@": #quick naming scheme ex: "@s1-d-3-1" -check levelLibrary.py for more
             a=className[1::].split("-")
             if PROPER_FORMAT(className):
                 if len(a)==4:
                     enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]))
-                else:
-                    enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]), acceleration=int(a[4]))
+                else:     
+                    enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]), acceleration=float(a[4]))
                 return enemySprite
         
 
@@ -198,6 +201,8 @@ class LevelLoader():
         
         return enemySprite
 
+    def bossClass(self):
+        return boss.BossSprite(ENEMY_SECTORS("s7"), 'boss.png')
 
         
     def playerClass(self,className):
