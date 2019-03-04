@@ -39,7 +39,11 @@ class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace ex
 
     def __vector__ (self,spriteObject):
         '''do all the vector math here'''
+<<<<<<< HEAD
+        
+=======
         #print(spriteObject.speedY)
+>>>>>>> 38fed0c48869c272003d4cbe76b745ec087a6410
         changeAccel = self.currVector[0]
         changeSpeed = self.currVector[1]
         changeAngel = self.currVector[2]
@@ -48,15 +52,19 @@ class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace ex
         
         #check for x, will update sprite values if not x.
         if changeAccel != "x":
+            
             spriteObject.acceleration = changeAccel
         if changeAngel != "x": #when angle changes, that speed diff needs to be added to current speed
             spriteObject.angle = changeAngel
         if changeSpeed != "x":
+            
             spriteObject.speed= changeSpeed #adjusts speedX, and speedY appropriately on object
        
         spriteObject.updateSpeed() #accelerates object by increasing speedX and speedY by adding angled accel
-    
-        return spriteObject.move(int(spriteObject.speedX),int(spriteObject.speedY))
+        
+        spriteObject.move(int(spriteObject.speedX),int(spriteObject.speedY))
+
+        return spriteObject
 
     
 

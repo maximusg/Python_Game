@@ -21,10 +21,10 @@ data = {
                 "weapon": "blue_lazer",
                 "scheme": "arrows",
                 },
-            "enemy":{
-                "class": ["@s7-mv-5-1-0"],
-                "health": 1
-                },
+            # "enemy":{
+            #     "class": ["@s7-mv-5-1-0"],
+            #     "health": 1
+            #     },
             "background": "starfield.png"
             
             }
@@ -101,27 +101,27 @@ ClusterDIC_Right ={
     4:"MR4",
     5:"MR5"
 }
-for i in range(4,8):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": ["@s3-db-3-2-0","@s4-db-3-2-0"],"health":1}}
+# for i in range(4,8):#5 enemies in line
+#     data["time"][i] = {"enemy":{ "class": ["@s3-db-3-2-0","@s4-db-3-2-0"],"health":1}}
 
 
-for i in range(11,16):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": ["@s11-db-3-2-0","@s12-db-3-2-0"],"health":1}}
+# for i in range(11,16):#5 enemies in line
+#     data["time"][i] = {"enemy":{ "class": ["@s11-db-3-2-0","@s12-db-3-2-0"],"health":1}}
 
 
-for i in range(16,30,1):#16 random fast movers
-    n = str(random.randint(1,14))
-    data["time"][i] = {"enemy":{ "class": ["@s"+n+"-db-5-1-0"],"health":1}}
+# for i in range(16,30,1):#16 random fast movers
+#     n = str(random.randint(1,14))
+#     data["time"][i] = {"enemy":{ "class": ["@s"+n+"-db-5-1-0"],"health":1}}
 
 
 
-for i in range(33,53,1):#20 random fast straffers
-    n = str(random.randint(1,14))
-    data["time"][i] = {"enemy":{ "class": ["@s"+n+"-ds-5-1-0"],"health":1}}
+# for i in range(33,53,1):#20 random fast straffers
+#     n = str(random.randint(1,14))
+#     data["time"][i] = {"enemy":{ "class": ["@s"+n+"-ds-5-1-0"],"health":1}}
 
-for i in range(55,70,3):#5 mrvectors
-    n = str(random.randint(1,14))
-    data["time"][i] = {"enemy":{ "class": ["@s"+n+"-mv-5-1-0"],"health":1}}
+# for i in range(55,70,3):#5 mrvectors
+#     n = str(random.randint(1,14))
+#     data["time"][i] = {"enemy":{ "class": ["@s"+n+"-mv-5-1-0"],"health":1}}
 
 
 # #RUSH generator
