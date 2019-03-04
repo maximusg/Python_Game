@@ -24,23 +24,25 @@ bomb_sounds = cwd.joinpath('resources', 'sound_effects', 'bomb_sounds')
 
 class bomb(entity2.entity2):
     def __init__(self, origin_x, origin_y, speed, path_to_img, angle=0, behavior='up'):
-        super().__init__()
-        self.speed = speed
-        self.image, self.rect = load_image(path_to_img)
+        location =(origin_x, origin_y)
+        area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
+        super().__init__(origin=location, imageFile=path_to_img, area=area, speed=speed, angle=angle)
+        # self.speed = speed
+        # self.image, self.rect = load_image(path_to_img)
         # self.image = self.image.convert()
-        self.imgFile = path_to_img
+        # self.imgFile = path_to_img
         # self.rect.centerx, self.rect.top = origin_x, origin_y
         self.off_screen = False
         self.dirty = 1
         self.mask = pygame.mask.from_surface(self.image)
-        self.angle = angle
+        # self.angle = angle
 
         self.sound = load_sound(str(bomb_sounds.joinpath('drop.wav ')))
 
 
         # self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
-        self.rect.x = origin_x
-        self.rect.y = origin_y
+        # self.rect.x = origin_x
+        # self.rect.y = origin_y
 
 
         #self.is_bomb = is_bomb
@@ -70,10 +72,10 @@ class bomb(entity2.entity2):
     def play_sound(self):
         self.sound.play()
 
-    def move(self, x, y):
+    # def move(self, x, y):
 
-        self.rect = self.rect.move((x, y))
-        self.dirty = 1
+    #     self.rect = self.rect.move((x, y))
+    #     self.dirty = 1
 
     def update(self):
         if self.rect.top > SCREEN_HEIGHT or self.rect.bottom < 0 or self.rect.right > SCREEN_WIDTH - COLUMN_WIDTH or self.rect.left < COLUMN_WIDTH:  # checks if the rect is out of bounds, and if so, it is no longer visible, meaning it should be deleted by GUI
@@ -89,8 +91,11 @@ class bomb(entity2.entity2):
             self.centerx= self.rect.x
             self.centery = self.rect.y
         # self.image, self.rect = load_image('resources/misc_sprites/explosion1.png')
-
+        
         self.movement.update(self)
+        
+        
+
 
     # if not (COLUMN_WIDTH <= self.rect.right and self.rect.left <= SCREEN_WIDTH-COLUMN_WIDTH):
     # 	self.visible = 0
@@ -137,10 +142,10 @@ class bomb(entity2.entity2):
     #                          angelArray=[self.angle])
 
     def __bomb__(self):
-        moveCountArray = [100]
-        vectorArray = [[-1, self.speed, 180]]
-        print('bomb speed', self.speed)
+        moveCountArray = [1,100]
+        vectorArray = [[0, 15, 180],[-.18, "x", "x"]]
+       
 
         #stopVector = []
 
-        return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=1)
+        return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=99)
