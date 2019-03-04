@@ -19,7 +19,7 @@ class BombExplosion(pygame.sprite.Sprite):
         self.frame_counter = 45
         self.frame = 1
         self.visible = 1
-        self.bomb_growth = 1.1
+        self.bomb_growth = 30
 
 
     def update(self):
@@ -28,15 +28,16 @@ class BombExplosion(pygame.sprite.Sprite):
         self.frame_counter -= 1
         if self.frame_counter % 5 == 0 and self.frame < TOTAL_ANIM_FRAMES:
             self.frame += 1
-            old_x, old_y = self.rect.x, self.rect.y
+            old_x, old_y = self.rect.centerx, self.rect.centery
             #self.image, self.rect = load_image('resources/weapon_images/bomb_explosion/bomb_explosion'+str(self.frame)+'.png')
             self.image, self.rect = load_image(str(bomb_explosion_images_path.joinpath('bomb_explosion')) + str(self.frame)+'.png')
-            self.rect.x, self.rect.y = old_x, old_y
+            self.rect.centerx, self.rect.centery = old_x, old_y
             self.size = self.image.get_size()
             # create a 2x bigger image than self.image
-            self.bigger_img = pygame.transform.scale(self.image, (int(self.size[0]*self.bomb_growth), int(self.size[1]*self.bomb_growth)))
+            self.bigger_img = pygame.transform.scale(self.image, (int(self.size[0] + self.bomb_growth), int(self.size[1] + self.bomb_growth)))
             self.image = self.bigger_img
-            self.bomb_growth += 0.2
+            self.rect.inflate(self.bomb_growth, self.bomb_growth)
+            self.bomb_growth += 30
         self.move(1,0)
         #pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
 

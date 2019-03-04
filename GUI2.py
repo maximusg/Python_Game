@@ -363,7 +363,26 @@ class GUI(object):
                         if item_drop is not None:
                             items.add(item_drop)
                 if sprite.visible == 0:
-                    enemy_sprites.remove(sprite)     
+                    enemy_sprites.remove(sprite)
+
+            for sprite in enemy_sprites:
+                collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
+                if collision:
+                    #print('bomb explosion collision')
+                    sprite.take_damage(3) #probably want to take a lot more damage from a bomb
+                    #collision.visible = 0
+                    #player_bullet_sprites.remove(collision)
+                    if sprite.health <= 0:
+                        new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+                        new_explosion.play_sound()
+                        explosions.add(new_explosion)
+                        player_score += sprite.point_value
+                        item_drop = sprite.getDrop()
+                        if item_drop is not None:
+                            items.add(item_drop)
+                if sprite.visible == 0:
+                    enemy_sprites.remove(sprite)
+
 
             for sprite in boss_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)

@@ -139,7 +139,7 @@ class bomb(entity2.entity2):
     def __bomb__(self):
         moveCountArray = [100]
         vectorArray = [[-1, self.speed, 180]]
-        print('bomb speed', self.speed)
+        #print('bomb speed', self.speed)
 
         #stopVector = []
 
