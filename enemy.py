@@ -148,31 +148,25 @@ class enemy(entity2.entity2):
 
 	def getDrop(self):
 		#build the working drop table
-		items = []
-		probability = []
+		item_lower_threshold = []
+		item_upper_threshold = []
 		total_probability = 0
 		rand_num = random.uniform(0,1)
-		droppedItem = None
+
+		index = 0
 		for item in self.itemDropTable:
-			items.append(item[0])
-			probability.append(total_probability + float(item[1]))
-			total_probability += float(item[1])
-			
+			item_lower_threshold.append(total_probability)
+			item_upper_threshold.append(total_probability + item[1])
+			total_probability += item[1]
+			if rand_num > item_lower_threshold[index] and (rand_num <= item_upper_threshold[index]):
+				return item_pickup.item(self.rect.centerx, self.rect.centery, name= item[0])
 
-		intervals = []
-		curr_prob = 0
+			index += 1
 
-		for i in range(len(probability)):
-			intervals.append((curr_prob, probability[i]))
-			curr_prob += probability[i]
-			if rand_num >= intervals[i][0] and rand_num <= intervals[i][1]:
-				droppedItem = items[i]
-		#add more logic on what to do with the dropped item later
-		#print(droppedItem) #debugging
-		if droppedItem is None:
-			return None
-		else:
-			return item_pickup.item(self.rect.centerx, self.rect.centery, name= droppedItem)
+		return None
+
+
+
 
 	def take_damage(self, value):
 		self.health -= value
