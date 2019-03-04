@@ -13,7 +13,7 @@ class BombExplosion(pygame.sprite.Sprite):
         super().__init__()
         anim0 = bomb_explosion_images_path.joinpath('bomb_explosion0.png')
         self.image, self.rect = load_image(str(anim0))
-        self.rect = pygame.Rect(startx,starty,30,30)
+        self.rect = pygame.Rect(startx-150,starty-150,30,30)
         #self.radius = 25
         self.sound = load_sound(str(bomb_sounds.joinpath('Mboom.wav ')))
         self.frame_counter = 45

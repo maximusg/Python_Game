@@ -135,7 +135,7 @@ class GUI(object):
         player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
         player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
         player_bomb_sprites = pygame.sprite.LayeredDirty(_default_layer = 1) #not sure if bombs should be on the lowest layer
-        bomb_explosion_sprites = pygame.sprite.LayeredDirty(_default_layer = 4) # the bomb explosion should damage enemies on collision, so it is on the same layer as enemies
+        bomb_explosion_sprites = pygame.sprite.LayeredUpdates(__default_layer = 4) # the bomb explosion should damage enemies on collision, so it is on the same layer as enemies
         enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
         enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
         items=pygame.sprite.LayeredDirty(_default_layer = 2)
@@ -276,14 +276,9 @@ class GUI(object):
             if playerShip.curr_bomb is not None and playerShip.curr_bomb.bomb_explode is True:
                 new_explosion = bomb_explosion.BombExplosion(playerShip.curr_bomb.centerx,playerShip.curr_bomb.centery)
                 new_explosion.play_sound()
-                #bomb_explosion_sprites.add(new_explosion)
-                explosions.add(new_explosion)
+                bomb_explosion_sprites.add(new_explosion)
+                #explosions.add(new_explosion)
                 playerShip.curr_bomb.bomb_explode = False
-
-                #pygame.draw.circle(self.screen, (0,0,0), (200,2000), 5)
-
-
-
 
                 playerShip.curr_bomb = None
 
