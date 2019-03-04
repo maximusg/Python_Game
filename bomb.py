@@ -131,7 +131,16 @@ class bomb(entity2.entity2):
         return movement.Move(behaviorArray=['down'], moveCountArray=[800], speedArray=[self.speed],
                              angelArray=[self.angle])
 
+    # def __bomb__(self):
+    #     return movement.Move(behaviorArray=['up', 'up', 'up', 'up'], moveCountArray=[1, 20, 30, 49],
+    #                          speedArray=[self.speed, self.speed * .7, self.speed * .5, self.speed * .2],
+    #                          angelArray=[self.angle])
+
     def __bomb__(self):
-        return movement.Move(behaviorArray=['up', 'up', 'up', 'up'], moveCountArray=[1, 20, 30, 49],
-                             speedArray=[self.speed, self.speed * .7, self.speed * .5, self.speed * .2],
-                             angelArray=[self.angle])
+        moveCountArray = [100]
+        vectorArray = [[-1, self.speed, 180]]
+        print('bomb speed', self.speed)
+
+        #stopVector = []
+
+        return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=1)
