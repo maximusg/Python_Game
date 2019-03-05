@@ -18,11 +18,10 @@ WINDOW_OPTIONS_WINDOWED = (SCREEN_WIDTH, SCREEN_HEIGHT), 0
 
 COLUMN_WIDTH = SCREEN_WIDTH//5
 
-BG = 0
-GROUND = 1
-ITEM = 2
-AIR = 3
-OVERHEAD = 4
+CWD = Path.cwd()
+RESOURCES_PATH = CWD.joinpath('resources')
+ITEM_IMAGES_PATH = RESOURCES_PATH.joinpath('item_images')
+BOMB_SOUND_PATH = RESOURCES_PATH.joinpath('bomb_sounds')
 
 DEBUG = True ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
 
@@ -33,11 +32,41 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 GRAY = (25,25,25)
 YELLOW = (255,255,0)
+
 ORIGIN = (0,0)
+PLAYER_START = (SCREEN_WIDTH//2, SCREEN_HEIGHT-100)
 SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
+
+ENEMY_VALUE = 500
+BOSS_VALUE = 50000
+ITEM_VALUE = 50
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
+ENEMY_SPRITE = {
+        "diver":1,
+        "camper":2, 
+        "sleeper":3,
+        "crazy":3,
+        "crazyReverse": 3,
+        "mrVectors": 3,
+        "diveBomb": 1,
+        "diveStrafe": 1
+        }
+
+BULLET_VECTORS = {
+    'DEFAULT':['x','x','x'],
+    'UP':['x','x',180],
+    'DOWN':['x','x',0],
+    'LEFT':['x','x',270],
+    'RIGHT':['x','x',90]
+    }
+
+MASTER_ITEMS = {
+    'powerup':('powerup.gif', None),
+    'coin':('coin.png', None),
+    'spitfire_powerup':('spitfire_powerup.png', 'spitfire')
+    }
 
 def saveGame(array, stateName="default"):
     cwd = Path.cwd()
