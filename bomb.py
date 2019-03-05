@@ -142,8 +142,8 @@ class bomb(entity2.entity2):
     #                          angelArray=[self.angle])
 
     def __bomb__(self):
-        moveCountArray = [1,100]
-        vectorArray = [[0, 15, 180],[-.18, "x", "x"]]
+        moveCountArray = [1,300]
+        vectorArray = [[0, 15, 180,],[-.18, "x", 180]]
        
 
         #stopVector = []

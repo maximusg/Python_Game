@@ -62,8 +62,10 @@ class entity2(pygame.sprite.DirtySprite):
         if not isinstance(value, int) and not isinstance(value,float):
             raise RuntimeError(value + ' is not a valid int for angle.')
         value = value%360
+        self.speed = math.sqrt(self.speedX**2+self.speedY**2) #this needs to be done incase speed has changed via accerlation
         self.speedX = math.sin(math.radians(value))*self.speed
         self.speedY = math.cos(math.radians(value))*self.speed
+        
 
         self.__angle = value
 
@@ -88,6 +90,9 @@ class entity2(pygame.sprite.DirtySprite):
     def speed(self, value):
         if not isinstance(value, int) and not isinstance(value,float):
             raise RuntimeError(value + ' is not a valid int for speed.')
+        else:
+            if value <0:
+                value = -value
         try :
             self.angle #checks for the first case when angle is being contructed
         except: 
@@ -111,6 +116,7 @@ class entity2(pygame.sprite.DirtySprite):
         
         self.speedX += math.sin(math.radians(self.angle))*self.acceleration 
         self.speedY += math.cos(math.radians(self.angle))*self.acceleration
+        # self.speed = math.sqrt(self.speedX**2+self.speedY**2)#instead I'm going to put this in angle, so it saves cycles.
         
     
     def move(self, x, y):#keeps object from going past the  sides
