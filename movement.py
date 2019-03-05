@@ -39,11 +39,7 @@ class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace ex
 
     def __vector__ (self,spriteObject):
         '''do all the vector math here'''
-<<<<<<< HEAD
-        
-=======
         #print(spriteObject.speedY)
->>>>>>> 38fed0c48869c272003d4cbe76b745ec087a6410
         changeAccel = self.currVector[0]
         changeSpeed = self.currVector[1]
         changeAngel = self.currVector[2]

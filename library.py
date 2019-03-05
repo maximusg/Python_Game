@@ -32,37 +32,9 @@ RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
 GRAY = (25,25,25)
+YELLOW = (255,255,0)
 ORIGIN = (0,0)
 SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
-
-# # MATH for sectors MOVED to levelLibrary.py
-# DEFAULT_ENEMY_WIDTH = 80 #pixels
-# DEFAULT_ENEMY_HEIGHT = 100
-# SCREEN_SPACE_WIDTH = COLUMN_WIDTH*3
-# ENEMY_SECTORS_AVAIL = SCREEN_SPACE_WIDTH//DEFAULT_ENEMY_WIDTH
-# ENEMY_BUFFER = (SCREEN_SPACE_WIDTH%DEFAULT_ENEMY_WIDTH)//2
-# ENEMY_SECTORS={}
-
-# print (COLUMN_WIDTH)
-# for i in range(1,ENEMY_SECTORS_AVAIL+1):
-#     print("SECTOR ",i,":",COLUMN_WIDTH + ENEMY_BUFFER + (DEFAULT_ENEMY_WIDTH*(i-1)))
-
-# #enemy top screen sectors
-# ENEMY_SECTORS={ "s1": [480,0], 
-#                 "s2": [560,0],
-#                 "s3": [640,0],
-#                 "s4": [720,0],
-#                 "s5": [800,0],
-#                 "s6": [880,0],
-#                 "s7": [960,0],
-#                 "s8": [1040,0],
-#                 "s9": [1120,0],
-#                 "s10": [1200,0],
-#                 "s11": [1280,0],
-#                 "s12": [1360,0],
-#                 "s13": [1440,0],
-#                 "s14": [1520,0],
-#             }
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
@@ -137,15 +109,16 @@ def load_image(name, colorkey=-1):
             image.set_colorkey(colorkey, RLEACCEL)
     return image, image.get_rect()
 
-def draw_text(to_print, text_color, bg_color=None):
+def draw_text(to_print, text_color, bg_color=None, text_size = 25, bold=False):
     '''Draws the string to_print in the color defined by text_color (can be a defined constant, or an RGB value triple)
-       with background color defined by bg_color. If bg_color=None, then no background fill is used.'''
-    font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', 25)
-    text = font.render(str(to_print), True, text_color)
-    text_surf = pygame.Surface(text.get_size())
-    if bg_color != None:
-        text_surf.fill(bg_color)
-    return text, text_surf
+       with background color defined by bg_color. If bg_color=None, then no background fill is used. Returns a surface with just
+       the text (text) and one with the background color (if set) applied.'''
+    if bold:
+        font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', text_size)
+    else:
+        font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', text_size)
+    text = font.render(str(to_print), True, text_color, bg_color)
+    return text
 
 def draw_vertical_bar(color, width, height, bar_percentage = 1, topleft_corner = (0,0)):
     '''Draws a vertical rectangle with (width,height) dimensions and the topleft corner at topleft_corner.
@@ -181,8 +154,8 @@ def draw_player_lives(player_lives, topleft_corner = (0,0)):
     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
     surface.fill(BLACK)
     surface.blit(ship_sprite, (0,0))
-    text, text_surf = draw_text('x {}'.format(player_lives), WHITE)
-    text_rect = text_surf.get_rect()
+    text = draw_text('x {}'.format(player_lives), WHITE)
+    text_rect = text.get_rect()
     text_rect.left, text_rect.centery = ship_rect.right, ship_rect.centery
     surface_rect = surface.blit(text, text_rect)
     surface_rect.topleft = topleft_corner
@@ -193,9 +166,16 @@ def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
     surface = pygame.surface.Surface((bomb_rect.right * 6, bomb_rect.bottom))
     surface.fill(BLACK)
     surface.blit(bomb_sprite, (0,0))
-    text, text_surf = draw_text('x {}'.format(bombs_remaining), WHITE)
-    text_rect = text_surf.get_rect()
+    text = draw_text('x {}'.format(bombs_remaining), WHITE)
+    text_rect = text.get_rect()
     text_rect.left, text_rect.centery = bomb_rect.right+30, bomb_rect.centery
     surface_rect = surface.blit(text, text_rect)
     surface_rect.topleft = topleft_corner
     return surface, surface_rect
+
+def draw_button(text, text_color=BLACK, bg_color=None, topleft_corner = (0,0)):
+    button = draw_text(text, text_color, bg_color)
+    button_rect = button.get_rect()
+    button_rect.topleft = topleft_corner
+
+    return button, button_rect

@@ -79,8 +79,8 @@ class GUI(object):
 
             for line in story_scroll:
                 line = line.strip('\n')
-                text, text_surf = draw_text(line, WHITE)
-                text_rect = text_surf.get_rect()
+                text = draw_text(line, WHITE)
+                text_rect = text.get_rect()
                 text_rect.center = (x,y)
                 y += 50
                 self.screen.blit(text, text_rect)
@@ -435,13 +435,13 @@ class GUI(object):
             c1 = self.screen.blit(column, ORIGIN)
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
-            text, score_surf = draw_text("Score: "+ str(player_score), WHITE)
+            text = draw_text("Score: "+ str(player_score), WHITE)
             #score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
             if DEBUG:
-                debug_text, debug_surf = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
-                debug_rect = self.screen.blit(debug_surf, (0, SCREEN_HEIGHT - 100))
+                debug_text = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
+                debug_rect = self.screen.blit(debug_text, (0, SCREEN_HEIGHT - 100))
                 self.screen.blit(debug_text, debug_rect)
             
             armor_bar, armor_bar_rect = draw_vertical_bar(RED, 50, SCREEN_HEIGHT-400, (playerShip.health/playerShip.max_health), (COLUMN_WIDTH*4 + 10,200))
@@ -495,7 +495,7 @@ class GUI(object):
     def pause_screen(self):
         paused = True
         while paused:
-            paused_text, paused_surf = draw_text('***PAUSED***', WHITE)
+            paused_text = draw_text('***PAUSED***', WHITE)
             paused_rect = paused_text.get_rect()
             paused_rect.center = SCREEN_CENTER 
             self.screen.blit(paused_text, paused_rect)
@@ -520,7 +520,7 @@ class GUI(object):
         going = True
         start_time = pygame.time.get_ticks()
         while going:
-            victory_text, victory_surf = draw_text('Area cleared! Level Complete!', WHITE)
+            victory_text = draw_text('Area cleared! Level Complete!', WHITE)
             victory_rect = victory_text.get_rect()
             victory_rect.center = SCREEN_CENTER 
             self.screen.blit(victory_text, victory_rect)
@@ -537,7 +537,7 @@ class GUI(object):
     def death_loop(self):
         dead = True
         while dead:
-            dead_text, dead_surf = draw_text('***YOUR SHIP WAS DESTROYED! Press Space to re-deploy!***', WHITE)
+            dead_text = draw_text('***YOUR SHIP WAS DESTROYED! Press Space to re-deploy!***', WHITE)
             dead_rect = dead_text.get_rect()
             dead_rect.center = SCREEN_CENTER 
             self.screen.blit(dead_text, dead_rect)
@@ -561,10 +561,10 @@ class GUI(object):
     def game_over(self, player_score):
         dead = True
         while dead:
-            dead_text, dead_surf = draw_text('YOU\'VE BEEN DESTROYED! Country Orange has won!', WHITE)
+            dead_text = draw_text('YOU\'VE BEEN DESTROYED! Country Orange has won!', WHITE)
             dead_rect = dead_text.get_rect()
             dead_rect.center = SCREEN_CENTER 
-            dead_text2, dead_surf2 = draw_text('Press Space to return to the main menu.', WHITE)
+            dead_text2 = draw_text('Press Space to return to the main menu.', WHITE)
             dead_rect2 = dead_text2.get_rect()
             dead_rect2.centerx, dead_rect2.top = dead_rect.centerx, dead_rect.bottom  
             self.screen.blit(dead_text, dead_rect)
@@ -633,6 +633,8 @@ class GUI(object):
             show_name(self.screen, name)        
 
     def menu(self):
+        pygame.mouse.set_visible(True) ##We need the mouse here.
+
         bg, bg_rect = load_image('nebula_red.png')
         bg_size = bg.get_size()
         w, h = bg_size
@@ -648,6 +650,20 @@ class GUI(object):
         in_code  = []
         konami_code_accepted = False
         idsoft_code_accepted = False
+
+        title = draw_text('Day 0 - Another Raiden Clone', WHITE, None, 60, True)
+        title_rect = title.get_rect()
+        title_rect.centerx, title_rect.y = SCREEN_WIDTH//2, 100
+
+        start_button, start_button_rect = draw_button('PLAY', BLACK, WHITE)
+        quit_button, quit_button_rect = draw_button('QUIT', BLACK, WHITE)
+        credits_button, credits_button_rect = draw_button('CREDITS', BLACK, WHITE)
+        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, WHITE)
+        
+        start_button_rect.center = SCREEN_CENTER
+        quit_button_rect.centerx, quit_button_rect.top = start_button_rect.centerx, start_button_rect.bottom+10
+        credits_button_rect.centerx, credits_button_rect.top = quit_button_rect.centerx, quit_button_rect.bottom+10
+        hs_list_button_rect.centerx, hs_list_button_rect.top = credits_button_rect.centerx, credits_button_rect.bottom+10
 
         while going:
             for event in pygame.event.get():
@@ -680,7 +696,36 @@ class GUI(object):
                         in_code = []
                     else:
                         in_code.append(event.key)
+                elif event.type == MOUSEMOTION:
+                    if start_button_rect.collidepoint(event.pos):
+                        start_button, start_button_rect = draw_button('PLAY', BLACK, YELLOW, start_button_rect.topleft)
+                    elif quit_button_rect.collidepoint(event.pos):
+                        quit_button, quit_button_rect = draw_button('QUIT', BLACK, YELLOW, quit_button_rect.topleft)
+                    elif credits_button_rect.collidepoint(event.pos):
+                        credits_button, credits_button_rect = draw_button('CREDITS', BLACK, YELLOW, credits_button_rect.topleft)
+                    elif hs_list_button_rect.collidepoint(event.pos):
+                        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, YELLOW, hs_list_button_rect.topleft)
+                    else:
+                        start_button, start_button_rect = draw_button('PLAY', BLACK, WHITE, start_button_rect.topleft)
+                        quit_button, quit_button_rect = draw_button('QUIT', BLACK, WHITE, quit_button_rect.topleft)
+                        credits_button, credits_button_rect = draw_button('CREDITS', BLACK, WHITE, credits_button_rect.topleft)
+                        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, WHITE, hs_list_button_rect.topleft)
+                elif event.type == MOUSEBUTTONDOWN and event.button == 1:  ##1 is the Left Button
+                    if start_button_rect.collidepoint(event.pos):
+                        gui.level_loop(1, konami_code_accepted, idsoft_code_accepted)
+                        in_code = []
+                        konami_code_accepted = False
+                        idsoft_code_accepted = False
+                    elif quit_button_rect.collidepoint(event.pos):
+                        going = False
+                    elif credits_button_rect.collidepoint(event.pos):
+                        gui.credits()
+                    elif hs_list_button_rect.collidepoint(event.pos):
+                        gui.high_scores()
+
+
                         
+                       
             y1 += 1
             y += 1
             self.screen.blit(bg,(x,y))
@@ -690,42 +735,49 @@ class GUI(object):
             if y1 > h:
                 y1 = -h
 
-            text1, text1_surf = draw_text('PRESS SPACE TO START!', WHITE)
-            text_rect1 = text1.get_rect()
-            text_rect1.center = SCREEN_CENTER
+            # text1 = draw_text('PRESS SPACE TO START!', WHITE)
+            # text_rect1 = text1.get_rect()
+            # text_rect1.center = SCREEN_CENTER
             
-            text2, text2_surf = draw_text('PRESS ESC TO EXIT!', WHITE)
-            text_rect2 = text2.get_rect()
-            text_rect2.centerx, text_rect2.top = text_rect1.centerx, text_rect1.bottom 
+            # text2 = draw_text('PRESS ESC TO EXIT!', WHITE)
+            # text_rect2 = text2.get_rect()
+            # text_rect2.centerx, text_rect2.top = text_rect1.centerx, text_rect1.bottom 
 
-            text3, text3_surf = draw_text('PRESS S TO SEE THE HALL OF FAME!', WHITE)
-            text_rect3 = text3.get_rect()
-            text_rect3.centerx, text_rect3.top = text_rect2.centerx, text_rect2.bottom
+            # text3 = draw_text('PRESS S TO SEE THE HALL OF FAME!', WHITE)
+            # text_rect3 = text3.get_rect()
+            # text_rect3.centerx, text_rect3.top = text_rect2.centerx, text_rect2.bottom
 
-            text4, text4_surf = draw_text('PRESS C TO SEE THE CREDITS!', WHITE)
-            text_rect4 = text4.get_rect()
-            text_rect4.centerx, text_rect4.top = text_rect3.centerx, text_rect3.bottom
+            # text4 = draw_text('PRESS C TO SEE THE CREDITS!', WHITE)
+            # text_rect4 = text4.get_rect()
+            # text_rect4.centerx, text_rect4.top = text_rect3.centerx, text_rect3.bottom
 
-            text5, text5_surf = draw_text('CODE ACCEPTED. ENJOY CHEATING WITH ALL THOSE LIVES!', WHITE)
+            text5 = draw_text('CODE ACCEPTED. ENJOY CHEATING WITH ALL THOSE LIVES!', WHITE)
             text_rect5 = text5.get_rect()
-            text_rect5.centerx, text_rect5.bottom = text_rect4.centerx, SCREEN_HEIGHT-100
+            text_rect5.centerx, text_rect5.bottom = self.screen_rect.centerx, SCREEN_HEIGHT-100
 
-            text6, text6_surf = draw_text('CODE ACCEPTED. ENJOY YOUR NEW WEAPONS!', WHITE)
+            text6 = draw_text('CODE ACCEPTED. ENJOY YOUR NEW WEAPONS!', WHITE)
             text_rect6 = text6.get_rect()
             text_rect6.centerx, text_rect6.top = text_rect5.centerx, text_rect5.bottom
 
-            self.screen.blit(text1, text_rect1)
-            self.screen.blit(text2, text_rect2)
-            self.screen.blit(text3, text_rect3)
-            self.screen.blit(text4, text_rect4)
+            # self.screen.blit(text1, text_rect1)
+            # self.screen.blit(text2, text_rect2)
+            # self.screen.blit(text3, text_rect3)
+            # self.screen.blit(text4, text_rect4)
+
+            self.screen.blit(title, title_rect)
+            self.screen.blit(start_button, start_button_rect)
+            self.screen.blit(quit_button, quit_button_rect)
+            self.screen.blit(credits_button, credits_button_rect)
+            self.screen.blit(hs_list_button, hs_list_button_rect)
+
             if konami_code_accepted:
                 self.screen.blit(text5, text_rect5)
             if idsoft_code_accepted:
                 self.screen.blit(text6, text_rect6)
 
-            pygame.display.update()
+            pygame.display.flip()
 
-            self.clock.tick(FRAMERATE//6)
+            self.clock.tick(FRAMERATE)
         
         pygame.quit()
 
@@ -758,8 +810,8 @@ class GUI(object):
 
             for line in credit_list:
                 line = line.strip('\n')
-                text, text_surf = draw_text(line, WHITE)
-                text_rect = text_surf.get_rect()
+                text = draw_text(line, WHITE)
+                text_rect = text.get_rect()
                 text_rect.center = (x,y)
                 y += 50
                 self.screen.blit(text, text_rect)
@@ -799,8 +851,8 @@ class GUI(object):
             y = SCREEN_HEIGHT - count
 
             for line in hs_list:
-                text, text_surf = draw_text(line, WHITE)
-                text_rect = text_surf.get_rect()
+                text = draw_text(line, WHITE)
+                text_rect = text.get_rect()
                 text_rect.center = (x,y)
                 y += 50
                 self.screen.blit(text, text_rect)
@@ -813,6 +865,7 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
 
     def level_loop(self, level, cheat_lives, cheat_weaps):
+        pygame.mouse.set_visible(False) ##turn the mouse back off
         self.loader = levelLoader.LevelLoader(level)
         still_playing = True
         curr_score = 0
@@ -875,8 +928,8 @@ class GUI(object):
 
             for line in story_scroll:
                 line = line.strip('\n')
-                text, text_surf = draw_text(line, WHITE)
-                text_rect = text_surf.get_rect()
+                text = draw_text(line, WHITE)
+                text_rect = text.get_rect()
                 text_rect.center = (x,y)
                 y += 50
                 self.screen.blit(text, text_rect)
