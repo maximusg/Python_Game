@@ -65,21 +65,23 @@ def load_text(filename):
     with open(filename) as f:
         return f.readlines()
 
+class NoneSound:
+    def play(self):
+        pass
+
 def load_sound(name):
     '''Accepts a file name and attempts to load it. If pygame.mixer has not been initialized yet, 
     returns a dummy class with no sound. Will throw an exception if the file is not found.
     Returns a pygame.Sound object that can be used.'''
-    class NoneSound:
-        def play(self):
-            pass
     if not pygame.mixer or not pygame.mixer.get_init():
         return NoneSound()
     fullname = os.path.join(MAIN_DIR, name)
     try:
         sound = pygame.mixer.Sound(fullname)
     except pygame.error:
-        print ('Cannot load sound: %s' % fullname)
-        raise SystemExit(str(geterror()))
+        raise RuntimeError('Cannot load sound:' + fullname)
+    finally:
+        return NoneSound()
     return sound
 
 def load_background_music(filename):
@@ -95,14 +97,11 @@ def load_image(name, colorkey=-1):
     try:
         image = pygame.image.load(fullname).convert()
     except pygame.error:
-        print ('Cannot load image:', fullname)
-        raise SystemExit(str(geterror()))
-    if image.get_alpha():
+        raise RuntimeError('Cannot load image:' + fullname)
+    if image.get_alpha(): ##not reliable
         image = image.convert_alpha()
-        #print('loading {} alpha'.format(name))
     else:
         image = image.convert()
-        #print('loading {} non-alpha'.format(name))
         if colorkey is not None:
             if colorkey is -1:
                 colorkey = image.get_at((0, 0))

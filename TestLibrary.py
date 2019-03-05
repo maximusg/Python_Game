@@ -8,7 +8,7 @@ import library
 
 class TestLibrary(unittest.TestCase):
     def test_load_text(self):
-        filename = 'credits.asset'
+        filename = 'resources/event_scrolls/credits.asset'
         with open(filename) as f:
             expected = f.readlines()
         result = library.load_text(filename)
@@ -44,9 +44,20 @@ class TestLibrary(unittest.TestCase):
     def test_draw_text(self):
         pass
 
-    def test_draw_boss_health(self):
+    def test_draw_vertical_bar(self):
         pass
 
+    def test_draw_boss_bar(self):
+        pass
+
+    def test_draw_player_lives(self):
+        pass
+    
+    def test_draw_bombs_remaining(self):
+        pass
+
+    def test_draw_button(self):
+        pass
 
 if __name__ == "__main__":
     unittest.main(exit=False)

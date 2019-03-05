@@ -235,22 +235,6 @@ class GUI(object):
                 enemy_bullets_to_add = events.get('bullets', [])
                 items_to_add = events.get('items', [])
                 
-            # if events:
-            #     try:
-            #         enemies_to_add = events['enemy']
-            #     except KeyError:
-            #         enemies_to_add = []
-            #     finally:
-            #         try:
-            #             enemy_bullets_to_add = events['bullets']
-            #         except KeyError:
-            #             enemy_bullets_to_add = []
-            #         finally:
-            #             try:    
-            #                 items_to_add = events['items']
-            #             except KeyError:
-            #                 items_to_add = []
-
             if sec_running >= endtime and not spawn_boss:
                 if len(enemy_sprites) == 0 and len(enemy_bullet_sprites) == 0:
                     going = False
@@ -738,22 +722,6 @@ class GUI(object):
             if y1 > h:
                 y1 = -h
 
-            # text1 = draw_text('PRESS SPACE TO START!', WHITE)
-            # text_rect1 = text1.get_rect()
-            # text_rect1.center = SCREEN_CENTER
-            
-            # text2 = draw_text('PRESS ESC TO EXIT!', WHITE)
-            # text_rect2 = text2.get_rect()
-            # text_rect2.centerx, text_rect2.top = text_rect1.centerx, text_rect1.bottom 
-
-            # text3 = draw_text('PRESS S TO SEE THE HALL OF FAME!', WHITE)
-            # text_rect3 = text3.get_rect()
-            # text_rect3.centerx, text_rect3.top = text_rect2.centerx, text_rect2.bottom
-
-            # text4 = draw_text('PRESS C TO SEE THE CREDITS!', WHITE)
-            # text_rect4 = text4.get_rect()
-            # text_rect4.centerx, text_rect4.top = text_rect3.centerx, text_rect3.bottom
-
             text5 = draw_text('CODE ACCEPTED. ENJOY CHEATING WITH ALL THOSE LIVES!', WHITE)
             text_rect5 = text5.get_rect()
             text_rect5.centerx, text_rect5.bottom = self.screen_rect.centerx, SCREEN_HEIGHT-100
@@ -761,11 +729,6 @@ class GUI(object):
             text6 = draw_text('CODE ACCEPTED. ENJOY YOUR NEW WEAPONS!', WHITE)
             text_rect6 = text6.get_rect()
             text_rect6.centerx, text_rect6.top = text_rect5.centerx, text_rect5.bottom
-
-            # self.screen.blit(text1, text_rect1)
-            # self.screen.blit(text2, text_rect2)
-            # self.screen.blit(text3, text_rect3)
-            # self.screen.blit(text4, text_rect4)
 
             self.screen.blit(title, title_rect)
             self.screen.blit(start_button, start_button_rect)
