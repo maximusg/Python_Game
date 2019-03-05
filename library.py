@@ -114,7 +114,8 @@ def draw_text(to_print, text_color, bg_color=None, text_size = 25, bold=False):
        with background color defined by bg_color. If bg_color=None, then no background fill is used. Returns a surface with just
        the text (text) and one with the background color (if set) applied.'''
     if bold:
-        font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', text_size)
+        text_size -= 1 ##makes things fit better.
+        font = pygame.font.Font('resources/fonts/OpenSans-Bold.ttf', text_size)
     else:
         font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', text_size)
     text = font.render(str(to_print), True, text_color, bg_color)
@@ -173,8 +174,8 @@ def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
     surface_rect.topleft = topleft_corner
     return surface, surface_rect
 
-def draw_button(text, text_color=BLACK, bg_color=None, topleft_corner = (0,0)):
-    button = draw_text(text, text_color, bg_color)
+def draw_button(text, text_color=BLACK, bg_color=None, topleft_corner = (0,0), bold=False):
+    button = draw_text(text, text_color, bg_color, bold=bold)
     button_rect = button.get_rect()
     button_rect.topleft = topleft_corner
 

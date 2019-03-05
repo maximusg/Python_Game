@@ -56,6 +56,7 @@ class GUI(object):
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE or event.key == K_SPACE:
                         going = False ## TODO - needs different handling than SPACE
+                        
                     if event.key == K_F12:
                         self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if self.fs_toggle:
@@ -195,10 +196,12 @@ class GUI(object):
                 if event.type == QUIT:
                     going = False
                     next_level = False
+                    pygame.mouse.set_visible(True) ##We need the mouse here.
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         going = False
                         next_level = False
+                        pygame.mouse.set_visible(True) ##We need the mouse here.
                     if event.key == K_F12:
                         self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if self.fs_toggle:
@@ -655,10 +658,10 @@ class GUI(object):
         title_rect = title.get_rect()
         title_rect.centerx, title_rect.y = SCREEN_WIDTH//2, 100
 
-        start_button, start_button_rect = draw_button('PLAY', BLACK, WHITE)
-        quit_button, quit_button_rect = draw_button('QUIT', BLACK, WHITE)
-        credits_button, credits_button_rect = draw_button('CREDITS', BLACK, WHITE)
-        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, WHITE)
+        start_button, start_button_rect = draw_button('PLAY', WHITE, BLACK)
+        quit_button, quit_button_rect = draw_button('QUIT', WHITE, BLACK)
+        credits_button, credits_button_rect = draw_button('CREDITS', WHITE, BLACK)
+        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', WHITE, BLACK)
         
         start_button_rect.center = SCREEN_CENTER
         quit_button_rect.centerx, quit_button_rect.top = start_button_rect.centerx, start_button_rect.bottom+10
@@ -698,18 +701,18 @@ class GUI(object):
                         in_code.append(event.key)
                 elif event.type == MOUSEMOTION:
                     if start_button_rect.collidepoint(event.pos):
-                        start_button, start_button_rect = draw_button('PLAY', BLACK, YELLOW, start_button_rect.topleft)
+                        start_button, start_button_rect = draw_button('PLAY', BLACK, YELLOW, start_button_rect.topleft, True)
                     elif quit_button_rect.collidepoint(event.pos):
-                        quit_button, quit_button_rect = draw_button('QUIT', BLACK, YELLOW, quit_button_rect.topleft)
+                        quit_button, quit_button_rect = draw_button('QUIT', BLACK, YELLOW, quit_button_rect.topleft, True)
                     elif credits_button_rect.collidepoint(event.pos):
-                        credits_button, credits_button_rect = draw_button('CREDITS', BLACK, YELLOW, credits_button_rect.topleft)
+                        credits_button, credits_button_rect = draw_button('CREDITS', BLACK, YELLOW, credits_button_rect.topleft, True)
                     elif hs_list_button_rect.collidepoint(event.pos):
-                        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, YELLOW, hs_list_button_rect.topleft)
+                        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, YELLOW, hs_list_button_rect.topleft, True)
                     else:
-                        start_button, start_button_rect = draw_button('PLAY', BLACK, WHITE, start_button_rect.topleft)
-                        quit_button, quit_button_rect = draw_button('QUIT', BLACK, WHITE, quit_button_rect.topleft)
-                        credits_button, credits_button_rect = draw_button('CREDITS', BLACK, WHITE, credits_button_rect.topleft)
-                        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, WHITE, hs_list_button_rect.topleft)
+                        start_button, start_button_rect = draw_button('PLAY', WHITE, BLACK, start_button_rect.topleft)
+                        quit_button, quit_button_rect = draw_button('QUIT', WHITE, BLACK, quit_button_rect.topleft)
+                        credits_button, credits_button_rect = draw_button('CREDITS', WHITE, BLACK, credits_button_rect.topleft)
+                        hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', WHITE, BLACK, hs_list_button_rect.topleft)
                 elif event.type == MOUSEBUTTONDOWN and event.button == 1:  ##1 is the Left Button
                     if start_button_rect.collidepoint(event.pos):
                         gui.level_loop(1, konami_code_accepted, idsoft_code_accepted)
