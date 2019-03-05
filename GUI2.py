@@ -325,6 +325,8 @@ class GUI(object):
                     if sprite.is_weapon:
                         upgrade = weapon.upgrade(sprite.weapon_name, playerShip.weapon.name)
                         playerShip.weapon = weapon.Weapon(upgrade)
+                    if sprite.is_bomb:
+                        playerShip.bombs_remaining += 1
                     items.remove(sprite)
                 else:
                     collision = pygame.sprite.spritecollideany(sprite, player_sprites_invul)
@@ -356,7 +358,7 @@ class GUI(object):
                 collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
                 if collision:
                     #print('bomb explosion collision')
-                    sprite.take_damage(3) #probably want to take a lot more damage from a bomb
+                    sprite.take_damage(30) #probably want to take a lot more damage from a bomb
                     #collision.visible = 0
                     #player_bullet_sprites.remove(collision)
                     if sprite.health <= 0:

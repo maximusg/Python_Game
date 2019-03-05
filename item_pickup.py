@@ -9,7 +9,9 @@ item_images_path = cwd.joinpath('resources', 'item_images')
 master_items_dict = {
     'powerup':('powerup.gif', None),
     'coin':('coin.png', None),
-    'spitfire_powerup':('spitfire_powerup.png', 'spitfire')
+    'spitfire_powerup':('spitfire_powerup.png', 'spitfire'),
+    'bomb_item':('bomb_item.png', None)
+
 }
 
 
@@ -18,6 +20,8 @@ class item(entity2.entity2):
         super().__init__()
 
         self.weapon_name = None
+        self.is_bomb = False
+
         if name is not None:
             if name in master_items_dict:
                 path_to_img = master_items_dict.get(name)[0]
@@ -26,7 +30,10 @@ class item(entity2.entity2):
                 if self.is_weapon:
                     self.weapon_name = self.is_weapon
 
-        self.image, self.rect = load_image(item_images_path.joinpath(path_to_img))
+                if name is 'bomb_item':
+                    self.is_bomb = True
+
+        self.image, self.rect = load_image(str(item_images_path.joinpath(path_to_img)))
         self.rect.centerx, self.rect.top = origin_x, origin_y
         self.value = 50
         self.dirty = 1
