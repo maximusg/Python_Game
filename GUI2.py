@@ -323,10 +323,10 @@ class GUI(object):
                 if collision:
                     sprite.visible = 0
                     player_score += sprite.value
-                    if sprite.is_weapon:
+                    if sprite.checkWeapon():
                         upgrade = weapon.upgrade(sprite.weapon_name, playerShip.weapon.name)
                         playerShip.weapon = weapon.Weapon(upgrade)
-                    if sprite.is_bomb:
+                    if sprite.checkBomb():
                         playerShip.bombs_remaining += 1
                     sprite.kill()
 
@@ -334,7 +334,7 @@ class GUI(object):
                     collision = pygame.sprite.spritecollideany(sprite, player_sprites_invul)
                     if collision:
                         sprite.visible = 0
-                        if sprite.is_weapon:
+                        if sprite.checkWeapon():
                             upgrade = weapon.upgrade(sprite.weapon_name, playerShip.weapon.name)
                             playerShip.weapon = weapon.Weapon(upgrade)
                         sprite.kill()

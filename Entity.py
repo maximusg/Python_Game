@@ -477,6 +477,19 @@ class Item(Entity):
         #for item movement
         # self.speed = speed
 
+    def checkWeapon(self):
+        if self.weapon_name is not None:
+            return True
+
+        return False
+
+    def checkBomb(self):
+        if self.name in MASTER_ITEMS:
+            if self.name is 'bomb_item':
+                return True
+
+        return False
+
     def move(self, x, y):
         self.rect = self.rect.move((x, y))
 

@@ -65,7 +65,8 @@ BULLET_VECTORS = {
 MASTER_ITEMS = {
     'powerup':('powerup.gif', None),
     'coin':('coin.png', None),
-    'spitfire_powerup':('spitfire_powerup.png', 'spitfire')
+    'spitfire_powerup':('spitfire_powerup.png', 'spitfire'),
+    'bomb_item':('bomb_item.png', None)
     }
 
 def saveGame(array, stateName="default"):

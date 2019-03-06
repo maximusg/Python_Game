@@ -6,7 +6,7 @@ from library import *
 from levelLibrary import *
 
 import itemDropTables
-import item_pickup
+import Entity
 import random
 
 class enemy(entity2.entity2):
@@ -159,7 +159,7 @@ class enemy(entity2.entity2):
 			item_upper_threshold.append(total_probability + item[1])
 			total_probability += item[1]
 			if rand_num > item_lower_threshold[index] and (rand_num <= item_upper_threshold[index]):
-				return item_pickup.item(self.rect.centerx, self.rect.centery, name= item[0])
+				return Entity.Item(self.rect.centerx, self.rect.centery, name= item[0])
 
 			index += 1
 
