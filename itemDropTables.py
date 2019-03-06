@@ -12,9 +12,15 @@ purpose: create tables linking items to their drop rates, to be used when creati
          Just make sure your probabilities don't add up to more than 1
 '''
 
-#common = (('coin', 0.4),('powerup', 0.1))#, ('spitfire_powerup', 0.3))
-common = (('coin', 0.1),('spitfire_powerup', 0.05))#, ('spitfire_powerup', 0.3))
+#common = (('coin', 0.1),('spitfire_powerup', 0.05))#, ('spitfire_powerup', 0.3))
+common = (
+    ('coin', 0.1),
+    ('spitfire_powerup', 0.05),
+    ('bomb_item', 0.4)
+        )
 
-#rare = (('coin', 0.2), 'powerup', 0.7)
 
-rare = (('coin', 0.1),('powerup', 0.7))
+rare = (
+    ('coin', 0.1),
+    ('powerup', 0.7)
+        )

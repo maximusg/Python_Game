@@ -13,13 +13,12 @@ class BombExplosion(pygame.sprite.Sprite):
         super().__init__()
         anim0 = bomb_explosion_images_path.joinpath('bomb_explosion0.png')
         self.image, self.rect = load_image(str(anim0))
-        self.rect = pygame.Rect(startx-150,starty-150,30,30)
-        #self.radius = 25
+        self.rect = pygame.Rect(startx-150,starty-150,300,300)
         self.sound = load_sound(str(bomb_sounds.joinpath('Mboom.wav ')))
         self.frame_counter = 45
         self.frame = 1
         self.visible = 1
-        self.bomb_growth = 30
+        self.bomb_growth = 1
 
 
     def update(self):
@@ -27,21 +26,16 @@ class BombExplosion(pygame.sprite.Sprite):
             self.visible = 0
         self.frame_counter -= 1
         if self.frame_counter % 5 == 0 and self.frame < TOTAL_ANIM_FRAMES:
+
+            bomb_size = self.image.get_size()
             self.frame += 1
             old_x, old_y = self.rect.centerx, self.rect.centery
-            #self.image, self.rect = load_image('resources/weapon_images/bomb_explosion/bomb_explosion'+str(self.frame)+'.png')
             self.image, self.rect = load_image(str(bomb_explosion_images_path.joinpath('bomb_explosion')) + str(self.frame)+'.png')
             self.rect.centerx, self.rect.centery = old_x, old_y
-            self.size = self.image.get_size()
-            # create a 2x bigger image than self.image
-            self.bigger_img = pygame.transform.scale(self.image, (int(self.size[0] + self.bomb_growth), int(self.size[1] + self.bomb_growth)))
-            self.image = self.bigger_img
-            self.rect.inflate(self.bomb_growth, self.bomb_growth)
-            self.bomb_growth += 30
-        self.move(1,0)
-        #pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
+            self.image = pygame.transform.scale(self.image, (int(bomb_size[0]*self.bomb_growth), int(bomb_size[1]*self.bomb_growth)))
+            self.rect = self.image.get_rect(center=(old_x,old_y))
+            self.bomb_growth += 0.066 #changing this value will change how much the explosion grows each frame. Anything above 0.75 is bad, explosion fills the whole screen
 
-        # draw bigger image to screen at x=100 y=100 position
 
 
     def move(self, diffx, diffy):

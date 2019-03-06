@@ -53,14 +53,8 @@ class bomb(entity2.entity2):
 
 
         self.behaveDic = {
-            "up": self.__up__,
-            "northWest": self.__northWest__,
-            "northEast": self.__northEast__,
-            "northNorthEast": self.__northNorthEast__,
-            "northNorthWest": self.__northNorthWest__,
-            "missle": self.__missle__,
-            "down": self.__down__,
-            "bomb": self.__bomb__
+            "bomb": self.__bomb__,
+            "upSlow": self.__upSlow__
 
         }
 
@@ -82,6 +76,10 @@ class bomb(entity2.entity2):
             self.visible = 0
             self.dirty = 1
 
+        #new movement after bomb slows down to a threshold of speed 3. upSlow moves the bomb up slowly forever
+        if self.speed <= 3:
+            self.movement = self.__upSlow__()
+
         self.bomb_timer -= 1
         if self.bomb_timer <= 0 and self.visible == 1:
             self.visible = 0
@@ -102,49 +100,17 @@ class bomb(entity2.entity2):
     # if not (0 <= self.rect.top <= SCREEN_HEIGHT):
     # 	self.visible = 0
 
-    def __up__(self):
-        # behaviorArray = ["down","stop","left","stop","up","stop","right"]
-        # speedArray = [	  1*self.speed,	1*self.speed]
-        return movement.Move(behaviorArray=['up'], moveCountArray=[800], speedArray=[self.speed],
-                             angelArray=[self.angle])  # default behavior for object, could increase/decrease speed
 
-    def __northEast__(self):
-        return movement.Move(behaviorArray=['northEast'], moveCountArray=[800], speedArray=[self.speed],
-                             angelArray=[self.angle])  # default behavior for object, could increase/decrease speed
+    def __upSlow__(self):
+        moveCountArray = [3000]
+        vectorArray = [[0, 2, 180]]
+        return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=99)
 
-    def __northNorthEast__(self):
-        return movement.Move(behaviorArray=['northNorthEast'], moveCountArray=[800], speedArray=[self.speed * 0.5],
-                             angelArray=[self.angle])  # default behavior for object, could increase/decrease speed
-
-    def __northWest__(self):
-        return movement.Move(behaviorArray=['northWest'], moveCountArray=[800], speedArray=[self.speed],
-                             angelArray=[self.angle])  # default behavior for object, could increase/decrease speed
-
-    def __northNorthWest__(self):
-        return movement.Move(behaviorArray=['northNorthWest'], moveCountArray=[800], speedArray=[self.speed * 0.5],
-                             angelArray=[self.angle])  # default behavior for object, could increase/decrease speed
-
-    def __missle__(self):
-
-        behaviorArray = ["up", "northWest", "left", "right", "up", "northEast", "right"]
-        moveCountArray = [50, 20, 20, 20, 50, 20, 20]
-        angleArray = [0, 45, -90, 90, 0, -45, 90]
-        speedArray = [1 * self.speed]
-        return movement.Move(behaviorArray, moveCountArray, speedArray, angleArray, exitscreen=False)
-
-    def __down__(self):
-        return movement.Move(behaviorArray=['down'], moveCountArray=[800], speedArray=[self.speed],
-                             angelArray=[self.angle])
-
-    # def __bomb__(self):
-    #     return movement.Move(behaviorArray=['up', 'up', 'up', 'up'], moveCountArray=[1, 20, 30, 49],
-    #                          speedArray=[self.speed, self.speed * .7, self.speed * .5, self.speed * .2],
-    #                          angelArray=[self.angle])
 
     def __bomb__(self):
-        moveCountArray = [1,100]
-        vectorArray = [[0, 15, 180],[-.18, "x", "x"]]
-       
+        moveCountArray = [1,300]
+        vectorArray = [[0, 15, 180,],[-.3, "x", 180]]
+
 
         #stopVector = []
 

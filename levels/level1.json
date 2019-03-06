@@ -6,6 +6,12 @@
     "time": {
         "0": {
             "background": "starfield.png",
+            "enemy": {
+                "class": [
+                    "@s7-mv-5-1-0"
+                ],
+                "health": 1
+            },
             "player": {
                 "health": 1,
                 "image": "SweetShip.png",
@@ -15,6 +21,399 @@
                 ],
                 "scheme": "arrows",
                 "weapon": "blue_lazer"
+            }
+        },
+        "4": {
+            "enemy": {
+                "class": [
+                    "@s3-db-3-2-0",
+                    "@s4-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "5": {
+            "enemy": {
+                "class": [
+                    "@s3-db-3-2-0",
+                    "@s4-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "6": {
+            "enemy": {
+                "class": [
+                    "@s3-db-3-2-0",
+                    "@s4-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "7": {
+            "enemy": {
+                "class": [
+                    "@s3-db-3-2-0",
+                    "@s4-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "11": {
+            "enemy": {
+                "class": [
+                    "@s11-db-3-2-0",
+                    "@s12-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "12": {
+            "enemy": {
+                "class": [
+                    "@s11-db-3-2-0",
+                    "@s12-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "13": {
+            "enemy": {
+                "class": [
+                    "@s11-db-3-2-0",
+                    "@s12-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "14": {
+            "enemy": {
+                "class": [
+                    "@s11-db-3-2-0",
+                    "@s12-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "15": {
+            "enemy": {
+                "class": [
+                    "@s11-db-3-2-0",
+                    "@s12-db-3-2-0"
+                ],
+                "health": 1
+            }
+        },
+        "16": {
+            "enemy": {
+                "class": [
+                    "@s5-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "17": {
+            "enemy": {
+                "class": [
+                    "@s12-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "18": {
+            "enemy": {
+                "class": [
+                    "@s9-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "19": {
+            "enemy": {
+                "class": [
+                    "@s3-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "20": {
+            "enemy": {
+                "class": [
+                    "@s13-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "21": {
+            "enemy": {
+                "class": [
+                    "@s9-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "22": {
+            "enemy": {
+                "class": [
+                    "@s4-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "23": {
+            "enemy": {
+                "class": [
+                    "@s13-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "24": {
+            "enemy": {
+                "class": [
+                    "@s9-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "25": {
+            "enemy": {
+                "class": [
+                    "@s9-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "26": {
+            "enemy": {
+                "class": [
+                    "@s8-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "27": {
+            "enemy": {
+                "class": [
+                    "@s13-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "28": {
+            "enemy": {
+                "class": [
+                    "@s14-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "29": {
+            "enemy": {
+                "class": [
+                    "@s12-db-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "33": {
+            "enemy": {
+                "class": [
+                    "@s2-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "34": {
+            "enemy": {
+                "class": [
+                    "@s11-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "35": {
+            "enemy": {
+                "class": [
+                    "@s12-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "36": {
+            "enemy": {
+                "class": [
+                    "@s12-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "37": {
+            "enemy": {
+                "class": [
+                    "@s2-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "38": {
+            "enemy": {
+                "class": [
+                    "@s14-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "39": {
+            "enemy": {
+                "class": [
+                    "@s6-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "40": {
+            "enemy": {
+                "class": [
+                    "@s1-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "41": {
+            "enemy": {
+                "class": [
+                    "@s14-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "42": {
+            "enemy": {
+                "class": [
+                    "@s6-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "43": {
+            "enemy": {
+                "class": [
+                    "@s11-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "44": {
+            "enemy": {
+                "class": [
+                    "@s14-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "45": {
+            "enemy": {
+                "class": [
+                    "@s13-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "46": {
+            "enemy": {
+                "class": [
+                    "@s9-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "47": {
+            "enemy": {
+                "class": [
+                    "@s12-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "48": {
+            "enemy": {
+                "class": [
+                    "@s8-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "49": {
+            "enemy": {
+                "class": [
+                    "@s13-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "50": {
+            "enemy": {
+                "class": [
+                    "@s13-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "51": {
+            "enemy": {
+                "class": [
+                    "@s14-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "52": {
+            "enemy": {
+                "class": [
+                    "@s10-ds-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "55": {
+            "enemy": {
+                "class": [
+                    "@s12-mv-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "58": {
+            "enemy": {
+                "class": [
+                    "@s4-mv-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "61": {
+            "enemy": {
+                "class": [
+                    "@s13-mv-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "64": {
+            "enemy": {
+                "class": [
+                    "@s9-mv-5-1-0"
+                ],
+                "health": 1
+            }
+        },
+        "67": {
+            "enemy": {
+                "class": [
+                    "@s11-mv-5-1-0"
+                ],
+                "health": 1
             }
         }
     }
