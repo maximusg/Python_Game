@@ -42,17 +42,17 @@ def spitfire3(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
     bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northEast')
-    bullet3 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
-    bullet4 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northWest')
-    bullet5 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
+    bullet2 = Entity.Bullet(origin_x - 16, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet3 = Entity.Bullet(origin_x - 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet4 = Entity.Bullet(origin_x + 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet5 = Entity.Bullet(origin_x + 16, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
 
     return bullet1, bullet2, bullet3, bullet4, bullet5
 
 def spitfire2(origin_x, origin_y):
     bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
-    bullet3 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
+    bullet2 = Entity.Bullet(origin_x - 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet3 = Entity.Bullet(origin_x + 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
     return bullet1, bullet2, bullet3
 
 def blue_lazer(origin_x, origin_y):
