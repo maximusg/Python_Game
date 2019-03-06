@@ -1,0 +1,21 @@
+{
+    "end": {
+        "boss": false,
+        "time": 53
+    },
+    "time": {
+        "0": {
+            "background": "starfield.png",
+            "player": {
+                "health": 1,
+                "image": "SweetShip.png",
+                "location": [
+                    500,
+                    700
+                ],
+                "scheme": "arrows",
+                "weapon": "blue_lazer"
+            }
+        }
+    }
+}

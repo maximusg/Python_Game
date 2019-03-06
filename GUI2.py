@@ -421,6 +421,8 @@ class GUI(object):
                 bg_y1 = -bg_h
 
             #self.screen.blit(bg, bg_rect)
+            explosions.draw(self.screen)
+            bomb_explosion_sprites.draw(self.screen)
             c1 = self.screen.blit(column, ORIGIN)
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
@@ -459,8 +461,6 @@ class GUI(object):
             player_sprites.draw(self.screen)
             enemy_sprites.draw(self.screen)
             boss_sprites.draw(self.screen)
-            explosions.draw(self.screen)
-            bomb_explosion_sprites.draw(self.screen)
 
             pygame.display.flip()
 
