@@ -346,7 +346,7 @@ class GUI(object):
                         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
                         new_explosion.play_sound() 
                         explosions.add(new_explosion)                        
-                        player_score += sprite.point_value
+                        player_score += sprite.value
                         item_drop = sprite.getDrop()
                         if item_drop is not None:
                             items.add(item_drop)
@@ -364,7 +364,7 @@ class GUI(object):
                         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
                         new_explosion.play_sound()
                         explosions.add(new_explosion)
-                        player_score += sprite.point_value
+                        player_score += sprite.value
                         item_drop = sprite.getDrop()
                         if item_drop is not None:
                             items.add(item_drop)

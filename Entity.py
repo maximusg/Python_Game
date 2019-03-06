@@ -8,9 +8,10 @@ import random
 
 import movement
 import weapon
-import bullet
+#import bullet
 import itemDropTables
-import item_pickup
+#import item_pickup
+import explosion
 
 from library import *
 from levelLibrary import *
@@ -381,7 +382,7 @@ class Enemy(Entity):
             item_upper_threshold.append(total_probability + item[1])
             total_probability += item[1]
             if rand_num > item_lower_threshold[index] and (rand_num <= item_upper_threshold[index]):
-                return item_pickup.item(self.rect.centerx, self.rect.centery, name= item[0])
+                return Item(self.rect.centerx, self.rect.centery, name= item[0])
             index += 1
         return None
 
@@ -458,16 +459,16 @@ class Bullet(Entity):
 
 class Item(Entity):
     def __init__(self, origin_x, origin_y, speed = 1, path_to_img = 'powerup.gif', name = None):
-        super().__init__(origin=(origin_x,origin_y), imageFile=ITEM_IMAGES_PATH.joinpath(path_to_img), speed=speed, point_value=ITEM_VALUE)
-
         self.weapon_name = None
         if name is not None:
-            if name in master_items_dict:
-                path_to_img = master_items_dict.get(name)[0]
-                weapon_name = master_items_dict.get(name)[1]
+            if name in MASTER_ITEMS:
+                path_to_img = MASTER_ITEMS.get(name)[0]
+                weapon_name = MASTER_ITEMS.get(name)[1]
                 self.is_weapon = weapon.is_weapon(weapon_name)
                 if self.is_weapon:
                     self.weapon_name = self.is_weapon
+        
+        super().__init__(origin=(origin_x,origin_y), imageFile=ITEM_IMAGES_PATH.joinpath(path_to_img), speed=speed, point_value=ITEM_VALUE)
 
         # self.image, self.rect = load_image(item_images_path.joinpath(path_to_img))
         # self.rect.centerx, self.rect.top = origin_x, origin_y
