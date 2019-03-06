@@ -109,23 +109,6 @@ def cluster (selection="full",b="db",s=3,h=1):
     }.get(selection,basic) # defaults to basic
     
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #Enemy Classes
 ENEMY_diveLeft ="diveLeft"
 ENEMY_diveRight ="diveRight"

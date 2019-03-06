@@ -2,12 +2,13 @@
 #!/bin/python
 #this file will load files made by level loader, and retrun all the values in the format expected by the GUI,
 #To not have to change the GUI's functionality to much, levelLoader is kind of like a helper class for GUI
+import Entity
 
 import weapon
-import player
-import enemy
-import boss
-import bullet
+# import player
+# import enemy
+# import boss
+# import bullet
 from library import *
 from levelLibrary import *
 import json
@@ -103,7 +104,7 @@ class LevelLoader():
         for each in events:
             if each in TIME_TYPES:
                 if each == "player":
-                    playerShip = player.player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
+                    playerShip = Entity.Player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
                     timeEvents["player"].append(playerShip)
                 if each == "enemy":
                     health = events[each]["health"]
@@ -130,7 +131,7 @@ class LevelLoader():
         
         return timeEvents #all sprites and background in a dictionary returned to GUI
 
-        # bad_guy = enemy.enemy('spitfire','enemy.png')
+        # bad_guy = Entity.Enemy('spitfire','enemy.png')
 
 
     def getEndBehavior(self):
@@ -151,53 +152,53 @@ class LevelLoader():
             a=className[1::].split("-")
             if PROPER_FORMAT(className):
                 if len(a)==4:
-                    enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]))
+                    enemySprite = Entity.Enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]))
                 else:     
-                    enemySprite = enemy.enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]), acceleration=float(a[4]))
+                    enemySprite = Entity.Enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]), acceleration=float(a[4]))
                 return enemySprite
         
 
         if className == ENEMY_diveLeft:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s2"), health=health) # this will change, need to add spawn location and behavior
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s2"), health=health) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveRight:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s12")) # this will change, need to add spawn location and behavior
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s12")) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveMid1:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s5"), behavior="diver", health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s5"), behavior="diver", health=health)
         elif className == ENEMY_diveMid2:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s7"), behavior="diver", health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="diver", health=health)
         elif className == ENEMY_diveMid3:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s9"), behavior="diver",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s9"), behavior="diver",health=health)
         
         
         elif className == ENEMY_sleeperMid:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s6"), behavior="sleeper",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s6"), behavior="sleeper",health=health)
         
         elif className == ENEMY_camperMid:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s7"), behavior="camper",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="camper",health=health)
         elif className == ENEMY_camperRight:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s13"), behavior="camper",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s13"), behavior="camper",health=health)
         elif className == ENEMY_weakCamperMid:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s8"), behavior="camper",health=health) #gets no health scaler
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s8"), behavior="camper",health=health) #gets no health scaler
         
         
         
         elif className == ENEMY_crazyMid1:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s4"), behavior="crazy",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s4"), behavior="crazy",health=health)
         elif className == ENEMY_crazyMid2:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s6"), behavior="crazy",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s6"), behavior="crazy",health=health)
         elif className == ENEMY_crazyMid3:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s8"), behavior="crazy",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s8"), behavior="crazy",health=health)
             
         elif className == ENEMY_crazy2Mid1:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s2"), behavior="crazyReverse",health=health, speed=2)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s2"), behavior="crazyReverse",health=health, speed=2)
         elif className == ENEMY_crazy2Mid2:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s13"), behavior="crazyReverse",health=health, speed=6)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s13"), behavior="crazyReverse",health=health, speed=6)
         elif className == ENEMY_crazy2Mid3:
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s7"), behavior="crazyReverse",health=health, speed=9) #gets no health scaler
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="crazyReverse",health=health, speed=9) #gets no health scaler
         
         
         else:#middle diver is fallback
-            enemySprite = enemy.enemy(ENEMY_SECTORS("s7"), health=health) # this will change, need to add spawn location and behavior
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), health=health) # this will change, need to add spawn location and behavior
         
         return enemySprite
 
@@ -214,11 +215,11 @@ class LevelLoader():
         '''contructs and returns enemy bullets off a 1 input nameing convention'''
         bulletSprite = None
         if className == "downwardLeft":
-            bulletSprite = bullet.bullet(COLUMN_WIDTH*1,0, -5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
+            bulletSprite = Entity.Bullet(COLUMN_WIDTH*1,0, -5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
         elif className == "downwardRight":
-            bulletSprite = bullet.bullet(COLUMN_WIDTH*4,0, 5, "bullet_art.png", 180 ) # this will change, need to add spawn location and behavior
+            bulletSprite = Entity.Bullet(COLUMN_WIDTH*4,0, 5, "bullet_art.png", 180 ) # this will change, need to add spawn location and behavior
         else:#middle bullet is fallback
-            bulletSprite = bullet.bullet(SCREEN_WIDTH//2,0, 5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
+            bulletSprite = Entity.Bullet(SCREEN_WIDTH//2,0, 5, "bullet_art.png", 180 )# this will change, need to add spawn location and behavior
         return bulletSprite
 
         #delete items for each time called

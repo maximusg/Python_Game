@@ -3,12 +3,13 @@ import pygame
 from pygame.locals import *
 from pygame.compat import geterror
 from library import *
+import Entity
 import weapon
-import player
-import enemy
+# import player
+# import enemy
 import explosion
 import bomb_explosion
-import item_pickup
+# import item_pickup
 import levelLoader
 import highscore
 import random
@@ -141,16 +142,16 @@ class GUI(object):
         #load_background_music('roboCop3NES.ogg')
         
         #Initialize sprite groups
-        player_sprites_invul = pygame.sprite.LayeredDirty(_default_layer = 4)
-        player_sprites = pygame.sprite.LayeredDirty(playerShip, _default_layer = 4)
-        player_bullet_sprites = pygame.sprite.LayeredDirty(_default_layer = 3)
-        player_bomb_sprites = pygame.sprite.LayeredDirty(_default_layer = 1) #not sure if bombs should be on the lowest layer
-        bomb_explosion_sprites = pygame.sprite.LayeredUpdates(__default_layer = 4) # the bomb explosion should damage enemies on collision, so it is on the same layer as enemies
-        enemy_sprites = pygame.sprite.LayeredDirty(bad_guys, _default_layer = 4)
-        boss_sprites = pygame.sprite.LayeredDirty( _default_layer = 4)
-        enemy_bullet_sprites = pygame.sprite.LayeredDirty(bad_guy_bullets, _default_layer = 3)
-        items=pygame.sprite.LayeredDirty(_default_layer = 2)
-        explosions = pygame.sprite.LayeredUpdates(__default_layer = 5)
+        player_sprites_invul = pygame.sprite.Group()
+        player_sprites = pygame.sprite.Group(playerShip)
+        player_bullet_sprites = pygame.sprite.Group()
+        player_bomb_sprites = pygame.sprite.Group() #not sure if bombs should be on the lowest layer
+        bomb_explosion_sprites = pygame.sprite.Group() # the bomb explosion should damage enemies on collision, so it is on the same layer as enemies
+        enemy_sprites = pygame.sprite.Group(bad_guys)
+        boss_sprites = pygame.sprite.Group()
+        enemy_bullet_sprites = pygame.sprite.Group(bad_guy_bullets)
+        items=pygame.sprite.Group()
+        explosions = pygame.sprite.Group()
 
         going=True
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
@@ -172,7 +173,7 @@ class GUI(object):
                 player_lives -= 1
                 if player_lives:
                     self.death_loop()
-                    playerShip = player.player('spitfire','SweetShip.png',"arrows") #TODO: replace this with data from levelLoader
+                    playerShip = Entity.Player('spitfire','SweetShip.png',"arrows") #TODO: replace this with data from levelLoader
                     playerShip.invul_flag = True
                     player_sprites_invul.add(playerShip)
                 else:
@@ -211,12 +212,12 @@ class GUI(object):
                     if event.key == K_PAUSE:
                         self.pause_screen()
                     if DEBUG:
-                        if event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                            #for i in range(200):
-                            bad_guy = enemy.enemy('spitfire','enemy.png')
-                            enemy_sprites.add(bad_guy)
+                        # if event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
+                        #     #for i in range(200):
+                        #     bad_guy = enemy.enemy('spitfire','enemy.png')
+                        #     enemy_sprites.add(bad_guy)
                         if event.key == K_F2 and len(player_sprites) == 0:
-                            playerShip = player.player('spitfire','SweetShip.png',"arrows")
+                            playerShip = Entity.Player('spitfire','SweetShip.png',"arrows")
                             player_sprites.add(playerShip)
                         if event.key == K_F11:
                             enemy_sprites.empty()
@@ -303,7 +304,7 @@ class GUI(object):
                 if collision:
                     self.explode.play()
                     playerShip.take_damage(5)
-                    enemy_bullet_sprites.remove(collision)
+                    collision.kill()
                 else:
                     collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
                     if collision:
@@ -315,7 +316,7 @@ class GUI(object):
                             self.explode.play()
                             playerShip.take_damage(1)
                 if playerShip.health <= 0:
-                    player_sprites.remove(sprite)
+                    playerShip.kill()
                     
             for sprite in items:
                 collision = pygame.sprite.spritecollideany(sprite, player_sprites)
@@ -327,7 +328,8 @@ class GUI(object):
                         playerShip.weapon = weapon.Weapon(upgrade)
                     if sprite.is_bomb:
                         playerShip.bombs_remaining += 1
-                    items.remove(sprite)
+                    sprite.kill()
+
                 else:
                     collision = pygame.sprite.spritecollideany(sprite, player_sprites_invul)
                     if collision:
@@ -335,24 +337,24 @@ class GUI(object):
                         if sprite.is_weapon:
                             upgrade = weapon.upgrade(sprite.weapon_name, playerShip.weapon.name)
                             playerShip.weapon = weapon.Weapon(upgrade)
-                        items.remove(sprite)
+                        sprite.kill()
 
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
                     sprite.take_damage(1)
                     collision.visible = 0
-                    player_bullet_sprites.remove(collision)
+                    collision.kill()
                     if sprite.health <= 0:
                         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
                         new_explosion.play_sound() 
                         explosions.add(new_explosion)                        
-                        player_score += sprite.point_value
+                        player_score += sprite.value
                         item_drop = sprite.getDrop()
                         if item_drop is not None:
                             items.add(item_drop)
                 if sprite.visible == 0:
-                    enemy_sprites.remove(sprite)
+                    sprite.kill()
 
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
@@ -365,51 +367,50 @@ class GUI(object):
                         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
                         new_explosion.play_sound()
                         explosions.add(new_explosion)
-                        player_score += sprite.point_value
+                        player_score += sprite.value
                         item_drop = sprite.getDrop()
                         if item_drop is not None:
                             items.add(item_drop)
                 if sprite.visible == 0:
-                    enemy_sprites.remove(sprite)
+                    sprite.kill()
 
 
             for sprite in boss_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
                     sprite.take_damage(1)
-                    collision.visible = 0
-                    player_bullet_sprites.remove(collision)
+                    collision.kill()
                     if sprite.health <= 0:
                         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
                         new_explosion.play_sound() 
                         explosions.add(new_explosion)                        
                         player_score += sprite.point_value
                 if sprite.visible == 0:
-                    boss_sprites.remove(sprite)   
+                    sprite.kill()  
 
             for sprite in player_bullet_sprites:
                 if sprite.visible == 0:
-                    player_bullet_sprites.remove(sprite)    
+                    sprite.kill()    
             
             for sprite in enemy_bullet_sprites:
                 if sprite.visible == 0:
-                    enemy_bullet_sprites.remove(sprite)
+                    sprite.kill()
 
             for sprite in explosions:
                 if sprite.visible == 0:
-                    explosions.remove(sprite)
+                    sprite.kill()
 
             for sprite in player_bomb_sprites:
                 if sprite.visible == 0:
-                    player_bomb_sprites.remove(sprite)
+                    sprite.kill()
 
             for sprite in bomb_explosion_sprites:
                 if sprite.visible == 0:
-                    bomb_explosion_sprites.remove(sprite)
+                    sprite.kill()
 
             for sprite in items:
                 if sprite.visible == 0:
-                    items.remove(sprite)
+                    sprite.kill()
 
             bg_y1 += 1
             bg_y += 1
@@ -423,6 +424,7 @@ class GUI(object):
             #self.screen.blit(bg, bg_rect)
             explosions.draw(self.screen)
             bomb_explosion_sprites.draw(self.screen)
+
             c1 = self.screen.blit(column, ORIGIN)
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
@@ -845,7 +847,7 @@ class GUI(object):
             curr_lives = 3
 
         if cheat_weaps:
-            playerShip = player.player('master_lazer','SweetShip.png',"arrows") 
+            playerShip = Entity.Player('master_lazer','SweetShip.png',"arrows") 
 
         while still_playing:
             curr_lives, curr_score, next_level, playerShip = self.main(curr_lives, curr_score, playerShip)

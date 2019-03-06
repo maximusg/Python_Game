@@ -20,8 +20,8 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 '''
 
 from pathlib import Path
-import bullet
-import bomb
+import Entity
+#import bomb
 
 cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
@@ -33,7 +33,7 @@ weapon_images_path = cwd.joinpath('resources', 'weapon_images')
 def spitfire(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='up')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='up')
 
 
     return bullet1
@@ -41,36 +41,30 @@ def spitfire(origin_x, origin_y):
 def spitfire3(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northEast')
-    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
-    bullet4 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northWest')
-    bullet5 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet2 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northEast')
+    bullet3 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
+    bullet4 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northWest')
+    bullet5 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
 
     return bullet1, bullet2, bullet3, bullet4, bullet5
-    #self.weapon.weapon_func()
-    #return bullet.bullet(origin_x, origin_y, 5, self.weapon.weapon_image)
-    #player_bullet_sprites.add(bullet1)
 
 def spitfire2(origin_x, origin_y):
-    #print('spitfire here')
-    #print(origin_x, origin_y)
-    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
-    bullet3 = bullet.bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet2 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthEast')
+    bullet3 = Entity.Bullet(origin_x + 5, origin_y + 5, 15, weapon_images_path.joinpath('spitfire.png'), behavior='northNorthWest')
     return bullet1, bullet2, bullet3
 
 def blue_lazer(origin_x, origin_y):
-    bullet1 = bullet.bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('blue_lazer.gif'))
-    
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('blue_lazer.gif'))
     return bullet1
 
 def missle(origin_x, origin_y):
-    bullet1 = bullet.bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('blue_lazer.gif'), behavior="missle")
+    bullet1 = Entity.Bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('blue_lazer.gif'), behavior="missle")
     return bullet1
 
 def bombs(origin_x, origin_y):
-    bomb1 = bomb.bomb(origin_x, origin_y, 5, weapon_images_path.joinpath('bomb.png'), behavior='bomb')
+    bomb1 = Entity.Bomb(origin_x, origin_y, 5, weapon_images_path.joinpath('bomb.png'), behavior='bomb')
     return bomb1
 
 master_weapons_dict = dict(spitfire=(10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
