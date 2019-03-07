@@ -209,3 +209,19 @@ def draw_button(text, text_color=BLACK, bg_color=None, topleft_corner = (0,0), b
     button_rect.topleft = topleft_corner
 
     return button, button_rect
+
+def draw_instructions():
+    inst1 = draw_text('Arrow keys to move', WHITE)
+    inst2 = draw_text('SPACE key to shoot', WHITE)
+    inst3 = draw_text('B key to launch bombs', WHITE)
+    inst4 = draw_text('PAUSE to pause', WHITE)
+    inst5 = draw_text('ESC to save/quit', WHITE)
+
+    text_block = pygame.surface.Surface((COLUMN_WIDTH, inst1.get_rect().height*5))
+    text_block.blit(inst1, ORIGIN)
+    text_block.blit(inst2, (0, inst1.get_rect().height))
+    text_block.blit(inst3, (0, inst1.get_rect().height*2))
+    text_block.blit(inst4, (0, inst1.get_rect().height*3))
+    text_block.blit(inst5, (0, inst1.get_rect().height*4))
+
+    return text_block

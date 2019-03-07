@@ -433,6 +433,9 @@ class GUI(object):
             #score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
+            inst_block = draw_instructions()
+            self.screen.blit(inst_block, (0,text.get_rect().bottom))
+
             if DEBUG:
                 debug_text = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_text, (0, SCREEN_HEIGHT - 100))
