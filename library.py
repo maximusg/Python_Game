@@ -6,6 +6,7 @@ import pygame
 from pygame.locals import *
 from pygame.compat import geterror
 import pickle
+import AssetLoader
 
 #CONSTANTS
 FRAMERATE = 60
@@ -42,6 +43,8 @@ BOSS_VALUE = 50000
 ITEM_VALUE = 50
 
 MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
+
+ASSET_MANAGER = AssetLoader.AssetLoader()
 
 ENEMY_SPRITE = {
         "diver":1,
@@ -120,23 +123,24 @@ def load_background_music(filename):
     pygame.mixer.music.load(filename)
     pygame.mixer.music.play(loops=-1)
 
-def load_image(name, colorkey=-1):
-    '''Accepts a filename and colorkey, throws an exception if the file does not exist. Returns the pygame.image object
-       as well as it's rectangle for manipulation.'''
-    fullname = os.path.join(MAIN_DIR, name)
-    try:
-        image = pygame.image.load(fullname).convert()
-    except pygame.error:
-        raise RuntimeError('Cannot load image:' + fullname)
-    if image.get_alpha(): ##not reliable
-        image = image.convert_alpha()
-    else:
-        image = image.convert()
-        if colorkey is not None:
-            if colorkey is -1:
-                colorkey = image.get_at((0, 0))
-            image.set_colorkey(colorkey, RLEACCEL)
-    return image, image.get_rect()
+# def load_image(name, colorkey=-1):
+#     '''Accepts a filename and colorkey, throws an exception if the file does not exist. Returns the pygame.image object
+#        as well as it's rectangle for manipulation.'''
+#     fullname = os.path.join(MAIN_DIR, name)
+#     try:
+#         image = pygame.image.load(fullname).convert()
+#     except pygame.error:
+#         raise RuntimeError('Cannot load image:' + fullname)
+#     if image.get_alpha(): ##not reliable
+#         image = image.convert_alpha()
+#     else:
+#         image = image.convert()
+#         if colorkey is not None:
+#             if colorkey is -1:
+#                 colorkey = image.get_at((0, 0))
+#             image.set_colorkey(colorkey, RLEACCEL)
+#     return image, image.get_rect()
+
 
 def draw_text(to_print, text_color, bg_color=None, text_size = 25, bold=False):
     '''Draws the string to_print in the color defined by text_color (can be a defined constant, or an RGB value triple)
@@ -180,7 +184,9 @@ def draw_boss_bar(width, height, health_percent, shield_percent, topleft_corner 
     return surface, rect
 
 def draw_player_lives(player_lives, topleft_corner = (0,0)):
-    ship_sprite, ship_rect = load_image('CoolShip.png')
+    # ship_sprite, ship_rect = load_image('CoolShip.png')
+    ship = ASSET_MANAGER.getAsset('CoolShip.png')
+    ship_sprite, ship_rect = ship[0], ship[1]
     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
     surface.fill(BLACK)
     surface.blit(ship_sprite, (0,0))
@@ -192,7 +198,9 @@ def draw_player_lives(player_lives, topleft_corner = (0,0)):
     return surface, surface_rect
 
 def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
-    bomb_sprite, bomb_rect = load_image('resources/weapon_images/bomb.png')
+    # bomb_sprite, bomb_rect = load_image('resources/weapon_images/bomb.png')
+    bomb = ASSET_MANAGER.getAsset('resources/weapon_images/bomb.png')
+    bomb_sprite, bomb_rect = bomb[0], bomb[1]
     surface = pygame.surface.Surface((bomb_rect.right * 6, bomb_rect.bottom))
     surface.fill(BLACK)
     surface.blit(bomb_sprite, (0,0))
@@ -225,3 +233,4 @@ def draw_instructions():
     text_block.blit(inst5, (0, inst1.get_rect().height*4))
 
     return text_block
+

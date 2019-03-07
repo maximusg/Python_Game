@@ -12,7 +12,7 @@ class BombExplosion(pygame.sprite.Sprite):
     def __init__(self, startx, starty):
         super().__init__()
         anim0 = bomb_explosion_images_path.joinpath('bomb_explosion0.png')
-        self.image, self.rect = load_image(str(anim0))
+        self.image, self.rect = ASSET_MANAGER.getAsset(str(anim0))
         self.rect = pygame.Rect(startx-150,starty-150,300,300)
         self.sound = load_sound(str(bomb_sounds.joinpath('Mboom.wav ')))
         self.frame_counter = 45
@@ -30,7 +30,7 @@ class BombExplosion(pygame.sprite.Sprite):
             bomb_size = self.image.get_size()
             self.frame += 1
             old_x, old_y = self.rect.centerx, self.rect.centery
-            self.image, self.rect = load_image(str(bomb_explosion_images_path.joinpath('bomb_explosion')) + str(self.frame)+'.png')
+            self.image, self.rect = ASSET_MANAGER.getAsset(str(bomb_explosion_images_path.joinpath('bomb_explosion')) + str(self.frame)+'.png')
             self.rect.centerx, self.rect.centery = old_x, old_y
             self.image = pygame.transform.scale(self.image, (int(bomb_size[0]*self.bomb_growth), int(bomb_size[1]*self.bomb_growth)))
             self.rect = self.image.get_rect(center=(old_x,old_y))

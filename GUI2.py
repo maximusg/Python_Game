@@ -1,5 +1,6 @@
 #!/bin/python
 import pygame
+import sys
 from pygame.locals import *
 from pygame.compat import geterror
 from library import *
@@ -40,7 +41,7 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image('starfield.png')
+        bg, bg_rect = ASSET_MANAGER.getAsset('starfield.png')
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
@@ -110,8 +111,6 @@ class GUI(object):
             playerShip = starting_events.get('player')
             if playerShip:
                 playerShip = playerShip[0]
-        bad_guys = starting_events.get('enemy',[])
-        bad_guy_bullets = starting_events.get('bullets',[])
 
         ##Check for end of level conditions
         if ending_events:
@@ -125,7 +124,7 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image(bg_filename)
+        bg, bg_rect = ASSET_MANAGER.getAsset(bg_filename)
         bg_size = bg.get_size()
         bg_w, bg_h = bg_size
         bg_x = 0
@@ -149,9 +148,9 @@ class GUI(object):
         player_bullet_sprites = pygame.sprite.Group()
         player_bomb_sprites = pygame.sprite.Group() #not sure if bombs should be on the lowest layer
         bomb_explosion_sprites = pygame.sprite.Group() # the bomb explosion should damage enemies on collision, so it is on the same layer as enemies
-        enemy_sprites = pygame.sprite.Group(bad_guys)
+        enemy_sprites = pygame.sprite.Group()
         boss_sprites = pygame.sprite.Group()
-        enemy_bullet_sprites = pygame.sprite.Group(bad_guy_bullets)
+        enemy_bullet_sprites = pygame.sprite.Group()
         items=pygame.sprite.Group()
         explosions = pygame.sprite.Group()
 
@@ -506,9 +505,11 @@ class GUI(object):
                                 pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                             else:
                                 pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
+                    if event.key == K_p and DEBUG:
+                        print(ASSET_MANAGER)
                 if event.type == QUIT:
                     pygame.quit()
-                    exit()
+                    sys.exit()
             pygame.display.update()
             self.clock.tick(FRAMERATE)
 
@@ -519,7 +520,9 @@ class GUI(object):
 
         button_yes, yes_rect = draw_button('YES', WHITE, BLACK, text1_rect.bottomleft)
         button_no, no_rect = draw_button('NO', WHITE, BLACK)
-        no_rect.topright = text1_rect.bottomright
+        button_cancel, cancel_rect = draw_button('CANCEL', WHITE, BLACK)
+        no_rect.centerx, no_rect.y = text1_rect.centerx, text1_rect.bottom
+        cancel_rect.topright = text1_rect.bottomright
 
         going = True
         while going:
@@ -533,11 +536,14 @@ class GUI(object):
                         print([health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber])
                         return False, False
                     elif no_rect.collidepoint(event.pos):
-                        return False, False                
+                        return False, False              
+                    elif cancel_rect.collidepoint(event.pos):
+                        return True, True  
 
             self.screen.blit(text1, text1_rect)
             self.screen.blit(button_yes, yes_rect)
             self.screen.blit(button_no, no_rect)
+            self.screen.blit(button_cancel, cancel_rect)
 
             pygame.display.update()
 
@@ -664,7 +670,7 @@ class GUI(object):
     def menu(self):
         pygame.mouse.set_visible(True) ##We need the mouse here.
 
-        bg, bg_rect = load_image('nebula_red.png')
+        bg, bg_rect = ASSET_MANAGER.getAsset('nebula_red.png')
         bg_size = bg.get_size()
         w, h = bg_size
         x = 0
@@ -802,7 +808,7 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image('nebula.jpg')
+        bg, bg_rect = ASSET_MANAGER.getAsset('nebula.jpg')
         with open('resources/event_scrolls/credits.asset') as infile:
             credit_list = infile.readlines()
 
@@ -844,7 +850,7 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image('nebula.jpg')
+        bg, bg_rect = ASSET_MANAGER.getAsset('nebula.jpg')
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
@@ -932,7 +938,7 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = load_image('nebula_blue.png')
+        bg, bg_rect = ASSET_MANAGER.getAsset('nebula_blue.png')
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 

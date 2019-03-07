@@ -46,7 +46,7 @@ class Entity(pygame.sprite.Sprite):
         #loading picture    
         
         if imageFile!=None:
-            self.image, self.rect = load_image(imageFile)
+            self.image, self.rect = ASSET_MANAGER.getAsset(imageFile)
         else:#if no image give creates a 20X20 red square.
             self.image = pygame.Surface([20, 20])
             self.image.fill(RED)

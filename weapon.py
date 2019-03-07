@@ -23,9 +23,9 @@ from pathlib import Path
 import Entity
 #import bomb
 
-cwd = Path.cwd()
-weapon_images_path = cwd.joinpath('resources', 'weapon_images')
-
+# cwd = Path.cwd()
+# weapon_images_path = cwd.joinpath('resources', 'weapon_images')
+weapon_images_path = Path('resources/weapon_images')
 
 spitfire_spread = 15
 #each weapon name will be mapped to its function, an image, and other properties
