@@ -138,6 +138,8 @@ class GUI(object):
         column = pygame.Surface((COLUMN_WIDTH, SCREEN_HEIGHT))
         column.fill(BLACK)
 
+        inst_block = draw_instructions()
+
         #Background sound setup
         #load_background_music('roboCop3NES.ogg')
         
@@ -433,7 +435,6 @@ class GUI(object):
             #score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
-            inst_block = draw_instructions()
             self.screen.blit(inst_block, (0,text.get_rect().bottom))
 
             if DEBUG:
