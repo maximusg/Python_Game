@@ -96,7 +96,7 @@ class GUI(object):
 
         gui.menu()
 
-    def main(self, lives_remaining, curr_score, currPlayerShip):
+    def main(self, lives_remaining, curr_score, currPlayerShip, currTime = 0):
         ##Level Loader setup
         starting_events = self.loader.getEvents(0)
         ending_events = self.loader.getEndBehavior()
@@ -155,7 +155,7 @@ class GUI(object):
 
         going=True
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
-        time_since_start = 0
+        time_since_start = currTime * 1000 #convert to milliseconds
         next_level = True
         invul_timer = 120 ##frames of invulnerability post-death
         regen_timer = 6
@@ -200,9 +200,10 @@ class GUI(object):
                     pygame.mouse.set_visible(True) ##We need the mouse here.
                 elif event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
-                        going = False
-                        next_level = False
+                        # going = False
+                        # next_level = False
                         pygame.mouse.set_visible(True) ##We need the mouse here.
+                        going, next_level = self.ask_to_save(playerShip.health, playerShip.shield, playerShip.weapon.name, playerShip.bombs_remaining, player_score, player_lives, time_since_start//1000)
                     if event.key == K_F12:
                         self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
                         if self.fs_toggle:
@@ -507,6 +508,39 @@ class GUI(object):
             pygame.display.update()
             self.clock.tick(FRAMERATE)
 
+    def ask_to_save(self, health, shield, weapon, bombs, score, lives, time_of_save):
+        text1 = draw_text('Do you want to save your progress?', WHITE, BLACK)
+        text1_rect = text1.get_rect()
+        text1_rect.center = SCREEN_CENTER
+
+        button_yes, yes_rect = draw_button('YES', WHITE, BLACK, text1_rect.bottomleft)
+        button_no, no_rect = draw_button('NO', WHITE, BLACK)
+        no_rect.topright = text1_rect.bottomright
+
+        going = True
+        while going:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    going = False
+                    sys.exit()
+                elif event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if yes_rect.collidepoint(event.pos):
+                        saveGame([health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber])
+                        print([health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber])
+                        return False, False
+                    elif no_rect.collidepoint(event.pos):
+                        return False, False                
+
+            self.screen.blit(text1, text1_rect)
+            self.screen.blit(button_yes, yes_rect)
+            self.screen.blit(button_no, no_rect)
+
+            pygame.display.update()
+
+            self.clock.tick(FRAMERATE)
+        
+        
+
     def level_complete(self):
         going = True
         start_time = pygame.time.get_ticks()
@@ -647,12 +681,15 @@ class GUI(object):
         title_rect.centerx, title_rect.y = SCREEN_WIDTH//2, 100
 
         start_button, start_button_rect = draw_button('PLAY', WHITE, BLACK)
+        load_button, load_button_rect = draw_button('LOAD GAME', WHITE, BLACK)
         quit_button, quit_button_rect = draw_button('QUIT', WHITE, BLACK)
         credits_button, credits_button_rect = draw_button('CREDITS', WHITE, BLACK)
         hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', WHITE, BLACK)
-        
+
+
         start_button_rect.center = SCREEN_CENTER
-        quit_button_rect.centerx, quit_button_rect.top = start_button_rect.centerx, start_button_rect.bottom+10
+        load_button_rect.centerx, load_button_rect.top = start_button_rect.centerx, start_button_rect.bottom+10
+        quit_button_rect.centerx, quit_button_rect.top = load_button_rect.centerx, load_button_rect.bottom+10
         credits_button_rect.centerx, credits_button_rect.top = quit_button_rect.centerx, quit_button_rect.bottom+10
         hs_list_button_rect.centerx, hs_list_button_rect.top = credits_button_rect.centerx, credits_button_rect.bottom+10
 
@@ -690,6 +727,8 @@ class GUI(object):
                 elif event.type == MOUSEMOTION:
                     if start_button_rect.collidepoint(event.pos):
                         start_button, start_button_rect = draw_button('PLAY', BLACK, YELLOW, start_button_rect.topleft, True)
+                    elif load_button_rect.collidepoint(event.pos):
+                        load_button, load_button_rect = draw_button('LOAD GAME', BLACK, YELLOW, load_button_rect.topleft, True)
                     elif quit_button_rect.collidepoint(event.pos):
                         quit_button, quit_button_rect = draw_button('QUIT', BLACK, YELLOW, quit_button_rect.topleft, True)
                     elif credits_button_rect.collidepoint(event.pos):
@@ -698,6 +737,7 @@ class GUI(object):
                         hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', BLACK, YELLOW, hs_list_button_rect.topleft, True)
                     else:
                         start_button, start_button_rect = draw_button('PLAY', WHITE, BLACK, start_button_rect.topleft)
+                        load_button, load_button_rect = draw_button('LOAD GAME', WHITE, BLACK, load_button_rect.topleft)
                         quit_button, quit_button_rect = draw_button('QUIT', WHITE, BLACK, quit_button_rect.topleft)
                         credits_button, credits_button_rect = draw_button('CREDITS', WHITE, BLACK, credits_button_rect.topleft)
                         hs_list_button, hs_list_button_rect = draw_button('HALL OF FAME', WHITE, BLACK, hs_list_button_rect.topleft)
@@ -707,6 +747,8 @@ class GUI(object):
                         in_code = []
                         konami_code_accepted = False
                         idsoft_code_accepted = False
+                    elif load_button_rect.collidepoint(event.pos):
+                        gui.level_loop(toLoad=True)
                     elif quit_button_rect.collidepoint(event.pos):
                         going = False
                     elif credits_button_rect.collidepoint(event.pos):
@@ -736,6 +778,7 @@ class GUI(object):
 
             self.screen.blit(title, title_rect)
             self.screen.blit(start_button, start_button_rect)
+            self.screen.blit(load_button, load_button_rect)
             self.screen.blit(quit_button, quit_button_rect)
             self.screen.blit(credits_button, credits_button_rect)
             self.screen.blit(hs_list_button, hs_list_button_rect)
@@ -834,23 +877,40 @@ class GUI(object):
                 going = False
             self.clock.tick(FRAMERATE)
 
-    def level_loop(self, level, cheat_lives, cheat_weaps):
+    def level_loop(self, level=1, cheat_lives=False, cheat_weaps=False, toLoad=False):
         pygame.mouse.set_visible(False) ##turn the mouse back off
-        self.loader = levelLoader.LevelLoader(level)
-        still_playing = True
-        curr_score = 0
-        playerShip = None
 
-        if cheat_lives:
-            curr_lives = 100
+        if not toLoad:
+            self.loader = levelLoader.LevelLoader(level)
+            curr_score = 0
+            curr_time = 0
+            playerShip = None
+
+            if cheat_lives:
+                curr_lives = 100
+            else:
+                curr_lives = 3
+
+            if cheat_weaps:
+                playerShip = Entity.Player('master_lazer','SweetShip.png',"arrows") 
+
         else:
-            curr_lives = 3
+            pickled_goods = loadGame()
+            ##[health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber]
+            playerShip = Entity.Player(pickled_goods[2], 'SweetShip.png', 'arrows')
+            playerShip.health = pickled_goods[0]
+            playerShip.shield = pickled_goods[1]
+            playerShip.bombs_remaining = pickled_goods[3]
+            curr_score = pickled_goods[4]
+            curr_lives = pickled_goods[5]
+            curr_time = pickled_goods[6]
+            self.loader = levelLoader.LevelLoader(pickled_goods[7])
 
-        if cheat_weaps:
-            playerShip = Entity.Player('master_lazer','SweetShip.png',"arrows") 
+
+        still_playing = True
 
         while still_playing:
-            curr_lives, curr_score, next_level, playerShip = self.main(curr_lives, curr_score, playerShip)
+            curr_lives, curr_score, next_level, playerShip = self.main(curr_lives, curr_score, playerShip, curr_time)
             is_next_level = self.loader.nextLevel()
             if not next_level:
                 still_playing = False

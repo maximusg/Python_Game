@@ -69,20 +69,20 @@ MASTER_ITEMS = {
     'bomb_item':('bomb_item.png', None)
     }
 
-def saveGame(array, stateName="default"):
+def saveGame(array, stateName="game.sav"):
     cwd = Path.cwd()
     saveLocation = cwd.joinpath('levels', 'game_state')
-    with open (saveLocation.joinpath(stateName),"wb") as write_file:
-        pickle.dump(array,write_file,)
+    with open (saveLocation.joinpath(stateName), "w+b") as write_file:
+        pickle.dump(array,write_file)
 
 
-def loadGame(stateName="default"):
+def loadGame(stateName="game.sav"):
     cwd = Path.cwd()
     saveLocation = cwd.joinpath('levels', 'game_state')
     location = saveLocation.joinpath(stateName)
     levelState=None
     try:
-        with open (location,"rb") as read_file:
+        with open (location,"r+b") as read_file:
             levelState= pickle.load(read_file)
     except FileNotFoundError as Error:
         raise ("ERROR: LoadGame failed " + Error)
