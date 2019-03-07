@@ -27,7 +27,7 @@ cwd = Path.cwd()
 weapon_images_path = cwd.joinpath('resources', 'weapon_images')
 
 
-
+spitfire_spread = 15
 #each weapon name will be mapped to its function, an image, and other properties
 
 def spitfire(origin_x, origin_y):
@@ -42,17 +42,17 @@ def spitfire3(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
     bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x - 16, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet3 = Entity.Bullet(origin_x - 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet4 = Entity.Bullet(origin_x + 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet5 = Entity.Bullet(origin_x + 16, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet2 = Entity.Bullet(origin_x - 2*spitfire_spread, origin_y + 15, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet3 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 10, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet4 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 10, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet5 = Entity.Bullet(origin_x + 2*spitfire_spread, origin_y + 15, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
 
     return bullet1, bullet2, bullet3, bullet4, bullet5
 
 def spitfire2(origin_x, origin_y):
     bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x - 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet3 = Entity.Bullet(origin_x + 8, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet2 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 10, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet3 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 10, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
     return bullet1, bullet2, bullet3
 
 def blue_lazer(origin_x, origin_y):
