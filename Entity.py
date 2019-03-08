@@ -225,13 +225,19 @@ class Player(Entity):
                     self.drop_bomb()
                     self.bombs_remaining -= 1
             ##end if/else    
-            if DEBUG:        
+            if DEBUG:
                 if keys[pygame.K_1]:
                     self.weapon = weapon.Weapon('spitfire')
                 if keys[pygame.K_2]:
                     self.weapon = weapon.Weapon('spitfire2')
                 if keys[pygame.K_3]:
                     self.weapon = weapon.Weapon('spitfire3')
+                if keys[pygame.K_4]:
+                    self.weapon = weapon.Weapon('waveBeam')
+                if keys[pygame.K_5]:
+                    self.weapon = weapon.Weapon('waveBeam2')
+                if keys[pygame.K_6]:
+                    self.weapon = weapon.Weapon('waveBeam3')
         return addBullet
 
     def update(self):
@@ -393,13 +399,13 @@ class Enemy(Entity):
 
 class Bullet(Entity):
 
-    def __init__(self, origin_x, origin_y, speed, path_to_img, acceleration=0, angle = 0, behavior = 'up'):
+    def __init__(self, origin_x, origin_y, speed, path_to_img, acceleration=0, angle = 0, behavior = 'up', name = None):
         location = (origin_x, origin_y)
         super().__init__(origin=location, imageFile=path_to_img, speed=speed, acceleration=acceleration, angle=angle )
 
         # self.dirty = 1
         # self.mask = pygame.mask.from_surface(self.image)
-        
+        self.name = name
 
         #in order to reuse in other methods.
         self.NE = ["x", self.speed*0.5 ,(180+30)]
@@ -427,6 +433,13 @@ class Bullet(Entity):
 
 
     def update(self):
+        if self.name == "waveBeam":
+            wave_growth = 2
+            wave_size = self.image.get_size()
+            #ASSET_MANAGER.getAsset(self.imageFile)
+            self.image = pygame.transform.scale(self.image, (int(wave_size[0]+wave_growth), int(wave_size[1])))
+            self.rect = self.rect.inflate(wave_growth, 0)
+            #self.move(-wave_growth, 0)
         super().update()
         self.movement.update(self)
 
