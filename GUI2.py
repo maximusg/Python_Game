@@ -25,7 +25,7 @@ class GUI(object):
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
-        self.fs_toggle = True
+        self.fs_toggle = False
         self.hs_list = highscore.Scoreboard()
         self.loader = None
 

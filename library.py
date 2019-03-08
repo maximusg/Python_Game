@@ -123,23 +123,23 @@ def load_background_music(filename):
     pygame.mixer.music.load(filename)
     pygame.mixer.music.play(loops=-1)
 
-# def load_image(name, colorkey=-1):
-#     '''Accepts a filename and colorkey, throws an exception if the file does not exist. Returns the pygame.image object
-#        as well as it's rectangle for manipulation.'''
-#     fullname = os.path.join(MAIN_DIR, name)
-#     try:
-#         image = pygame.image.load(fullname).convert()
-#     except pygame.error:
-#         raise RuntimeError('Cannot load image:' + fullname)
-#     if image.get_alpha(): ##not reliable
-#         image = image.convert_alpha()
-#     else:
-#         image = image.convert()
-#         if colorkey is not None:
-#             if colorkey is -1:
-#                 colorkey = image.get_at((0, 0))
-#             image.set_colorkey(colorkey, RLEACCEL)
-#     return image, image.get_rect()
+def load_image(name, colorkey=-1):
+    '''Accepts a filename and colorkey, throws an exception if the file does not exist. Returns the pygame.image object
+       as well as it's rectangle for manipulation.'''
+    fullname = os.path.join(MAIN_DIR, name)
+    try:
+        image = pygame.image.load(fullname).convert()
+    except pygame.error:
+        raise RuntimeError('Cannot load image:' + fullname)
+    if image.get_alpha(): ##not reliable
+        image = image.convert_alpha()
+    else:
+        image = image.convert()
+        if colorkey is not None:
+            if colorkey is -1:
+                colorkey = image.get_at((0, 0))
+            image.set_colorkey(colorkey, RLEACCEL)
+    return image, image.get_rect()
 
 
 def draw_text(to_print, text_color, bg_color=None, text_size = 25, bold=False):
