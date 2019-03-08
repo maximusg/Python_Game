@@ -106,7 +106,7 @@ class player(entity2.entity2):
             if DEBUG:        
                 if keys[pygame.K_1]:
 
-                    self.weapon = weapon.Weapon('spitfire')
+                    self.weapon = weapon.Weapon('waveBeam')
                 if keys[pygame.K_2]:
 
                     self.weapon = weapon.Weapon('spitfire2')

@@ -69,7 +69,9 @@ MASTER_ITEMS = {
     'powerup':('powerup.gif', None),
     'coin':('coin.png', None),
     'spitfire_powerup':('spitfire_powerup.png', 'spitfire'),
+    'wavebeam_powerup':('wavebeam_powerup.png', 'waveBeam'),
     'bomb_item':('bomb_item.png', None)
+
     }
 
 def saveGame(array, stateName="game.sav"):
