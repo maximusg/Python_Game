@@ -238,6 +238,8 @@ class Player(Entity):
                     self.weapon = weapon.Weapon('waveBeam2')
                 if keys[pygame.K_6]:
                     self.weapon = weapon.Weapon('waveBeam3')
+                if keys[pygame.K_7]:
+                    self.weapon = weapon.Weapon('chargeShot')
         return addBullet
 
     def update(self):

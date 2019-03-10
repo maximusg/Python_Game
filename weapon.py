@@ -21,6 +21,8 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 
 from pathlib import Path
 import Entity
+import pygame
+from library import*
 #import bomb
 
 # cwd = Path.cwd()
@@ -30,6 +32,12 @@ weapon_images_path = Path('resources/weapon_images')
 spitfire_spread = 15
 spitfire_offset = 5
 #each weapon name will be mapped to its function, an image, and other properties
+
+def chargeShot(origin_x, origin_y):
+
+
+    bullet1 = Entity.Bullet(origin_x, origin_y, 10, weapon_images_path.joinpath('chargeShot.png'), angle = 0, behavior='up', name = 'chargeShot')
+    return bullet1
 
 def waveBeam(origin_x, origin_y):
     bullet1 = Entity.Bullet(origin_x, origin_y, 10, weapon_images_path.joinpath('waveBeam_new_s.png'), angle = 0, behavior='up', name = 'waveBeam')
@@ -87,6 +95,7 @@ master_weapons_dict = dict(
     waveBeam=(10, 2, weapon_images_path.joinpath('waveBeam_new_s.png'), waveBeam),
     waveBeam2=(10, 3, weapon_images_path.joinpath('waveBeam_new_s.png'), waveBeam),
     waveBeam3=(10, 4, weapon_images_path.joinpath('waveBeam_new_s.png'), waveBeam),
+    chargeShot= (1, 30, weapon_images_path.joinpath('chargeShot.png'), chargeShot)
 
                            )
 
@@ -109,7 +118,84 @@ class Weapon(object):
         #print(master_weapons_dict.get('spitfire')[0])
         #print(self.weapon_image)
         #os.startfile(self.weapon_image)
+        self.chargeShot_counter = 0
+        self.chargeShot_counter_max = 100
+        self.chargeShot_charging_flag = False
+        self.chargeShot_firing_flag = False
+        self.chargeShot_anim_visible = False
 
+    def chargeShot_timer(self):
+        self.chargeShot_counter +=1
+        print(self.chargeShot_counter)
+
+
+cwd = Path.cwd()
+charging_images_path = cwd.joinpath('resources', 'weapon_images', 'chargeShot', 'charging')
+bomb_sounds = cwd.joinpath('resources', 'sound_effects', 'bomb_sounds')
+#Constants
+TOTAL_ANIM_FRAMES = 7
+
+class ChargingAnim(pygame.sprite.Sprite):
+    def __init__(self, startx, starty, playerShip):
+        super().__init__()
+        anim0 = charging_images_path.joinpath('charging0.png')
+        self.image, self.rect = ASSET_MANAGER.getAsset(str(anim0))
+        self.rect = pygame.Rect(playerShip.rect.centerx,playerShip.rect.centery-60,30,30)
+
+        #self.sound = load_sound(str(bomb_sounds.joinpath('Mboom.wav ')))
+        self.frame_counter = 45
+        self.frame = 1
+        self.visible = 1
+        self.playerShip = playerShip
+        self.max_charging_width = 125
+        self.max_charging_height = 135
+        self.charge_grow = 1
+        self.charge_shrink = 2
+
+
+    def update(self):
+        if self.playerShip.weapon.chargeShot_charging_flag is False: #or self.frame_counter == 0:
+            if self.playerShip.weapon.chargeShot_counter <= 0:
+                self.visible = 0
+                self.playerShip.weapon.chargeShot_anim_visible = False
+
+
+        if self.playerShip.weapon.chargeShot_firing_flag is False:
+            charging_size = self.image.get_size()
+            #print(charging_size)
+            self.frame += 1
+            old_x, old_y = self.playerShip.rect.centerx, self.playerShip.rect.centery-60
+            self.image, self.rect = ASSET_MANAGER.getAsset(str(charging_images_path.joinpath('charging')) + str(self.frame % TOTAL_ANIM_FRAMES)+'.png')
+            self.rect.centerx, self.rect.centery = old_x, old_y
+            if charging_size[0] < self.max_charging_width:
+                self.image = pygame.transform.scale(self.image, (charging_size[0] + self.charge_grow, charging_size[1] + self.charge_grow))
+                self.rect = self.image.get_rect(center=(old_x,old_y))
+            else:
+                self.image = pygame.transform.scale(self.image, (self.max_charging_width, self.max_charging_height))
+                self.rect = self.image.get_rect(center=(old_x,old_y))
+        else:
+            charging_size = self.image.get_size()
+           # print(charging_size)
+
+            self.frame += 1
+            old_x, old_y = self.playerShip.rect.centerx, self.playerShip.rect.centery-60
+            self.image, self.rect = ASSET_MANAGER.getAsset(str(charging_images_path.joinpath('charging')) + str(self.frame % TOTAL_ANIM_FRAMES)+'.png')
+            self.rect.centerx, self.rect.centery = old_x, old_y
+
+            if charging_size[0] > 2:
+                self.image = pygame.transform.scale(self.image, (charging_size[0] - self.charge_shrink, charging_size[1] - self.charge_shrink))
+                self.rect = self.image.get_rect(center=(old_x,old_y))
+            else:
+                self.image = pygame.transform.scale(self.image, (0, 0))
+                self.rect = self.image.get_rect(center=(old_x,old_y))
+
+
+
+    def move(self, diffx, diffy):
+        self.rect = self.rect.move(diffx, diffy)
+
+    def play_sound(self):
+        self.sound.play()
 
 
 #utility functions
