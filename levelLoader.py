@@ -12,11 +12,16 @@ import weapon
 from library import *
 from levelLibrary import *
 import json
+from itemDropTables import *
+
+
 
 
 
 
 class LevelLoader():
+    
+    
     def __init__(self, startingLevelNumber=1):
         self.levelNumber = startingLevelNumber
         # self.levelName = "level"+str(self.levelNumber)
@@ -107,9 +112,8 @@ class LevelLoader():
                     playerShip = Entity.Player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
                     timeEvents["player"].append(playerShip)
                 if each == "enemy":
-                    health = events[each]["health"]
                     for enemyType in events[each]["class"]:
-                        enemy = self.enemyClass(enemyType, health)
+                        enemy = self.enemyClass(enemyType)
                         timeEvents["enemy"].append(enemy)
                 if each == 'boss_sprite':
                     boss = self.bossClass()
@@ -144,61 +148,67 @@ class LevelLoader():
         return events #returns dictionary with "time" last time in level and boss at end "true or false"
         
 
-    def enemyClass(self,className, health):
+    def enemyClass(self,className):
         '''contructs and returns enemies based off a 1 input nameing convention'''
         ''' can add enemy classes, just contruct new enemy type'''
         enemySprite = None
         if className[0]=="@": #quick naming scheme ex: "@s1-d-3-1" -check levelLibrary.py for more
             a=className[1::].split("-")
+            
             if PROPER_FORMAT(className):
+                
                 if len(a)==4:
                     enemySprite = Entity.Enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]))
-                else:     
+                elif len(a)==5:     
                     enemySprite = Entity.Enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]), acceleration=float(a[4]))
+                else: #length is 6
+                    item = DTDic[a[5]]
+                    
+                    enemySprite = Entity.Enemy(ENEMY_SECTORS(a[0]), behavior=ENEMY_TYPE_MAP(a[1]), speed=int(a[2]), health=int(a[3]), acceleration=float(a[4]), itemDropTable=item)
                 return enemySprite
         
 
         if className == ENEMY_diveLeft:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s2"), health=health) # this will change, need to add spawn location and behavior
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s2")) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveRight:
             enemySprite = Entity.Enemy(ENEMY_SECTORS("s12")) # this will change, need to add spawn location and behavior
         elif className == ENEMY_diveMid1:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s5"), behavior="diver", health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s5"), behavior="diver")
         elif className == ENEMY_diveMid2:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="diver", health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="diver")
         elif className == ENEMY_diveMid3:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s9"), behavior="diver",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s9"), behavior="diver")
         
         
         elif className == ENEMY_sleeperMid:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s6"), behavior="sleeper",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s6"), behavior="sleeper")
         
         elif className == ENEMY_camperMid:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="camper",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="camper")
         elif className == ENEMY_camperRight:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s13"), behavior="camper",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s13"), behavior="camper")
         elif className == ENEMY_weakCamperMid:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s8"), behavior="camper",health=health) #gets no health scaler
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s8"), behavior="camper") #gets no health scaler
         
         
         
         elif className == ENEMY_crazyMid1:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s4"), behavior="crazy",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s4"), behavior="crazy")
         elif className == ENEMY_crazyMid2:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s6"), behavior="crazy",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s6"), behavior="crazy")
         elif className == ENEMY_crazyMid3:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s8"), behavior="crazy",health=health)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s8"), behavior="crazy")
             
         elif className == ENEMY_crazy2Mid1:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s2"), behavior="crazyReverse",health=health, speed=2)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s2"), behavior="crazyReverse", speed=2)
         elif className == ENEMY_crazy2Mid2:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s13"), behavior="crazyReverse",health=health, speed=6)
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s13"), behavior="crazyReverse", speed=6)
         elif className == ENEMY_crazy2Mid3:
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="crazyReverse",health=health, speed=9) #gets no health scaler
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), behavior="crazyReverse", speed=9) #gets no health scaler
         
         
         else:#middle diver is fallback
-            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7"), health=health) # this will change, need to add spawn location and behavior
+            enemySprite = Entity.Enemy(ENEMY_SECTORS("s7")) # this will change, need to add spawn location and behavior
         
         return enemySprite
 

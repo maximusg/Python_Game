@@ -51,6 +51,6 @@ DTDic = {
     'DTspitfire': spitfire,
     'DTchargeShot': chargeShot,
     'DTwaveBeam': waveBeam,
-    'DTempty': empty
-
+    'DTempty': empty,
+    'DThealth': common
 }

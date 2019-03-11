@@ -263,7 +263,7 @@ class Player(Entity):
             
 class Enemy(Entity):
     def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common, angle=0):
-        imgFile = MISC_SPRITES_PATH.joinpath('enemy'+str(ENEMY_SPRITE[behavior])+'.png')
+        imgFile = MISC_SPRITES_PATH.joinpath('enemy'+str(ENEMY_SPRITE[behavior])+'.png') #selects the sprite skin based off behavior
         area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
         super().__init__(origin=origin, imageFile=imgFile, area=area, speed=speed, acceleration=acceleration, angle=angle, health=health, point_value=ENEMY_VALUE)

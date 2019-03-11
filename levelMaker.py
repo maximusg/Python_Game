@@ -27,14 +27,13 @@ data = {
             #     },
             "background": "starfield.png"
             
-            }
-        #     3: #time zero
-        #     {"enemy":{
-        #         "class": fullDiveCluster("lvl1"),
-        #         "health": 1
-        #         }
+            },
+            # 3: #time zero
+            # {"enemy":{
+            #     "class": ["@s3-db-3-2-0-common"],
+            #     }
            
-        #     },
+            # },
         #     5: #time zero
         #     {"enemy":{
         #         "class": diveStrafeCluster("lvl2"),
@@ -58,7 +57,7 @@ data = {
         #     }
         # }
     },
-    "end": {"time":53, "boss":False} #this gives the ending parameters
+    "end": {"time":60, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
@@ -101,8 +100,25 @@ ClusterDIC_Right ={
     4:"MR4",
     5:"MR5"
 }
-# for i in range(4,8):#5 enemies in line
-#     data["time"][i] = {"enemy":{ "class": ["@s3-db-3-2-0","@s4-db-3-2-0"],"health":1}}
+for i in range(3,7):#5 enemies in line
+    data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTspitfire"]}}
+
+for i in range(11,15):#5 enemies in line
+    data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DTwaveBeam"]}}
+
+for i in range(19,23):#5 enemies in line
+    data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTchargeShot"]}}
+
+for i in range(27,31):#5 enemies in line
+    data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DThealth"]}}
+
+for i in range(35,39):#5 enemies in line
+    data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTcommon"]}}
+
+for i in range(43,49):#5 enemies in line
+    data["time"][i] = {"enemy":{ "class": cluster(selection="full",b="db",s="3",h="1",d="DTcommon")}}
+
+
 
 
 # for i in range(11,16):#5 enemies in line
