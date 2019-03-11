@@ -137,7 +137,7 @@ class Entity(pygame.sprite.Sprite):
             
 class Player(Entity):
     def __init__(self, init_wep, imgFile, scheme, init_bomb = 'bomb'):
-        super().__init__(imageFile=imgFile)
+        super().__init__(imageFile=MISC_SPRITES_PATH.joinpath(imgFile))
         self.weapon = weapon.Weapon(init_wep)
 
         self.bomb = weapon.Weapon(init_bomb)
@@ -263,7 +263,7 @@ class Player(Entity):
             
 class Enemy(Entity):
     def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common, angle=0):
-        imgFile = 'enemy'+str(ENEMY_SPRITE[behavior])+'.png'
+        imgFile = MISC_SPRITES_PATH.joinpath('enemy'+str(ENEMY_SPRITE[behavior])+'.png')
         area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
         super().__init__(origin=origin, imageFile=imgFile, area=area, speed=speed, acceleration=acceleration, angle=angle, health=health, point_value=ENEMY_VALUE)
@@ -475,7 +475,7 @@ class Item(Entity):
         self.weapon_name = None
         if name is not None:
             if name in MASTER_ITEMS:
-                path_to_img = MASTER_ITEMS.get(name)[0]
+                path_to_img = ITEM_IMAGES_PATH.joinpath(MASTER_ITEMS.get(name)[0])
                 weapon_name = MASTER_ITEMS.get(name)[1]
                 self.is_weapon = weapon.is_weapon(weapon_name)
                 if self.is_weapon:
@@ -512,7 +512,7 @@ class Item(Entity):
         
 class BossSprite(Entity):
     def __init__(self, origin, path_to_img):
-        super().__init__(origin=origin, imageFile=path_to_img, point_value=BOSS_VALUE)
+        super().__init__(origin=origin, imageFile=MSIC_SPRITES_PATH.joinpath(path_to_img), point_value=BOSS_VALUE)
         # self.image, self.rect = load_image(path_to_img)
         self.shield_gen_loc = (10,10)
         # self.rect.x = origin[0]
@@ -620,7 +620,7 @@ class BossSprite(Entity):
         
 class Bomb(Entity):
     def __init__(self, origin_x, origin_y, speed, path_to_img, angle=0, behavior='bomb'):
-        super().__init__(origin=(origin_x, origin_y), imageFile=path_to_img, speed=speed, angle=angle)
+        super().__init__(origin=(origin_x, origin_y), imageFile=WEAPON_IMAGES_PATH.joinpath(path_to_img), speed=speed, angle=angle)
         self.off_screen = False
 
         self.sound = load_sound(str(BOMB_SOUND_PATH.joinpath('bomb_drop.ogg')))

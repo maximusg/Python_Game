@@ -21,8 +21,17 @@ COLUMN_WIDTH = SCREEN_WIDTH//5
 
 CWD = Path.cwd()
 RESOURCES_PATH = CWD.joinpath('resources')
+BACKGROUND_PATH = RESOURCES_PATH.joinpath('backgrounds')
+EVENT_SCROLL_PATH = RESOURCES_PATH.joinpath('event_scrolls')
+FONT_PATH = RESOURCES_PATH.joinpath('fonts')
+MUSIC_PATH = RESOURCES_PATH.joinpath('music')
+MISC_SPRITES_PATH = RESOURCES_PATH.joinpath('misc_sprites')
+SOUND_EFFECT_PATH = RESOURCES_PATH.joinpath('sound_effects')
+WEAPON_IMAGES_PATH = RESOURCES_PATH.joinpath('weapon_images')
 ITEM_IMAGES_PATH = RESOURCES_PATH.joinpath('item_images')
-BOMB_SOUND_PATH = RESOURCES_PATH.joinpath('bomb_sounds')
+BOMB_SOUND_PATH = SOUND_EFFECT_PATH.joinpath('bomb_sounds')
+BOMB_EXPLOSION_PATH = WEAPON_IMAGES_PATH.joinpath('bomb_explosion')
+CHARGE_SHOT_PATH = WEAPON_IMAGES_PATH.joinpath('chargeShot')
 
 DEBUG = True ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
 
@@ -101,11 +110,10 @@ def load_text(filename):
     with open(filename) as f:
         return f.readlines()
 
-class NoneSound:
-    def play(self):
-        pass
-
 def load_sound(name):
+    class NoneSound:
+        def play(self):
+            pass
     '''Accepts a file name and attempts to load it. If pygame.mixer has not been initialized yet, 
     returns a dummy class with no sound. Will throw an exception if the file is not found.
     Returns a pygame.Sound object that can be used.'''
@@ -116,8 +124,7 @@ def load_sound(name):
         sound = pygame.mixer.Sound(fullname)
     except pygame.error:
         raise RuntimeError('Cannot load sound:' + fullname)
-    finally:
-        return NoneSound()
+    
     return sound
 
 def load_background_music(filename):
@@ -151,9 +158,9 @@ def draw_text(to_print, text_color, bg_color=None, text_size = 25, bold=False):
        the text (text) and one with the background color (if set) applied.'''
     if bold:
         text_size -= 1 ##makes things fit better.
-        font = pygame.font.Font('resources/fonts/OpenSans-Bold.ttf', text_size)
+        font = pygame.font.Font(str(FONT_PATH.joinpath('OpenSans-Bold.ttf')), text_size)
     else:
-        font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', text_size)
+        font = pygame.font.Font(str(FONT_PATH.joinpath('OpenSans-Regular.ttf')), text_size)
     text = font.render(str(to_print), True, text_color, bg_color)
     return text
 
@@ -188,7 +195,7 @@ def draw_boss_bar(width, height, health_percent, shield_percent, topleft_corner 
 
 def draw_player_lives(player_lives, topleft_corner = (0,0)):
     # ship_sprite, ship_rect = load_image('CoolShip.png')
-    ship = ASSET_MANAGER.getAsset('CoolShip.png')
+    ship = ASSET_MANAGER.getAsset(MISC_SPRITES_PATH.joinpath('SweetShip.png'))
     ship_sprite, ship_rect = ship[0], ship[1]
     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
     surface.fill(BLACK)
@@ -202,7 +209,7 @@ def draw_player_lives(player_lives, topleft_corner = (0,0)):
 
 def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
     # bomb_sprite, bomb_rect = load_image('resources/weapon_images/bomb.png')
-    bomb = ASSET_MANAGER.getAsset('resources/weapon_images/bomb.png')
+    bomb = ASSET_MANAGER.getAsset(WEAPON_IMAGES_PATH.joinpath('bomb.png'))
     bomb_sprite, bomb_rect = bomb[0], bomb[1]
     surface = pygame.surface.Surface((bomb_rect.right * 6, bomb_rect.bottom))
     surface.fill(BLACK)

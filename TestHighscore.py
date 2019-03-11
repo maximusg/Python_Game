@@ -33,7 +33,7 @@ class TestScoreboard(unittest.TestCase):
         pass
 
     
-def TestEntry(unittest.TestCase):
+class TestEntry(unittest.TestCase):
     def test__init__(self):
         pass
 
