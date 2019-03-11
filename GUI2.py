@@ -377,18 +377,38 @@ class GUI(object):
                     sprite.kill()
 
 
+            # for sprite in boss_sprites:
+            #     collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
+            #     if collision:
+            #         sprite.take_damage(1)
+            #         collision.kill()
+            #         if sprite.health <= 0:
+            #             new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+            #             new_explosion.play_sound() 
+            #             explosions.add(new_explosion)                        
+            #             player_score += sprite.point_value
+            #     else:
+            #         collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
+            #         if collision:
+            #             sprite.take_damage(1)
+            #     if sprite.visible == 0:
+            #         sprite.kill()
+
+            boss_collide = pygame.sprite.groupcollide(player_bullet_sprites, boss_sprites, True, False)
+            for sprite in boss_collide:
+                boss_collide[sprite][0].take_damage(1)
+                if boss_collide[sprite][0].health <= 0:
+                    new_explosion = explosion.ExplosionSprite(sprite.rect.centerx, sprite.rect.centery)
+                    new_explosion.play_sound()
+                    explosions.add(new_explosion)
+                    player_score += boss_collide[sprite][0].point_value
             for sprite in boss_sprites:
-                collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
+                collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
                 if collision:
                     sprite.take_damage(1)
-                    collision.kill()
-                    if sprite.health <= 0:
-                        new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
-                        new_explosion.play_sound() 
-                        explosions.add(new_explosion)                        
-                        player_score += sprite.point_value
                 if sprite.visible == 0:
-                    sprite.kill()  
+                    sprite.kill()
+
 
             for sprite in player_bullet_sprites:
                 if sprite.visible == 0:
@@ -447,7 +467,7 @@ class GUI(object):
             bombs_left, bombs_left_rect = draw_bombs_remaining(playerShip.bombs_remaining, (COLUMN_WIDTH*4 + 40, 100))
 
             if boss_spawned and len(boss_sprites):
-                boss_sprite = boss_sprites.get_sprite(0)
+                boss_sprite = boss_sprites.sprites()[0]
                 boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprite.health/boss_sprite.max_health, boss_sprite.shield/boss_sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
 
             self.screen.blit(lives_left, lives_left_rect)
