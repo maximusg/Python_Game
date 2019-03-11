@@ -19,7 +19,7 @@
         },
         "10": {
             "boss_sprite": {
-                "image" : "boss.png",
+                "image" : "boss.png",   
                 "class" : [
                     "camperMid"
                 ]

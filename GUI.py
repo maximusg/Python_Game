@@ -487,6 +487,9 @@ class GUI(object):
                 debug_text = draw_text('FPS: '+str(round(self.clock.get_fps(), 2)), WHITE)
                 debug_rect = self.screen.blit(debug_text, (0, SCREEN_HEIGHT - 100))
                 self.screen.blit(debug_text, debug_rect)
+                mission_timer_text = draw_text('Mission Time: '+ str(sec_running), WHITE)
+                mission_timer_rect = self.screen.blit(mission_timer_text, (0, SCREEN_HEIGHT-150))
+                self.screen.blit(mission_timer_text, mission_timer_rect)
             
             armor_bar, armor_bar_rect = draw_vertical_bar(RED, 50, SCREEN_HEIGHT-400, (playerShip.health/playerShip.max_health), (COLUMN_WIDTH*4 + 10,200))
             shield_bar, shield_bar_rect = draw_vertical_bar(BLUE, 50, SCREEN_HEIGHT-400, (playerShip.shield/playerShip.max_shield), (COLUMN_WIDTH*4 + 70,200))
