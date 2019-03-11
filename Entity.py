@@ -519,7 +519,7 @@ class BossSprite(Entity):
         # self.rect.y = origin[1]
         self.launchers = ((250,150),(150,150),(50,150))
 
-        # self.point_value = 50000
+        self.point_value = 50000
         self.max_health = 150
         self.max_shield = 100
 
@@ -554,9 +554,9 @@ class BossSprite(Entity):
         #set up bullets
         if self.phase == 1:
             if random.random() < 0.05:
-                bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
-                bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
-                bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
+                bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
+                bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
+                bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
             self.phase_counter -= 1
             if self.phase_counter == 0:
                 self.phase_counter = 600
@@ -567,21 +567,21 @@ class BossSprite(Entity):
                     delta_x = (self.rect.x+self.launchers[0][0])-player_center[0]
                     delta_y = self.rect.bottom - player_center[1]
                     angle = math.degrees(math.atan(delta_x/delta_y))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', angle, 'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', 0, angle, 'vector'))
 
                     delta_x = (self.rect.x+self.launchers[1][0])-player_center[0]
                     delta_y = self.rect.bottom - player_center[1]
                     angle = math.degrees(math.atan(delta_x/delta_y))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', angle, 'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', 0, angle, 'vector'))
 
                     delta_x = (self.rect.x+self.launchers[2][0])-player_center[0]
                     delta_y = self.rect.bottom - player_center[1]
                     angle = math.degrees(math.atan(delta_x/delta_y))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', angle, 'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', 0, angle, 'vector'))
                 else:
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
             self.phase_counter -= 1
         
         return explosion_list, bullet_list
