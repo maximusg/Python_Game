@@ -379,7 +379,6 @@ class GUI(object):
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
                     sprite.take_damage(1)
-                    #if chargeShot pierce through enemies here
                     collision.visible = 0
                     collision.kill()
                     if sprite.health <= 0:

@@ -225,6 +225,8 @@ def upgrade(item_pickup, current_weapon):
                 return 'waveBeam3'
             else:
                 return 'waveBeam'
+        if item_pickup == 'chargeShot':
+            return 'chargeShot'
     else:
         return None
 

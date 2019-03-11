@@ -70,6 +70,7 @@ MASTER_ITEMS = {
     'coin':('coin.png', None),
     'spitfire_powerup':('spitfire_powerup.png', 'spitfire'),
     'wavebeam_powerup':('wavebeam_powerup.png', 'waveBeam'),
+    'chargeShot_powerup':('chargeShot_powerup.png', 'chargeShot'),
     'bomb_item':('bomb_item.png', None)
 
     }

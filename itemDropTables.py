@@ -16,7 +16,8 @@ purpose: create tables linking items to their drop rates, to be used when creati
 common = (
     ('coin', 0.1),
     ('spitfire_powerup', 0.05),
-    ('wavebeam_powerup', 0.4),
+    ('wavebeam_powerup', 0.05),
+    ('chargeShot_powerup', 0.4),
     ('bomb_item', 0.1)
         )
 
