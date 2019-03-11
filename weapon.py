@@ -36,7 +36,7 @@ spitfire_offset = 5
 def chargeShot(origin_x, origin_y):
 
 
-    bullet1 = Entity.Bullet(origin_x, origin_y, 10, weapon_images_path.joinpath('chargeShot','chargeShot.png'), angle = 0, behavior='up', name = 'chargeShot')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 10, weapon_images_path.joinpath('chargeShot.png'), angle = 0, behavior='up', name = 'chargeShot')
     return bullet1
 
 def waveBeam(origin_x, origin_y):
