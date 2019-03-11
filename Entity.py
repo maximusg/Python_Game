@@ -262,7 +262,7 @@ class Player(Entity):
             return None
             
 class Enemy(Entity):
-    def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common, angle=0):
+    def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.chargeShot, angle=0):
         imgFile = 'enemy'+str(ENEMY_SPRITE[behavior])+'.png'
         area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
@@ -385,13 +385,25 @@ class Enemy(Entity):
         rand_num = random.uniform(0,1)
 
         index = 0
-        for item in self.itemDropTable:
-            item_lower_threshold.append(total_probability)
-            item_upper_threshold.append(total_probability + item[1])
-            total_probability += item[1]
-            if rand_num > item_lower_threshold[index] and (rand_num <= item_upper_threshold[index]):
-                return Item(self.rect.centerx, self.rect.centery, name= item[0])
-            index += 1
+
+        #returns None if no drop table
+        if self.itemDropTable is None:
+            return None
+
+        #this part deals with itemDropTables that just have 1 item
+        if len(self.itemDropTable) == 2:
+             if rand_num < self.itemDropTable[1]:
+                 return Item(self.rect.centerx, self.rect.centery, name= self.itemDropTable[0])
+
+        #this part deals with itemDropTables that have multiple items
+        else:
+            for item in self.itemDropTable:
+                item_lower_threshold.append(total_probability)
+                item_upper_threshold.append(total_probability + item[1])
+                total_probability += item[1]
+                if rand_num > item_lower_threshold[index] and (rand_num <= item_upper_threshold[index]):
+                    return Item(self.rect.centerx, self.rect.centery, name= item[0])
+                index += 1
         return None
 
     def take_damage(self, value):

@@ -13,6 +13,8 @@ purpose: create tables linking items to their drop rates, to be used when creati
 '''
 
 #common = (('coin', 0.1),('spitfire_powerup', 0.05))#, ('spitfire_powerup', 0.3))
+
+
 common = (
     ('coin', 0.1),
     ('spitfire_powerup', 0.05),
@@ -22,7 +24,29 @@ common = (
         )
 
 
-rare = (
-    ('coin', 0.1),
-    ('powerup', 0.7)
-        )
+spitfire = (
+
+    ('spitfire_powerup', .25)
+)
+
+chargeShot = (
+
+    ('chargeShot_powerup', 1)
+)
+
+waveBeam = (
+
+    ('wavebeam_powerup', 1)
+)
+
+#use the empty itemDropTable to never allow items to drop from enemies
+empty = None
+
+
+DTDic = {
+    'DTcommon': common,
+    'DTspitfire': spitfire,
+    'DTchargeShot': chargeShot,
+    'DTwaveBeam': waveBeam
+
+}
