@@ -22,7 +22,7 @@ COLUMN_WIDTH = SCREEN_WIDTH//5
 CWD = Path.cwd()
 RESOURCES_PATH = CWD.joinpath('resources')
 ITEM_IMAGES_PATH = RESOURCES_PATH.joinpath('item_images')
-BOMB_SOUND_PATH = RESOURCES_PATH.joinpath('sound_effects','bomb_sounds')
+BOMB_SOUND_PATH = RESOURCES_PATH.joinpath('bomb_sounds')
 
 DEBUG = True ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
 
@@ -100,18 +100,23 @@ def load_text(filename):
     with open(filename) as f:
         return f.readlines()
 
+class NoneSound:
+    def play(self):
+        pass
+
 def load_sound(name):
     '''Accepts a file name and attempts to load it. If pygame.mixer has not been initialized yet, 
     returns a dummy class with no sound. Will throw an exception if the file is not found.
     Returns a pygame.Sound object that can be used.'''
     if not pygame.mixer or not pygame.mixer.get_init():
-        raise RuntimeError('Pygame mixer has not been initialized. Have you run pygame.init()?')
+        return NoneSound()
     fullname = os.path.join(MAIN_DIR, name)
     try:
         sound = pygame.mixer.Sound(fullname)
     except pygame.error:
         raise RuntimeError('Cannot load sound:' + fullname)
-
+    finally:
+        return NoneSound()
     return sound
 
 def load_background_music(filename):

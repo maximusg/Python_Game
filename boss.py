@@ -10,10 +10,10 @@ class BossSprite(entity2.entity2):
     def __init__(self, origin, path_to_img):
         super().__init__()
         self.image, self.rect = load_image(path_to_img)
-        self.shield_gen_loc = (220, 30)
+        self.shield_gen_loc = (10,10)
         self.rect.x = origin[0]
         self.rect.y = origin[1]
-        self.launchers = ((250,95),(150,95),(50,95))
+        self.launchers = ((250,150),(150,150),(50,150))
 
         self.point_value = 50000
         self.max_health = 150

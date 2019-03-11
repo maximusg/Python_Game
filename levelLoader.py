@@ -203,7 +203,7 @@ class LevelLoader():
         return enemySprite
 
     def bossClass(self):
-        return Entity.BossSprite(ENEMY_SECTORS("s7"), 'boss.png')
+        return boss.BossSprite(ENEMY_SECTORS("s7"), 'boss.png')
 
         
     def playerClass(self,className):

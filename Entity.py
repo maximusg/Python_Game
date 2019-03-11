@@ -35,10 +35,6 @@ class Entity(pygame.sprite.Sprite):
         self.value = point_value
         self.visible = 1
         
-        self.explosion_sound = load_sound('explosion.ogg')
-        self.bullet_sound = load_sound('spitfire.ogg')
-        self.zap_sound = load_sound('laser.ogg')
-
         self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
         # self.area=None
@@ -249,19 +245,16 @@ class Player(Entity):
             if random.random() < 0.01:
                 x = random.randint(self.rect.left,self.rect.right)
                 y = random.randint(self.rect.top, self.rect.bottom)
-                self.explosion_sound.play()
                 return explosion.ExplosionSprite(x,y)
         elif 0.3 < self.health / self.max_health <= 0.75:
             if random.random() < 0.05:
                 x = random.randint(self.rect.left,self.rect.right)
                 y = random.randint(self.rect.top, self.rect.bottom)
-                self.explosion_sound.play()
                 return explosion.ExplosionSprite(x,y)
         elif 0 <= self.health / self.max_health <= 0.3:
             if random.random() < 0.15:
                 x = random.randint(self.rect.left,self.rect.right)
                 y = random.randint(self.rect.top, self.rect.bottom)
-                self.explosion_sound.play()
                 return explosion.ExplosionSprite(x,y)
         else:
             return None
@@ -379,7 +372,6 @@ class Enemy(Entity):
         
         if self.visible:
             if random.random() <= 0.01:
-                self.bullet_sound.play()
                 bullet_to_add.append(Bullet(self.rect.centerx, self.rect.centery, 20, 'resources/weapon_images/spitfire.png', behavior='down'))
         return bullet_to_add
 
@@ -403,7 +395,6 @@ class Enemy(Entity):
     def take_damage(self, value):
         self.health -= value
         if self.health <= 0:
-            self.explosion_sound.play()
             self.visible = 0
 
 class Bullet(Entity):
@@ -523,12 +514,12 @@ class BossSprite(Entity):
     def __init__(self, origin, path_to_img):
         super().__init__(origin=origin, imageFile=path_to_img, point_value=BOSS_VALUE)
         # self.image, self.rect = load_image(path_to_img)
-        self.shield_gen_loc = (220, 30)
+        self.shield_gen_loc = (10,10)
         # self.rect.x = origin[0]
         # self.rect.y = origin[1]
-        self.launchers = ((250,95),(150,95),(50,95))
+        self.launchers = ((250,150),(150,150),(50,150))
 
-        self.point_value = 50000
+        # self.point_value = 50000
         self.max_health = 150
         self.max_shield = 100
 
@@ -551,53 +542,46 @@ class BossSprite(Entity):
         ##set up explosions
         if self.shield == 0:
             if random.random() < 0.05:
-                self.explosion_sound.play()
                 explosion_list.append(explosion.ExplosionSprite(self.rect.left + self.shield_gen_loc[0]+random.randint(-2,2), self.rect.top + self.shield_gen_loc[1]+random.randint(-2,2), 'up'))
         
         if 0.25 < self.health / self.max_health <= 0.5:
             if random.random() < 0.05:
-                self.explosion_sound.play()
                 explosion_list.append(explosion.ExplosionSprite(random.randint(self.rect.left, self.rect.right), random.randint(self.rect.top, self.rect.bottom), 'up'))
         if 0 <= self.health / self.max_health <= 0.25:
             if random.random() < 0.15:
-                self.explosion_sound.play()
                 explosion_list.append(explosion.ExplosionSprite(random.randint(self.rect.left, self.rect.right), random.randint(self.rect.top, self.rect.bottom), 'up'))
         
         #set up bullets
         if self.phase == 1:
             if random.random() < 0.05:
-                self.bullet_sound.play()
-                self.zap_sound.play()
-                bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/blue_lazer.gif', 0, random.randint(-45,45),'vector'))
-                bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
-                bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/blue_lazer.gif', 0, random.randint(-45,45),'vector'))
+                bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
+                bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
+                bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
             self.phase_counter -= 1
             if self.phase_counter == 0:
                 self.phase_counter = 600
                 self.phase = 2
         elif self.phase == 2:
             if random.random() < 0.1:
-                self.bullet_sound.play()
-                self.zap_sound.play()
                 if player_center[1] > self.rect.bottom:
                     delta_x = (self.rect.x+self.launchers[0][0])-player_center[0]
                     delta_y = self.rect.bottom - player_center[1]
                     angle = math.degrees(math.atan(delta_x/delta_y))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/blue_lazer.gif', 0, angle, 'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', angle, 'vector'))
 
                     delta_x = (self.rect.x+self.launchers[1][0])-player_center[0]
                     delta_y = self.rect.bottom - player_center[1]
                     angle = math.degrees(math.atan(delta_x/delta_y))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', 0, angle, 'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', angle, 'vector'))
 
                     delta_x = (self.rect.x+self.launchers[2][0])-player_center[0]
                     delta_y = self.rect.bottom - player_center[1]
                     angle = math.degrees(math.atan(delta_x/delta_y))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/blue_lazer.gif', 0, angle, 'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', angle, 'vector'))
                 else:
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/blue_lazer.gif', 0, random.randint(-45,45),'vector'))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', 0, random.randint(-45,45),'vector'))
-                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/blue_lazer.gif', 0, random.randint(-45,45),'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[0][0], self.rect.y+self.launchers[0][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[1][0], self.rect.y+self.launchers[1][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
+                    bullet_list.append(Bullet(self.rect.x+self.launchers[2][0], self.rect.y+self.launchers[2][1], 5, 'resources/weapon_images/spitfire.png', random.randint(-45,45),'vector'))
             self.phase_counter -= 1
         
         return explosion_list, bullet_list
