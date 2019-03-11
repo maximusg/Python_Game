@@ -1,0 +1,28 @@
+{
+    "end": {
+        "boss": true,
+        "time": 10
+    },
+    "time": {
+        "0": {
+            "background": "starfield.png",
+            "player": {
+                "health": 1,
+                "image": "SweetShip.png",
+                "location": [
+                    500,
+                    700
+                ],
+                "scheme": "arrows",
+                "weapon": "spitfire"
+            }
+        },
+        "10": {
+            "boss_sprite": {
+                "class" : [
+                    "camperMid"
+                ]
+            }
+        }
+    }
+}

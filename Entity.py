@@ -525,7 +525,7 @@ class Item(Entity):
         
 class BossSprite(Entity):
     def __init__(self, origin, path_to_img):
-        super().__init__(origin=origin, imageFile=MSIC_SPRITES_PATH.joinpath(path_to_img), point_value=BOSS_VALUE)
+        super().__init__(origin=origin, imageFile=MISC_SPRITES_PATH.joinpath(path_to_img), point_value=BOSS_VALUE)
         # self.image, self.rect = load_image(path_to_img)
         self.shield_gen_loc = (10,10)
         # self.rect.x = origin[0]

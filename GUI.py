@@ -163,13 +163,16 @@ class GUI(object):
         invul_timer = 120 ##frames of invulnerability post-death
         regen_timer = 6
         bomb_timer = 120
+        time_to_end = 9999 ## No levels this long, so effectively infinity.
         ##Clock time setup
         while going:
             
             ##check if there is a boss spawned (to figure out when to end the level post boss death)
-            if boss_spawned:
+            if boss_spawned and time_to_end == 9999:
                 if len(boss_sprites) == 0:
-                    going = False
+                    time_to_end = time_since_start//1000 + 5
+            if time_since_start//1000 == time_to_end:
+                going = False
 
             ##Beginning of the loop checking for death and lives remaining.
             if len(player_sprites) == 0 and not playerShip.invul_flag:
@@ -334,19 +337,19 @@ class GUI(object):
             chargeShot_Anim.update()
         
             ##Collision/Out of Bounds detection.
-            for sprite in player_sprites:
-                collision = pygame.sprite.spritecollideany(sprite, enemy_bullet_sprites)
+            if player_sprites.sprite != None:
+                collision = pygame.sprite.spritecollideany(player_sprites.sprite, enemy_bullet_sprites)
                 if collision:
                     self.explode.play()
                     playerShip.take_damage(5)
                     collision.kill()
                 else:
-                    collision = pygame.sprite.spritecollideany(sprite, enemy_sprites)
+                    collision = pygame.sprite.spritecollideany(player_sprites.sprite, enemy_sprites)
                     if collision:
                         self.explode.play()
                         playerShip.take_damage(1)
                     else:
-                        collision = pygame.sprite.spritecollideany(sprite, boss_sprites)
+                        collision = pygame.sprite.spritecollideany(player_sprites.sprite, boss_sprites)
                         if collision:
                             self.explode.play()
                             playerShip.take_damage(1)
@@ -399,22 +402,21 @@ class GUI(object):
                 if sprite.visible == 0:
                     sprite.kill()
 
-            for sprite in boss_sprites:
-                collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
+            if boss_sprites.sprite != None:
+                collision = pygame.sprite.spritecollideany(boss_sprites.sprite, player_bullet_sprites)
                 if collision:
                     sprite.take_damage(1)
                     collision.kill()
-                    if sprite.health <= 0:
-                        new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
-                        new_explosion.play_sound() 
-                        explosions.add(new_explosion)                        
-                        player_score += sprite.point_value
                 else:
-                    collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
+                    collision = pygame.sprite.spritecollideany(boss_sprites.sprite, bomb_explosion_sprites)
                     if collision:
                         sprite.take_damage(2)
-                if sprite.visible == 0:
-                    sprite.kill()  
+                if boss_sprites.sprite.health <= 0:
+                    new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+                    new_explosion.play_sound() 
+                    explosions.add(new_explosion)                        
+                    player_score += boss_sprites.sprite.point_value
+                    boss_sprites.sprite.kill()  
 
             for sprite in player_bullet_sprites:
                 if sprite.visible == 0:
@@ -477,9 +479,8 @@ class GUI(object):
             lives_left, lives_left_rect = draw_player_lives(player_lives, (COLUMN_WIDTH*4 + 10, 10))
             bombs_left, bombs_left_rect = draw_bombs_remaining(playerShip.bombs_remaining, (COLUMN_WIDTH*4 + 40, 100))
 
-            if boss_spawned and len(boss_sprites):
-                boss_sprite = boss_sprites.sprite
-                boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprite.health/boss_sprite.max_health, boss_sprite.shield/boss_sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
+            if boss_spawned and boss_sprites.sprite != None:
+                boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprites.sprite.health/boss_sprites.sprite.max_health, boss_sprites.sprite.shield/boss_sprites.sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
 
             self.screen.blit(lives_left, lives_left_rect)
             self.screen.blit(bombs_left, bombs_left_rect)
