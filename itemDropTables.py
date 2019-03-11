@@ -23,17 +23,20 @@ common = (
     ('bomb_item', 0.1)
         )
 
-
+#guaranteed to drop a spitfire powerup every time
 spitfire = (
 
-    ('spitfire_powerup', .25)
+    ('spitfire_powerup', 1)
 )
+
+#guaranteed to drop a chargeShot powerup every time
 
 chargeShot = (
 
     ('chargeShot_powerup', 1)
 )
 
+#guaranteed to drop a waveBeam powerup every time
 waveBeam = (
 
     ('wavebeam_powerup', 1)
@@ -47,6 +50,7 @@ DTDic = {
     'DTcommon': common,
     'DTspitfire': spitfire,
     'DTchargeShot': chargeShot,
-    'DTwaveBeam': waveBeam
+    'DTwaveBeam': waveBeam,
+    'DTempty': empty
 
 }
