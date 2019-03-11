@@ -153,6 +153,7 @@ class GUI(object):
         enemy_bullet_sprites = pygame.sprite.Group()
         items=pygame.sprite.Group()
         explosions = pygame.sprite.Group()
+        chargeShot_Anim = pygame.sprite.GroupSingle()
 
         going=True
         self.clock.tick() ##need to dump this particular return value of tick() to give accurate time.
@@ -286,7 +287,7 @@ class GUI(object):
                     if playerShip.weapon.chargeShot_anim_visible == False:
                         playerShip.weapon.chargeShot_anim_visible = True
                         new_charging = weapon.ChargingAnim(playerShip.rect.centerx,playerShip.rect.centery, playerShip)
-                        explosions.add(new_charging)
+                        chargeShot_Anim.add(new_charging)
 
                 #normal bullet behavior
                 else:
@@ -333,6 +334,7 @@ class GUI(object):
             items.update()
             explosions.update()
             bomb_explosion_sprites.update()
+            chargeShot_Anim.update()
         
             ##Collision/Out of Bounds detection.
             for sprite in player_sprites:
@@ -352,6 +354,9 @@ class GUI(object):
                             self.explode.play()
                             playerShip.take_damage(1)
                 if playerShip.health <= 0:
+                    if playerShip.weapon.name == 'chargeShot':
+                        #playerShip.weapon = weapon.Weapon('spitfire')
+                        chargeShot_Anim.empty()
                     playerShip.kill()
                     
             for sprite in items:
@@ -438,6 +443,10 @@ class GUI(object):
                 if sprite.visible == 0:
                     sprite.kill()
 
+            for sprite in chargeShot_Anim:
+                if sprite.visible == 0:
+                    sprite.kill()
+
             bg_y1 += 1
             bg_y += 1
             self.screen.blit(bg,(bg_x,bg_y))
@@ -450,6 +459,7 @@ class GUI(object):
             #self.screen.blit(bg, bg_rect)
             explosions.draw(self.screen)
             bomb_explosion_sprites.draw(self.screen)
+            chargeShot_Anim.draw(self.screen)
 
             c1 = self.screen.blit(column, ORIGIN)
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
