@@ -19,7 +19,7 @@ common = (
     ('coin', 0.1),
     ('spitfire_powerup', 0.05),
     ('wavebeam_powerup', 0.05),
-    ('chargeShot_powerup', 0.4),
+    ('chargeShot_powerup', 0.05),
     ('bomb_item', 0.1)
         )
 

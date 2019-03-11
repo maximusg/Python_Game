@@ -382,9 +382,9 @@ class Enemy(Entity):
         item_lower_threshold = []
         item_upper_threshold = []
         total_probability = 0
-        rand_num = random.uniform(0,1)
+        rand_num = random.random() #pulls a random number between 0 and 1
 
-        index = 0
+        #index = 0
 
         #returns None if no drop table
         if self.itemDropTable is None:
@@ -392,11 +392,12 @@ class Enemy(Entity):
 
         #this part deals with itemDropTables that just have 1 item
         if len(self.itemDropTable) == 2:
-             if rand_num < self.itemDropTable[1]:
-                 return Item(self.rect.centerx, self.rect.centery, name= self.itemDropTable[0])
+            if rand_num < self.itemDropTable[1]:
+                return Item(self.rect.centerx, self.rect.centery, name= self.itemDropTable[0])
 
         #this part deals with itemDropTables that have multiple items
         else:
+            index = 0
             for item in self.itemDropTable:
                 item_lower_threshold.append(total_probability)
                 item_upper_threshold.append(total_probability + item[1])
