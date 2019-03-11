@@ -582,7 +582,7 @@ class GUI(object):
                 elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                     if yes_rect.collidepoint(event.pos):
                         saveGame([health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber])
-                        print([health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber])
+                        # print([health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber])
                         return False, False
                     elif no_rect.collidepoint(event.pos):
                         return False, False              
