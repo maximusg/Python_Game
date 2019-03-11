@@ -33,23 +33,27 @@ class GUI(object):
         self.clock = pygame.time.Clock()
 
         ##load sound bytes
-        self.explode = load_sound('explosion.ogg')
-        self.fire_spitfire = load_sound('spitfire.ogg')
-        self.fire_laser = load_sound('laser.ogg')
+        self.explode = load_sound(SOUND_EFFECT_PATH.joinpath('explosion.ogg'))
+        self.fire_spitfire = load_sound(SOUND_EFFECT_PATH.joinpath('spitfire.ogg'))
+        self.fire_laser = load_sound(SOUND_EFFECT_PATH.joinpath('laser.ogg'))
 
     def game_intro(self):
         ##Background setup
+        #Background sound setup
+        load_background_music(str(MUSIC_PATH.joinpath('roboCop3NES.ogg')))
+        pygame.mixer.music.set_volume(0.10)
+        
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = ASSET_MANAGER.getAsset('starfield.png')
+        bg, bg_rect = ASSET_MANAGER.getAsset(BACKGROUND_PATH.joinpath('starfield.png'))
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        story_scroll = load_text('resources/event_scrolls/openingscroll.asset')
+        story_scroll = load_text(EVENT_SCROLL_PATH.joinpath('openingscroll.asset'))
 
         going = True
         count = 0
-        pygame.time.wait(1500)
+        pygame.time.wait(500)
 
         while going:
             for event in pygame.event.get():
@@ -124,7 +128,7 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = ASSET_MANAGER.getAsset(bg_filename)
+        bg, bg_rect = ASSET_MANAGER.getAsset(BACKGROUND_PATH.joinpath(bg_filename))
         bg_size = bg.get_size()
         bg_w, bg_h = bg_size
         bg_x = 0
@@ -139,9 +143,6 @@ class GUI(object):
 
         inst_block = draw_instructions()
 
-        #Background sound setup
-        #load_background_music('roboCop3NES.ogg')
-        
         #Initialize sprite groups
         player_sprites_invul = pygame.sprite.Group()
         player_sprites = pygame.sprite.GroupSingle(playerShip)
@@ -175,7 +176,7 @@ class GUI(object):
                 player_lives -= 1
                 if player_lives:
                     self.death_loop()
-                    playerShip = Entity.Player('spitfire','SweetShip.png',"arrows") #TODO: replace this with data from levelLoader
+                    playerShip = Entity.Player('spitfire',MISC_SPRITES_PATH.joinpath('SweetShip.png'),"arrows") #TODO: replace this with data from levelLoader
                     playerShip.invul_flag = True
                     player_sprites_invul.add(playerShip)
                 else:
@@ -220,7 +221,7 @@ class GUI(object):
                         #     bad_guy = enemy.enemy('spitfire','enemy.png')
                         #     enemy_sprites.add(bad_guy)
                         if event.key == K_F2 and len(player_sprites) == 0:
-                            playerShip = Entity.Player('spitfire','SweetShip.png',"arrows")
+                            playerShip = Entity.Player('spitfire',MISC_SPRITES_PATH.joinpath('SweetShip.png'),"arrows")
                             player_sprites.add(playerShip)
                         if event.key == K_F11:
                             enemy_sprites.empty()
@@ -252,8 +253,6 @@ class GUI(object):
                 enemy_bullet_sprites.add(enemy_bullets_to_add)
             if items_to_add:
                 items.add(items_to_add)
-
-            ##Keyboard polling
 
             #chargeShot specific weapon firing
             if playerShip.weapon.name == 'chargeShot':
@@ -306,7 +305,6 @@ class GUI(object):
                 new_explosion = bomb_explosion.BombExplosion(playerShip.curr_bomb.centerx,playerShip.curr_bomb.centery)
                 new_explosion.play_sound()
                 bomb_explosion_sprites.add(new_explosion)
-                #explosions.add(new_explosion)
                 playerShip.curr_bomb.bomb_explode = False
 
                 playerShip.curr_bomb = None
@@ -322,14 +320,13 @@ class GUI(object):
             for sprite in enemy_sprites:
                 bullet = sprite.update()
                 if bullet:
-                    enemy_bullet_sprites.add(bullet)
+                  enemy_bullet_sprites.add(bullet)
             for sprite in boss_sprites:
                 damage, bullets = sprite.update(playerShip.rect.center)
                 if damage:
                     explosions.add(damage)
                 if bullets:
                     enemy_bullet_sprites.add(bullets)
-            # enemy_sprites.update()
             enemy_bullet_sprites.update()
             items.update()
             explosions.update()
@@ -668,7 +665,7 @@ class GUI(object):
             box.blit(txt_surf, txt_rect)
             self.screen.blit(box, box_rect)
             pygame.display.flip()
-        font = pygame.font.Font('resources/fonts/OpenSans-Regular.ttf', 16)
+        font = pygame.font.Font(FONT_PATH.joinpath('OpenSans-Regular.ttf'), 16)
         x = 480
         y = 100
         # make box
@@ -704,7 +701,7 @@ class GUI(object):
     def menu(self):
         pygame.mouse.set_visible(True) ##We need the mouse here.
 
-        bg, bg_rect = ASSET_MANAGER.getAsset('nebula_red.png')
+        bg, bg_rect = ASSET_MANAGER.getAsset(BACKGROUND_PATH.joinpath('nebula_red.png'))
         bg_size = bg.get_size()
         w, h = bg_size
         x = 0
@@ -842,8 +839,8 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = ASSET_MANAGER.getAsset('nebula.jpg')
-        with open('resources/event_scrolls/credits.asset') as infile:
+        bg, bg_rect = ASSET_MANAGER.getAsset(BACKGROUND_PATH.joinpath('nebula.jpg'))
+        with open(EVENT_SCROLL_PATH.joinpath('credits.asset')) as infile:
             credit_list = infile.readlines()
 
         background.fill(BLACK)
@@ -884,7 +881,7 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = ASSET_MANAGER.getAsset('nebula.jpg')
+        bg, bg_rect = ASSET_MANAGER.getAsset(BACKGROUND_PATH.joinpath('nebula.jpg'))
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
@@ -936,12 +933,12 @@ class GUI(object):
                 curr_lives = 3
 
             if cheat_weaps:
-                playerShip = Entity.Player('master_lazer','SweetShip.png',"arrows") 
+                playerShip = Entity.Player('master_lazer',MISC_SPRITES_PATH.joinpath('SweetShip.png'),"arrows") 
 
         else:
             pickled_goods = loadGame()
             ##[health, shield, weapon, bombs, score, lives, time_of_save, self.loader.levelNumber]
-            playerShip = Entity.Player(pickled_goods[2], 'SweetShip.png', 'arrows')
+            playerShip = Entity.Player(pickled_goods[2], MISC_SPRITES_PATH.joinpath('SweetShip.png'), 'arrows')
             playerShip.health = pickled_goods[0]
             playerShip.shield = pickled_goods[1]
             playerShip.bombs_remaining = pickled_goods[3]
@@ -964,7 +961,7 @@ class GUI(object):
                 if self.hs_list.belongsOnList(curr_score):
                     name = self.add_to_hs('You set a new high score! Enter your initials!')
                     self.hs_list.add(name, curr_score)
-                    self.hs_list.writeToFile('resources/event_scrolls/highscores.asset')
+                    self.hs_list.writeToFile(EVENT_SCROLL_PATH.joinpath('highscores.asset'))
         self.loader = levelLoader.LevelLoader()
    
 
@@ -972,11 +969,11 @@ class GUI(object):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
-        bg, bg_rect = ASSET_MANAGER.getAsset('nebula_blue.png')
+        bg, bg_rect = ASSET_MANAGER.getAsset(BACKGROUND_PATH.joinpath('nebula_blue.png'))
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        story_scroll = load_text('resources/event_scrolls/ending.asset')
+        story_scroll = load_text(BACKGROUND_PATH.joinpath('ending.asset'))
 
         going = True
         count = 0

@@ -25,10 +25,6 @@ import pygame
 from library import*
 #import bomb
 
-# cwd = Path.cwd()
-# weapon_images_path = cwd.joinpath('resources', 'weapon_images')
-weapon_images_path = Path('resources/weapon_images')
-
 spitfire_spread = 15
 spitfire_offset = 5
 #each weapon name will be mapped to its function, an image, and other properties
@@ -36,17 +32,17 @@ spitfire_offset = 5
 def chargeShot(origin_x, origin_y):
 
 
-    bullet1 = Entity.Bullet(origin_x, origin_y, 10, weapon_images_path.joinpath('chargeShot.png'), angle = 0, behavior='up', name = 'chargeShot')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('chargeShot.png'), angle = 0, behavior='up', name = 'chargeShot')
     return bullet1
 
 def waveBeam(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 10, weapon_images_path.joinpath('waveBeam_new_s.png'), angle = 0, behavior='up', name = 'waveBeam')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), angle = 0, behavior='up', name = 'waveBeam')
     return bullet1
 
 def spitfire(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), angle = 0, behavior='up')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), angle = 0, behavior='up')
 
 
     return bullet1
@@ -54,48 +50,48 @@ def spitfire(origin_x, origin_y):
 def spitfire3(origin_x, origin_y):
     #print('spitfire here')
     #print(origin_x, origin_y)
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x - 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet3 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet4 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet5 = Entity.Bullet(origin_x + 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
+    bullet2 = Entity.Bullet(origin_x - 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
+    bullet3 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
+    bullet4 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
+    bullet5 = Entity.Bullet(origin_x + 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
 
     return bullet1, bullet2, bullet3, bullet4, bullet5
 
 def spitfire2(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
-    bullet3 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, weapon_images_path.joinpath('spitfire.png'), behavior='up')
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
+    bullet2 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
+    bullet3 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
     return bullet1, bullet2, bullet3
 
 def blue_lazer(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('blue_lazer.gif'))
+    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'))
     return bullet1
 
 def missle(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 5, weapon_images_path.joinpath('blue_lazer.gif'), behavior="missle")
+    bullet1 = Entity.Bullet(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), behavior="missle")
     return bullet1
 
 def bombs(origin_x, origin_y):
-    bomb1 = Entity.Bomb(origin_x, origin_y, 5, weapon_images_path.joinpath('bomb.png'), behavior='bomb')
+    bomb1 = Entity.Bomb(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), behavior='bomb')
     return bomb1
 
 # def waveBeam(origin_x, origin_y):
-#     bullet1 = Entity.Bullet(origin_x, origin_y, 15, weapon_images_path.joinpath('waveBeam.png'))
+#     bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('waveBeam.png'))
 #     return bullet1
 
 master_weapons_dict = dict(
-    spitfire=(10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire),
-    spitfire2=(10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire2),
-    spitfire3=(10, 15, weapon_images_path.joinpath('spitfire.png'), spitfire3),
-    blue_lazer=(10, 4, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
-    master_lazer=(10, 60, weapon_images_path.joinpath('blue_lazer.gif'), blue_lazer),
-    missle=(10, 5, weapon_images_path.joinpath('blue_lazer.gif'), missle),
-    bomb=(10, 5, weapon_images_path.joinpath('bomb.png'), bombs),
-    waveBeam=(10, 2, weapon_images_path.joinpath('waveBeam_new_s.png'), waveBeam),
-    waveBeam2=(10, 3, weapon_images_path.joinpath('waveBeam_new_s.png'), waveBeam),
-    waveBeam3=(10, 4, weapon_images_path.joinpath('waveBeam_new_s.png'), waveBeam),
-    chargeShot= (1, 30, weapon_images_path.joinpath('chargeShot','chargeShot.png'), chargeShot)
+    spitfire=(10, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), spitfire),
+    spitfire2=(10, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), spitfire2),
+    spitfire3=(10, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), spitfire3),
+    blue_lazer=(10, 4, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), blue_lazer),
+    master_lazer=(10, 60, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), blue_lazer),
+    missle=(10, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), missle),
+    bomb=(10, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), bombs),
+    waveBeam=(10, 2, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
+    waveBeam2=(10, 3, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
+    waveBeam3=(10, 4, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
+    chargeShot= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot)
 
                            )
 

@@ -124,7 +124,7 @@ class LevelLoader():
                         # timeEvents["items"].append(item)
                         pass
                 if each == "background":
-                    timeEvents["background"]=events[each]
+                    timeEvents["background"]=BACKGROUND_PATH.joinpath(events[each])
             else:
                 print (each, " is not in levelLibrary TIME_TYPES so it will not be loaded")
 

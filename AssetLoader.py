@@ -61,6 +61,7 @@ class AssetLoader(object):
         '''Accepts an OS path or path-like string, returns that filename's sprite surface and rectangle.'''
 
         if name in self.assets:
+            
             # if DEBUG:
             #     self.dict_hits += 1
             result = self.assets[name]
@@ -100,8 +101,8 @@ class AssetLoader(object):
         except pygame.error:
             raise RuntimeError('Cannot load image:' + fullname)
 
-        buffer = pygame.surfarray.array3d(image)
-        self.assets[name] = buffer
+        # buffer = pygame.surfarray.array3d(image)
+        # self.assets[name] = buffer
         if image.get_alpha():
             image = image.convert_alpha()
         else:
