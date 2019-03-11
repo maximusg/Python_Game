@@ -1,7 +1,7 @@
 {
     "end": {
         "boss": false,
-        "time": 60
+        "time": 80
     },
     "time": {
         "0": {
@@ -45,13 +45,6 @@
                 ]
             }
         },
-        "10": {
-            "enemy": {
-                "class": [
-                    "@s5-db-3-1-0-DTwaveBeam"
-                ]
-            }
-        },
         "11": {
             "enemy": {
                 "class": [
@@ -73,35 +66,21 @@
                 ]
             }
         },
-        "16": {
+        "14": {
+            "enemy": {
+                "class": [
+                    "@s5-db-3-1-0-DTwaveBeam"
+                ]
+            }
+        },
+        "22": {
             "enemy": {
                 "class": [
                     "@s8-db-3-1-0-DTchargeShot"
                 ]
             }
         },
-        "17": {
-            "enemy": {
-                "class": [
-                    "@s8-db-3-1-0-DTchargeShot"
-                ]
-            }
-        },
-        "18": {
-            "enemy": {
-                "class": [
-                    "@s8-db-3-1-0-DTchargeShot"
-                ]
-            }
-        },
-        "19": {
-            "enemy": {
-                "class": [
-                    "@s8-db-3-1-0-DTchargeShot"
-                ]
-            }
-        },
-        "20": {
+        "23": {
             "enemy": {
                 "class": [
                     "@s8-db-3-1-0-DTchargeShot"
@@ -111,276 +90,70 @@
         "24": {
             "enemy": {
                 "class": [
-                    "@s5-db-3-1-0-DThealth"
+                    "@s8-db-3-1-0-DTchargeShot"
                 ]
             }
         },
         "25": {
             "enemy": {
                 "class": [
-                    "@s5-db-3-1-0-DThealth"
-                ]
-            }
-        },
-        "26": {
-            "enemy": {
-                "class": [
-                    "@s5-db-3-1-0-DThealth"
-                ]
-            }
-        },
-        "27": {
-            "enemy": {
-                "class": [
-                    "@s5-db-3-1-0-DThealth"
+                    "@s8-db-3-1-0-DTchargeShot"
                 ]
             }
         },
         "31": {
             "enemy": {
                 "class": [
-                    "@s8-db-3-1-0-DTcommon"
+                    "@s5-db-3-1-0-DThealth"
                 ]
             }
         },
         "32": {
             "enemy": {
                 "class": [
-                    "@s8-db-3-1-0-DTcommon"
+                    "@s5-db-3-1-0-DThealth"
                 ]
             }
         },
         "33": {
             "enemy": {
                 "class": [
-                    "@s8-db-3-1-0-DTcommon"
+                    "@s5-db-3-1-0-DThealth"
                 ]
             }
         },
         "34": {
             "enemy": {
                 "class": [
-                    "@s8-db-3-1-0-DTcommon"
-                ]
-            }
-        },
-        "39": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
-                ]
-            }
-        },
-        "40": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s5-db-3-1-0-DThealth"
                 ]
             }
         },
         "41": {
             "enemy": {
                 "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s8-db-3-1-0-DTcommon"
                 ]
             }
         },
         "42": {
             "enemy": {
                 "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s8-db-3-1-0-DTcommon"
                 ]
             }
         },
         "43": {
             "enemy": {
                 "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s8-db-3-1-0-DTcommon"
                 ]
             }
         },
         "44": {
             "enemy": {
                 "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
-                ]
-            }
-        },
-        "45": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
-                ]
-            }
-        },
-        "46": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
-                ]
-            }
-        },
-        "47": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
-                ]
-            }
-        },
-        "48": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
-                ]
-            }
-        },
-        "49": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTcommon",
-                    "@s2-db-3-1-0-DTcommon",
-                    "@s3-db-3-1-0-DTcommon",
-                    "@s4-db-3-1-0-DTcommon",
-                    "@s5-db-3-1-0-DTcommon",
-                    "@s6-db-3-1-0-DTcommon",
-                    "@s7-db-3-1-0-DTcommon",
-                    "@s8-db-3-1-0-DTcommon",
-                    "@s9-db-3-1-0-DTcommon",
-                    "@s10-db-3-1-0-DTcommon",
-                    "@s11-db-3-1-0-DTcommon",
-                    "@s12-db-3-1-0-DTcommon",
-                    "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s8-db-3-1-0-DTcommon"
                 ]
             }
         },
@@ -400,7 +173,7 @@
                     "@s11-db-3-1-0-DTcommon",
                     "@s12-db-3-1-0-DTcommon",
                     "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s14-db-3-1-0-DTcommon"
                 ]
             }
         },
@@ -420,7 +193,7 @@
                     "@s11-db-3-1-0-DTcommon",
                     "@s12-db-3-1-0-DTcommon",
                     "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s14-db-3-1-0-DTcommon"
                 ]
             }
         },
@@ -440,7 +213,7 @@
                     "@s11-db-3-1-0-DTcommon",
                     "@s12-db-3-1-0-DTcommon",
                     "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s14-db-3-1-0-DTcommon"
                 ]
             }
         },
@@ -460,7 +233,7 @@
                     "@s11-db-3-1-0-DTcommon",
                     "@s12-db-3-1-0-DTcommon",
                     "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s14-db-3-1-0-DTcommon"
                 ]
             }
         },
@@ -480,7 +253,24 @@
                     "@s11-db-3-1-0-DTcommon",
                     "@s12-db-3-1-0-DTcommon",
                     "@s13-db-3-1-0-DTcommon",
-                    "@s14-db-3-1-0"
+                    "@s14-db-3-1-0-DTcommon"
+                ]
+            }
+        },
+        "65": {
+            "enemy": {
+                "class": [
+                    "@s1-db-7-400-0-DTcommon",
+                    "@s2-d-3-400--DTcommon",
+                    "@s3-c-3-400-0-DTcommon",
+                    "@s5-s-3-400-0-DTcommon",
+                    "@s7-cz-3-400-0-DTcommon",
+                    "@s8-cr-3-400-0-DTcommon",
+                    "@s9-db-3-400-0-DTcommon",
+                    "@s10-mv-3-400-0-DTcommon",
+                    "@s12-db-3-400-0-DTcommon",
+                    "@s13-ds-3-400-0-DTcommon",
+                    "@s14-db-7-400-0-DTcommon"
                 ]
             }
         }

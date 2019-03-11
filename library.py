@@ -59,11 +59,11 @@ ENEMY_SPRITE = {
         "diver":1,
         "camper":2, 
         "sleeper":3,
-        "crazy":3,
-        "crazyReverse": 3,
-        "mrVectors": 3,
-        "diveBomb": 1,
-        "diveStrafe": 1
+        "crazy":8,
+        "crazyReverse": 4,
+        "mrVectors": 5,
+        "diveBomb": 6,
+        "diveStrafe": 7
         }
 
 BULLET_VECTORS = {

@@ -57,7 +57,7 @@ data = {
         #     }
         # }
     },
-    "end": {"time":60, "boss":False} #this gives the ending parameters
+    "end": {"time":80, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
@@ -106,17 +106,32 @@ for i in range(3,7):#5 enemies in line
 for i in range(11,15):#5 enemies in line
     data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DTwaveBeam"]}}
 
-for i in range(19,23):#5 enemies in line
+for i in range(22,26):#5 enemies in line
     data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTchargeShot"]}}
 
-for i in range(27,31):#5 enemies in line
+for i in range(31,35):#5 enemies in line
     data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DThealth"]}}
 
-for i in range(35,39):#5 enemies in line
+for i in range(41,45):#5 enemies in line
     data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTcommon"]}}
 
-for i in range(43,49):#5 enemies in line
+for i in range(50,55):#5 enemies in line
     data["time"][i] = {"enemy":{ "class": cluster(selection="full",b="db",s="3",h="1",d="DTcommon")}}
+
+
+data["time"][65] = {"enemy":{  "class": [
+                    "@s1-db-7-400-0-DTcommon",
+                    "@s2-d-3-400--DTcommon",
+                    "@s3-c-3-400-0-DTcommon",
+                    "@s5-s-3-400-0-DTcommon",
+                    "@s7-cz-3-400-0-DTcommon",
+                    "@s8-cr-3-400-0-DTcommon",
+                    "@s9-db-3-400-0-DTcommon",
+                    "@s10-mv-3-400-0-DTcommon",
+                    "@s12-db-3-400-0-DTcommon",
+                    "@s13-ds-3-400-0-DTcommon",
+                    "@s14-db-7-400-0-DTcommon"
+                ]}}
 
 
 
