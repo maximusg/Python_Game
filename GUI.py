@@ -402,15 +402,28 @@ class GUI(object):
                 if sprite.visible == 0:
                     sprite.kill()
 
+            # if boss_sprites.sprite != None:
+            #     collision = pygame.sprite.spritecollideany(boss_sprites.sprite, player_bullet_sprites)
+            #     if collision:
+            #         sprite.take_damage(1)
+            #         collision.kill()
+            #     else:
+            #         collision = pygame.sprite.spritecollideany(boss_sprites.sprite, bomb_explosion_sprites)
+            #         if collision:
+            #             sprite.take_damage(2)
+            #     if boss_sprites.sprite.health <= 0:
+            #         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
+            #         new_explosion.play_sound() 
+            #         explosions.add(new_explosion)                        
+            #         player_score += boss_sprites.sprite.point_value
+            #         boss_sprites.sprite.kill()  
             if boss_sprites.sprite != None:
-                collision = pygame.sprite.spritecollideany(boss_sprites.sprite, player_bullet_sprites)
+                collision_dict = pygame.sprite.groupcollide(player_bullet_sprites, boss_sprites, True, False)
+                for i in range(len(collision_dict)):
+                    boss_sprites.sprite.take_damage(1)
+                collision = pygame.sprite.spritecollideany(boss_sprites.sprite, bomb_explosion_sprites)
                 if collision:
-                    sprite.take_damage(1)
-                    collision.kill()
-                else:
-                    collision = pygame.sprite.spritecollideany(boss_sprites.sprite, bomb_explosion_sprites)
-                    if collision:
-                        sprite.take_damage(2)
+                    boss_sprites.sprite.take_damage(2)
                 if boss_sprites.sprite.health <= 0:
                     new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
                     new_explosion.play_sound() 
@@ -418,6 +431,7 @@ class GUI(object):
                     player_score += boss_sprites.sprite.point_value
                     boss_sprites.sprite.kill()  
 
+            #sprite cleanup
             for sprite in player_bullet_sprites:
                 if sprite.visible == 0:
                     sprite.kill()    
