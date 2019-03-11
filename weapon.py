@@ -133,7 +133,7 @@ cwd = Path.cwd()
 charging_images_path = cwd.joinpath('resources', 'weapon_images', 'chargeShot', 'charging')
 bomb_sounds = cwd.joinpath('resources', 'sound_effects', 'bomb_sounds')
 #Constants
-TOTAL_ANIM_FRAMES = 7
+TOTAL_ANIM_FRAMES = 4
 
 class ChargingAnim(pygame.sprite.Sprite):
     def __init__(self, startx, starty, playerShip):

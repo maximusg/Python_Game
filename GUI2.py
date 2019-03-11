@@ -275,6 +275,7 @@ class GUI(object):
             keys = pygame.key.get_pressed()
             addBullet = playerShip.control(keys, FRAMERATE)
             if addBullet:
+                #special behavior for chargeShot
                 if playerShip.weapon.name == 'chargeShot':
                     #this is the chargeShot "charging" code
                     playerShip.weapon.chargeShot_charging_flag = True
@@ -286,6 +287,8 @@ class GUI(object):
                         playerShip.weapon.chargeShot_anim_visible = True
                         new_charging = weapon.ChargingAnim(playerShip.rect.centerx,playerShip.rect.centery, playerShip)
                         explosions.add(new_charging)
+
+                #normal bullet behavior
                 else:
                     self.fire_spitfire.play()
                     bullet = playerShip.fire()
@@ -376,6 +379,7 @@ class GUI(object):
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
                     sprite.take_damage(1)
+                    #if chargeShot pierce through enemies here
                     collision.visible = 0
                     collision.kill()
                     if sprite.health <= 0:
