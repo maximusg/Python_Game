@@ -253,12 +253,46 @@ class GUI(object):
                 items.add(items_to_add)
 
             ##Keyboard polling
+
+            #chargeShot specific weapon firing
+            if playerShip.weapon.name == 'chargeShot':
+                if playerShip.weapon.chargeShot_charging_flag == True:
+                    keys = pygame.key.get_pressed()
+                    if not keys[pygame.K_SPACE]:
+                        playerShip.weapon.chargeShot_charging_flag = False
+                        playerShip.weapon.chargeShot_firing_flag = True
+
+            if playerShip.weapon.name == 'chargeShot':
+                if playerShip.weapon.chargeShot_firing_flag == True:
+                    if playerShip.weapon.chargeShot_counter >= 0:
+                        bullet = playerShip.fire()
+                        player_bullet_sprites.add(bullet)
+                        playerShip.weapon.chargeShot_counter -= 1
+                    else:
+                        playerShip.weapon.chargeShot_firing_flag = False
+
+
             keys = pygame.key.get_pressed()
             addBullet = playerShip.control(keys, FRAMERATE)
             if addBullet:
-                self.fire_spitfire.play() 
-                bullet = playerShip.fire()
-                player_bullet_sprites.add(bullet)
+                #special behavior for chargeShot
+                if playerShip.weapon.name == 'chargeShot':
+                    #this is the chargeShot "charging" code
+                    playerShip.weapon.chargeShot_charging_flag = True
+                    if playerShip.weapon.chargeShot_counter <= playerShip.weapon.chargeShot_counter_max:
+                        playerShip.weapon.chargeShot_counter += 1
+
+
+                    if playerShip.weapon.chargeShot_anim_visible == False:
+                        playerShip.weapon.chargeShot_anim_visible = True
+                        new_charging = weapon.ChargingAnim(playerShip.rect.centerx,playerShip.rect.centery, playerShip)
+                        explosions.add(new_charging)
+
+                #normal bullet behavior
+                else:
+                    self.fire_spitfire.play()
+                    bullet = playerShip.fire()
+                    player_bullet_sprites.add(bullet)
 
             if playerShip.drop_bomb_flag is True:
                 bomb = playerShip.drop_bomb()

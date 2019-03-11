@@ -238,6 +238,8 @@ class Player(Entity):
                     self.weapon = weapon.Weapon('waveBeam2')
                 if keys[pygame.K_6]:
                     self.weapon = weapon.Weapon('waveBeam3')
+                if keys[pygame.K_7]:
+                    self.weapon = weapon.Weapon('chargeShot')
         return addBullet
 
     def update(self):
@@ -436,10 +438,8 @@ class Bullet(Entity):
         if self.name == "waveBeam":
             wave_growth = 2
             wave_size = self.image.get_size()
-            #ASSET_MANAGER.getAsset(self.imageFile)
             self.image = pygame.transform.scale(self.image, (int(wave_size[0]+wave_growth), int(wave_size[1])))
             self.rect = self.rect.inflate(wave_growth, 0)
-            #self.move(-wave_growth, 0)
         super().update()
         self.movement.update(self)
 
