@@ -321,7 +321,7 @@ class Enemy(Entity):
     def __crazyReverse__(self):
         down =["x","x",0]#comes down at spawn speed
         stop = [0,0,0]
-        left = [0,3,-90]
+        left = ["x",1,-90]
         right = ["x","x",90]
         up = ["x","x",180]
 
@@ -345,7 +345,7 @@ class Enemy(Entity):
         # you will use the entities default, which if not set is 0.
 
         #couple of examples
-        down = [3,0,0]#accelerate down 1 frame more each time
+        down = [6,0,0]#accelerate down 1 frame more each time
         up = [0,3,180]
         northEast =["x","x", 46] #note you can use fractions for acceleration
         turn_right = ["x","x",90] # speed must be combined wtih an angle or it wont change anything

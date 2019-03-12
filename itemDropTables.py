@@ -43,6 +43,16 @@ waveBeam = (
     ('wavebeam_powerup', 1)
 )
 
+healthpack = (
+
+    ('healthpack', 1)
+)
+
+coin = (
+
+    ('coin', 1)
+)
+
 #use the empty itemDropTable to never allow items to drop from enemies
 empty = None
 
@@ -53,5 +63,6 @@ DTDic = {
     'DTchargeShot': chargeShot,
     'DTwaveBeam': waveBeam,
     'DTempty': empty,
-    'DThealth': common
+    'DThealth': healthpack,
+    'DTcoin': coin
 }

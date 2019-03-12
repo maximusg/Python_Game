@@ -25,39 +25,18 @@ data = {
             #     "class": ["@s7-mv-5-1-0"],
             #     "health": 1
             #     },
-            "background": "starfield.png"
+            "background": "Asteroid.png"
             
             },
-            # 3: #time zero
-            # {"enemy":{
-            #     "class": ["@s3-db-3-2-0-common"],
-            #     }
+            3: #time zero
+            {"enemy":{
+                "class": ["@s3-db-3-20-0-DTwaveBeam"],
+                }
+            },
            
-            # },
-        #     5: #time zero
-        #     {"enemy":{
-        #         "class": diveStrafeCluster("lvl2"),
-        #         "health": 1
-        #         }
-            
-        #     },
-        #     7: #time zero
-        #     {"enemy":{
-        #         "class": fullDiveCluster("lvl3"),
-        #         "health": 1
-        #         }
-            
-        #     },
-        #     11: {
-        #     "boss_sprite": {
-        #         "image": "boss.png",
-        #         "class": [
-        #             "camperMid"
-        #         ]
-        #     }
-        # }
+       
     },
-    "end": {"time":80, "boss":True} #this gives the ending parameters
+    "end": {"time":80, "boss":False} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
@@ -100,40 +79,86 @@ ClusterDIC_Right ={
     4:"MR4",
     5:"MR5"
 }
-for i in range(3,7):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTspitfire"]}}
+# for i in range(3,7):#5 enemies in line
+#     data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTspitfire"]}}
 
-for i in range(11,15):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DTwaveBeam"]}}
+# for i in range(11,15):#5 enemies in line
+#     data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DTwaveBeam"]}}
 
-for i in range(22,26):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTchargeShot"]}}
+# for i in range(22,26):#5 enemies in line
+#     data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTchargeShot"]}}
 
-for i in range(31,35):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DThealth"]}}
+# for i in range(31,35):#5 enemies in line
+#     data["time"][i] = {"enemy":{ "class": ["@s5-db-3-1-0-DThealth"]}}
 
-for i in range(41,45):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTcommon"]}}
+# for i in range(41,45):#5 enemies in line
+#     data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTcommon"]}}
 
-for i in range(50,55):#5 enemies in line
-    data["time"][i] = {"enemy":{ "class": cluster(selection="full",b="db",s="3",h="1",d="DTcommon")}}
+for i in range(8,38):#5 enemies in line
+    go = random.randint(0,100)
+    if(go>80):
+        select = go % 16
+        data["time"][i] = {"enemy":{ "class": cluster(selection=clusterDIC_FULL[select],b="db",s="3",h="1",d="DTempty")}}
 
 
-data["time"][65] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+data["time"][40] = {"enemy":{  "class": [ #a look at every enemy type/skin.
                     # "@s1-db-7-400-0-DTcommon",
-                    "@s2-d-1-400--DTcommon",
-                    "@s3-c-1-400-0-DTcommon",
-                    "@s5-s-1-400-0-DTcommon",
-                    "@s7-cz-1-400-0-DTcommon",
-                    # "@s8-cr-3-400-0-DTcommon",
-                    "@s9-cr-1-400-0-DTcommon",
-                    "@s10-mv-1-400-0-DTcommon",
-                    "@s12-db-1-400-0-DTcommon",
-                    "@s13-ds-1-400-0-DTcommon",
+                    # "@s2-d-1-400--DTcommon",
+                    # "@s3-c-1-400-0-DTcommon",
+                    "@s5-s-1-10-0-DTspitfire",
+                    # "@s7-cz-1-400-0-DTcommon",
+                    # # "@s8-cr-3-400-0-DTcommon",
+                    # "@s9-cr-1-400-0-DTcommon",
+                    # "@s10-mv-1-400-0-DTcommon",
+                    # "@s12-db-1-400-0-DTcommon",
+                    # "@s13-ds-1-400-0-DTcommon",
                     # "@s14-db-7-400-0-DTcommon"
                 ]}}
 
-data["time"][79] = {"boss_sprite":{  "image":"boss.png", "class": [ENEMY_camperMid]}}
+data["time"][45] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+                    # "@s1-db-7-400-0-DTcommon",
+                    # "@s2-d-1-400--DTcommon",
+                    # "@s3-c-1-400-0-DTcommon",
+                    # "@s5-s-1-400-50-DTspitfire",
+                    # "@s7-cz-1-400-0-DTcommon",
+                    # # "@s8-cr-3-400-0-DTcommon",
+                    # "@s9-cr-1-400-0-DTcommon",
+                    "@s10-mv-2-25-0-DTspitfire",
+                    # "@s12-db-1-400-0-DTcommon",
+                    # "@s13-ds-1-400-0-DTcommon",
+                    # "@s14-db-7-400-0-DTcommon"
+                ]}}
+
+data["time"][50] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+                    # "@s1-db-7-400-0-DTcommon",
+                    # "@s2-d-1-400--DTcommon",
+                    "@s3-c-5-100-0-DTempty",
+                    # "@s5--1-400-50-DTspitfire",
+                    # "@s7-cz-1-400-0-DTcommon",
+                    "@s8-cr-2-50-0-DTspitfire",
+                    # "@s9-cr-1-400-0-DTcommon",
+                    # "@s10-mv-1-400-0-DTcommon",
+                    # "@s12-db-1-400-0-DTcommon",
+                    # "@s13-ds-1-400-0-DTcommon",
+                    # "@s14-db-7-400-0-DTcommon"
+                ]}}
+
+
+
+for i in range(60,80):#5 enemies in line
+    go = random.randint(0,100)
+    if(go<40):
+        select = go % 16
+        data["time"][i] = {"enemy":{ "class": cluster(selection=clusterDIC_FULL[select],b="ds",s="3",h="3",d="DTempty")}}
+    if(go>80):
+        select = (go + 5) % 16
+        data["time"][i] = {"enemy":{ "class": cluster(selection=clusterDIC_FULL[select],b="c",s="3",h="3",d="DTcoin")}}
+
+
+
+
+
+# data["time"][79] = {"boss_sprite":{  "image":"boss.png", "class": [ENEMY_camperMid]}}
 
 
 
