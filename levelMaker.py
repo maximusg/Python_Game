@@ -57,7 +57,7 @@ data = {
         #     }
         # }
     },
-    "end": {"time":80, "boss":False} #this gives the ending parameters
+    "end": {"time":80, "boss":True} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
@@ -119,19 +119,21 @@ for i in range(50,55):#5 enemies in line
     data["time"][i] = {"enemy":{ "class": cluster(selection="full",b="db",s="3",h="1",d="DTcommon")}}
 
 
-data["time"][65] = {"enemy":{  "class": [
-                    "@s1-db-7-400-0-DTcommon",
-                    "@s2-d-3-400--DTcommon",
-                    "@s3-c-3-400-0-DTcommon",
-                    "@s5-s-3-400-0-DTcommon",
-                    "@s7-cz-3-400-0-DTcommon",
-                    "@s8-cr-3-400-0-DTcommon",
-                    "@s9-db-3-400-0-DTcommon",
-                    "@s10-mv-3-400-0-DTcommon",
-                    "@s12-db-3-400-0-DTcommon",
-                    "@s13-ds-3-400-0-DTcommon",
-                    "@s14-db-7-400-0-DTcommon"
+data["time"][65] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+                    # "@s1-db-7-400-0-DTcommon",
+                    "@s2-d-1-400--DTcommon",
+                    "@s3-c-1-400-0-DTcommon",
+                    "@s5-s-1-400-0-DTcommon",
+                    "@s7-cz-1-400-0-DTcommon",
+                    # "@s8-cr-3-400-0-DTcommon",
+                    "@s9-cr-1-400-0-DTcommon",
+                    "@s10-mv-1-400-0-DTcommon",
+                    "@s12-db-1-400-0-DTcommon",
+                    "@s13-ds-1-400-0-DTcommon",
+                    # "@s14-db-7-400-0-DTcommon"
                 ]}}
+
+data["time"][79] = {"boss_sprite":{  "image":"boss.png", "class": [ENEMY_camperMid]}}
 
 
 

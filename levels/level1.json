@@ -1,6 +1,6 @@
 {
     "end": {
-        "boss": false,
+        "boss": true,
         "time": 80
     },
     "time": {
@@ -260,18 +260,23 @@
         "65": {
             "enemy": {
                 "class": [
-                    "@s1-db-7-400-0-DTcommon",
-                    "@s2-d-3-400--DTcommon",
-                    "@s3-c-3-400-0-DTcommon",
-                    "@s5-s-3-400-0-DTcommon",
-                    "@s7-cz-3-400-0-DTcommon",
-                    "@s8-cr-3-400-0-DTcommon",
-                    "@s9-db-3-400-0-DTcommon",
-                    "@s10-mv-3-400-0-DTcommon",
-                    "@s12-db-3-400-0-DTcommon",
-                    "@s13-ds-3-400-0-DTcommon",
-                    "@s14-db-7-400-0-DTcommon"
+                    "@s2-d-1-400--DTcommon",
+                    "@s3-c-1-400-0-DTcommon",
+                    "@s5-s-1-400-0-DTcommon",
+                    "@s7-cz-1-400-0-DTcommon",
+                    "@s9-cr-1-400-0-DTcommon",
+                    "@s10-mv-1-400-0-DTcommon",
+                    "@s12-db-1-400-0-DTcommon",
+                    "@s13-ds-1-400-0-DTcommon"
                 ]
+            }
+        },
+        "79": {
+            "boss_sprite": {
+                "class": [
+                    "camperMid"
+                ],
+                "image": "boss.png"
             }
         }
     }
