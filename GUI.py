@@ -258,14 +258,14 @@ class GUI(object):
                 items.add(items_to_add)
 
             #chargeShot specific weapon firing
-            if playerShip.weapon.name == 'chargeShot':
+            if playerShip.weapon.name in playerShip.weapon.chargeShot_dic:
                 if playerShip.weapon.chargeShot_charging_flag == True:
                     keys = pygame.key.get_pressed()
                     if not keys[pygame.K_SPACE]:
                         playerShip.weapon.chargeShot_charging_flag = False
                         playerShip.weapon.chargeShot_firing_flag = True
 
-            if playerShip.weapon.name == 'chargeShot':
+            if playerShip.weapon.name in playerShip.weapon.chargeShot_dic:
                 if playerShip.weapon.chargeShot_firing_flag == True:
                     if playerShip.weapon.chargeShot_counter >= 0:
                         bullet = playerShip.fire()
@@ -279,17 +279,19 @@ class GUI(object):
             addBullet = playerShip.control(keys, FRAMERATE)
             if addBullet:
                 #special behavior for chargeShot
-                if playerShip.weapon.name == 'chargeShot':
+                if playerShip.weapon.name in playerShip.weapon.chargeShot_dic:
                     #this is the chargeShot "charging" code
-                    playerShip.weapon.chargeShot_charging_flag = True
-                    if playerShip.weapon.chargeShot_counter <= playerShip.weapon.chargeShot_counter_max:
-                        playerShip.weapon.chargeShot_counter += 1
+                    if playerShip.weapon.chargeShot_firing_flag is False:
+                        playerShip.weapon.chargeShot_charging_flag = True
+                        if playerShip.weapon.chargeShot_counter <= playerShip.weapon.chargeShot_counter_max:
+                            playerShip.weapon.chargeShot_counter += playerShip.weapon.chargeShot_counter_rate
+                            #print(playerShip.weapon.name, playerShip.weapon.chargeShot_counter)
 
 
-                    if playerShip.weapon.chargeShot_anim_visible == False:
-                        playerShip.weapon.chargeShot_anim_visible = True
-                        new_charging = weapon.ChargingAnim(playerShip.rect.centerx,playerShip.rect.centery, playerShip)
-                        chargeShot_Anim.add(new_charging)
+                        if playerShip.weapon.chargeShot_anim_visible is False:
+                            playerShip.weapon.chargeShot_anim_visible = True
+                            new_charging = weapon.ChargingAnim(playerShip.rect.centerx,playerShip.rect.centery, playerShip)
+                            chargeShot_Anim.add(new_charging)
 
                 #normal bullet behavior
                 else:
@@ -355,7 +357,6 @@ class GUI(object):
                             playerShip.take_damage(1)
                 if playerShip.health <= 0:
                     if playerShip.weapon.name == 'chargeShot':
-                        #playerShip.weapon = weapon.Weapon('spitfire')
                         chargeShot_Anim.empty()
                     playerShip.kill()
                     

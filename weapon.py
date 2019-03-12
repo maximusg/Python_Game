@@ -91,7 +91,11 @@ master_weapons_dict = dict(
     waveBeam=(10, 2, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
     waveBeam2=(10, 3, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
     waveBeam3=(10, 4, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
-    chargeShot= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot)
+    chargeShot= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot, 1),
+    chargeShot2= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot, 2),
+    chargeShot3= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot, 3)
+
+
 
                            )
 
@@ -119,10 +123,16 @@ class Weapon(object):
         self.chargeShot_charging_flag = False
         self.chargeShot_firing_flag = False
         self.chargeShot_anim_visible = False
+        self.chargeShot_dic = {
+            'chargeShot':1,
+            'chargeShot2':2,
+            'chargeShot3':3
+        }
+        self.chargeShot_counter_rate = 1
+        if self.name in self.chargeShot_dic:
+            self.chargeShot_counter_rate = self.chargeShot_dic.get(self.name)
+       # print(self.chargeShot_counter_rate)
 
-    def chargeShot_timer(self):
-        self.chargeShot_counter +=1
-        print(self.chargeShot_counter)
 
 
 cwd = Path.cwd()
@@ -145,8 +155,9 @@ class ChargingAnim(pygame.sprite.Sprite):
         self.playerShip = playerShip
         self.max_charging_width = 125
         self.max_charging_height = 135
-        self.charge_grow = 1
-        self.charge_shrink = 2
+        self.charge_grow = self.playerShip.weapon.chargeShot_dic.get(self.playerShip.weapon.name)
+        self.charge_shrink = 2 #self.playerShip.weapon.chargeShot_dic.get(self.playerShip.weapon.name) * 2
+
 
 
     def update(self):
@@ -178,7 +189,7 @@ class ChargingAnim(pygame.sprite.Sprite):
             self.image, self.rect = ASSET_MANAGER.getAsset(str(charging_images_path.joinpath('charging')) + str(self.frame % TOTAL_ANIM_FRAMES)+'.png')
             self.rect.centerx, self.rect.centery = old_x, old_y
 
-            if charging_size[0] > 2:
+            if (charging_size[0] - self.charge_shrink > 0) and (charging_size[1] - self.charge_shrink):
                 self.image = pygame.transform.scale(self.image, (charging_size[0] - self.charge_shrink, charging_size[1] - self.charge_shrink))
                 self.rect = self.image.get_rect(center=(old_x,old_y))
             else:
@@ -222,6 +233,12 @@ def upgrade(item_pickup, current_weapon):
             else:
                 return 'waveBeam'
         if item_pickup == 'chargeShot':
+            if current_weapon == 'chargeShot':
+                return 'chargeShot2'
+            elif current_weapon == 'chargeShot2':
+                return 'chargeShot3'
+            elif current_weapon == 'chargeShot3':
+                return 'chargeShot3'
             return 'chargeShot'
     else:
         return None
