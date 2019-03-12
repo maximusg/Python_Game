@@ -152,6 +152,7 @@ class Player(Entity):
         self.health = 40
         self.max_shield = 100
         self.shield = 100
+        self.healthpack = 10 #this determines how much health is restored when picking up a healthpack
         # self.image, self.rect = load_image(imgFile, -1)
         self.invul_flag = False
 
@@ -512,6 +513,13 @@ class Item(Entity):
     def checkBomb(self):
         if self.name in MASTER_ITEMS:
             if self.name is 'bomb_item':
+                return True
+
+        return False
+
+    def checkHealthPack(self):
+        if self.name in MASTER_ITEMS:
+            if self.name is 'healthpack':
                 return True
 
         return False

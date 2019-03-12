@@ -369,6 +369,13 @@ class GUI(object):
                         playerShip.weapon = weapon.Weapon(upgrade)
                     if sprite.checkBomb():
                         playerShip.bombs_remaining += 1
+                    if sprite.checkHealthPack():
+                        if playerShip.health < playerShip.max_health:
+                            new_health = playerShip.health + playerShip.healthpack
+                            if new_health >= playerShip.max_health:
+                                playerShip.health = playerShip.max_health
+                            else:
+                                playerShip.health += playerShip.healthpack
                     sprite.kill()
 
                 else:
