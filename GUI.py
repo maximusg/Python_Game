@@ -490,16 +490,28 @@ class GUI(object):
             if bg_y1 > bg_h:
                 bg_y1 = -bg_h
 
-            #self.screen.blit(bg, bg_rect)
+            if boss_spawned and boss_sprites.sprite != None:
+                boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprites.sprite.health/boss_sprites.sprite.max_health, boss_sprites.sprite.shield/boss_sprites.sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
+            if boss_spawned:
+                self.screen.blit(boss_bar, boss_bar_rect)
+
             explosions.draw(self.screen)
             bomb_explosion_sprites.draw(self.screen)
             chargeShot_Anim.draw(self.screen)
+            player_bullet_sprites.draw(self.screen)
+            player_bomb_sprites.draw(self.screen)
+            enemy_bullet_sprites.draw(self.screen)
+            items.draw(self.screen)
+            if playerShip.invul_flag and invul_timer//6 % 2 == 0: ##allows visual feedback that the player is invulnerable
+                player_sprites_invul.draw(self.screen)
+            player_sprites.draw(self.screen)
+            enemy_sprites.draw(self.screen)
+            boss_sprites.draw(self.screen)
 
             c1 = self.screen.blit(column, ORIGIN)
             c2 = self.screen.blit(column, (SCREEN_WIDTH-COLUMN_WIDTH, 0))
 
             text = draw_text("Score: "+ str(player_score), WHITE)
-            #score_rect = self.screen.blit(score_surf, ORIGIN)
             self.screen.blit(text,ORIGIN)
 
             self.screen.blit(inst_block, (0,text.get_rect().bottom))
@@ -517,27 +529,11 @@ class GUI(object):
             lives_left, lives_left_rect = draw_player_lives(player_lives, (COLUMN_WIDTH*4 + 10, 10))
             bombs_left, bombs_left_rect = draw_bombs_remaining(playerShip.bombs_remaining, (COLUMN_WIDTH*4 + 40, 100))
 
-            if boss_spawned and boss_sprites.sprite != None:
-                boss_bar, boss_bar_rect = draw_boss_bar(COLUMN_WIDTH, 50, boss_sprites.sprite.health/boss_sprites.sprite.max_health, boss_sprites.sprite.shield/boss_sprites.sprite.max_shield, (COLUMN_WIDTH*2,SCREEN_HEIGHT-100))
-
             self.screen.blit(lives_left, lives_left_rect)
             self.screen.blit(bombs_left, bombs_left_rect)
             self.screen.blit(armor_bar, armor_bar_rect)
             self.screen.blit(shield_bar, shield_bar_rect)
             
-            if boss_spawned:
-                self.screen.blit(boss_bar, boss_bar_rect)
-
-            player_bullet_sprites.draw(self.screen)
-            player_bomb_sprites.draw(self.screen)
-            enemy_bullet_sprites.draw(self.screen)
-            items.draw(self.screen)
-            if playerShip.invul_flag and invul_timer//6 % 2 == 0: ##allows visual feedback that the player is invulnerable
-                player_sprites_invul.draw(self.screen)
-            player_sprites.draw(self.screen)
-            enemy_sprites.draw(self.screen)
-            boss_sprites.draw(self.screen)
-
             pygame.display.flip()
 
             time_since_start += self.clock.tick_busy_loop(FRAMERATE)
