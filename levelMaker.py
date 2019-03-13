@@ -25,7 +25,7 @@ data = {
             #     "class": ["@s7-mv-5-1-0"],
             #     "health": 1
             #     },
-            "background": "Asteroid.png"
+            "background": "rainbow.png"
             
             },
             3: #time zero
@@ -36,7 +36,7 @@ data = {
            
        
     },
-    "end": {"time":80, "boss":False} #this gives the ending parameters
+    "end": {"time":115, "boss":True} #this gives the ending parameters
         #if time=None, then boss=imageName of poss sprite, once defeated
 
 
@@ -79,6 +79,19 @@ ClusterDIC_Right ={
     4:"MR4",
     5:"MR5"
 }
+
+
+ClusterDIC_Mid ={
+    0:"M3",
+    1:"M4",
+    2:"M5",
+    3:"MR3",
+    4:"MR4",
+    5:"MR5",
+    6:"ML3",
+    7:"ML4",
+    8:"ML5"
+}
 # for i in range(3,7):#5 enemies in line
 #     data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTspitfire"]}}
 
@@ -94,20 +107,20 @@ ClusterDIC_Right ={
 # for i in range(41,45):#5 enemies in line
 #     data["time"][i] = {"enemy":{ "class": ["@s8-db-3-1-0-DTcommon"]}}
 
-for i in range(8,38):#5 enemies in line
+for i in range(5,10):#5 enemies in line
     go = random.randint(0,100)
-    if(go>80):
+    if(go>30):
         select = go % 16
-        data["time"][i] = {"enemy":{ "class": cluster(selection=clusterDIC_FULL[select],b="db",s="3",h="1",d="DTempty")}}
+        data["time"][i] = {"enemy":{ "class": cluster(selection=clusterDIC_FULL[select],b="db",s="6",h="5",d="DThealth")}}
 
 
-data["time"][40] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+data["time"][15] = {"enemy":{  "class": [ #a look at every enemy type/skin.
                     # "@s1-db-7-400-0-DTcommon",
                     # "@s2-d-1-400--DTcommon",
                     # "@s3-c-1-400-0-DTcommon",
-                    "@s5-s-1-10-0-DTspitfire",
-                    # "@s7-cz-1-400-0-DTcommon",
-                    # # "@s8-cr-3-400-0-DTcommon",
+                    "@s5-mv-10-10-0-DTwavebeam",
+                    "@s7-cz-1-1-0-DTempty",
+                    "@s8-cr-3-1-0-DTempty",
                     # "@s9-cr-1-400-0-DTcommon",
                     # "@s10-mv-1-400-0-DTcommon",
                     # "@s12-db-1-400-0-DTcommon",
@@ -115,52 +128,117 @@ data["time"][40] = {"enemy":{  "class": [ #a look at every enemy type/skin.
                     # "@s14-db-7-400-0-DTcommon"
                 ]}}
 
-data["time"][45] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+data["time"][21] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+                    "@s1-db-7-1-0-DTwaveBeam",
+                    "@s2-d-3-1--DTempty",
+                    
+                    "@s5-db-3-2-0-DTempty",
+                    "@s7-cz-3-1-0-DTempty",
+                    "@s8-d-3-2-0-DTempty",
+                    "@s9-cr-3-2-0-DTempty",
+                    "@s14-mv-2-15-0-DTwaveBeam",
+                    "@s12-db-3-1-0-DTempty",
+                    "@s13-ds-3-1-0-DTempty",
+                    "@s14-c-3-1-0-DTwaveBeam"
+                ]}}
+
+data["time"][26] = {"enemy":{  "class": [ #a look at every enemy type/skin.
                     # "@s1-db-7-400-0-DTcommon",
                     # "@s2-d-1-400--DTcommon",
-                    # "@s3-c-1-400-0-DTcommon",
-                    # "@s5-s-1-400-50-DTspitfire",
+                    "@s14-c-5-5-0-DTempty",
+                    # "@s5--1-400-50-DTspitfire",
                     # "@s7-cz-1-400-0-DTcommon",
-                    # # "@s8-cr-3-400-0-DTcommon",
+                    "@s8-cr-2-50-0-DTwaveBeam",
                     # "@s9-cr-1-400-0-DTcommon",
-                    "@s10-mv-2-25-0-DTspitfire",
-                    # "@s12-db-1-400-0-DTcommon",
+                    # "@s10-mv-1-400-0-DTcommon",
+                    "@s3-db-5-5-0-DTempty",
                     # "@s13-ds-1-400-0-DTcommon",
                     # "@s14-db-7-400-0-DTcommon"
                 ]}}
+
+
+
+for i in range(33,40):
+    go = random.randint(0,100)
+    spawn =[]
+    if(go<20):
+        select = go % 16
+        spawn += cluster(selection=clusterDIC_FULL[select],b="s",s="3",h="3",d="DTcoin")
+    if(go>20 and go < 50):
+        select = (go + 5) % 6
+        spawn += cluster(selection=ClusterDIC_Right[select],b="c",s="5",h="3",d="DTempty")
+    if(go>40 and go <70):
+        select = (go + 5) % 6
+        spawn += cluster(selection=ClusterDIC_Left[select],b="d",s="5",h="3",d="DTcoin")
+    if(go>70):
+        select = (go + 5) % 9
+        spawn += cluster(selection=ClusterDIC_Mid[select],b="s",s="3",h="3",d="DTempty")
+
+    data["time"][i] = {"enemy":{ "class": spawn}}
+
+data["time"][43] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+                    # "@s1-db-7-400-0-DTcommon",
+                    # "@s2-d-1-400--DTcommon",
+                    "@s13-c-5-1-0-DTempty",
+                    # "@s5--1-400-50-DTspitfire",
+                    # "@s7-cz-1-400-0-DTcommon",
+                    "@s8-cr-2-5-0-DTwaveBeam",
+                    # "@s9-cr-1-400-0-DTcommon",
+                    # "@s10-mv-1-400-0-DTcommon",
+                    "@s2-db-5-1-0-DTempty",
+                    # "@s13-ds-1-400-0-DTcommon",
+                    # "@s14-db-7-400-0-DTcommon"
+                ]}}
+
 
 data["time"][50] = {"enemy":{  "class": [ #a look at every enemy type/skin.
                     # "@s1-db-7-400-0-DTcommon",
                     # "@s2-d-1-400--DTcommon",
-                    "@s3-c-5-100-0-DTempty",
-                    # "@s5--1-400-50-DTspitfire",
+                    # "@s3-c-5-5-0-DTempty",
+                    "@s5-d--15-50-DTspitfire",
                     # "@s7-cz-1-400-0-DTcommon",
-                    "@s8-cr-2-50-0-DTspitfire",
-                    # "@s9-cr-1-400-0-DTcommon",
+                    # "@s8-cr-2-50-0-DTwaveBeam",
+                    "@s9-cr-1-15-0-DTwaveBeam",
                     # "@s10-mv-1-400-0-DTcommon",
-                    # "@s12-db-1-400-0-DTcommon",
+                    # "@s12-db-5-5-0-DTempty",
                     # "@s13-ds-1-400-0-DTcommon",
-                    # "@s14-db-7-400-0-DTcommon"
+                    "@s14-db-1-15-0-DTchargeShot"
+                ]}}
+data["time"][55] = {"enemy":{  "class": [ #a look at every enemy type/skin.
+                    # "@s1-db-7-400-0-DTcommon",
+                    # "@s2-d-1-400--DTcommon",
+                    # "@s3-c-5-5-0-DTempty",
+                    "@s5-d--15-50-DTspitfire",
+                    # "@s7-cz-1-400-0-DTcommon",
+                    # "@s8-cr-2-50-0-DTwaveBeam",
+                    "@s9-cr-1-15-0-DTwaveBeam",
+                    # "@s10-mv-1-400-0-DTcommon",
+                    # "@s12-db-5-5-0-DTempty",
+                    # "@s13-ds-1-400-0-DTcommon",
+                    "@s14-db-1-15-0-DTchargeShot"
                 ]}}
 
 
-
-for i in range(60,80):#5 enemies in line
+for i in range(60,79):
     go = random.randint(0,100)
-    if(go<40):
+    spawn =[]
+    if(go<20):
         select = go % 16
-        data["time"][i] = {"enemy":{ "class": cluster(selection=clusterDIC_FULL[select],b="ds",s="3",h="3",d="DTempty")}}
-    if(go>80):
-        select = (go + 5) % 16
-        data["time"][i] = {"enemy":{ "class": cluster(selection=clusterDIC_FULL[select],b="c",s="3",h="3",d="DTcoin")}}
+        spawn += cluster(selection=clusterDIC_FULL[select],b="mv",s="3",h="3",d="DTcoin")
+    if(go>20 and go < 50):
+        select = (go + 5) % 6
+        spawn += cluster(selection=ClusterDIC_Right[select],b="cr",s="10",h="3",d="DTempty")
+    if(go>40 and go <70):
+        select = (go + 5) % 6
+        spawn += cluster(selection=ClusterDIC_Left[select],b="cz",s="10",h="3",d="DTcoin")
+    if(go>70):
+        select = (go + 5) % 9
+        spawn += cluster(selection=ClusterDIC_Mid[select],b="mv",s="3",h="3",d="DTempty")
+
+    data["time"][i] = {"enemy":{ "class": spawn}}
 
 
-
-
-
-# data["time"][79] = {"boss_sprite":{  "image":"boss.png", "class": [ENEMY_camperMid]}}
-
-
+data["time"][80] = {"boss_sprite":{  "image":"boss.png", "class": [ENEMY_camperMid]}}
 
 
 # for i in range(11,16):#5 enemies in line

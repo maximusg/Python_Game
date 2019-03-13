@@ -288,46 +288,49 @@ class Enemy(Entity):
         self.itemDropTable = itemDropTable
 
     def __diver__(self):
-        dive=["x",3,"x"]
-        return movement.Move(moveCountArray=[100000],vectorAray=[dive])
+        down=["x","x",0]
+        right=["x","x",90]
+        vectorArray = [down,right]
+        moveCountArray = [130,50]
+        return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=2)
     
-    def __camper__(self):#stays on the screen camping, will progress down the screen slowly doing squares
-        
-        moveCountArray = [80,	20,	40,		20,  50,	20,	40]
-        down =["x","x",0]#comes down at spawn speed
-        stop = [0,0,0]
-        left = [0,3,-90]
-        right = ["x","x",90]
-        up = ["x","x",180]
-
-        moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
-        vectorArray = [down, stop, left, stop, up, stop, right]
-        
-        return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
+    def __camper__(self):
+        down=["x","x",0]
+        left=["x","x",-90]
+        vectorArray = [down,left]
+        moveCountArray = [130,50]
+        return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=3)
 
     def __crazy__(self):
         
         down =["x","x",0]#comes down at spawn speed
-        stop = [0,0,0]
-        left = [0,3,-90]
+        left = ["x","x",-90]
         right = ["x","x",90]
         up = ["x","x",180]
+        northWest = ["x","x",180-46]
+        northEast =["x","x", 180+46]
+        southWest = ["x","x",-46]
+        southEast =["x","x", 46]
+        
 
-        moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
-        vectorArray = [down, left, right, down, up, stop, down]
+        moveCountArray = [5,	15,	25,	10,   10,  10,20,25,5,20,25]
+        vectorArray = [down, left, right, left, up, down, northWest,southEast,down,northEast,southWest]
         
         return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
     def __crazyReverse__(self):
         down =["x","x",0]#comes down at spawn speed
-        stop = [0,0,0]
-        left = ["x",1,-90]
+        left = ["x","x",-90]
         right = ["x","x",90]
         up = ["x","x",180]
-
-        moveCountArray = [20,	20,	20,	20,   20,	20,	    20]
-        vectorArray = [down, stop, up, down, right, left, down]
+        northWest = ["x","x",180-46]
+        northEast =["x","x", 180+46]
+        southWest = ["x","x",-46]
+        southEast =["x","x", 46]
         
+        
+        moveCountArray = [25,20,5,25,20,10,10,10,25,15,5]
+        vectorArray = [southWest,northEast,down,southEast,northWest,down,up,left,right,left,down]
         return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
     def __sleeper__(self):# moves down and stops for a LLLONG time =, the wiggles left and right FAST, the stops again, the dives down
@@ -336,26 +339,30 @@ class Enemy(Entity):
         stop = [0,0,0]
         left = [0,3,-90]
         right = ["x","x",90]
-        moveCountArray = [80,	100,	40,		40]
+        moveCountArray = [50,	20,	10,		10]
         vectorArray = [down,stop,left,right]
-        return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
+        return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=1)
 
     def __mrVectors__(self): #EXAMPLE for vector movements
         #vector = [acceleration, speed, angle] if there is an "x" 
         # you will use the entities default, which if not set is 0.
 
         #couple of examples
-        down = [6,0,0]#accelerate down 1 frame more each time
-        up = [0,3,180]
-        northEast =["x","x", 46] #note you can use fractions for acceleration
-        turn_right = ["x","x",90] # speed must be combined wtih an angle or it wont change anything
-        turn_left = ["x","x",-90]
-        stop =		[0,0,0]
+        
+        southWest1 = [3,"x",-85]
+        southEast1 =["x","x", 85] 
+        southWest2 = ["x","x",-65]
+        southEast2 =["x","x", 65] 
+        southWest3 = ["x","x",-50]
+        southEast3 =["x","x", 50] 
+        southWest4 = ["x","x",-30]
+        southEast4 =[0,"x", 30] 
+        
 
         #fill the vector array to execute each moveCount
-        vectorArray = [ down, up,turn_right, turn_left, stop]
+        vectorArray = [ southWest1, southEast1, southWest2, southEast2, southWest3,southEast3, southWest4,southEast4]
         #still uses frame count
-        moveCountArray = [50,5, 15, 15, 30]
+        moveCountArray = [20,20,  15, 15,  10, 10, 5, 5]
         return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=3)
     
     ##NEW##

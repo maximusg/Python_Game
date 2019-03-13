@@ -22,6 +22,13 @@
                 "scheme": "arrows",
                 "weapon": "blue_lazer"
             }
+        },
+        "1": {
+           
+            "enemy": {
+                "class": ["@s7-mv-10-20-0-DTwaveBeam"] }
+            }
         }
-    }
+        
+    
 }

@@ -20,221 +20,660 @@
         "3": {
             "enemy": {
                 "class": [
-                    "@s3-db-3-2-0-common"
+                    "@s3-db-3-20-0-DTwaveBeam"
                 ]
             }
         },
-        "8": {
+        "9": {
             "enemy": {
                 "class": [
-                    "@s4-db-3-1-0-DTempty",
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty",
-                    "@s8-db-3-1-0-DTempty"
+                    "@s11-db-4-1-0-DTempty",
+                    "@s10-db-4-1-0-DTempty",
+                    "@s9-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty"
                 ]
             }
         },
         "11": {
             "enemy": {
                 "class": [
-                    "@s14-db-3-1-0-DTempty",
-                    "@s13-db-3-1-0-DTempty",
-                    "@s12-db-3-1-0-DTempty"
+                    "@s11-db-4-1-0-DTempty",
+                    "@s10-db-4-1-0-DTempty",
+                    "@s9-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty",
+                    "@s7-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "12": {
+            "enemy": {
+                "class": [
+                    "@s11-db-4-1-0-DTempty",
+                    "@s10-db-4-1-0-DTempty",
+                    "@s9-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "13": {
+            "enemy": {
+                "class": [
+                    "@s1-db-4-1-0-DTempty",
+                    "@s2-db-4-1-0-DTempty",
+                    "@s3-db-4-1-0-DTempty",
+                    "@s4-db-4-1-0-DTempty",
+                    "@s5-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "14": {
+            "enemy": {
+                "class": [
+                    "@s11-db-4-1-0-DTempty",
+                    "@s10-db-4-1-0-DTempty",
+                    "@s9-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty",
+                    "@s7-db-4-1-0-DTempty"
                 ]
             }
         },
         "15": {
             "enemy": {
                 "class": [
-                    "@s4-db-3-1-0-DTempty",
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty"
+                    "@s14-db-4-1-0-DTempty",
+                    "@s13-db-4-1-0-DTempty",
+                    "@s12-db-4-1-0-DTempty",
+                    "@s11-db-4-1-0-DTempty"
                 ]
             }
         },
-        "19": {
+        "21": {
             "enemy": {
                 "class": [
-                    "@s1-db-3-1-0-DTempty",
-                    "@s2-db-3-1-0-DTempty",
-                    "@s3-db-3-1-0-DTempty",
-                    "@s4-db-3-1-0-DTempty",
-                    "@s5-db-3-1-0-DTempty"
+                    "@s1-db-4-1-0-DTempty",
+                    "@s2-db-4-1-0-DTempty",
+                    "@s3-db-4-1-0-DTempty"
                 ]
             }
         },
         "24": {
             "enemy": {
                 "class": [
-                    "@s4-db-3-1-0-DTempty",
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty"
+                    "@s1-db-4-1-0-DTempty",
+                    "@s2-db-4-1-0-DTempty",
+                    "@s3-db-4-1-0-DTempty",
+                    "@s4-db-4-1-0-DTempty",
+                    "@s5-db-4-1-0-DTempty"
                 ]
             }
         },
         "25": {
             "enemy": {
                 "class": [
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty",
-                    "@s8-db-3-1-0-DTempty",
-                    "@s9-db-3-1-0-DTempty"
+                    "@s1-db-4-1-0-DTempty",
+                    "@s2-db-4-1-0-DTempty",
+                    "@s3-db-4-1-0-DTempty",
+                    "@s4-db-4-1-0-DTempty",
+                    "@s5-db-4-1-0-DTempty",
+                    "@s6-db-4-1-0-DTempty",
+                    "@s7-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty",
+                    "@s9-db-4-1-0-DTempty",
+                    "@s10-db-4-1-0-DTempty",
+                    "@s11-db-4-1-0-DTempty",
+                    "@s12-db-4-1-0-DTempty",
+                    "@s13-db-4-1-0-DTempty",
+                    "@s14-db-4-1-0-DTempty"
                 ]
             }
         },
-        "27": {
+        "28": {
             "enemy": {
                 "class": [
-                    "@s1-db-3-1-0-DTempty",
-                    "@s2-db-3-1-0-DTempty",
-                    "@s3-db-3-1-0-DTempty",
-                    "@s4-db-3-1-0-DTempty"
+                    "@s4-db-4-1-0-DTempty",
+                    "@s5-db-4-1-0-DTempty",
+                    "@s6-db-4-1-0-DTempty",
+                    "@s7-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "29": {
+            "enemy": {
+                "class": [
+                    "@s6-db-4-1-0-DTempty",
+                    "@s7-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "31": {
+            "enemy": {
+                "class": [
+                    "@s4-db-4-1-0-DTempty",
+                    "@s5-db-4-1-0-DTempty",
+                    "@s6-db-4-1-0-DTempty"
                 ]
             }
         },
         "32": {
             "enemy": {
                 "class": [
-                    "@s14-db-3-1-0-DTempty",
-                    "@s13-db-3-1-0-DTempty",
-                    "@s12-db-3-1-0-DTempty",
-                    "@s11-db-3-1-0-DTempty"
+                    "@s1-db-4-1-0-DTempty",
+                    "@s2-db-4-1-0-DTempty",
+                    "@s3-db-4-1-0-DTempty",
+                    "@s4-db-4-1-0-DTempty",
+                    "@s5-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "33": {
+            "enemy": {
+                "class": [
+                    "@s11-db-4-1-0-DTempty",
+                    "@s10-db-4-1-0-DTempty",
+                    "@s9-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty",
+                    "@s7-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "34": {
+            "enemy": {
+                "class": [
+                    "@s14-db-4-1-0-DTempty",
+                    "@s13-db-4-1-0-DTempty",
+                    "@s12-db-4-1-0-DTempty",
+                    "@s11-db-4-1-0-DTempty"
                 ]
             }
         },
         "35": {
             "enemy": {
                 "class": [
-                    "@s4-db-3-1-0-DTempty",
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty"
+                    "@s6-db-4-1-0-DTempty",
+                    "@s7-db-4-1-0-DTempty",
+                    "@s8-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "36": {
+            "enemy": {
+                "class": [
+                    "@s1-db-4-1-0-DTempty",
+                    "@s2-db-4-1-0-DTempty",
+                    "@s3-db-4-1-0-DTempty"
+                ]
+            }
+        },
+        "37": {
+            "enemy": {
+                "class": [
+                    "@s4-db-4-1-0-DTempty",
+                    "@s5-db-4-1-0-DTempty",
+                    "@s6-db-4-1-0-DTempty"
                 ]
             }
         },
         "40": {
             "enemy": {
                 "class": [
-                    "@s5-s-1-50-0-DTspitfire"
+                    "@s5-s-1-5-0-DTspitfire"
                 ]
             }
         },
-        "44": {
+        "45": {
             "enemy": {
                 "class": [
-                    "@s10-mv-1-50-0-DTcommon"
+                    "@s5-c-1-2-0-DTempty",
+                    "@s8-d-3-2-0-DTempty",
+                    "@s9-cr-1-2-0-DTempty",
+                    "@s14-mv-2-10-0-DTspitfire"
                 ]
             }
         },
-        "48": {
+        "50": {
             "enemy": {
                 "class": [
-                    "@s3-c-1-100-0-DTempty",
-                    "@s8-cr-3-80-0-DTspitfire"
-                ]
-            }
-        },
-        "55": {
-            "enemy": {
-                "class": [
-                    "@s1-db-3-1-0-DTempty",
-                    "@s2-db-3-1-0-DTempty",
-                    "@s3-db-3-1-0-DTempty",
-                    "@s4-db-3-1-0-DTempty",
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty",
-                    "@s8-db-3-1-0-DTempty",
-                    "@s9-db-3-1-0-DTempty",
-                    "@s10-db-3-1-0-DTempty",
-                    "@s11-db-3-1-0-DTempty",
-                    "@s12-db-3-1-0-DTempty",
-                    "@s13-db-3-1-0-DTempty",
-                    "@s14-db-3-1-0-DTempty"
-                ]
-            }
-        },
-        "59": {
-            "enemy": {
-                "class": [
-                    "@s14-db-3-1-0-DTempty",
-                    "@s13-db-3-1-0-DTempty",
-                    "@s12-db-3-1-0-DTempty",
-                    "@s11-db-3-1-0-DTempty"
+                    "@s3-c-5-5-0-DTempty",
+                    "@s8-cr-2-50-0-DTspitfire",
+                    "@s12-db-5-5-0-DTempty"
                 ]
             }
         },
         "60": {
             "enemy": {
                 "class": [
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty",
-                    "@s8-db-3-1-0-DTempty"
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "61": {
+            "enemy": {
+                "class": [
+                    "@s1-d-4-3-0-DTempty",
+                    "@s2-d-4-3-0-DTempty",
+                    "@s3-d-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "62": {
+            "enemy": {
+                "class": [
+                    "@s1-ds-3-3-0-DTcoin",
+                    "@s2-ds-3-3-0-DTcoin",
+                    "@s3-ds-3-3-0-DTcoin"
                 ]
             }
         },
         "63": {
             "enemy": {
                 "class": [
-                    "@s11-db-3-1-0-DTempty",
-                    "@s10-db-3-1-0-DTempty",
-                    "@s9-db-3-1-0-DTempty",
-                    "@s8-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty"
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s9-c-4-3-0-DTempty",
+                    "@s8-c-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty"
                 ]
             }
         },
         "64": {
             "enemy": {
                 "class": [
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty",
-                    "@s8-db-3-1-0-DTempty",
-                    "@s9-db-3-1-0-DTempty"
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s9-c-4-3-0-DTempty",
+                    "@s8-c-4-3-0-DTempty",
+                    "@s7-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "65": {
+            "enemy": {
+                "class": [
+                    "@s11-ds-3-3-0-DTcoin",
+                    "@s10-ds-3-3-0-DTcoin",
+                    "@s9-ds-3-3-0-DTcoin",
+                    "@s8-ds-3-3-0-DTcoin",
+                    "@s7-ds-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "66": {
+            "enemy": {
+                "class": [
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s9-c-4-3-0-DTempty",
+                    "@s8-c-4-3-0-DTempty",
+                    "@s7-c-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty",
+                    "@s8-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "67": {
+            "enemy": {
+                "class": [
+                    "@s14-c-4-3-0-DTempty",
+                    "@s13-c-4-3-0-DTempty",
+                    "@s12-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "68": {
+            "enemy": {
+                "class": [
+                    "@s1-ds-3-3-0-DTcoin",
+                    "@s2-ds-3-3-0-DTcoin",
+                    "@s3-ds-3-3-0-DTcoin",
+                    "@s4-ds-3-3-0-DTcoin",
+                    "@s5-ds-3-3-0-DTcoin"
                 ]
             }
         },
         "69": {
             "enemy": {
                 "class": [
-                    "@s5-db-3-1-0-DTempty",
-                    "@s6-db-3-1-0-DTempty",
-                    "@s7-db-3-1-0-DTempty",
-                    "@s8-db-3-1-0-DTempty",
-                    "@s9-db-3-1-0-DTempty"
+                    "@s1-d-4-3-0-DTempty",
+                    "@s2-d-4-3-0-DTempty",
+                    "@s3-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "70": {
+            "enemy": {
+                "class": [
+                    "@s4-c-3-3-0-DTcoin",
+                    "@s5-c-3-3-0-DTcoin",
+                    "@s6-c-3-3-0-DTcoin",
+                    "@s7-c-3-3-0-DTcoin"
                 ]
             }
         },
         "71": {
             "enemy": {
                 "class": [
-                    "@s14-db-3-1-0-DTempty",
-                    "@s13-db-3-1-0-DTempty",
-                    "@s12-db-3-1-0-DTempty",
-                    "@s11-db-3-1-0-DTempty"
+                    "@s14-c-4-3-0-DTempty",
+                    "@s13-c-4-3-0-DTempty",
+                    "@s12-c-4-3-0-DTempty",
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "72": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "73": {
+            "enemy": {
+                "class": [
+                    "@s1-d-4-3-0-DTempty",
+                    "@s2-d-4-3-0-DTempty",
+                    "@s3-d-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "74": {
+            "enemy": {
+                "class": [
+                    "@s5-c-3-3-0-DTcoin",
+                    "@s6-c-3-3-0-DTcoin",
+                    "@s7-c-3-3-0-DTcoin",
+                    "@s8-c-3-3-0-DTcoin",
+                    "@s9-c-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "75": {
+            "enemy": {
+                "class": [
+                    "@s4-c-3-3-0-DTcoin",
+                    "@s5-c-3-3-0-DTcoin",
+                    "@s6-c-3-3-0-DTcoin",
+                    "@s7-c-3-3-0-DTcoin",
+                    "@s8-c-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "76": {
+            "enemy": {
+                "class": [
+                    "@s1-ds-3-3-0-DTcoin",
+                    "@s2-ds-3-3-0-DTcoin",
+                    "@s3-ds-3-3-0-DTcoin",
+                    "@s4-ds-3-3-0-DTcoin",
+                    "@s5-ds-3-3-0-DTcoin"
                 ]
             }
         },
         "77": {
             "enemy": {
                 "class": [
-                    "@s11-db-3-1-0-DTempty",
-                    "@s10-db-3-1-0-DTempty",
-                    "@s9-db-3-1-0-DTempty"
+                    "@s11-ds-3-3-0-DTcoin",
+                    "@s10-ds-3-3-0-DTcoin",
+                    "@s9-ds-3-3-0-DTcoin",
+                    "@s8-ds-3-3-0-DTcoin",
+                    "@s7-ds-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "78": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty"
                 ]
             }
         },
         "79": {
             "enemy": {
                 "class": [
-                    "@s14-db-3-1-0-DTempty",
-                    "@s13-db-3-1-0-DTempty",
-                    "@s12-db-3-1-0-DTempty"
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s9-c-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "80": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "81": {
+            "enemy": {
+                "class": [
+                    "@s14-c-4-3-0-DTempty",
+                    "@s13-c-4-3-0-DTempty",
+                    "@s12-c-4-3-0-DTempty",
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "82": {
+            "enemy": {
+                "class": [
+                    "@s14-ds-3-3-0-DTcoin",
+                    "@s13-ds-3-3-0-DTcoin",
+                    "@s12-ds-3-3-0-DTcoin",
+                    "@s11-ds-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "83": {
+            "enemy": {
+                "class": [
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s9-c-4-3-0-DTempty",
+                    "@s8-c-4-3-0-DTempty",
+                    "@s7-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "84": {
+            "enemy": {
+                "class": [
+                    "@s11-c-3-3-0-DTcoin",
+                    "@s10-c-3-3-0-DTcoin",
+                    "@s9-c-3-3-0-DTcoin",
+                    "@s8-c-3-3-0-DTcoin",
+                    "@s7-c-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "85": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty",
+                    "@s8-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "86": {
+            "enemy": {
+                "class": [
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s9-c-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "87": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "88": {
+            "enemy": {
+                "class": [
+                    "@s14-c-4-3-0-DTempty",
+                    "@s13-c-4-3-0-DTempty",
+                    "@s12-c-4-3-0-DTempty",
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "89": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty",
+                    "@s8-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "90": {
+            "enemy": {
+                "class": [
+                    "@s1-d-4-3-0-DTempty",
+                    "@s2-d-4-3-0-DTempty",
+                    "@s3-d-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "91": {
+            "enemy": {
+                "class": [
+                    "@s5-ds-3-3-0-DTcoin",
+                    "@s6-ds-3-3-0-DTcoin",
+                    "@s7-ds-3-3-0-DTcoin",
+                    "@s8-ds-3-3-0-DTcoin",
+                    "@s9-ds-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "92": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "93": {
+            "enemy": {
+                "class": [
+                    "@s14-c-4-3-0-DTempty",
+                    "@s13-c-4-3-0-DTempty",
+                    "@s12-c-4-3-0-DTempty",
+                    "@s1-d-4-3-0-DTempty",
+                    "@s2-d-4-3-0-DTempty",
+                    "@s3-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "94": {
+            "enemy": {
+                "class": [
+                    "@s14-c-4-3-0-DTempty",
+                    "@s13-c-4-3-0-DTempty",
+                    "@s12-c-4-3-0-DTempty",
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "95": {
+            "enemy": {
+                "class": [
+                    "@s11-c-3-3-0-DTcoin",
+                    "@s10-c-3-3-0-DTcoin",
+                    "@s9-c-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "96": {
+            "enemy": {
+                "class": [
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s9-c-4-3-0-DTempty",
+                    "@s8-c-4-3-0-DTempty",
+                    "@s7-c-4-3-0-DTempty"
+                ]
+            }
+        },
+        "97": {
+            "enemy": {
+                "class": [
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty",
+                    "@s6-d-4-3-0-DTempty",
+                    "@s7-d-4-3-0-DTempty",
+                    "@s8-d-4-3-0-DTempty"
+                ]
+            }
+        },
+        "98": {
+            "enemy": {
+                "class": [
+                    "@s11-c-3-3-0-DTcoin",
+                    "@s10-c-3-3-0-DTcoin",
+                    "@s9-c-3-3-0-DTcoin",
+                    "@s8-c-3-3-0-DTcoin"
+                ]
+            }
+        },
+        "99": {
+            "enemy": {
+                "class": [
+                    "@s14-c-4-3-0-DTempty",
+                    "@s13-c-4-3-0-DTempty",
+                    "@s12-c-4-3-0-DTempty",
+                    "@s11-c-4-3-0-DTempty",
+                    "@s10-c-4-3-0-DTempty",
+                    "@s1-d-4-3-0-DTempty",
+                    "@s2-d-4-3-0-DTempty",
+                    "@s3-d-4-3-0-DTempty",
+                    "@s4-d-4-3-0-DTempty",
+                    "@s5-d-4-3-0-DTempty"
                 ]
             }
         }
