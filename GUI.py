@@ -366,8 +366,7 @@ class GUI(object):
                             self.explode.play()
                             playerShip.take_damage(1)
                 if playerShip.health <= 0:
-                    if playerShip.weapon.name == 'chargeShot':
-                        chargeShot_Anim.empty()
+                    chargeShot_Anim.empty()
                     playerShip.kill()
                     
             for sprite in items:
