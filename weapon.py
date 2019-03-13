@@ -19,85 +19,35 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 
 '''
 
-from pathlib import Path
 import Entity
-import pygame
 from library import*
-#import bomb
 
 spitfire_spread = 15
 spitfire_offset = 5
 #each weapon name will be mapped to its function, an image, and other properties
 
-def chargeShot(origin_x, origin_y):
+master_weapons_dict = dict(
+    spitfire=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'),None),
+    spitfire2=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), None),
+    spitfire3=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), None),
+    blue_lazer=(1, 4, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), None),
+    master_lazer=(10, 60, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), None),
+    missle=(10, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), None),
+    bomb=(30, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), None),
+    waveBeam=(4, 2, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), None),
+    waveBeam2=(8, 3, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), None),
+    waveBeam3=(10, 4, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), None),
+    chargeShot= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), None, 1),
+    chargeShot2= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), None, 2),
+    chargeShot3= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), None, 3)
+                          )
 
 
-    bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('chargeShot.png'), angle = 0, behavior='up', name = 'chargeShot')
-    return bullet1
-
-def waveBeam(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), angle = 0, behavior='up', name = 'waveBeam')
-    return bullet1
-
-def spitfire(origin_x, origin_y):
-    #print('spitfire here')
-    #print(origin_x, origin_y)
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), angle = 0, behavior='up')
-
-
-    return bullet1
-
-def spitfire3(origin_x, origin_y):
-    #print('spitfire here')
-    #print(origin_x, origin_y)
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x - 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-    bullet3 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-    bullet4 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-    bullet5 = Entity.Bullet(origin_x + 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-
-    return bullet1, bullet2, bullet3, bullet4, bullet5
-
-def spitfire2(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-    bullet2 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-    bullet3 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up')
-    return bullet1, bullet2, bullet3
-
-def blue_lazer(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'))
-    return bullet1
-
-def missle(origin_x, origin_y):
-    bullet1 = Entity.Bullet(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), behavior="missle")
-    return bullet1
-
-def bombs(origin_x, origin_y):
-    bomb1 = Entity.Bomb(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), behavior='bomb')
-    return bomb1
 
 # def waveBeam(origin_x, origin_y):
 #     bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('waveBeam.png'))
 #     return bullet1
 
-master_weapons_dict = dict(
-    spitfire=(10, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), spitfire),
-    spitfire2=(10, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), spitfire2),
-    spitfire3=(10, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), spitfire3),
-    blue_lazer=(10, 4, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), blue_lazer),
-    master_lazer=(10, 60, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), blue_lazer),
-    missle=(10, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), missle),
-    bomb=(10, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), bombs),
-    waveBeam=(10, 2, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
-    waveBeam2=(10, 3, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
-    waveBeam3=(10, 4, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), waveBeam),
-    chargeShot= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot, 1),
-    chargeShot2= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot, 2),
-    chargeShot3= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), chargeShot, 3)
-
-
-
-                           )
 
 
 class Weapon(object):
@@ -111,13 +61,23 @@ class Weapon(object):
 
         self.rof = master_weapons_dict.get(weaponName)[1] # rof is the rate of fire in bullets per second
         self.weapon_image = master_weapons_dict.get(weaponName)[2]
-        self.weapon_func = master_weapons_dict.get(weaponName)[3]
+        self.weapon_fire_dic =dict(
+                                    spitfire=self.spitfire,
+                                    spitfire2=self.spitfire2,
+                                    spitfire3=self.spitfire3,
+                                    blue_lazer=self.blue_lazer,
+                                    master_lazer=self.blue_lazer,
+                                    missle=self.missle,
+                                    bomb=self.bombs,
+                                    waveBeam=self.waveBeam,
+                                    waveBeam2=self.waveBeam,
+                                    waveBeam3=self.waveBeam,
+                                    chargeShot=self.chargeShot,
+                                    chargeShot2=self.chargeShot,
+                                    chargeShot3=self.chargeShot,
+                                    )
+        self.weapon_func = self.weapon_fire_dic.get(weaponName)
 
-        #self.damage = master_weapons_dict.get(weaponName)[2]
-        #print(damage)
-        #print(master_weapons_dict.get('spitfire')[0])
-        #print(self.weapon_image)
-        #os.startfile(self.weapon_image)
         self.chargeShot_counter = 0
         self.chargeShot_counter_max = 100
         self.chargeShot_charging_flag = False
@@ -133,6 +93,55 @@ class Weapon(object):
             self.chargeShot_counter_rate = self.chargeShot_dic.get(self.name)
        # print(self.chargeShot_counter_rate)
 
+    def getDamage(self, name):
+        return master_weapons_dict.get(name)[0]
+
+    def chargeShot(self, origin_x, origin_y):
+
+
+        bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('chargeShot.png'), angle = 0, behavior='up', name = self.name, damage = self.weapon_damage)
+        return bullet1
+
+    def waveBeam(self, origin_x, origin_y):
+        bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), angle = 0, behavior='up', name = 'waveBeam', damage = self.weapon_damage)
+        return bullet1
+
+    def spitfire(self, origin_x, origin_y):
+        #print('spitfire here')
+        #print(origin_x, origin_y)
+        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), angle = 0, behavior='up', damage = self.weapon_damage)
+
+
+        return bullet1
+
+    def spitfire3(self, origin_x, origin_y):
+        #print('spitfire here')
+        #print(origin_x, origin_y)
+        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        bullet2 = Entity.Bullet(origin_x - 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        bullet3 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        bullet4 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        bullet5 = Entity.Bullet(origin_x + 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+
+        return bullet1, bullet2, bullet3, bullet4, bullet5
+
+    def spitfire2(self, origin_x, origin_y):
+        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        bullet2 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        bullet3 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        return bullet1, bullet2, bullet3
+
+    def blue_lazer(self, origin_x, origin_y):
+        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), damage = self.weapon_damage)
+        return bullet1
+
+    def missle(self, origin_x, origin_y):
+        bullet1 = Entity.Bullet(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), behavior="missle", damage = self.weapon_damage)
+        return bullet1
+
+    def bombs(self, origin_x, origin_y):
+        bomb1 = Entity.Bomb(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), behavior='bomb')
+        return bomb1
 
 
 cwd = Path.cwd()

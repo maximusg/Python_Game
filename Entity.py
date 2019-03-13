@@ -426,7 +426,7 @@ class Enemy(Entity):
 
 class Bullet(Entity):
 
-    def __init__(self, origin_x, origin_y, speed, path_to_img, acceleration=0, angle = 0, behavior = 'up', name = None):
+    def __init__(self, origin_x, origin_y, speed, path_to_img, acceleration=0, angle = 0, behavior = 'up', name = None, damage = 1):
         location = (origin_x, origin_y)
         super().__init__(origin=location, imageFile=path_to_img, speed=speed, acceleration=acceleration, angle=angle )
 
@@ -453,6 +453,7 @@ class Bullet(Entity):
         	}
 
         self.movement = self.behaveDic[behavior]()
+        self.damage = damage
 
 
     def move(self, x, y):

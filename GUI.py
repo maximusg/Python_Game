@@ -269,6 +269,8 @@ class GUI(object):
                 if playerShip.weapon.chargeShot_firing_flag == True:
                     if playerShip.weapon.chargeShot_counter >= 0:
                         bullet = playerShip.fire()
+                        bullet.damage = playerShip.weapon.weapon_damage
+                        #print(bullet.damage)
                         player_bullet_sprites.add(bullet)
                         playerShip.weapon.chargeShot_counter -= 1
                     else:
@@ -297,6 +299,14 @@ class GUI(object):
                 else:
                     self.fire_spitfire.play()
                     bullet = playerShip.fire()
+
+                    #how to access bullet damage:
+                    #handles spitfire2 and spitfire3 which return a tuple of bullets
+                    # if isinstance(bullet, tuple):
+                    #     for each in bullet:
+                    #         print(each.damage)
+                    # else:
+                    #     print(bullet.damage)
                     player_bullet_sprites.add(bullet)
 
             if playerShip.drop_bomb_flag is True:
@@ -391,13 +401,16 @@ class GUI(object):
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
-                    sprite.take_damage(1)
+                    total_damage = calc_total_damage(collision)
+                    #print(total_damage)
+                    sprite.take_damage(total_damage)
+
                     collision.visible = 0
                     collision.kill()
                 else:
                     collision = pygame.sprite.spritecollideany(sprite, bomb_explosion_sprites)
                     if collision:
-                        sprite.take_damage(30)
+                        sprite.take_damage(playerShip.weapon.getDamage('bomb'))
 
                 if sprite.health <= 0:
                     new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
