@@ -67,7 +67,7 @@
         "15": {
             "enemy": {
                 "class": [
-                    "@s5-mv-10-10-0-DTwavebeam",
+                    "@s5-mv-10-10-0-DTwaveBeam",
                     "@s7-cz-1-1-0-DTempty",
                     "@s8-cr-3-1-0-DTempty"
                 ]

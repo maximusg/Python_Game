@@ -1012,7 +1012,7 @@ class GUI(object):
         background.fill(BLACK)
         background.blit(bg, ORIGIN)
 
-        story_scroll = load_text(BACKGROUND_PATH.joinpath('ending.asset'))
+        story_scroll = load_text(EVENT_SCROLL_PATH.joinpath('ending.asset'))
 
         going = True
         count = 0

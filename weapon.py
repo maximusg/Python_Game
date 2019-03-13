@@ -174,6 +174,10 @@ class ChargingAnim(pygame.sprite.Sprite):
             if self.playerShip.weapon.chargeShot_counter <= 0:
                 self.visible = 0
                 self.playerShip.weapon.chargeShot_anim_visible = False
+            if self.playerShip.health <= 0:
+                self.visible = 0
+            if self.playerShip is None:
+                self.visible = 0
 
 
         if self.playerShip.weapon.chargeShot_firing_flag is False:
