@@ -704,7 +704,7 @@ class GUI(object):
             box.blit(txt_surf, txt_rect)
             self.screen.blit(box, box_rect)
             pygame.display.flip()
-        font = pygame.font.Font(FONT_PATH.joinpath('OpenSans-Regular.ttf'), 16)
+        font = pygame.font.Font(str(FONT_PATH.joinpath('OpenSans-Regular.ttf')), 16)
         x = 480
         y = 100
         # make box
