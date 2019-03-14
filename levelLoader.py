@@ -116,7 +116,8 @@ class LevelLoader():
                         enemy = self.enemyClass(enemyType)
                         timeEvents["enemy"].append(enemy)
                 if each == 'boss_sprite':
-                    boss = self.bossClass()
+                    image = events[each]["image"]
+                    boss = self.bossClass(image)
                     timeEvents["boss_sprite"].append(boss)
                 if each == "enemyBullets":
                     for bulletType in events[each]["class"]:
@@ -212,8 +213,8 @@ class LevelLoader():
         
         return enemySprite
 
-    def bossClass(self):
-        return Entity.BossSprite(ENEMY_SECTORS("s7"), 'boss.png')
+    def bossClass(self, image):
+        return Entity.BossSprite(ENEMY_SECTORS("s7"), image)
 
         
     def playerClass(self,className):
