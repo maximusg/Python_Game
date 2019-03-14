@@ -997,6 +997,7 @@ class GUI(object):
                     self.hs_list.add(name, curr_score)
                     self.hs_list.writeToFile(EVENT_SCROLL_PATH.joinpath('highscores.asset'))
         self.loader = levelLoader.LevelLoader()
+        pygame.mouse.set_visible(True)
    
 
     def victory(self):
