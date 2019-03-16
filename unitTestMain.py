@@ -7,6 +7,7 @@ import TestEntity
 import TestHighscore
 import TestLibrary
 import TestAssetLoader
+import TestWeapon
 
 def suite():
     """
@@ -18,7 +19,8 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestHighscore.TestScoreboard))
     test_suite.addTest(unittest.makeSuite(TestLibrary.TestLibrary))
     test_suite.addTest(unittest.makeSuite(TestAssetLoader.TestAssetLoader))
-    #add the rest of the unittests below this line
+    test_suite.addTest(unittest.makeSuite(TestWeapon.TestWeapon))
+    #add the rest of the unittests above this line
 
     return test_suite
 

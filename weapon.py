@@ -8,13 +8,13 @@ File: weapon.py
 MASTER WEAPONS DICTIONARY
 
 Tuple Index:         |       0       |       1          |       2          |       3          |
-Description:         | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | BULLET FUNCTION  |
-Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a              |
+Description:         | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | Speed            |
+Units:               | 0-100 hp      | bullets per sec  | pathlib          | pixels/frame     |
                      |               |                  |                  |
 -----------------------------------------------------------------------------------------------
-    WEAPON NAME      | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | BULLET FUNCTION  |
-                     |               |                  |                  |
-   spitfire          |       10      |       4          |       n/a        |       n/a        |
+    WEAPON NAME      | BULLET DAMAGE | BULLET FIRE RATE | IMAGE PATH       | Speed            |
+                     |               |                  |                  |                  |
+   spitfire          |       10      |       4          |       n/a        |       15         |
    blue_lazer        |       10      |       4          |       n/a        |       n/a        |
 
 '''
@@ -22,32 +22,27 @@ Units:               | 0-100 hp      | bullets per sec  | pathlib          | n/a
 import Entity
 from library import*
 
+#constants
 spitfire_spread = 15
 spitfire_offset = 5
+
 #each weapon name will be mapped to its function, an image, and other properties
 
 master_weapons_dict = dict(
-    spitfire=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'),None),
-    spitfire2=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), None),
-    spitfire3=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), None),
-    blue_lazer=(1, 4, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), None),
-    master_lazer=(10, 60, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), None),
-    missle=(10, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), None),
-    bomb=(30, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), None),
-    waveBeam=(4, 2, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), None),
-    waveBeam2=(8, 3, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), None),
-    waveBeam3=(10, 4, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), None),
-    chargeShot= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), None, 1),
-    chargeShot2= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), None, 2),
-    chargeShot3= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot','chargeShot.png'), None, 3)
+    spitfire=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'),15),
+    spitfire2=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), 15),
+    spitfire3=(1, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), 15),
+    blue_lazer=(1, 4, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), 15),
+    master_lazer=(10, 60, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), 15),
+    missle=(10, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), 5),
+    bomb=(30, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), 5),
+    waveBeam=(4, 2, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), 10),
+    waveBeam2=(8, 3, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), 10),
+    waveBeam3=(10, 4, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), 10),
+    chargeShot= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot.png'), 10, 1),
+    chargeShot2= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot.png'), 10, 2),
+    chargeShot3= (1, 30, WEAPON_IMAGES_PATH.joinpath('chargeShot.png'), 10, 3)
                           )
-
-
-
-# def waveBeam(origin_x, origin_y):
-#     bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('waveBeam.png'))
-#     return bullet1
-
 
 
 class Weapon(object):
@@ -55,12 +50,21 @@ class Weapon(object):
     def __init__(self, weaponName):
 
         if weaponName not in master_weapons_dict:
-            raise Exception('the weapon must be in the master weapons dictionary. you tried', weaponName)
+            raise RuntimeError('the weapon must be in the master weapons dictionary. you tried', weaponName)
         self.name = weaponName
+
+        if not isinstance(master_weapons_dict.get(weaponName)[0], int):
+            raise TypeError('bad weapon damage entry in master weapons dict. should be int')
         self.weapon_damage = master_weapons_dict.get(weaponName)[0]
 
+        if not isinstance(master_weapons_dict.get(weaponName)[1], int):
+            raise TypeError('bad rate of fire entry in master weapons dict. should be int')
         self.rof = master_weapons_dict.get(weaponName)[1] # rof is the rate of fire in bullets per second
+
+        if not isinstance(master_weapons_dict.get(weaponName)[2], Path):
+            raise TypeError('bad image path entry in master weapons dict. should be Path (pathlib)')
         self.weapon_image = master_weapons_dict.get(weaponName)[2]
+
         self.weapon_fire_dic =dict(
                                     spitfire=self.spitfire,
                                     spitfire2=self.spitfire2,
@@ -76,6 +80,8 @@ class Weapon(object):
                                     chargeShot2=self.chargeShot,
                                     chargeShot3=self.chargeShot,
                                     )
+        if weaponName not in self.weapon_fire_dic:
+            raise RuntimeError('the weapon must be in the weapon_fire_dic')
         self.weapon_func = self.weapon_fire_dic.get(weaponName)
 
         self.chargeShot_counter = 0
@@ -91,59 +97,74 @@ class Weapon(object):
         self.chargeShot_counter_rate = 1
         if self.name in self.chargeShot_dic:
             self.chargeShot_counter_rate = self.chargeShot_dic.get(self.name)
-       # print(self.chargeShot_counter_rate)
 
+    #getters
     def getDamage(self, name):
         return master_weapons_dict.get(name)[0]
+    def getImagePath(self, name):
+        return master_weapons_dict.get(name)[2]
+    def getSpeed(self, name):
+        return master_weapons_dict.get(name)[3]
 
+    #weapon functions, makes bullets for GUI, called when playerShip fires()
     def chargeShot(self, origin_x, origin_y):
-
-
-        bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('chargeShot.png'), angle = 0, behavior='up', name = self.name, damage = self.weapon_damage)
+        weapon = 'chargeShot'
+        bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), angle = 0, behavior='up', name = self.name, damage = self.weapon_damage)
         return bullet1
 
     def waveBeam(self, origin_x, origin_y):
-        bullet1 = Entity.Bullet(origin_x, origin_y, 10, WEAPON_IMAGES_PATH.joinpath('waveBeam_new_s.png'), angle = 0, behavior='up', name = 'waveBeam', damage = self.weapon_damage)
+        weapon = 'waveBeam'
+
+        bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), angle = 0, behavior='up', name = 'waveBeam', damage = self.weapon_damage)
         return bullet1
 
     def spitfire(self, origin_x, origin_y):
-        #print('spitfire here')
-        #print(origin_x, origin_y)
-        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), angle = 0, behavior='up', damage = self.weapon_damage)
+        weapon = 'spitfire'
+        bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), angle = 0, behavior='up', damage = self.weapon_damage)
 
 
         return bullet1
 
     def spitfire3(self, origin_x, origin_y):
-        #print('spitfire here')
-        #print(origin_x, origin_y)
-        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
-        bullet2 = Entity.Bullet(origin_x - 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
-        bullet3 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
-        bullet4 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
-        bullet5 = Entity.Bullet(origin_x + 2*spitfire_spread, origin_y + 3*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        weapon = 'spitfire3'
+
+
+        bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
+        bullet2 = Entity.Bullet(origin_x - 2*spitfire_spread, origin_y + 3*spitfire_offset, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
+        bullet3 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
+        bullet4 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
+        bullet5 = Entity.Bullet(origin_x + 2*spitfire_spread, origin_y + 3*spitfire_offset, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
 
         return bullet1, bullet2, bullet3, bullet4, bullet5
 
     def spitfire2(self, origin_x, origin_y):
-        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
-        bullet2 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
-        bullet3 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, 15, WEAPON_IMAGES_PATH.joinpath('spitfire.png'), behavior='up', damage = self.weapon_damage)
+        weapon = 'spitfire2'
+
+
+        bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
+        bullet2 = Entity.Bullet(origin_x - spitfire_spread, origin_y + 2*spitfire_offset, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
+        bullet3 = Entity.Bullet(origin_x + spitfire_spread, origin_y + 2*spitfire_offset, self.getSpeed(weapon), self.getImagePath(weapon), behavior='up', damage = self.weapon_damage)
         return bullet1, bullet2, bullet3
 
     def blue_lazer(self, origin_x, origin_y):
-        bullet1 = Entity.Bullet(origin_x, origin_y, 15, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), damage = self.weapon_damage)
+        weapon = 'blue_lazer'
+
+        bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), damage = self.weapon_damage)
         return bullet1
 
     def missle(self, origin_x, origin_y):
-        bullet1 = Entity.Bullet(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('blue_lazer.gif'), behavior="missle", damage = self.weapon_damage)
+        weapon = 'missle'
+
+        bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), behavior="missle", damage = self.weapon_damage)
         return bullet1
 
     def bombs(self, origin_x, origin_y):
-        bomb1 = Entity.Bomb(origin_x, origin_y, 5, WEAPON_IMAGES_PATH.joinpath('bomb.png'), behavior='bomb')
+        weapon = 'bomb'
+
+        bomb1 = Entity.Bomb(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), behavior='bomb')
         return bomb1
 
-
+#code for the chargeShot charging animations
 cwd = Path.cwd()
 charging_images_path = cwd.joinpath('resources', 'weapon_images', 'chargeShot', 'charging')
 bomb_sounds = cwd.joinpath('resources', 'sound_effects', 'bomb_sounds')
