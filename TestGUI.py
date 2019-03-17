@@ -1,11 +1,14 @@
 import pygame
 import GUI
 import library
+import highscore
+import levelLoader
+import copy
 import unittest
 
 class TestGUI(unittest.TestCase):
     def test__init__(self):
-        '''Testing either covered by various setters/getters or are functional'''
+        '''Testing either covered by various setters/getters or require functional tests'''
         pass
 
     def test_screen_setter(self):
@@ -30,7 +33,7 @@ class TestGUI(unittest.TestCase):
 
         sample_rect = pygame.rect.Rect(0,0,1,1)
         window.screen_rect = sample_rect
-        self.assertEqual(id(window.screen_rect), id(sample_rect))
+        self.assertEqual(window.screen_rect, sample_rect)
 
         flag = False
         try:
@@ -43,13 +46,64 @@ class TestGUI(unittest.TestCase):
         pygame.quit()
 
     def test_hs_list_setter(self):
-        pass
+        window = GUI.GUI()
+
+        sample_hs_list = highscore.Scoreboard()
+        sample_hs_list.resetList()
+        window.hs_list = sample_hs_list
+        self.assertEqual(window.hs_list, sample_hs_list)
+
+        flag = False
+        try:
+            window.hs_list = '42'
+        except RuntimeError as rte:
+            flag = True
+        finally:
+            self.assertTrue(flag)
+
+        pygame.quit()
 
     def test_loader_setter(self):
-        pass
+        window = GUI.GUI()
+
+        loader = levelLoader.LevelLoader()
+        window.loader = loader
+        self.assertEqual(window.loader, loader)
+
+        flag = False
+        try:
+            window.loader = '42'
+        except RuntimeError as rte:
+            flag = True
+        finally:
+            self.assertTrue(flag)
+
+        flag = True
+        try:
+            window.loader = None
+        except RuntimeError as rte:
+            flag = False
+        finally:
+            self.assertTrue(flag)
+
+        pygame.quit()
 
     def test_clock_setter(self):
-        pass
+        window = GUI.GUI()
+
+        clock = pygame.time.Clock()
+        window.clock = clock
+        self.assertEqual(window.clock, clock)
+
+        flag = False
+        try:
+            window.clock = '42'
+        except RuntimeError as rte:
+            flag = True
+        finally:
+            self.assertTrue(flag)
+
+        pygame.quit()
 
     def test_game_intro(self):
         '''Functional Testing Required.'''
