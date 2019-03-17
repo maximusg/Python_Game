@@ -1,4 +1,3 @@
-#!/bin/python
 import pygame
 import sys
 from pygame.locals import *
@@ -6,15 +5,11 @@ from pygame.compat import geterror
 from library import *
 import Entity
 import weapon
-# import player
-# import enemy
 import explosion
 import bomb_explosion
-# import item_pickup
 import levelLoader
 import highscore
 import random
-# import pyganim
 
 class GUI(object):
     def __init__(self):
@@ -22,20 +17,73 @@ class GUI(object):
         pygame.init()
         self.screen = pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0],WINDOW_OPTIONS_WINDOWED[1])
         self.screen_rect = self.screen.get_rect()
-        self.screen.fill(BLACK)
-        pygame.display.set_caption('Raiden Clone - Day 0')
-        pygame.mouse.set_visible(False)
-        self.fs_toggle = False
         self.hs_list = highscore.Scoreboard()
         self.loader = None
 
         #Clock setup
         self.clock = pygame.time.Clock()
 
+        #private variables
+        self.__fs_toggle = False
+
         ##load sound bytes
+        self.screen.fill(BLACK)
+        pygame.display.set_caption('Raiden Clone - Day 0')
+        pygame.mouse.set_visible(False)
+
         self.explode = load_sound(SOUND_EFFECT_PATH.joinpath('explosion.ogg'))
         self.fire_spitfire = load_sound(SOUND_EFFECT_PATH.joinpath('spitfire.ogg'))
         self.fire_laser = load_sound(SOUND_EFFECT_PATH.joinpath('laser.ogg'))
+
+    @property
+    def screen(self):
+        return self.__screen
+
+    @property
+    def screen_rect(self):
+        return self.__screen_rect
+
+    @property
+    def hs_list(self):
+        return self.__hs_list
+
+    @property
+    def loader(self):
+        return self.__loader
+
+    @property
+    def clock(self):
+        return self.__clock
+
+    @screen.setter
+    def screen(self, value):
+        if not isinstance(value, pygame.surface.Surface):
+            raise RuntimeError('Screen must be a pygame Surface!')
+        self.__screen = value
+    
+    @screen_rect.setter
+    def screen_rect(self, value):
+        if not isinstance(value, pygame.rect.Rect):
+            raise RuntimeError('Screen rect must be a pygame Rect!')
+        self.__screen_rect = value
+
+    @hs_list.setter
+    def hs_list(self, value):
+        if not isinstance(value, highscore.Scoreboard):
+            raise RuntimeError('High Score list attemped initialization with something other than a high score list.')
+        self.__hs_list = value
+
+    @loader.setter
+    def loader(self, value):
+        if not isinstance(value, levelLoader.LevelLoader) and value != None:
+            raise RuntimeError('Invalid level loader initialization')
+        self.__loader = value
+
+    @clock.setter
+    def clock(self, value):
+        if not isinstance(value, type(pygame.time.Clock())):
+            raise RuntimeError('Illegal value for clock. Must be pygame.time.Clock.')
+        self.__clock = value    
 
     def game_intro(self):
         ##Background setup
@@ -614,8 +662,6 @@ class GUI(object):
 
             self.clock.tick(FRAMERATE)
         
-        
-
     def level_complete(self):
         going = True
         start_time = pygame.time.get_ticks()
@@ -632,7 +678,6 @@ class GUI(object):
             if pygame.time.get_ticks() > start_time + 5000: ###add 5sec for the victory dance.
                 going = False
             self.clock.tick(FRAMERATE)
-
 
     def death_loop(self):
         dead = True
@@ -999,7 +1044,6 @@ class GUI(object):
         self.loader = levelLoader.LevelLoader()
         pygame.mouse.set_visible(True)
    
-
     def victory(self):
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
