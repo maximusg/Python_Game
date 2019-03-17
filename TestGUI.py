@@ -5,13 +5,42 @@ import unittest
 
 class TestGUI(unittest.TestCase):
     def test__init__(self):
+        '''Testing either covered by various setters/getters or are functional'''
         pass
 
     def test_screen_setter(self):
-        pass
+        window = GUI.GUI()
+
+        sample_surf = pygame.surface.Surface((1,1))
+        window.screen = sample_surf
+        self.assertEqual(id(window.screen), id(sample_surf))
+
+        flag = False
+        try:
+            window.screen = '42'
+        except RuntimeError as rte:
+            flag = True
+        finally:
+            self.assertTrue(flag)
+
+        pygame.quit()
 
     def test_screen_rect_setter(self):
-        pass
+        window = GUI.GUI()
+
+        sample_rect = pygame.rect.Rect(0,0,1,1)
+        window.screen_rect = sample_rect
+        self.assertEqual(id(window.screen_rect), id(sample_rect))
+
+        flag = False
+        try:
+            window.screen_rect = '42'
+        except RuntimeError as rte:
+            flag = True
+        finally:
+            self.assertTrue(flag)
+
+        pygame.quit()
 
     def test_hs_list_setter(self):
         pass

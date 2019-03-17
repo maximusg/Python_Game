@@ -26,11 +26,11 @@ class GUI(object):
         #private variables
         self.__fs_toggle = False
 
-        ##load sound bytes
         self.screen.fill(BLACK)
         pygame.display.set_caption('Raiden Clone - Day 0')
         pygame.mouse.set_visible(False)
 
+        ##load sound bytes
         self.explode = load_sound(SOUND_EFFECT_PATH.joinpath('explosion.ogg'))
         self.fire_spitfire = load_sound(SOUND_EFFECT_PATH.joinpath('spitfire.ogg'))
         self.fire_laser = load_sound(SOUND_EFFECT_PATH.joinpath('laser.ogg'))
