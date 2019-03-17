@@ -159,6 +159,8 @@ def draw_boss_bar(width, height, health_percent, shield_percent, topleft_corner 
     '''Draws a vertical rectangle with (width,height) dimensions and the topleft corner at topleft_corner.
        bar_percentage will accept a float between 0 and 1 for the amount of the bar to fill it (0.6 will still
        draw a border around the entire bar, but only fill 60% with solid color). Returns the surface and its rect to blit.'''
+    if not(isinstance(health_percent, float) or isinstance(health_percent, int)) or not(isinstance(shield_percent, float) or isinstance(shield_percent, int)):
+        raise RuntimeError('Illegal values for boss bar percentages.')
     if not ((0 <= health_percent <= 1) and (0 <= shield_percent <= 1)):
         raise RuntimeError('Invalid percentage for boss bars.')
     surface = pygame.surface.Surface((width, height))
@@ -218,13 +220,3 @@ def draw_instructions():
     text_block.blit(inst5, (0, inst1.get_rect().height*4))
 
     return text_block
-
-# def calc_total_damage(bullet):
-#     total_damage = 0
-#     if isinstance(bullet, tuple):
-#         for each in bullet:
-#             total_damage += each.damage
-#     else:
-#         total_damage += bullet.damage
-#
-#     return total_damage

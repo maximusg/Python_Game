@@ -646,8 +646,12 @@ class BossSprite(Entity):
     def take_damage(self, value):
         if self.shield > 0:
             self.shield -= value
+            if self.shield < 0:
+                self.shield = 0
         else:
             self.health -= value
+            if self.health < 0:
+                self.health = 0
         if self.health <= 0:
             self.visible = 0
         
