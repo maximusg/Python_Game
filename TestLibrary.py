@@ -107,6 +107,22 @@ class TestLibrary(unittest.TestCase):
         finally:
             self.assertTrue(flag)
 
+        flag = False
+        try:
+            bar, rect = library.draw_boss_bar(50, 100, 1.0, 'a')
+        except RuntimeError as rte:
+            flag = True
+        finally:
+            self.assertTrue(flag)
+
+        flag = False
+        try:
+            bar, rect = library.draw_boss_bar(50, 100, 'a', 1.0)
+        except RuntimeError as rte:
+            flag = True
+        finally:
+            self.assertTrue(flag)
+
     def test_draw_player_lives(self):
         pygame.display.init()
         pygame.font.init()

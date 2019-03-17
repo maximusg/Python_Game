@@ -20,19 +20,19 @@ class Scoreboard(object):
         @name.setter
         def name(self, nameIn):
             if not isinstance(nameIn, str):
-                raise RuntimeError(nameIn + 'is not a valid name for score entry')
+                raise RuntimeError(str(nameIn) + ' is not a valid name for score entry')
             self.__name = nameIn
         
         @score.setter
         def score(self, scoreIn):
             if not isinstance(scoreIn, int):
-                raise RuntimeError(scoreIn + 'is not a valid score for score entry')
+                raise RuntimeError(str(scoreIn) + ' is not a valid score for score entry')
             self.__score = scoreIn
 
         @nextEntry.setter
         def nextEntry(self, entryIn):
             if not (isinstance(entryIn, self.__class__) or entryIn == None):
-                raise RuntimeError(entryIn + 'is not a valid assignment for nextEntry')
+                raise RuntimeError(entryIn + ' is not a valid assignment for nextEntry')
             self.__nextEntry = entryIn
 
         def __str__(self):
@@ -54,13 +54,13 @@ class Scoreboard(object):
     @head.setter
     def head(self, value):
         if not isinstance(value, Scoreboard.Entry) and value != None:
-            raise RuntimeError(value + 'is not a valid head entry.')
+            raise RuntimeError(str(value) + 'is not a valid head entry.')
         self.__head = value
 
     @tail.setter
     def tail(self, value):
         if not isinstance(value, Scoreboard.Entry) and value != None:
-            raise RuntimeError(value + 'is not a valid head entry.')
+            raise RuntimeError(str(value) + 'is not a valid tail entry.')
         self.__tail = value
 
     def add(self, name, score):
@@ -83,15 +83,18 @@ class Scoreboard(object):
     def resetList(self):
         self.head = None
         self.tail = None
+        for i in range(20):
+            self.add('CRN', 10000)
 
     def belongsOnList(self, score):
+        '''Returns true if the score is higher than the lowest score on the list. Requires a fully populated list.'''
         return score > self.tail.score
 
     def writeToFile(self, filename):
         fileName = open(filename, 'w')
         currEntry = self.head
-        while currEntry.nextEntry:
-            if currEntry.nextEntry.nextEntry != None:
+        while currEntry:
+            if currEntry.nextEntry != None:
                 fileName.write(currEntry.name+'.'+str(currEntry.score)+',')
             else:
                 fileName.write(currEntry.name+'.'+str(currEntry.score))
@@ -108,7 +111,7 @@ class Scoreboard(object):
 
     def __trim(self):
         currEntry = self.head
-        i = 0
+        i = 1
         while currEntry.nextEntry != None and i < 20:
             currEntry = currEntry.nextEntry
             i += 1
@@ -119,8 +122,6 @@ class Scoreboard(object):
         result = '***HALL OF FAME!***\n'
         currEntry = self.head
         i = 1
-        #result += str(i) + ') ' + str(currEntry) + '\n'
-        #i += 1
         while currEntry.nextEntry:
             result += str(i) + ') ' + str(currEntry) + '\n'
             i += 1
