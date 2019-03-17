@@ -246,12 +246,12 @@ def draw_instructions():
 
     return text_block
 
-def calc_total_damage(bullet):
-    total_damage = 0
-    if isinstance(bullet, tuple):
-        for each in bullet:
-            total_damage += each.damage
-    else:
-        total_damage += bullet.damage
-
-    return total_damage
+# def calc_total_damage(bullet):
+#     total_damage = 0
+#     if isinstance(bullet, tuple):
+#         for each in bullet:
+#             total_damage += each.damage
+#     else:
+#         total_damage += bullet.damage
+#
+#     return total_damage

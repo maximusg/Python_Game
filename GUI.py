@@ -400,9 +400,7 @@ class GUI(object):
             for sprite in enemy_sprites:
                 collision = pygame.sprite.spritecollideany(sprite, player_bullet_sprites)
                 if collision:
-                    total_damage = calc_total_damage(collision)
-                    #print(total_damage)
-                    sprite.take_damage(total_damage)
+                    sprite.take_damage(playerShip.weapon.getDamage(playerShip.weapon.name))
 
                     collision.visible = 0
                     collision.kill()
@@ -439,8 +437,10 @@ class GUI(object):
             #         boss_sprites.sprite.kill()  
             if boss_sprites.sprite != None:
                 collision_dict = pygame.sprite.groupcollide(player_bullet_sprites, boss_sprites, True, False)
-                for i in range(len(collision_dict)):
-                    boss_sprites.sprite.take_damage(1)
+                #for i in range(len(collision_dict)):
+                for key in collision_dict:
+
+                    boss_sprites.sprite.take_damage(key.damage)
                 collision = pygame.sprite.spritecollideany(boss_sprites.sprite, bomb_explosion_sprites)
                 if collision:
                     boss_sprites.sprite.take_damage(2)
