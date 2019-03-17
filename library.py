@@ -20,6 +20,7 @@ WINDOW_OPTIONS_WINDOWED = (SCREEN_WIDTH, SCREEN_HEIGHT), 0
 COLUMN_WIDTH = SCREEN_WIDTH//5
 
 CWD = Path.cwd()
+SAVES_PATH = CWD.joinpath('levels','game_state')
 RESOURCES_PATH = CWD.joinpath('resources')
 BACKGROUND_PATH = RESOURCES_PATH.joinpath('backgrounds')
 EVENT_SCROLL_PATH = RESOURCES_PATH.joinpath('event_scrolls')
@@ -86,17 +87,14 @@ MASTER_ITEMS = {
 
     }
 
+#FUNC DEFS
 def saveGame(array, stateName="game.sav"):
-    cwd = Path.cwd()
-    saveLocation = cwd.joinpath('levels', 'game_state')
-    with open (saveLocation.joinpath(stateName), "w+b") as write_file:
+    with open (SAVES_PATH.joinpath(stateName), "w+b") as write_file:
         pickle.dump(array,write_file)
 
 
 def loadGame(stateName="game.sav"):
-    cwd = Path.cwd()
-    saveLocation = cwd.joinpath('levels', 'game_state')
-    location = saveLocation.joinpath(stateName)
+    location = SAVES_PATH.joinpath(stateName)
     levelState=None
     try:
         with open (location,"r+b") as read_file:
@@ -106,21 +104,17 @@ def loadGame(stateName="game.sav"):
     
     return levelState
 
-#FUNC DEFS
 def load_text(filename):
     '''Accepts a path to a filename. Returns the text contents of the file as a line-by-line list.'''
     with open(filename) as f:
         return f.readlines()
 
 def load_sound(name):
-    class NoneSound:
-        def play(self):
-            pass
     '''Accepts a file name and attempts to load it. If pygame.mixer has not been initialized yet, 
-    returns a dummy class with no sound. Will throw an exception if the file is not found.
+    raises an exception. Will throw an exception if the file is not found.
     Returns a pygame.Sound object that can be used.'''
     if not pygame.mixer or not pygame.mixer.get_init():
-        return NoneSound()
+        raise RuntimeError('Pygame sound mixer not initialized!')
     fullname = os.path.join(MAIN_DIR, name)
     try:
         sound = pygame.mixer.Sound(fullname)
@@ -135,29 +129,10 @@ def load_background_music(filename):
     pygame.mixer.music.load(filename)
     pygame.mixer.music.play(loops=-1)
 
-def load_image(name, colorkey=-1):
-    '''Accepts a filename and colorkey, throws an exception if the file does not exist. Returns the pygame.image object
-       as well as it's rectangle for manipulation.'''
-    fullname = os.path.join(MAIN_DIR, name)
-    try:
-        image = pygame.image.load(fullname).convert()
-    except pygame.error:
-        raise RuntimeError('Cannot load image:' + fullname)
-    if image.get_alpha(): ##not reliable
-        image = image.convert_alpha()
-    else:
-        image = image.convert()
-        if colorkey is not None:
-            if colorkey is -1:
-                colorkey = image.get_at((0, 0))
-            image.set_colorkey(colorkey, RLEACCEL)
-    return image, image.get_rect()
-
-
 def draw_text(to_print, text_color, bg_color=None, text_size = 25, bold=False):
     '''Draws the string to_print in the color defined by text_color (can be a defined constant, or an RGB value triple)
-       with background color defined by bg_color. If bg_color=None, then no background fill is used. Returns a surface with just
-       the text (text) and one with the background color (if set) applied.'''
+       with background color defined by bg_color. If bg_color=None, then no background fill is used. Returns a surface with text
+       rendered to it.'''
     if bold:
         text_size -= 1 ##makes things fit better.
         font = pygame.font.Font(str(FONT_PATH.joinpath('OpenSans-Bold.ttf')), text_size)
@@ -171,8 +146,7 @@ def draw_vertical_bar(color, width, height, bar_percentage = 1, topleft_corner =
        bar_percentage will accept a float between 0 and 1 for the amount of the bar to fill it (0.6 will still
        draw a border around the entire bar, but only fill 60% with solid color). Returns the surface and its rect to blit.'''
     if not (0 <= bar_percentage <= 1):
-        bar_percentage = 0
-        # raise RuntimeError('Invalid percentage for vertical bars.')
+        raise RuntimeError('Invalid percentage for vertical bar.')
     surface = pygame.surface.Surface((width, height))
     surface.fill(GRAY)
     surface.fill(color, pygame.rect.Rect(1,1,width-2,height-2))
@@ -185,7 +159,7 @@ def draw_boss_bar(width, height, health_percent, shield_percent, topleft_corner 
     '''Draws a vertical rectangle with (width,height) dimensions and the topleft corner at topleft_corner.
        bar_percentage will accept a float between 0 and 1 for the amount of the bar to fill it (0.6 will still
        draw a border around the entire bar, but only fill 60% with solid color). Returns the surface and its rect to blit.'''
-    if not ((0 <= health_percent <= 1) or (0 <= shield_percent <= 1)):
+    if not ((0 <= health_percent <= 1) and (0 <= shield_percent <= 1)):
         raise RuntimeError('Invalid percentage for boss bars.')
     surface = pygame.surface.Surface((width, height))
     surface.fill(GRAY)
@@ -196,7 +170,6 @@ def draw_boss_bar(width, height, health_percent, shield_percent, topleft_corner 
     return surface, rect
 
 def draw_player_lives(player_lives, topleft_corner = (0,0)):
-    # ship_sprite, ship_rect = load_image('CoolShip.png')
     ship = ASSET_MANAGER.getAsset(MISC_SPRITES_PATH.joinpath('SweetShip.png'))
     ship_sprite, ship_rect = ship[0], ship[1]
     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
