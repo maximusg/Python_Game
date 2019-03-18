@@ -1,9 +1,3 @@
-
-'''
-Purpose: Will oupdate the Etity object's vector information, and creates movement patterns which can be repeated as many 
-times as desired.
-
-'''
 import copy
 import math
 

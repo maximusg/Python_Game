@@ -14,9 +14,13 @@ Welcome to Day0 - Another Raiden Clone's documentation!
     :members:
 .. automodule:: highscore
     :members:
+.. automodule:: Entity
+    :members:
 .. automodule:: explosion
     :members:
 .. automodule:: bomb_explosion
+    :members:
+.. automodule:: weapon
     :members:
 .. automodule:: levelLoader
     :members:

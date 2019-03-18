@@ -120,7 +120,126 @@
 
 </dd></dl>
 
-<span class="target" id="module-highscore"></span><span class="target" id="module-explosion"></span><dl class="class">
+<span class="target" id="module-highscore"></span><span class="target" id="module-Entity"></span><dl class="class">
+<dt id="Entity.Bomb">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Bomb</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed</em>, <em>path_to_img</em>, <em>angle=0</em>, <em>behavior='bomb'</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bomb" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Entity.Bomb.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bomb.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id1"><span class="problematic" id="id2">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.BossSprite">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">BossSprite</code><span class="sig-paren">(</span><em>origin</em>, <em>path_to_img</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Entity.BossSprite.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>player_center</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id3"><span class="problematic" id="id4">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Bullet">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Bullet</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed</em>, <em>path_to_img</em>, <em>acceleration=0</em>, <em>angle=0</em>, <em>behavior='up'</em>, <em>name=None</em>, <em>damage=1</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Entity.Bullet.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id5"><span class="problematic" id="id6">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Enemy">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Enemy</code><span class="sig-paren">(</span><em>origin=[640, 0], imgFile='enemy.png', speed=1, behavior='diver', weapon='spitfire', health=1, acceleration=0, itemDropTable=(('coin', 0.1), ('spitfire_powerup', 0.01), ('wavebeam_powerup', 0.01), ('chargeShot_powerup', 0.01), ('healthpack', 0.1), ('bomb_item', 0.1)), angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Entity.Enemy.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id7"><span class="problematic" id="id8">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Entity">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>origin=(0</em>, <em>0)</em>, <em>imageFile=None</em>, <em>area=None</em>, <em>acceleration=0</em>, <em>speed=0</em>, <em>angle=0</em>, <em>health=1</em>, <em>point_value=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Entity.Entity.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id9"><span class="problematic" id="id10">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Item">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed=1</em>, <em>path_to_img='powerup.gif'</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Entity.Item.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id11"><span class="problematic" id="id12">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Player">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Player</code><span class="sig-paren">(</span><em>init_wep</em>, <em>imgFile</em>, <em>scheme</em>, <em>init_bomb='bomb'</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Entity.Player.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id13"><span class="problematic" id="id14">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-explosion"></span><dl class="class">
 <dt id="explosion.ExplosionSprite">
 <em class="property">class </em><code class="descclassname">explosion.</code><code class="descname">ExplosionSprite</code><span class="sig-paren">(</span><em>startx</em>, <em>starty</em>, <em>direction='down'</em><span class="sig-paren">)</span><a class="headerlink" href="#explosion.ExplosionSprite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sprite for small explosions.</p>
@@ -168,7 +287,148 @@
 
 </dd></dl>
 
-<span class="target" id="module-levelLoader"></span><span class="target" id="module-levelLibrary"></span><dl class="function">
+<span class="target" id="module-weapon"></span><p>File: weapon.py
+01/29/19</p>
+<dl class="class">
+<dt id="weapon.ChargingAnim">
+<em class="property">class </em><code class="descclassname">weapon.</code><code class="descname">ChargingAnim</code><span class="sig-paren">(</span><em>startx</em>, <em>starty</em>, <em>playerShip</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.ChargingAnim" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="weapon.ChargingAnim.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#weapon.ChargingAnim.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to control sprite behavior</p>
+<p>Sprite.update(<a href="#id15"><span class="problematic" id="id16">*</span></a>args):</p>
+<p>The default implementation of this method does nothing; it’s just a
+convenient “hook” that you can override. This method is called by
+Group.update() with whatever arguments you give it.</p>
+<p>There is no need to use this method if not using the convenience
+method by the same name in the Group class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="weapon.Weapon">
+<em class="property">class </em><code class="descclassname">weapon.</code><code class="descname">Weapon</code><span class="sig-paren">(</span><em>weaponName</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Weapon class is intended to be used by the Player class as well as the Enemy class.
+It will interact with the master_weapons_dict in order to give GUI the information it needs so
+that Bullet sprites can be constructed. Weapon also controls access to the bomb weapon function.</p>
+<dl class="method">
+<dt id="weapon.Weapon.blue_lazer">
+<code class="descname">blue_lazer</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.blue_lazer" title="Permalink to this definition">¶</a></dt>
+<dd><p>blue_lazer is a starter weapon, similar in ability to level 1 spitfire</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="weapon.Weapon.bombs">
+<code class="descname">bombs</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.bombs" title="Permalink to this definition">¶</a></dt>
+<dd><p>bombs are not typical weapons, they have 2 stages: stage 1 is the launch, where the bomb travels up the screen
+If the bomb doesn’t go off the edge of the screen during the launch stage,
+then it will explode (stage 2) dealing damage to all enemies on screen</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="weapon.Weapon.chargeShot">
+<code class="descname">chargeShot</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.chargeShot" title="Permalink to this definition">¶</a></dt>
+<dd><p>chargeShot will “charge” (increment chargeShot timer) as the player holds down the fire key, and when the key is released
+a rapid stream of bullets will be shot continuosly until the chargeShot timer hits 0
+Leveling up this weapon will allow it to charge faster (increase the rate at which chargeShot timer increments)
+There is an animation that accompanies the chargeShot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="weapon.Weapon.missle">
+<code class="descname">missle</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.missle" title="Permalink to this definition">¶</a></dt>
+<dd><p>missile is an experimental weapon that uses advanced Movement</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="weapon.Weapon.spitfire">
+<code class="descname">spitfire</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.spitfire" title="Permalink to this definition">¶</a></dt>
+<dd><p>spitfire is meant to be a general purpose weapon, with a high rof but low damage
+Leveling up spitfire will cause additional spitfire Bullets to fire at enemies</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="weapon.Weapon.spitfire2">
+<code class="descname">spitfire2</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.spitfire2" title="Permalink to this definition">¶</a></dt>
+<dd><p>spitfire is meant to be a general purpose weapon, with a high rof but low damage
+Leveling up spitfire will cause additional spitfire Bullets to fire at enemies</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="weapon.Weapon.spitfire3">
+<code class="descname">spitfire3</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.spitfire3" title="Permalink to this definition">¶</a></dt>
+<dd><p>spitfire is meant to be a general purpose weapon, with a high rof but low damage
+Leveling up spitfire will cause additional spitfire Bullets to fire at enemies</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="weapon.Weapon.waveBeam">
+<code class="descname">waveBeam</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.Weapon.waveBeam" title="Permalink to this definition">¶</a></dt>
+<dd><p>waveBeam will shoot an expanding wave that deals high damage to enemies
+Leveling up waveBeam will increase damage dealt as well as rof</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="weapon.upgrade">
+<code class="descclassname">weapon.</code><code class="descname">upgrade</code><span class="sig-paren">(</span><em>item_pickup</em>, <em>current_weapon</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.upgrade" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a helper function that is used when a player picks up an weapon Item powerup
+The Player can run this upgrade function to determine if they should get a new Weapon,
+and which one it is. In order to use it: -item_pickup must be an Item object that is a weapon powerup
+and -current_weapon will be the name of the playerShip’s current weapon (easily found by weapon.name)</p>
+</dd></dl>
+
+<span class="target" id="module-levelLoader"></span><dl class="class">
+<dt id="levelLoader.LevelLoader">
+<em class="property">class </em><code class="descclassname">levelLoader.</code><code class="descname">LevelLoader</code><span class="sig-paren">(</span><em>startingLevelNumber=1</em><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>API to get level information for all the events starting at level1.json by default from the level folder.
+Can get ending or current loaded level, and all the of the sprites will get contructed and sent in a dictionary
+at the requested time, which can then be loaded into the GUI</p>
+<dl class="method">
+<dt id="levelLoader.LevelLoader.bulletClass">
+<code class="descname">bulletClass</code><span class="sig-paren">(</span><em>className</em><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.bulletClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>contructs and returns enemy bullets off a 1 input nameing convention</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="levelLoader.LevelLoader.enemyClass">
+<code class="descname">enemyClass</code><span class="sig-paren">(</span><em>className</em><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.enemyClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>contructs and returns enemies based off a 1 input nameing convention</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="levelLoader.LevelLoader.getEndBehavior">
+<code class="descname">getEndBehavior</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.getEndBehavior" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns how the level can end</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="levelLoader.LevelLoader.getEvents">
+<code class="descname">getEvents</code><span class="sig-paren">(</span><em>levelTime</em><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.getEvents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will fetch all the events for the current time from
+level dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="levelLoader.LevelLoader.nextLevel">
+<code class="descname">nextLevel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.nextLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to load the next level, if success returns True, else False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="levelLoader.LevelLoader.playerClass">
+<code class="descname">playerClass</code><span class="sig-paren">(</span><em>className</em><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.playerClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>contructs and returns player object for spawn purposes, 
+could load a player saved state profile for unique ships</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-levelLibrary"></span><p>Contains all the dependent shared code between levelMaker.py and levelLoader.py JSON checker tool and enemy 
+spawn dictionaries dictionary, as well as an enemy simple contruct language to uniquely create enemy entities dynamically</p>
+<dl class="function">
 <dt id="levelLibrary.PROPER_FORMAT">
 <code class="descclassname">levelLibrary.</code><code class="descname">PROPER_FORMAT</code><span class="sig-paren">(</span><em>a</em><span class="sig-paren">)</span><a class="headerlink" href="#levelLibrary.PROPER_FORMAT" title="Permalink to this definition">¶</a></dt>
 <dd><p>checks enemy simple constructis properly formated</p>
@@ -279,7 +539,8 @@ Returns a pygame.Sound object that can be used.</p>
 <dl class="method">
 <dt id="movement.Move.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>spriteObject</em><span class="sig-paren">)</span><a class="headerlink" href="#movement.Move.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>updates sprites coordinates based off movement contructed move sets</p>
+<dd><p>updates sprites coordinates based off contructed move sets returns and updated object which can be put in
+a GUI</p>
 </dd></dl>
 
 </dd></dl>
