@@ -116,8 +116,8 @@ class GUI(object):
                         going = False ## TODO - needs different handling than SPACE
                         
                     if event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
+                        self.__fs_toggle = not self.__fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.__fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
@@ -265,8 +265,8 @@ class GUI(object):
                         pygame.mouse.set_visible(True) ##We need the mouse here.
                         going, next_level = self.ask_to_save(playerShip.health, playerShip.shield, playerShip.weapon.name, playerShip.bombs_remaining, player_score, player_lives, time_since_start//1000)
                     if event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
+                        self.__fs_toggle = not self.__fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.__fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
@@ -592,8 +592,8 @@ class GUI(object):
                         paused = False
                         pygame.time.wait(500)
                     if event.key == K_F12:
-                            self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                            if self.fs_toggle:
+                            self.__fs_toggle = not self.__fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                            if self.__fs_toggle:
                                 pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                             else:
                                 pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
@@ -677,8 +677,8 @@ class GUI(object):
                         dead = False
                         pygame.time.wait(500)
                     if event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
+                        self.__fs_toggle = not self.__fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.__fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
@@ -706,8 +706,8 @@ class GUI(object):
                     if event.key == K_SPACE:
                         dead = False
                     if event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
+                        self.__fs_toggle = not self.__fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.__fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
@@ -821,8 +821,8 @@ class GUI(object):
                     elif event.key == K_c:
                         gui.credits()
                     elif event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
+                        self.__fs_toggle = not self.__fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.__fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
@@ -1064,8 +1064,8 @@ class GUI(object):
                     if event.key == K_ESCAPE or event.key == K_SPACE:
                         going = False ## TODO - needs different handling than SPACE
                     if event.key == K_F12:
-                        self.fs_toggle = not self.fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
-                        if self.fs_toggle:
+                        self.__fs_toggle = not self.__fs_toggle ##NEED TO ADD THIS INTO SOME SORT OF CONFIG MENU
+                        if self.__fs_toggle:
                             pygame.display.set_mode(WINDOW_OPTIONS_FULLSCREEN[0], WINDOW_OPTIONS_FULLSCREEN[1])
                         else:
                             pygame.display.set_mode(WINDOW_OPTIONS_WINDOWED[0], WINDOW_OPTIONS_WINDOWED[1])
