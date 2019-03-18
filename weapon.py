@@ -26,6 +26,7 @@ from library import*
 spitfire_spread = 15
 spitfire_offset = 5
 
+#dictionary containing all in game weapons and their properties
 #each weapon name will be mapped to its function, an image, and other properties
 
 master_weapons_dict = dict(
@@ -46,9 +47,14 @@ master_weapons_dict = dict(
 
 
 class Weapon(object):
+    '''
+    The Weapon class is intended to be used by the Player class as well as the Enemy class.
+    It will interact with the master_weapons_dict in order to give GUI the information it needs so
+    that Bullet sprites can be constructed. Weapon also controls access to the bomb weapon function.
+    '''
 
     def __init__(self, weaponName):
-
+        #constructs a weapon as long as the supplied -weaponName is a valid weapon name (check the master_weapons_dict)
         if weaponName not in master_weapons_dict:
             raise RuntimeError('the weapon must be in the master weapons dictionary. you tried', weaponName)
         self.name = weaponName
@@ -100,32 +106,55 @@ class Weapon(object):
 
     #getters
     def getDamage(self, name):
+        #returns the damage of a weapon, -name must be a valid weapon name
         return master_weapons_dict.get(name)[0]
     def getImagePath(self, name):
+        #returns the image path of a weapon, -name must be a valid weapon name
         return master_weapons_dict.get(name)[2]
     def getSpeed(self, name):
+        #returns the speed of a weapon, -name must be a valid weapon name
         return master_weapons_dict.get(name)[3]
 
-    #weapon functions, makes bullets for GUI, called when playerShip fires()
+    #weapon functions, makes bullets for GUI, called when playerShip fires(). All weapon functions require an origin_x and origin_y values for where the bullets are to appear in the game
+    #origin_x and origin_y are typically derived from the playerShip's current position.
     def chargeShot(self, origin_x, origin_y):
+        '''
+        chargeShot will "charge" (increment chargeShot timer) as the player holds down the fire key, and when the key is released
+        a rapid stream of bullets will be shot continuosly until the chargeShot timer hits 0
+        Leveling up this weapon will allow it to charge faster (increase the rate at which chargeShot timer increments)
+        There is an animation that accompanies the chargeShot
+        '''
         weapon = 'chargeShot'
         bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), angle = 0, behavior='up', name = self.name, damage = self.weapon_damage)
         return bullet1
 
     def waveBeam(self, origin_x, origin_y):
+        '''
+        waveBeam will shoot an expanding wave that deals high damage to enemies
+        Leveling up waveBeam will increase damage dealt as well as rof
+        '''
         weapon = 'waveBeam'
 
         bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), angle = 0, behavior='up', name = 'waveBeam', damage = self.weapon_damage)
         return bullet1
 
     def spitfire(self, origin_x, origin_y):
+        '''
+        spitfire is meant to be a general purpose weapon, with a high rof but low damage
+        Leveling up spitfire will cause additional spitfire Bullets to fire at enemies
+        '''
         weapon = 'spitfire'
+
         bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), angle = 0, behavior='up', damage = self.weapon_damage)
 
 
         return bullet1
 
     def spitfire3(self, origin_x, origin_y):
+        '''
+        spitfire is meant to be a general purpose weapon, with a high rof but low damage
+        Leveling up spitfire will cause additional spitfire Bullets to fire at enemies
+        '''
         weapon = 'spitfire3'
 
 
@@ -138,6 +167,10 @@ class Weapon(object):
         return bullet1, bullet2, bullet3, bullet4, bullet5
 
     def spitfire2(self, origin_x, origin_y):
+        '''
+        spitfire is meant to be a general purpose weapon, with a high rof but low damage
+        Leveling up spitfire will cause additional spitfire Bullets to fire at enemies
+        '''
         weapon = 'spitfire2'
 
 
@@ -147,18 +180,30 @@ class Weapon(object):
         return bullet1, bullet2, bullet3
 
     def blue_lazer(self, origin_x, origin_y):
+        '''
+        blue_lazer is a starter weapon, similar in ability to level 1 spitfire
+        '''
         weapon = 'blue_lazer'
 
         bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), damage = self.weapon_damage)
         return bullet1
 
     def missle(self, origin_x, origin_y):
+        '''
+        missile is an experimental weapon that uses advanced Movement
+
+        '''
         weapon = 'missle'
 
         bullet1 = Entity.Bullet(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), behavior="missle", damage = self.weapon_damage)
         return bullet1
 
     def bombs(self, origin_x, origin_y):
+        '''
+        bombs are not typical weapons, they have 2 stages: stage 1 is the launch, where the bomb travels up the screen
+        If the bomb doesn't go off the edge of the screen during the launch stage,
+        then it will explode (stage 2) dealing damage to all enemies on screen
+        '''
         weapon = 'bomb'
 
         bomb1 = Entity.Bomb(origin_x, origin_y, self.getSpeed(weapon), self.getImagePath(weapon), behavior='bomb')
@@ -191,6 +236,7 @@ class ChargingAnim(pygame.sprite.Sprite):
 
 
     def update(self):
+        #checks if the playerShip is still charging the weapon
         if self.playerShip.weapon.chargeShot_charging_flag is False: #or self.frame_counter == 0:
             if self.playerShip.weapon.chargeShot_counter <= 0:
                 self.visible = 0
@@ -233,20 +279,30 @@ class ChargingAnim(pygame.sprite.Sprite):
 
 
     def move(self, diffx, diffy):
+        #standard move function, moves the object's rect by an x and y differential
         self.rect = self.rect.move(diffx, diffy)
 
     def play_sound(self):
+        #vestigial play_sound, in case we ever want to add a charging sound it's here
         self.sound.play()
 
 
 #utility functions
 def is_weapon(name):
+    #simple function that is helpful to check whether a given name (string) is a weapon name
         if name in master_weapons_dict:
             return name
         else:
             return False
 
+
 def upgrade(item_pickup, current_weapon):
+    '''
+    This is a helper function that is used when a player picks up an weapon Item powerup
+    The Player can run this upgrade function to determine if they should get a new Weapon,
+    and which one it is. In order to use it: -item_pickup must be an Item object that is a weapon powerup
+    and -current_weapon will be the name of the playerShip's current weapon (easily found by weapon.name)
+    '''
     if item_pickup in master_weapons_dict:
         if item_pickup == 'spitfire':
             if current_weapon == 'spitfire':
@@ -276,14 +332,5 @@ def upgrade(item_pickup, current_weapon):
             return 'chargeShot'
     else:
         return None
-
-if __name__=="__main__":
-    def test():
-
-        testWeapon = Weapon('spitfire')
-        testWeapon2 = Weapon('blue_lazer')
-        #os.startfile(testWeapon2.weapon_image)
-        testWeapon.weapon_func()
-    test()
 
 
