@@ -1,9 +1,9 @@
 '''
 filename: movement.py
 
-Purpose: describes movement patterns that enemies and items can have
+Purpose: Will oupdate the Etity object's vector information, and creates movement patterns which can be repeated as many 
+times as desired.
 
-Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up and down
 '''
 import copy
 import math
@@ -15,7 +15,16 @@ from library import *
 
 class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace exitScreen with  "times to repeat"
     def __init__(self, moveCountArray=[800], vectorAray=[["x",3,0]], repeat=3):
-        '''The vector Array contains all the information needed for movement over frames'''
+        '''moveCountArray: an array of ints will move an object each frame number of times, for each int in array
+            vactorAray: is a list of lists. Each list in the list contains vector information [[acceleration,speed,angle]] 
+            example[[0,1,75]] current Move count will execute the vector the number of moves in the moveCount int, and 
+            shift both vectorArray and moveCountArray when current moveCount runs to zero. If size of moveCountArray is
+            larger than vectorArray, the last vector in vector array will continue to be exectued until all ints in
+            moveCount array have shifted out and counted down to zero.
+            repeat: reapeat is an int which loops both moveCountArray and VectorAray. If repeat =-1, then the object
+            will default to a moveCountArray=[1,10000] and vector=[[2,0,0]] where the objects acceleration will get set
+            to 2 speed to 0, angle to 0 (down) and it will speed up off the screen using acceleration to add 2 pixels 
+            of speed in the downward direction each frame'''
         
 
         self.save=[]#save to reinitialize arrays to loop movements
@@ -110,7 +119,8 @@ class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace ex
         
 
     def __vector__ (self,spriteObject):
-        '''do all the vector math here'''
+        '''does all the vetor math after seting acceleration, speed, and angle of an Entity object and then updating
+        the entity to tack on the acceleration to speed.'''
         #print(spriteObject.speedY)
         changeAccel = self.currVector[0]
         changeSpeed = self.currVector[1]
@@ -135,7 +145,7 @@ class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace ex
     
 
     def __updateCurrMove__(self): 
-        '''updates currrent move, along eith vector and rotation'''
+        '''updates currrent move, along the vector'''
         if len(self.moveCounts)==0 and self.currMove==0:
             return True # this means there are no more moves to be made, so exitscreen will be checked or movement reset
         if self.currMove <= 0:
@@ -149,7 +159,8 @@ class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace ex
         return False
         
     def update(self,spriteObject):
-        ''' updates sprites coordinates based off movement contructed move sets '''
+        ''' updates sprites coordinates based off contructed move sets returns and updated object which can be put in
+            a GUI'''
 
         if self.__updateCurrMove__(): # will initialize currSpeed, currMove, and currBehavior, and return True if no more moves left
             if self.repeat>0: #will update reset the bahavior

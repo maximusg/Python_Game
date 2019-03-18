@@ -1,11 +1,14 @@
+'''Create Levels here with this level maker! Just make a dictionary with spawn times and enemies, and the background elements.
+then run the script, make sure to not overwrite a file unintentially. Basic outline is already written, as well as commented out
+batch enemy spawns for quick manipulations'''
+
 import json
 # from library import *
 from levelLibrary import *
 import random
 
 
-##Create Levels here with this level maker! Just make a dictionary with spawn times and enemies, and the background elements.
-#then run the script, make sure to not overwrite a file unintentially.
+
 
 
 

@@ -1,3 +1,6 @@
+'''Contains all the dependent shared code between levelMaker.py and levelLoader.py JSON checker tool and enemy 
+spawn dictionaries dictionary, as well as an enemy simple contruct language to uniquely create enemy entities dynamically'''
+
 from itemDropTables import *
 #Enemy simple contruct scheme
 
