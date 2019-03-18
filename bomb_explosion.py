@@ -1,15 +1,15 @@
 import pygame
 from library import *
-# from pathlib import Path
 
-# cwd = Path.cwd()
-# bomb_explosion_images_path = cwd.joinpath('resources', 'weapon_images', 'bomb_explosion')
-# bomb_sounds = cwd.joinpath('resources', 'sound_effects', 'bomb_sounds')
 #Constants
 TOTAL_ANIM_FRAMES = 9
 
 class BombExplosion(pygame.sprite.Sprite):
+    '''Sprite class for the large bomb explosions!.'''
+
     def __init__(self, startx, starty):
+        '''Initialize the sprite at location (startx,starty).'''
+
         super().__init__()
         anim0 = BOMB_EXPLOSION_PATH.joinpath('bomb_explosion0.png')
         self.image, self.rect = ASSET_MANAGER.getAsset(str(anim0))
@@ -22,6 +22,7 @@ class BombExplosion(pygame.sprite.Sprite):
 
 
     def update(self):
+        '''Update sprite, moving it as necessary and changing the image based on time.'''
         if self.frame_counter == 0:
             self.visible = 0
         self.frame_counter -= 1
@@ -39,7 +40,9 @@ class BombExplosion(pygame.sprite.Sprite):
 
 
     def move(self, diffx, diffy):
+        '''Move rect by (diffx, diffy).'''
         self.rect = self.rect.move(diffx, diffy)
 
     def play_sound(self):
+        '''Play sound.'''
         self.sound.play()

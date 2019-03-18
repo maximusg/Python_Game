@@ -16,8 +16,6 @@ import explosion
 from library import *
 from levelLibrary import *
 
-# main_dir = os.path.split(os.path.abspath(__file__))[0]
-
 class Entity(pygame.sprite.Sprite):
     def __init__(self, origin=(0,0), imageFile=None, area=None, acceleration=0,speed=0, angle=0, health=1, point_value=0):
         super().__init__()
@@ -37,14 +35,7 @@ class Entity(pygame.sprite.Sprite):
         
         self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
 
-        # self.area=None
-        # if area==None: #defualts to Enemies set area... might want to change
-        #     self.area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
-        # else:
-        #     self.area = area
-
         #loading picture    
-        
         if imageFile!=None:
             self.image, self.rect = ASSET_MANAGER.getAsset(imageFile)
         else:#if no image give creates a 20X20 red square.
@@ -170,6 +161,8 @@ class Player(Entity):
                 self.shield = 0
         else:
             self.health -= value
+            if self.health < 0:
+                self.health = 0
 
     def regen(self):
         self.shield += 1

@@ -1,6 +1,5 @@
-'''
-filename: movement.py
 
+'''
 Purpose: Will oupdate the Etity object's vector information, and creates movement patterns which can be repeated as many 
 times as desired.
 
@@ -14,6 +13,11 @@ from library import *
 
 
 class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace exitScreen with  "times to repeat"
+    '''
+    Purpose: describes movement patterns that enemies and items can have
+
+    Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up and down
+    '''
     def __init__(self, moveCountArray=[800], vectorAray=[["x",3,0]], repeat=3):
         '''moveCountArray: an array of ints will move an object each frame number of times, for each int in array
             vactorAray: is a list of lists. Each list in the list contains vector information [[acceleration,speed,angle]] 

@@ -35,7 +35,7 @@ BOMB_EXPLOSION_PATH = WEAPON_IMAGES_PATH.joinpath('bomb_explosion')
 CHARGE_SHOT_PATH = WEAPON_IMAGES_PATH.joinpath('chargeShot')
 UNIT_TESTS_PATH = RESOURCES_PATH.joinpath('unit_test')
 
-DEBUG = True ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
+DEBUG = False ##DO NOT MESS WITH THIS UNLESS YOU KNOW WHAT YOU'RE DOING.
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -52,8 +52,6 @@ SCREEN_CENTER = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 ENEMY_VALUE = 500
 BOSS_VALUE = 50000
 ITEM_VALUE = 50
-
-MAIN_DIR = os.path.split(os.path.abspath(__file__))[0]
 
 ASSET_MANAGER = AssetLoader.AssetLoader()
 
@@ -89,11 +87,15 @@ MASTER_ITEMS = {
 
 #FUNC DEFS
 def saveGame(array, stateName="game.sav"):
+    '''Pickles array and saves it to filename given in stateName.'''
+
     with open (SAVES_PATH.joinpath(stateName), "w+b") as write_file:
         pickle.dump(array,write_file)
 
 
 def loadGame(stateName="game.sav"):
+    '''Loads file pointed at by stateName and proceeds to unpickle it. Returns that list to calling function.'''
+
     location = SAVES_PATH.joinpath(stateName)
     levelState=None
     try:
@@ -115,11 +117,10 @@ def load_sound(name):
     Returns a pygame.Sound object that can be used.'''
     if not pygame.mixer or not pygame.mixer.get_init():
         raise RuntimeError('Pygame sound mixer not initialized!')
-    fullname = os.path.join(MAIN_DIR, name)
     try:
-        sound = pygame.mixer.Sound(fullname)
+        sound = pygame.mixer.Sound(str(name))
     except pygame.error:
-        raise RuntimeError('Cannot load sound:' + fullname)
+        raise RuntimeError('Cannot load sound:' + name)
     
     return sound
 
@@ -172,6 +173,9 @@ def draw_boss_bar(width, height, health_percent, shield_percent, topleft_corner 
     return surface, rect
 
 def draw_player_lives(player_lives, topleft_corner = (0,0)):
+    '''Draws a graphical representation of the number of player lives remaining. Takes in an integer for the player_lives, and a topleft_corner (x,y) tuple
+       if you want to move the location in place (instead of after getting the surface and rect back).'''
+
     ship = ASSET_MANAGER.getAsset(MISC_SPRITES_PATH.joinpath('SweetShip.png'))
     ship_sprite, ship_rect = ship[0], ship[1]
     surface = pygame.surface.Surface((ship_rect.right * 3, ship_rect.bottom))
@@ -185,7 +189,8 @@ def draw_player_lives(player_lives, topleft_corner = (0,0)):
     return surface, surface_rect
 
 def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
-    # bomb_sprite, bomb_rect = load_image('resources/weapon_images/bomb.png')
+    '''Draws a graphical representation of the number of player bombs remaining. Takes in an integer for the bombs_remaining, and a topleft_corner (x,y) tuple
+       if you want to move the location in place (instead of after getting the surface and rect back).'''
     bomb = ASSET_MANAGER.getAsset(WEAPON_IMAGES_PATH.joinpath('bomb.png'))
     bomb_sprite, bomb_rect = bomb[0], bomb[1]
     surface = pygame.surface.Surface((bomb_rect.right * 6, bomb_rect.bottom))
@@ -199,6 +204,8 @@ def draw_bombs_remaining(bombs_remaining, topleft_corner = (0,0)):
     return surface, surface_rect
 
 def draw_button(text, text_color=BLACK, bg_color=None, topleft_corner = (0,0), bold=False):
+    '''Draws a button utilizing draw_text(), then sets its rect's location via topleft_corner. Pass bold=True if you wish to have the text in bold.'''
+
     button = draw_text(text, text_color, bg_color, bold=bold)
     button_rect = button.get_rect()
     button_rect.topleft = topleft_corner
@@ -206,6 +213,8 @@ def draw_button(text, text_color=BLACK, bg_color=None, topleft_corner = (0,0), b
     return button, button_rect
 
 def draw_instructions():
+    '''Draws helper instructions and returns the surface with all of the text pre-blitted.'''
+
     inst1 = draw_text('Arrow keys to move', WHITE)
     inst2 = draw_text('SPACE key to shoot', WHITE)
     inst3 = draw_text('B key to launch bombs', WHITE)
