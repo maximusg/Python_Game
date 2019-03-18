@@ -1,10 +1,4 @@
-'''
-filename: movement.py
 
-Purpose: describes movement patterns that enemies and items can have
-
-Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up and down
-'''
 import copy
 import math
 
@@ -14,6 +8,11 @@ from library import *
 
 
 class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace exitScreen with  "times to repeat"
+    '''
+    Purpose: describes movement patterns that enemies and items can have
+
+    Ideas: go down, left, right, up, circle, spiral, slow start then speed up, up and down
+    '''
     def __init__(self, moveCountArray=[800], vectorAray=[["x",3,0]], repeat=3):
         '''The vector Array contains all the information needed for movement over frames'''
         
