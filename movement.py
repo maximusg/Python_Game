@@ -104,9 +104,7 @@ class Move(object):#REMOVE behaviorArray, SpeedArray, and AngelArray, Replace ex
     def repeat(self, value):
         if not (isinstance(value, int)):
             raise RuntimeError(str(value) + ' is not a valid int for repeat.')
-        # if not (value >= 0):
-        #     raise RuntimeError(str(value) + ' must be non-negative int for repeat.')
-        
+       
         
         self.__repeat = value
         
