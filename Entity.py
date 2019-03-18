@@ -17,6 +17,12 @@ from library import *
 from levelLibrary import *
 
 class Entity(pygame.sprite.Sprite):
+    '''
+    Entity is a broad class encompassing Enemies, the Player, Items, etc. All of these entities have certain characteristics
+    such as a location given by -origin, an optional -imageFile that is used as the sprite image, an -acceleration, -speed, and -angle
+    used in the case that the Entity's movement is governed by the Move class, a -health which indicates how much damage it can take before
+    being destroyed, and a -point_value that indicates how much the Entity will increase the Player's score.
+    '''
     def __init__(self, origin=(0,0), imageFile=None, area=None, acceleration=0,speed=0, angle=0, health=1, point_value=0):
         super().__init__()
         self.health = health
@@ -127,6 +133,11 @@ class Entity(pygame.sprite.Sprite):
             self.visible = 0
             
 class Player(Entity):
+    '''
+    The Player Class inherits from Entity, and extends it by adding an -init_wep which is the Player's
+    initial Weapon object, -scheme which is the control scheme (keyboard controls), -init_bomb which is a special
+    Weapon object.
+    '''
     def __init__(self, init_wep, imgFile, scheme, init_bomb = 'bomb'):
         super().__init__(imageFile=MISC_SPRITES_PATH.joinpath(imgFile))
         self.weapon = weapon.Weapon(init_wep)
@@ -154,6 +165,9 @@ class Player(Entity):
         self.bullet_count = 0
 
     def take_damage(self, value):
+        '''
+        When a Player is hurt, the take_damage function is used to decrease the player's health and shield
+        '''
         if self.shield > 0:
             self.shield -= value*2
             if self.shield < 0:
@@ -165,11 +179,18 @@ class Player(Entity):
                 self.health = 0
 
     def regen(self):
+        '''
+        The regen method allows the Player's shield to regenerate as long as the current shield level is below the max shield attribute
+        '''
         self.shield += 1
         if self.shield > self.max_shield:
             self.shield = 100
 
     def move(self, new_x, new_y):
+        '''
+        The move method allows the Player to move to a coordinates, given by -new_x and -new_y
+        There is some bounds checking to ensure that the Player moves within the allowed area.
+        '''
         if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
             self.rect.left = self.area.left
         elif self.rect.right > self.area.right:
@@ -182,12 +203,21 @@ class Player(Entity):
             self.rect = self.rect.move((new_x, new_y))
 
     def fire(self):
+        '''
+        The fire method calls on the Player's current Weapon object to return a Bullet. A Bullet contains all
+        the necessary information for drawing a bullet sprite on the screen (GUI) as well as managing that sprite's
+        movement and damage.
+        '''
         origin_x = self.rect.centerx
         origin_y = self.rect.top
 
         return self.weapon.weapon_func(origin_x, origin_y)
         
     def drop_bomb(self):
+        '''
+        Similar to the fire method, the drop_bomb method allows the Player to launch a bomb Weapon object.
+        Refer to the bomb documentation in weapon.py for more info about bombs.
+        '''
         origin_x = self.rect.centerx
         origin_y = self.rect.top
         self.drop_bomb_flag = True
@@ -196,6 +226,9 @@ class Player(Entity):
         return self.bomb.weapon_func(origin_x, origin_y)
     
     def control(self, keys, FRAMERATE):
+        '''
+        This method defines the control scheme used to move the Player in game
+        '''
         addBullet=False
         if self.control_scheme=="arrows":
             if keys[pygame.K_UP]:
@@ -260,6 +293,14 @@ class Player(Entity):
             return None
             
 class Enemy(Entity):
+    '''
+    The Enemy class is similar to the Player class, but with several key differences. While both Player and Enemy extend
+    the Entity class, Player has a control scheme that allows the player to control the ship, while Enemy's execute
+    pre-set behavior, found in the behaveDic. Additionally, the game screen has been divided into sectors, and enemies may
+    appear from any of the allowed sectors, giving them their origin. Finally, when enemies are defeated, they may drop Items to pickup, as specified by their itemDropTable.
+    For more information on item drops, see itemDropTables.py
+
+    '''
     def __init__(self, origin=ENEMY_SECTORS("s4"), imgFile="enemy.png", speed=1, behavior="diver", weapon="spitfire", health=1, acceleration=0, itemDropTable = itemDropTables.common, angle=0):
         imgFile = MISC_SPRITES_PATH.joinpath('enemy'+str(ENEMY_SPRITE[behavior])+'.png') #selects the sprite skin based off behavior
         area = pygame.Rect(COLUMN_WIDTH, 0, SCREEN_WIDTH-(2*COLUMN_WIDTH), SCREEN_HEIGHT)
@@ -280,13 +321,15 @@ class Enemy(Entity):
         self.movement = self.behaveDic[behavior]()
         self.itemDropTable = itemDropTable
 
+    #behavior method
     def __diver__(self):
         down=["x","x",0]
         right=["x","x",90]
         vectorArray = [down,right]
         moveCountArray = [130,50]
         return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=2)
-    
+
+    #behavior method
     def __camper__(self):
         down=["x","x",0]
         left=["x","x",-90]
@@ -294,6 +337,7 @@ class Enemy(Entity):
         moveCountArray = [130,50]
         return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=3)
 
+    #behavior method
     def __crazy__(self):
         
         down =["x","x",0]#comes down at spawn speed
@@ -311,6 +355,7 @@ class Enemy(Entity):
         
         return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
+    #behavior method
     def __crazyReverse__(self):
         down =["x","x",0]#comes down at spawn speed
         left = ["x","x",-90]
@@ -326,6 +371,7 @@ class Enemy(Entity):
         vectorArray = [southWest,northEast,down,southEast,northWest,down,up,left,right,left,down]
         return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=3)
 
+    #behavior method
     def __sleeper__(self):# moves down and stops for a LLLONG time =, the wiggles left and right FAST, the stops again, the dives down
         behaviorArray = ["down","stop","left","right"]
         down =["x","x",0]#comes down at spawn speed
@@ -336,6 +382,7 @@ class Enemy(Entity):
         vectorArray = [down,stop,left,right]
         return movement.Move(moveCountArray=moveCountArray, vectorAray=vectorArray,repeat=1)
 
+    #behavior method
     def __mrVectors__(self): #EXAMPLE for vector movements
         #vector = [acceleration, speed, angle] if there is an "x" 
         # you will use the entities default, which if not set is 0.
@@ -357,12 +404,14 @@ class Enemy(Entity):
         #still uses frame count
         moveCountArray = [20,20,  15, 15,  10, 10, 5, 5]
         return movement.Move(moveCountArray=moveCountArray,vectorAray=vectorArray, repeat=3)
-    
+
+    #behavior method
     ##NEW##
     def __diveBomb__(self):
         dive=["x","x","x"]
         return movement.Move(moveCountArray=[100000],vectorAray=[dive])
-    
+
+    #behavior method
     ##NEW##
     def __diveStrafe__(self):
     
@@ -372,6 +421,9 @@ class Enemy(Entity):
         return movement.Move(moveCountArray=[25,25],vectorAray=[diveLeft,diveRight],repeat=10)
 
     def update(self):
+        '''
+        During the main game loop, the enemy sprites are updated. They may shoot bullets at the player by random chance.
+        '''
         # self=self.movement.update(self)
         bullet_to_add = []
         self.movement.update(self)
@@ -383,6 +435,11 @@ class Enemy(Entity):
         return bullet_to_add
 
     def getDrop(self):
+        '''
+        When an enemy's health reaches 0, it is defeated and has a chance to drop items. The
+        getDrop method calculates which Item, if any, is created on screen. See itemDropTables.py for more info.
+
+        '''
         #build the working drop table
         item_lower_threshold = []
         item_upper_threshold = []
@@ -413,11 +470,20 @@ class Enemy(Entity):
         return None
 
     def take_damage(self, value):
+        '''
+        health is lowered by -value.
+        '''
         self.health -= value
         if self.health <= 0:
             self.visible = 0
 
 class Bullet(Entity):
+    '''
+    Bullets are entities that appear in a position given by -origin_x, -origin_y (typically the playerShip)
+    then, they travel with a behavior given by -speed, -acceleration, -angle, -behavior. The name of the bullet is
+    relevant in certain special cases where the GUI needs to make decisions on certain bullet types, so -name is used to pass
+    the name of the Bullet in from Weapon in this scenario. Finally, bullets deal -damage on collision.
+    '''
 
     def __init__(self, origin_x, origin_y, speed, path_to_img, acceleration=0, angle = 0, behavior = 'up', name = None, damage = 1):
         location = (origin_x, origin_y)
@@ -450,10 +516,15 @@ class Bullet(Entity):
 
 
     def move(self, x, y):
+        #simple movement method, moves the Bullet's rect by x and y
         self.rect = self.rect.move((x, y))
 
 
     def update(self):
+        '''
+        Every frame, the bullet has to move. This is handled here in the update method.
+        In the case that the name of the bullet is waveBeam, it will expand as it moves, so that is handled here.
+        '''
         if self.name == "waveBeam":
             wave_growth = 2
             wave_size = self.image.get_size()
@@ -462,6 +533,7 @@ class Bullet(Entity):
         super().update()
         self.movement.update(self)
 
+    #behavior methods
     def __up__(self):
         return movement.Move(moveCountArray=[800], vectorAray=[BULLET_VECTORS['UP']] ) 
 
@@ -489,7 +561,15 @@ class Bullet(Entity):
         vector = ["x",self.speed,self.angle]
         return movement.Move(moveCountArray=[1000],vectorAray=[vector])
 
+
 class Item(Entity):
+    '''
+    The Item class represents items that are dropped by defeated enemies, and which the player can collect.
+    Some items will give the player points, increasing the player's score, while other items are weapon powerups,
+    granting the player a new weapon or improving the player's existing weapon. Additional items include healthpacks
+    which restore health, as well as bomb items which increase the number of bombs the player can drop by 1.
+    All items can be found in the MASTER_ITEMS dictionary in "library.py"
+    '''
     def __init__(self, origin_x, origin_y, speed = 1, path_to_img = 'powerup.gif', name = None):
         self.weapon_name = None
         if name is not None:
@@ -510,12 +590,14 @@ class Item(Entity):
         # self.speed = speed
 
     def checkWeapon(self):
+        #helper method that checks if the Item is a weapon powerup
         if self.weapon_name is not None:
             return True
 
         return False
 
     def checkBomb(self):
+        #helper method that checks if teh Item is a bomb item
         if self.name in MASTER_ITEMS:
             if self.name is 'bomb_item':
                 return True
@@ -523,6 +605,7 @@ class Item(Entity):
         return False
 
     def checkHealthPack(self):
+        #helper method that checks if the Item is a health pack, giving the player back health (red) not shield (blue)
         if self.name in MASTER_ITEMS:
             if self.name is 'healthpack':
                 return True
@@ -530,13 +613,20 @@ class Item(Entity):
         return False
 
     def move(self, x, y):
+        #simple move method that moves the Item by x and y pixels
         self.rect = self.rect.move((x, y))
 
     def update(self):
+        #moves straight down at a given speed
         super().update()
-        self.move(0,self.speed)#moves straight down at a given speed
+        self.move(0,self.speed)
         
 class BossSprite(Entity):
+    '''
+    The BosoSprite is a special type of enemy that the player encounters at the end of a level.
+    This powerful foe has much more health than the typical enemy, as well as a shield.
+
+    '''
     def __init__(self, origin, path_to_img):
         super().__init__(origin=origin, imageFile=MISC_SPRITES_PATH.joinpath(path_to_img), point_value=BOSS_VALUE)
         # self.image, self.rect = load_image(path_to_img)
@@ -559,6 +649,11 @@ class BossSprite(Entity):
         self.visible = 1
 
     def update(self, player_center):
+        '''
+        the BossSprite has a complex update method, due to the fact that there are multiple phases of combat behavior
+        that the BossSprite executes during a battle with the player. As the BossSprite loses health, it will enter
+        the next phase, leading to more powerful attacks.
+        '''
         self.move()
         self.regen()
 
@@ -614,6 +709,7 @@ class BossSprite(Entity):
         
 
     def move(self):
+        #The BossSprite will move differently depending on which phase it is currently in
         ##-TODO- IMPLEMENT USING MOVEMENT.PY
         if self.phase == 1:
             if self.rect.y < 300:
@@ -628,6 +724,9 @@ class BossSprite(Entity):
 
 
     def regen(self):
+        '''
+        If the BossSprite has shield remaining, (shield > 0), then it will regenerate shield much like the Player
+        '''
         if self.regen_counter == 0:
             if 0 < self.shield < self.max_shield:
                 self.shield += 1
@@ -637,6 +736,9 @@ class BossSprite(Entity):
             
 
     def take_damage(self, value):
+        '''
+        The BossSprite will take damage given by -value
+        '''
         if self.shield > 0:
             self.shield -= value
             if self.shield < 0:
@@ -649,6 +751,11 @@ class BossSprite(Entity):
             self.visible = 0
         
 class Bomb(Entity):
+    '''
+    The Bomb class represents stage 1 of the bomb. During this stage, the bomb is launched by the player, and travels
+    up the screen with a Movement behavior defined by -behavior, -speed, -angle. The bomb appears at -origin_x, -origin_y
+    typically near the playerShip. During stage 1, the bomb travels up the screen and a bomb drop sound effect is played.
+    '''
     def __init__(self, origin_x, origin_y, speed, path_to_img, angle=0, behavior='bomb'):
         super().__init__(origin=(origin_x, origin_y), imageFile=WEAPON_IMAGES_PATH.joinpath(path_to_img), speed=speed, angle=angle)
         self.off_screen = False
@@ -667,9 +774,12 @@ class Bomb(Entity):
         self.movement = self.behaveDic[behavior]()
 
     def play_sound(self):
+        #playes the bomb drop sound effect
         self.sound.play()
 
     def update(self):
+        #if the bomb goes off the screen, it will be removed from the game. Try to launch your bombs with enough space for them to travel
+        #without going off the top of the screen.
         super().update()
 
         if self.rect.top > SCREEN_HEIGHT or self.rect.bottom < 0 or self.rect.right > SCREEN_WIDTH - COLUMN_WIDTH or self.rect.left < COLUMN_WIDTH:  # checks if the rect is out of bounds, and if so, it is no longer visible, meaning it should be deleted by GUI
@@ -692,6 +802,7 @@ class Bomb(Entity):
 
         self.movement.update(self)
 
+    #bomb movement behavior methods
     def __upSlow__(self):
         moveCountArray = [3000]
         vectorArray = [[0, 2, 180]]
