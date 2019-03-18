@@ -5,10 +5,6 @@
 import Entity
 
 import weapon
-# import player
-# import enemy
-# import boss
-# import bullet
 from library import *
 from levelLibrary import *
 import json
@@ -20,19 +16,15 @@ from itemDropTables import *
 
 
 class LevelLoader():
-    
+    '''API to get level information for all the events starting at level1.json by default from the level folder.
+        Can get ending or current loaded level, and all the of the sprites will get contructed and sent in a dictionary
+        at the requested time, which can then be loaded into the GUI'''
     
     def __init__(self, startingLevelNumber=1):
         self.levelNumber = startingLevelNumber
-        # self.levelName = "level"+str(self.levelNumber)
-        # self.levelPath = "levels/"+self.levelName+".json"
         self.level = None
         self.success = self.__levelLoad__()
        
-        # self.PLAYER_TYPES = ["health", "location", "image"]
-        # self.ENEMY_TYPES = ["class", "health"]
-        # self.ENEMYBULLETS_TYPE = ["class"]
-
     @property
     def levelNumber(self):
         return self.__levelNumber
@@ -49,7 +41,6 @@ class LevelLoader():
     def levelPath(self):
         return "levels/"+self.levelName+".json"
 
-
     @property
     def success(self):
         return self.__success
@@ -57,17 +48,11 @@ class LevelLoader():
     def success(self, tORf):
         self.__success = tORf
     
-    # @property 
-    # def DICTYPES(self):
-    #     return self.__DICTYPES
-    
-    # @property
-    # def TIMETYPES(self):
-    #     return self.__TIME_TYPES
         
-       
 
     def __levelLoad__(self):
+        '''level loader function, will use a path to load in the next level JSON and get all the events in a dictionary
+            Also checks that JSON file is still vailid with JSONCHECKER'''
         
         try:
             with open (self.levelPath,"r") as read_file:

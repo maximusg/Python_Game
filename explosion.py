@@ -2,6 +2,7 @@ import pygame
 from library import *
 
 class ExplosionSprite(pygame.sprite.Sprite):
+    '''Sprite for small explosions.'''
     def __init__(self, startx, starty, direction='down'):
         super().__init__()
         self.image, self.rect = ASSET_MANAGER.getAsset(MISC_SPRITES_PATH.joinpath('explosion1.png'))
@@ -13,6 +14,7 @@ class ExplosionSprite(pygame.sprite.Sprite):
         self.visible = 1
 
     def update(self):
+        '''Update explosion frame counter, changing image if required, also moving the explosion "down" the screen.'''
         if self.frame_counter == 0:
             self.visible = 0
         self.frame_counter -= 1
@@ -27,7 +29,11 @@ class ExplosionSprite(pygame.sprite.Sprite):
             self.move(0,-5)
 
     def move(self, diffx, diffy):
+        '''Move the rect by (diffx, diffy).'''
+
         self.rect = self.rect.move(diffx, diffy)
 
     def play_sound(self):
+        '''Play sound.'''
+        
         self.sound.play()
