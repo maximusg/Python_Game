@@ -217,6 +217,7 @@ bomb_sounds = cwd.joinpath('resources', 'sound_effects', 'bomb_sounds')
 TOTAL_ANIM_FRAMES = 4
 
 class ChargingAnim(pygame.sprite.Sprite):
+    '''Sprite encapsulating the Charged Shot animation.'''
     def __init__(self, startx, starty, playerShip):
         super().__init__()
         anim0 = charging_images_path.joinpath('charging0.png')
@@ -236,6 +237,7 @@ class ChargingAnim(pygame.sprite.Sprite):
 
 
     def update(self):
+        '''Updates sprite based on whether the ship is still charging the weapon or not.'''
         #checks if the playerShip is still charging the weapon
         if self.playerShip.weapon.chargeShot_charging_flag is False: #or self.frame_counter == 0:
             if self.playerShip.weapon.chargeShot_counter <= 0:
@@ -279,6 +281,7 @@ class ChargingAnim(pygame.sprite.Sprite):
 
 
     def move(self, diffx, diffy):
+        '''Moves the sprite rect by (diffx, diffy).'''
         #standard move function, moves the object's rect by an x and y differential
         self.rect = self.rect.move(diffx, diffy)
 

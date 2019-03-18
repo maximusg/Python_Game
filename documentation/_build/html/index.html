@@ -175,15 +175,16 @@ while commas deliniate between entries.</p>
 up the screen with a Movement behavior defined by -behavior, -speed, -angle. The bomb appears at -origin_x, -origin_y
 typically near the playerShip. During stage 1, the bomb travels up the screen and a bomb drop sound effect is played.</p>
 <dl class="method">
+<dt id="Entity.Bomb.play_sound">
+<code class="descname">play_sound</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bomb.play_sound" title="Permalink to this definition">¶</a></dt>
+<dd><p>plays the bomb drop sound effect.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Entity.Bomb.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bomb.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id1"><span class="problematic" id="id2">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
+<dd><p>if the bomb goes off the screen, it will be removed from the game. Try to launch your bombs with enough space for them to travel
+without going off the top of the screen.</p>
 </dd></dl>
 
 </dd></dl>
@@ -193,6 +194,12 @@ method by the same name in the Group class.</p>
 <em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">BossSprite</code><span class="sig-paren">(</span><em>origin</em>, <em>path_to_img</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite" title="Permalink to this definition">¶</a></dt>
 <dd><p>The BosoSprite is a special type of enemy that the player encounters at the end of a level.
 This powerful foe has much more health than the typical enemy, as well as a shield.</p>
+<dl class="method">
+<dt id="Entity.BossSprite.move">
+<code class="descname">move</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>The BossSprite will move differently depending on which phase it is currently in.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="Entity.BossSprite.regen">
 <code class="descname">regen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite.regen" title="Permalink to this definition">¶</a></dt>
@@ -222,6 +229,12 @@ the next phase, leading to more powerful attacks.</p>
 then, they travel with a behavior given by -speed, -acceleration, -angle, -behavior. The name of the bullet is
 relevant in certain special cases where the GUI needs to make decisions on certain bullet types, so -name is used to pass
 the name of the Bullet in from Weapon in this scenario. Finally, bullets deal -damage on collision.</p>
+<dl class="method">
+<dt id="Entity.Bullet.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the Entity’s rect location while ensuring it remains within the window.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="Entity.Bullet.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet.update" title="Permalink to this definition">¶</a></dt>
@@ -268,15 +281,21 @@ such as a location given by -origin, an optional -imageFile that is used as the 
 used in the case that the Entity’s movement is governed by the Move class, a -health which indicates how much damage it can take before
 being destroyed, and a -point_value that indicates how much the Entity will increase the Player’s score.</p>
 <dl class="method">
+<dt id="Entity.Entity.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the Entity’s rect location while ensuring it remains within the window.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Entity.Entity.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id3"><span class="problematic" id="id4">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
+<dd><p>If not inside the window area, mark for removal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Entity.updateSpeed">
+<code class="descname">updateSpeed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity.updateSpeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates self.speedX and self.speedY based on angle and acceleration.</p>
 </dd></dl>
 
 </dd></dl>
@@ -290,15 +309,33 @@ granting the player a new weapon or improving the player’s existing weapon. Ad
 which restore health, as well as bomb items which increase the number of bombs the player can drop by 1.
 All items can be found in the MASTER_ITEMS dictionary in “library.py”</p>
 <dl class="method">
+<dt id="Entity.Item.checkBomb">
+<code class="descname">checkBomb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.checkBomb" title="Permalink to this definition">¶</a></dt>
+<dd><p>helper method that checks if the Item is a bomb item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Item.checkHealthPack">
+<code class="descname">checkHealthPack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.checkHealthPack" title="Permalink to this definition">¶</a></dt>
+<dd><p>helper method that checks if the Item is a health pack, giving the player back health (red) not shield (blue).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Item.checkWeapon">
+<code class="descname">checkWeapon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.checkWeapon" title="Permalink to this definition">¶</a></dt>
+<dd><p>helper method that checks if the Item is a weapon powerup.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Item.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>simple move method that moves the Item by x and y pixels.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Entity.Item.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id5"><span class="problematic" id="id6">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
+<dd><p>moves straight down at a given speed.</p>
 </dd></dl>
 
 </dd></dl>
@@ -352,13 +389,7 @@ There is some bounds checking to ensure that the Player moves within the allowed
 <dl class="method">
 <dt id="Entity.Player.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id7"><span class="problematic" id="id8">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
+<dd><p>Generate explosions based on health on a per frame basis.</p>
 </dd></dl>
 
 </dd></dl>
@@ -416,16 +447,17 @@ method by the same name in the Group class.</p>
 <dl class="class">
 <dt id="weapon.ChargingAnim">
 <em class="property">class </em><code class="descclassname">weapon.</code><code class="descname">ChargingAnim</code><span class="sig-paren">(</span><em>startx</em>, <em>starty</em>, <em>playerShip</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.ChargingAnim" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Sprite encapsulating the Charged Shot animation.</p>
+<dl class="method">
+<dt id="weapon.ChargingAnim.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>diffx</em>, <em>diffy</em><span class="sig-paren">)</span><a class="headerlink" href="#weapon.ChargingAnim.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves the sprite rect by (diffx, diffy).</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="weapon.ChargingAnim.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#weapon.ChargingAnim.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id9"><span class="problematic" id="id10">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
+<dd><p>Updates sprite based on whether the ship is still charging the weapon or not.</p>
 </dd></dl>
 
 </dd></dl>

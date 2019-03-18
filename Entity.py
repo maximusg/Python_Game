@@ -113,13 +113,15 @@ class Entity(pygame.sprite.Sprite):
             raise RuntimeError(value + ' is not a valid float for acceleration.')
         self.__acceleration = value
 
-    def updateSpeed(self):        
+    def updateSpeed(self):
+        '''Updates self.speedX and self.speedY based on angle and acceleration.'''        
         self.speedX += math.sin(math.radians(self.angle))*self.acceleration 
         self.speedY += math.cos(math.radians(self.angle))*self.acceleration
         
     
     def move(self, x, y):#keeps object from going past the  sides
-        if self.rect.left < self.area.left: ###I hate this function. I need to make it better. -Chris
+        '''Updates the Entity's rect location while ensuring it remains within the window.'''
+        if self.rect.left < self.area.left: 
             self.rect.left = self.area.left
             self.speedX = -self.speedX
         elif self.rect.right > self.area.right:
@@ -129,6 +131,7 @@ class Entity(pygame.sprite.Sprite):
             self.rect = self.rect.move((x, y))
 
     def update(self):
+        '''If not inside the window area, mark for removal.'''
         if not self.area.colliderect(self.rect):
             self.visible = 0
             
@@ -274,6 +277,7 @@ class Player(Entity):
         return addBullet
 
     def update(self):
+        '''Generate explosions based on health on a per frame basis.'''
         if 0.75 < self.health / self.max_health <= 0.9:
             if random.random() < 0.01:
                 x = random.randint(self.rect.left,self.rect.right)
@@ -581,23 +585,18 @@ class Item(Entity):
                     self.weapon_name = self.is_weapon
         
         super().__init__(origin=(origin_x,origin_y), imageFile=ITEM_IMAGES_PATH.joinpath(path_to_img), speed=speed, point_value=ITEM_VALUE)
-
-        # self.image, self.rect = load_image(item_images_path.joinpath(path_to_img))
-        # self.rect.centerx, self.rect.top = origin_x, origin_y
-        # self.value = 50
         self.name = name
-        #for item movement
-        # self.speed = speed
+
 
     def checkWeapon(self):
-        #helper method that checks if the Item is a weapon powerup
+        '''helper method that checks if the Item is a weapon powerup.'''
         if self.weapon_name is not None:
             return True
 
         return False
 
     def checkBomb(self):
-        #helper method that checks if teh Item is a bomb item
+        '''helper method that checks if the Item is a bomb item.'''
         if self.name in MASTER_ITEMS:
             if self.name is 'bomb_item':
                 return True
@@ -605,7 +604,7 @@ class Item(Entity):
         return False
 
     def checkHealthPack(self):
-        #helper method that checks if the Item is a health pack, giving the player back health (red) not shield (blue)
+        '''helper method that checks if the Item is a health pack, giving the player back health (red) not shield (blue).'''
         if self.name in MASTER_ITEMS:
             if self.name is 'healthpack':
                 return True
@@ -613,11 +612,11 @@ class Item(Entity):
         return False
 
     def move(self, x, y):
-        #simple move method that moves the Item by x and y pixels
+        '''simple move method that moves the Item by x and y pixels.'''
         self.rect = self.rect.move((x, y))
 
     def update(self):
-        #moves straight down at a given speed
+        '''moves straight down at a given speed.'''
         super().update()
         self.move(0,self.speed)
         
@@ -709,8 +708,7 @@ class BossSprite(Entity):
         
 
     def move(self):
-        #The BossSprite will move differently depending on which phase it is currently in
-        ##-TODO- IMPLEMENT USING MOVEMENT.PY
+        '''The BossSprite will move differently depending on which phase it is currently in.'''
         if self.phase == 1:
             if self.rect.y < 300:
                 self.rect = self.rect.move(0,3)
@@ -774,12 +772,12 @@ class Bomb(Entity):
         self.movement = self.behaveDic[behavior]()
 
     def play_sound(self):
-        #playes the bomb drop sound effect
+        '''plays the bomb drop sound effect.'''
         self.sound.play()
 
     def update(self):
-        #if the bomb goes off the screen, it will be removed from the game. Try to launch your bombs with enough space for them to travel
-        #without going off the top of the screen.
+        '''if the bomb goes off the screen, it will be removed from the game. Try to launch your bombs with enough space for them to travel
+        without going off the top of the screen.'''
         super().update()
 
         if self.rect.top > SCREEN_HEIGHT or self.rect.bottom < 0 or self.rect.right > SCREEN_WIDTH - COLUMN_WIDTH or self.rect.left < COLUMN_WIDTH:  # checks if the rect is out of bounds, and if so, it is no longer visible, meaning it should be deleted by GUI
@@ -793,13 +791,9 @@ class Bomb(Entity):
         self.bomb_timer -= 1
         if self.bomb_timer <= 0 and self.visible == 1:
             self.visible = 0
-            #self.is_bomb = False
-            #print('BOOM')
             self.bomb_explode = True
             self.centerx= self.rect.x
             self.centery = self.rect.y
-        # self.image, self.rect = load_image('resources/misc_sprites/explosion1.png')
-
         self.movement.update(self)
 
     #bomb movement behavior methods
