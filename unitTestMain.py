@@ -10,6 +10,7 @@ import TestAssetLoader
 import TestGUI
 import TestWeapon
 import TestLevelLoader
+import TestExplosionAnims
 
 def suite():
     """
@@ -24,6 +25,7 @@ def suite():
     test_suite.addTest(unittest.makeSuite(TestGUI.TestGUI))
     test_suite.addTest(unittest.makeSuite(TestWeapon.TestWeapon))
     test_suite.addTest(unittest.makeSuite(TestLevelLoader.TestLevelLoader))
+    test_suite.addTest(unittest.makeSuite(TestExplosionAnims.TestAnims))
     #add the rest of the unittests above this line
 
     return test_suite
