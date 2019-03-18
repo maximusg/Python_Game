@@ -100,7 +100,7 @@ class Scoreboard(object):
            Does __NOT__ write out the new list to disk, you must do that manually.'''
         self.head = None
         self.tail = None
-        for i in range(20):
+        for i in range(MAX_ENTRIES):
             self.add('CRN', 10000)
 
     def belongsOnList(self, score):
