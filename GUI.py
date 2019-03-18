@@ -12,6 +12,8 @@ import highscore
 import random
 
 class GUI(object):
+    '''Class controlling the entire window setting and game state setup of the game. '''
+
     def __init__(self):
         ##Initialize pygame, set up the screen.
         pygame.init()
@@ -86,6 +88,8 @@ class GUI(object):
         self.__clock = value    
 
     def game_intro(self):
+        '''Invokes game introduction state.'''
+
         ##Background setup
         #Background sound setup
         load_background_music(str(MUSIC_PATH.joinpath('roboCop3NES.ogg')))
@@ -150,6 +154,8 @@ class GUI(object):
         gui.menu()
 
     def main(self, lives_remaining, curr_score, currPlayerShip, currTime = 0):
+        '''Invokes main game state. Takes lives_remaining (lives remaining), curr_score (current score), currPlayerShip (a reference to the current player entity), and currTime (in seconds).'''
+
         ##Level Loader setup
         starting_events = self.loader.getEvents(0)
         ending_events = self.loader.getEndBehavior()
@@ -267,10 +273,6 @@ class GUI(object):
                     if event.key == K_PAUSE:
                         self.pause_screen()
                     if DEBUG:
-                        # if event.key == K_F1: ##DEBUG CODE. DO NOT FORGET TO REMOVE
-                        #     #for i in range(200):
-                        #     bad_guy = enemy.enemy('spitfire','enemy.png')
-                        #     enemy_sprites.add(bad_guy)
                         if event.key == K_F2 and len(player_sprites) == 0:
                             playerShip = Entity.Player('spitfire',MISC_SPRITES_PATH.joinpath('SweetShip.png'),"arrows")
                             player_sprites.add(playerShip)
@@ -347,14 +349,6 @@ class GUI(object):
                 else:
                     self.fire_spitfire.play()
                     bullet = playerShip.fire()
-
-                    #how to access bullet damage:
-                    #handles spitfire2 and spitfire3 which return a tuple of bullets
-                    # if isinstance(bullet, tuple):
-                    #     for each in bullet:
-                    #         print(each.damage)
-                    # else:
-                    #     print(bullet.damage)
                     player_bullet_sprites.add(bullet)
 
             if playerShip.drop_bomb_flag is True:
@@ -467,27 +461,10 @@ class GUI(object):
                         items.add(item_drop)
                 if sprite.visible == 0:
                     sprite.kill()
-
-            # if boss_sprites.sprite != None:
-            #     collision = pygame.sprite.spritecollideany(boss_sprites.sprite, player_bullet_sprites)
-            #     if collision:
-            #         sprite.take_damage(1)
-            #         collision.kill()
-            #     else:
-            #         collision = pygame.sprite.spritecollideany(boss_sprites.sprite, bomb_explosion_sprites)
-            #         if collision:
-            #             sprite.take_damage(2)
-            #     if boss_sprites.sprite.health <= 0:
-            #         new_explosion = explosion.ExplosionSprite(sprite.rect.centerx,sprite.rect.centery)
-            #         new_explosion.play_sound() 
-            #         explosions.add(new_explosion)                        
-            #         player_score += boss_sprites.sprite.point_value
-            #         boss_sprites.sprite.kill()  
+ 
             if boss_sprites.sprite != None:
                 collision_dict = pygame.sprite.groupcollide(player_bullet_sprites, boss_sprites, True, False)
-                #for i in range(len(collision_dict)):
                 for key in collision_dict:
-
                     boss_sprites.sprite.take_damage(key.damage)
                 collision = pygame.sprite.spritecollideany(boss_sprites.sprite, bomb_explosion_sprites)
                 if collision:
@@ -601,6 +578,8 @@ class GUI(object):
         return player_lives, player_score, next_level, playerShip
 
     def pause_screen(self):
+        '''Invokes the pause screen state.'''
+
         paused = True
         while paused:
             paused_text = draw_text('***PAUSED***', WHITE)
@@ -627,6 +606,8 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
 
     def ask_to_save(self, health, shield, weapon, bombs, score, lives, time_of_save):
+        '''Invokes the "ask to save" state. Takes in all the parameters required to save the game via library's saveGame() method.'''
+
         text1 = draw_text('Do you want to save your progress?', WHITE, BLACK)
         text1_rect = text1.get_rect()
         text1_rect.center = SCREEN_CENTER
@@ -663,6 +644,8 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
         
     def level_complete(self):
+        '''Invokes visual transition from main() to main().'''
+
         going = True
         start_time = pygame.time.get_ticks()
         while going:
@@ -680,6 +663,8 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
 
     def death_loop(self):
+        '''Invokes the "you died!" state. Captures the spacebar to get back into the game.'''
+
         dead = True
         while dead:
             dead_text = draw_text('***YOUR SHIP WAS DESTROYED! Press Space to re-deploy!***', WHITE)
@@ -704,6 +689,8 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
     
     def game_over(self, player_score):
+        '''Invokes the game over screen. Mostly just a visual transition back to the main menu, since continuing is not an option.'''
+
         dead = True
         while dead:
             dead_text = draw_text('YOU\'VE BEEN DESTROYED! Country Orange has won!', WHITE)
@@ -731,6 +718,8 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
 
     def add_to_hs(self, txt):
+        '''Transitions to "add a high score" state.'''
+
         def blink(screen):
             for color in [BLACK, WHITE]:
                 pygame.draw.circle(box, color, (x//2, int(y*0.7)), 7, 0)
@@ -778,6 +767,8 @@ class GUI(object):
             show_name(self.screen, name)        
 
     def menu(self):
+        '''Main menu state. Allows use of the mouse and captures it for button clicky detection.'''
+
         pygame.mouse.set_visible(True) ##We need the mouse here.
 
         bg, bg_rect = ASSET_MANAGER.getAsset(BACKGROUND_PATH.joinpath('nebula_red.png'))
@@ -915,6 +906,8 @@ class GUI(object):
         pygame.quit()
 
     def credits(self):
+        '''Transition to the credits crawl.'''
+
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
@@ -957,6 +950,8 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
 
     def high_scores(self):
+        '''Transition to the high score crawl.'''
+
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
@@ -998,6 +993,8 @@ class GUI(object):
             self.clock.tick(FRAMERATE)
 
     def level_loop(self, level=1, cheat_lives=False, cheat_weaps=False, toLoad=False):
+        '''Looper that ensures everything is set up for main(), while also allowing a loaded file to work correctly.'''
+
         pygame.mouse.set_visible(False) ##turn the mouse back off
 
         if not toLoad:
@@ -1045,6 +1042,8 @@ class GUI(object):
         pygame.mouse.set_visible(True)
    
     def victory(self):
+        '''Transition to end of game "you win!" state.'''
+
         ##Background setup
         background = pygame.Surface(self.screen.get_size())
         background = background.convert()
@@ -1090,7 +1089,6 @@ class GUI(object):
             if text_rect.bottom < 0:
                 going = False
             self.clock.tick_busy_loop(FRAMERATE)
-
 
 
 if __name__=='__main__':
