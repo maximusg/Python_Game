@@ -120,10 +120,61 @@
 
 </dd></dl>
 
-<span class="target" id="module-highscore"></span><span class="target" id="module-Entity"></span><dl class="class">
+<span class="target" id="module-highscore"></span><dl class="class">
+<dt id="highscore.Scoreboard">
+<em class="property">class </em><code class="descclassname">highscore.</code><code class="descname">Scoreboard</code><a class="headerlink" href="#highscore.Scoreboard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linked List data structure that contains the High Score List for Day0.</p>
+<dl class="class">
+<dt id="highscore.Scoreboard.Entry">
+<em class="property">class </em><code class="descname">Entry</code><span class="sig-paren">(</span><em>name</em>, <em>score</em><span class="sig-paren">)</span><a class="headerlink" href="#highscore.Scoreboard.Entry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object representing a single entry within the overall Scoreboard class. Contains:
+name - Must be a string.
+score - Must be an integer.
+nextEntry - Must point to the next Entry object in the list (can be None).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="highscore.Scoreboard.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>name</em>, <em>score</em><span class="sig-paren">)</span><a class="headerlink" href="#highscore.Scoreboard.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an entry into the linked list sorted based on score. Assumes it “belongs” on the list already.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="highscore.Scoreboard.belongsOnList">
+<code class="descname">belongsOnList</code><span class="sig-paren">(</span><em>score</em><span class="sig-paren">)</span><a class="headerlink" href="#highscore.Scoreboard.belongsOnList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the score is higher than the lowest score on the list. Requires a fully populated list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="highscore.Scoreboard.readFromFile">
+<code class="descname">readFromFile</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="headerlink" href="#highscore.Scoreboard.readFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads in a file, breaks it down based on periods separating name and score and commas separating entries, and 
+automatically readds each entry into the list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="highscore.Scoreboard.resetList">
+<code class="descname">resetList</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#highscore.Scoreboard.resetList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the list by removing all contents, then readding dummy values to refill.
+Does __NOT__ write out the new list to disk, you must do that manually.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="highscore.Scoreboard.writeToFile">
+<code class="descname">writeToFile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#highscore.Scoreboard.writeToFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the list out to file based on a simple delimiter scheme. Periods deliniate the name from the score,
+while commas deliniate between entries.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-Entity"></span><dl class="class">
 <dt id="Entity.Bomb">
 <em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Bomb</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed</em>, <em>path_to_img</em>, <em>angle=0</em>, <em>behavior='bomb'</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bomb" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>The Bomb class represents stage 1 of the bomb. During this stage, the bomb is launched by the player, and travels
+up the screen with a Movement behavior defined by -behavior, -speed, -angle. The bomb appears at -origin_x, -origin_y
+typically near the playerShip. During stage 1, the bomb travels up the screen and a bomb drop sound effect is played.</p>
+<dl class="method">
 <dt id="Entity.Bomb.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bomb.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>method to control sprite behavior</p>
@@ -140,9 +191,85 @@ method by the same name in the Group class.</p>
 <dl class="class">
 <dt id="Entity.BossSprite">
 <em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">BossSprite</code><span class="sig-paren">(</span><em>origin</em>, <em>path_to_img</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>The BosoSprite is a special type of enemy that the player encounters at the end of a level.
+This powerful foe has much more health than the typical enemy, as well as a shield.</p>
+<dl class="method">
+<dt id="Entity.BossSprite.regen">
+<code class="descname">regen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite.regen" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the BossSprite has shield remaining, (shield &gt; 0), then it will regenerate shield much like the Player</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.BossSprite.take_damage">
+<code class="descname">take_damage</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite.take_damage" title="Permalink to this definition">¶</a></dt>
+<dd><p>The BossSprite will take damage given by -value</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Entity.BossSprite.update">
 <code class="descname">update</code><span class="sig-paren">(</span><em>player_center</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.BossSprite.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>the BossSprite has a complex update method, due to the fact that there are multiple phases of combat behavior
+that the BossSprite executes during a battle with the player. As the BossSprite loses health, it will enter
+the next phase, leading to more powerful attacks.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Bullet">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Bullet</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed</em>, <em>path_to_img</em>, <em>acceleration=0</em>, <em>angle=0</em>, <em>behavior='up'</em>, <em>name=None</em>, <em>damage=1</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bullets are entities that appear in a position given by -origin_x, -origin_y (typically the playerShip)
+then, they travel with a behavior given by -speed, -acceleration, -angle, -behavior. The name of the bullet is
+relevant in certain special cases where the GUI needs to make decisions on certain bullet types, so -name is used to pass
+the name of the Bullet in from Weapon in this scenario. Finally, bullets deal -damage on collision.</p>
+<dl class="method">
+<dt id="Entity.Bullet.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Every frame, the bullet has to move. This is handled here in the update method.
+In the case that the name of the bullet is waveBeam, it will expand as it moves, so that is handled here.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Enemy">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Enemy</code><span class="sig-paren">(</span><em>origin=[640, 0], imgFile='enemy.png', speed=1, behavior='diver', weapon='spitfire', health=1, acceleration=0, itemDropTable=(('coin', 0.1), ('spitfire_powerup', 0.01), ('wavebeam_powerup', 0.01), ('chargeShot_powerup', 0.01), ('healthpack', 0.1), ('bomb_item', 0.1)), angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Enemy class is similar to the Player class, but with several key differences. While both Player and Enemy extend
+the Entity class, Player has a control scheme that allows the player to control the ship, while Enemy’s execute
+pre-set behavior, found in the behaveDic. Additionally, the game screen has been divided into sectors, and enemies may
+appear from any of the allowed sectors, giving them their origin. Finally, when enemies are defeated, they may drop Items to pickup, as specified by their itemDropTable.
+For more information on item drops, see itemDropTables.py</p>
+<dl class="method">
+<dt id="Entity.Enemy.getDrop">
+<code class="descname">getDrop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy.getDrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>When an enemy’s health reaches 0, it is defeated and has a chance to drop items. The
+getDrop method calculates which Item, if any, is created on screen. See itemDropTables.py for more info.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Enemy.take_damage">
+<code class="descname">take_damage</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy.take_damage" title="Permalink to this definition">¶</a></dt>
+<dd><p>health is lowered by -value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Enemy.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>During the main game loop, the enemy sprites are updated. They may shoot bullets at the player by random chance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Entity.Entity">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>origin=(0</em>, <em>0)</em>, <em>imageFile=None</em>, <em>area=None</em>, <em>acceleration=0</em>, <em>speed=0</em>, <em>angle=0</em>, <em>health=1</em>, <em>point_value=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entity is a broad class encompassing Enemies, the Player, Items, etc. All of these entities have certain characteristics
+such as a location given by -origin, an optional -imageFile that is used as the sprite image, an -acceleration, -speed, and -angle
+used in the case that the Entity’s movement is governed by the Move class, a -health which indicates how much damage it can take before
+being destroyed, and a -point_value that indicates how much the Entity will increase the Player’s score.</p>
+<dl class="method">
+<dt id="Entity.Entity.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>method to control sprite behavior</p>
 <p>Sprite.update(<a href="#id3"><span class="problematic" id="id4">*</span></a>args):</p>
 <p>The default implementation of this method does nothing; it’s just a
@@ -155,11 +282,16 @@ method by the same name in the Group class.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="Entity.Bullet">
-<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Bullet</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed</em>, <em>path_to_img</em>, <em>acceleration=0</em>, <em>angle=0</em>, <em>behavior='up'</em>, <em>name=None</em>, <em>damage=1</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="Entity.Bullet.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Bullet.update" title="Permalink to this definition">¶</a></dt>
+<dt id="Entity.Item">
+<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed=1</em>, <em>path_to_img='powerup.gif'</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Item class represents items that are dropped by defeated enemies, and which the player can collect.
+Some items will give the player points, increasing the player’s score, while other items are weapon powerups,
+granting the player a new weapon or improving the player’s existing weapon. Additional items include healthpacks
+which restore health, as well as bomb items which increase the number of bombs the player can drop by 1.
+All items can be found in the MASTER_ITEMS dictionary in “library.py”</p>
+<dl class="method">
+<dt id="Entity.Item.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>method to control sprite behavior</p>
 <p>Sprite.update(<a href="#id5"><span class="problematic" id="id6">*</span></a>args):</p>
 <p>The default implementation of this method does nothing; it’s just a
@@ -172,64 +304,56 @@ method by the same name in the Group class.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="Entity.Enemy">
-<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Enemy</code><span class="sig-paren">(</span><em>origin=[640, 0], imgFile='enemy.png', speed=1, behavior='diver', weapon='spitfire', health=1, acceleration=0, itemDropTable=(('coin', 0.1), ('spitfire_powerup', 0.01), ('wavebeam_powerup', 0.01), ('chargeShot_powerup', 0.01), ('healthpack', 0.1), ('bomb_item', 0.1)), angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="Entity.Enemy.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Enemy.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id7"><span class="problematic" id="id8">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Entity.Entity">
-<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>origin=(0</em>, <em>0)</em>, <em>imageFile=None</em>, <em>area=None</em>, <em>acceleration=0</em>, <em>speed=0</em>, <em>angle=0</em>, <em>health=1</em>, <em>point_value=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="Entity.Entity.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Entity.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id9"><span class="problematic" id="id10">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Entity.Item">
-<em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>origin_x</em>, <em>origin_y</em>, <em>speed=1</em>, <em>path_to_img='powerup.gif'</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="Entity.Item.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Item.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id11"><span class="problematic" id="id12">*</span></a>args):</p>
-<p>The default implementation of this method does nothing; it’s just a
-convenient “hook” that you can override. This method is called by
-Group.update() with whatever arguments you give it.</p>
-<p>There is no need to use this method if not using the convenience
-method by the same name in the Group class.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="Entity.Player">
 <em class="property">class </em><code class="descclassname">Entity.</code><code class="descname">Player</code><span class="sig-paren">(</span><em>init_wep</em>, <em>imgFile</em>, <em>scheme</em>, <em>init_bomb='bomb'</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>The Player Class inherits from Entity, and extends it by adding an -init_wep which is the Player’s
+initial Weapon object, -scheme which is the control scheme (keyboard controls), -init_bomb which is a special
+Weapon object.</p>
+<dl class="method">
+<dt id="Entity.Player.control">
+<code class="descname">control</code><span class="sig-paren">(</span><em>keys</em>, <em>FRAMERATE</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.control" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method defines the control scheme used to move the Player in game</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Player.drop_bomb">
+<code class="descname">drop_bomb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.drop_bomb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to the fire method, the drop_bomb method allows the Player to launch a bomb Weapon object.
+Refer to the bomb documentation in weapon.py for more info about bombs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Player.fire">
+<code class="descname">fire</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.fire" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fire method calls on the Player’s current Weapon object to return a Bullet. A Bullet contains all
+the necessary information for drawing a bullet sprite on the screen (GUI) as well as managing that sprite’s
+movement and damage.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Player.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>new_x</em>, <em>new_y</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>The move method allows the Player to move to a coordinates, given by -new_x and -new_y
+There is some bounds checking to ensure that the Player moves within the allowed area.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Player.regen">
+<code class="descname">regen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.regen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The regen method allows the Player’s shield to regenerate as long as the current shield level is below the max shield attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Entity.Player.take_damage">
+<code class="descname">take_damage</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.take_damage" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a Player is hurt, the take_damage function is used to decrease the player’s health and shield</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Entity.Player.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Entity.Player.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id13"><span class="problematic" id="id14">*</span></a>args):</p>
+<p>Sprite.update(<a href="#id7"><span class="problematic" id="id8">*</span></a>args):</p>
 <p>The default implementation of this method does nothing; it’s just a
 convenient “hook” that you can override. This method is called by
 Group.update() with whatever arguments you give it.</p>
@@ -296,7 +420,7 @@ method by the same name in the Group class.</p>
 <dt id="weapon.ChargingAnim.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#weapon.ChargingAnim.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>method to control sprite behavior</p>
-<p>Sprite.update(<a href="#id15"><span class="problematic" id="id16">*</span></a>args):</p>
+<p>Sprite.update(<a href="#id9"><span class="problematic" id="id10">*</span></a>args):</p>
 <p>The default implementation of this method does nothing; it’s just a
 convenient “hook” that you can override. This method is called by
 Group.update() with whatever arguments you give it.</p>
@@ -415,13 +539,6 @@ level dictionary</p>
 <dt id="levelLoader.LevelLoader.nextLevel">
 <code class="descname">nextLevel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.nextLevel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to load the next level, if success returns True, else False</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="levelLoader.LevelLoader.playerClass">
-<code class="descname">playerClass</code><span class="sig-paren">(</span><em>className</em><span class="sig-paren">)</span><a class="headerlink" href="#levelLoader.LevelLoader.playerClass" title="Permalink to this definition">¶</a></dt>
-<dd><p>contructs and returns player object for spawn purposes, 
-could load a player saved state profile for unique ships</p>
 </dd></dl>
 
 </dd></dl>

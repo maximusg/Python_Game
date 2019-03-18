@@ -42,6 +42,7 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -49,7 +50,9 @@
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
@@ -58,12 +61,14 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#GUI.GUI.add_to_hs">add_to_hs() (GUI.GUI method)</a>
+      <li><a href="index.html#highscore.Scoreboard.add">add() (highscore.Scoreboard method)</a>
 </li>
-      <li><a href="index.html#GUI.GUI.ask_to_save">ask_to_save() (GUI.GUI method)</a>
+      <li><a href="index.html#GUI.GUI.add_to_hs">add_to_hs() (GUI.GUI method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#GUI.GUI.ask_to_save">ask_to_save() (GUI.GUI method)</a>
+</li>
       <li><a href="index.html#AssetLoader.AssetLoader">AssetLoader (class in AssetLoader)</a>
 
       <ul>
@@ -76,16 +81,18 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#highscore.Scoreboard.belongsOnList">belongsOnList() (highscore.Scoreboard method)</a>
+</li>
       <li><a href="index.html#weapon.Weapon.blue_lazer">blue_lazer() (weapon.Weapon method)</a>
 </li>
       <li><a href="index.html#Entity.Bomb">Bomb (class in Entity)</a>
 </li>
       <li><a href="index.html#module-bomb_explosion">bomb_explosion (module)</a>
 </li>
-      <li><a href="index.html#bomb_explosion.BombExplosion">BombExplosion (class in bomb_explosion)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#bomb_explosion.BombExplosion">BombExplosion (class in bomb_explosion)</a>
+</li>
       <li><a href="index.html#weapon.Weapon.bombs">bombs() (weapon.Weapon method)</a>
 </li>
       <li><a href="index.html#Entity.BossSprite">BossSprite (class in Entity)</a>
@@ -107,6 +114,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#levelLibrary.cluster">cluster() (in module levelLibrary)</a>
+</li>
+      <li><a href="index.html#Entity.Player.control">control() (Entity.Player method)</a>
 </li>
       <li><a href="index.html#GUI.GUI.credits">credits() (GUI.GUI method)</a>
 </li>
@@ -134,6 +143,8 @@
 </li>
       <li><a href="index.html#library.draw_vertical_bar">draw_vertical_bar() (in module library)</a>
 </li>
+      <li><a href="index.html#Entity.Player.drop_bomb">drop_bomb() (Entity.Player method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -159,6 +170,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#Entity.Player.fire">fire() (Entity.Player method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -167,6 +186,8 @@
       <li><a href="index.html#GUI.GUI.game_over">game_over() (GUI.GUI method)</a>
 </li>
       <li><a href="index.html#AssetLoader.AssetLoader.getAsset">getAsset() (AssetLoader.AssetLoader method)</a>
+</li>
+      <li><a href="index.html#Entity.Enemy.getDrop">getDrop() (Entity.Enemy method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -240,13 +261,15 @@
 </li>
       <li><a href="index.html#weapon.Weapon.missle">missle() (weapon.Weapon method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#movement.Move">Move (class in movement)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#bomb_explosion.BombExplosion.move">move() (bomb_explosion.BombExplosion method)</a>
 
       <ul>
+        <li><a href="index.html#Entity.Player.move">(Entity.Player method)</a>
+</li>
         <li><a href="index.html#explosion.ExplosionSprite.move">(explosion.ExplosionSprite method)</a>
 </li>
       </ul></li>
@@ -278,9 +301,25 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#Entity.Player">Player (class in Entity)</a>
 </li>
-      <li><a href="index.html#levelLoader.LevelLoader.playerClass">playerClass() (levelLoader.LevelLoader method)</a>
-</li>
       <li><a href="index.html#levelLibrary.PROPER_FORMAT">PROPER_FORMAT() (in module levelLibrary)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#highscore.Scoreboard.readFromFile">readFromFile() (highscore.Scoreboard method)</a>
+</li>
+      <li><a href="index.html#Entity.BossSprite.regen">regen() (Entity.BossSprite method)</a>
+
+      <ul>
+        <li><a href="index.html#Entity.Player.regen">(Entity.Player method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#highscore.Scoreboard.resetList">resetList() (highscore.Scoreboard method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -290,14 +329,32 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#library.saveGame">saveGame() (in module library)</a>
 </li>
-      <li><a href="index.html#weapon.Weapon.spitfire">spitfire() (weapon.Weapon method)</a>
+      <li><a href="index.html#highscore.Scoreboard">Scoreboard (class in highscore)</a>
+</li>
+      <li><a href="index.html#highscore.Scoreboard.Entry">Scoreboard.Entry (class in highscore)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#weapon.Weapon.spitfire">spitfire() (weapon.Weapon method)</a>
+</li>
       <li><a href="index.html#weapon.Weapon.spitfire2">spitfire2() (weapon.Weapon method)</a>
 </li>
       <li><a href="index.html#weapon.Weapon.spitfire3">spitfire3() (weapon.Weapon method)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#Entity.BossSprite.take_damage">take_damage() (Entity.BossSprite method)</a>
+
+      <ul>
+        <li><a href="index.html#Entity.Enemy.take_damage">(Entity.Enemy method)</a>
+</li>
+        <li><a href="index.html#Entity.Player.take_damage">(Entity.Player method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -348,11 +405,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#weapon.Weapon.waveBeam">waveBeam() (weapon.Weapon method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#weapon.Weapon">Weapon (class in weapon)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#module-weapon">weapon (module)</a>
+</li>
+      <li><a href="index.html#highscore.Scoreboard.writeToFile">writeToFile() (highscore.Scoreboard method)</a>
 </li>
   </ul></td>
 </tr></table>
