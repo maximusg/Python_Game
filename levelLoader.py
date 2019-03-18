@@ -94,7 +94,7 @@ class LevelLoader():
         for each in events:
             if each in TIME_TYPES:
                 if each == "player":
-                    playerShip = Entity.Player(events[each]["weapon"],events[each]["image"],events[each]["scheme"])
+                    playerShip = Entity.Player(init_wep=events[each]["weapon"],imgFile=events[each]["image"],scheme=events[each]["scheme"])
                     timeEvents["player"].append(playerShip)
                 if each == "enemy":
                     for enemyType in events[each]["class"]:
@@ -201,11 +201,6 @@ class LevelLoader():
     def bossClass(self, image):
         return Entity.BossSprite(ENEMY_SECTORS("s7"), image)
 
-        
-    def playerClass(self,className):
-        '''contructs and returns player object for spawn purposes, 
-            could load a player saved state profile for unique ships'''
-        pass
     
     def bulletClass (self,className):
         '''contructs and returns enemy bullets off a 1 input nameing convention'''

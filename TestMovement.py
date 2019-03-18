@@ -6,7 +6,6 @@ import pygame
 class TestMovement(unittest.TestCase):
     
     def test__init__(self):
-        pass
         goodmoveCountArray1 = [1,2]
         goodmoveCountArray2 = [0]
         goodmoveCountArray3 = [0,1,2,3,4,5,6,7,8,9,10]

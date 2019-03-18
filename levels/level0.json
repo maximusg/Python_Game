@@ -1,0 +1,37 @@
+
+{
+    "end": {
+        "boss": true,
+        "time": 80
+    },
+    "time": {
+        "0": {
+            "background": "starfield.png",
+            "player": {
+                "health": 1,
+                "image": "SweetShip.png",
+                "location": [
+                    500,
+                    700
+                ],
+                "scheme": "arrows",
+                "weapon": "blue_lazer"
+            }
+        },
+        "3": {
+            "enemy": {
+                "class": [
+                    "@s8-db-3-1-0-DTspitfire"
+                ]
+            }
+        },
+        "79": {
+            "boss_sprite": {
+                "class": [
+                    "camperMid"
+                ],
+                "image": "boss.png"
+            }
+        }
+    }
+}
